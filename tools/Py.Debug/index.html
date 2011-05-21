@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>测试 - PyDebug</title>
+		<script type="text/javascript" src="debug.js"></script>
+    </head>
+    <body>
+    	<p>PyDebug 是一个只有一个文件的框架，这个框架可以帮助你调试页面的 Javascript 代码。</p>
+		<p>你只需引入 debug.js 到你的页面(参考本源码)</p>
+		<p>一些常用的按钮:
+		<ul>
+			<li>按 F8 打开/关闭 调试。  </li>
+			<li>最下的框可输代码，回车执行。 </li>
+		</ul>
+		</p>
+		<p>函数接口: (用于控制调试窗口)
+			<ul>
+				<li><a href="#" onclick="trace('输出')">trace("输出")</a></li>
+				<li><a href="#" onclick="trace.log('输出', '输出')">log("输出", "输出")</a></li>
+				<li><a href="#" onclick="trace('输出 {x} {y}', {x:1, y:3})">trace('输出 {x} {y}', {x:1, y:3})</a></li>
+				<li><a href="#" onclick="trace('输出 {0} {1}', '变量1', '变量2')">trace("输出 {0} {1}", "变量1", "变量2")</a></li>
+				<li><a href="#" onclick="trace.test(trace.empty)">trace.test(trace.empty); 执行1个函数 1000 遍需要的时间， 通过第2个参数说明运行个数。</a></li>
+				<li><a href="#" onclick="trace.dir(trace)">trace.dir(trace); 显示所有 trace 成员</a></li>
+				<li><a href="#" onclick="PyDebug.toggle()">切换显示</a></li>
+				<li><a href="#" onclick="PyDebug.lock()">锁定</a></li>
+				<li><a href="#" onclick="PyDebug.unlock()">去锁定</a></li>
+				<li><a href="#" onclick="trace.clear()">删除全部内容</a></li>
+				<li><a href="#" onclick="assert(1 > 2, '{0}必须大于{1}', 1, 2)">assert(1 > 2, "{0}必须大于{1}", 1, 2);</a></li>
+			</ul>
+		</p>
+    </body> 
+</html>
