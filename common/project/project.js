@@ -1,7 +1,7 @@
 
 var core = {
 	'core    ': ['class', 'classbase', 'namespace', 'native', 'navigator', 'object', 'py', 'ready', 'trace', '@', 'date', 'interface'],
-	'dom	 ': ['']
+	'dom	 ': ['@','attribute', 'borderRadius', 'clone', 'contextmenu', 'control']
 };
 
 var controls = {
