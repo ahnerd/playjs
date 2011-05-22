@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>mootools.js  测试</title>
+        <script src="../assets/scripts/mootools-core-1.3-full-compat.js" type="text/javascript">
+        </script>
+        <script src="../assets/scripts/debug.js" type="text/javascript">
+        </script>
+        <script src="../assets/scripts/test.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <div style="background: yellow;" id="a">
+				<div style="background: red; width:200px;" id="aa">id=aa<div style="background: black; color:white" id="aba">id=aba</div></div>
+				<div style="background: green;" id="ab">id=ab<input type="button" name="button" id="button" value="子控件" /></div>
+			<a href="../" id="ac"></a>
+			</div>
+			<hr>
+        <script>
+            var a = $('a'), aa = $('aa'), aaa = $('aaa'), ab = $('ab'), s = new Elements();
+            s.push(ab);
+            s.push(aaa);
+            
+            
+            var fns = [
+				["Element.prototype.setStyle", function(){ return a.setStyle('font-size', 14); }],
+				["Element.prototype.getStyle", function(){ return a.getStyle('font-size'); }],
+				["Element.prototype.setProperty", function(){ return a.setProperty('innerText', '12121'); }],
+				["Element.prototype.getProperty", function(){ return a.getProperty('innerText'); }],
+				["Element.prototype.set", function(){ return a.set({'innerHTML': 'cv'}); }],
+				["Element.prototype.hasClass", function(){ return a.hasClass('light'); }],
+				["Element.prototype.addClass", function(){ return a.addClass('light'); }],
+				["Element.prototype.removeClass", function(){ return a.removeClass('light'); }],
+				["Element.prototype.toggleClass", function(){ return a.toggleClass('light'); }],
+				["Element.prototype.setOpacity", function(){ return a.setOpacity(0.8); }],
+				["Element.prototype.getOpacity", function(){ return a.getOpacity(); }]
+			];
+        </script>
+    </body>
+</html>

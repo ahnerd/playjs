@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>System.Ajax.Ajax  测试</title>
+        <script src="../../py/system.js" type="text/javascript"></script>
+        <script src="../../py/System/Ajax/Ajax.js" type="text/javascript"></script>
+		
+        <script src="../assets/scripts/debug.js" type="text/javascript"></script>
+        <script src="../assets/scripts/test.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <script>
+            var url = './ajax.html';
+            var ajax = new Ajax({
+                url: url,
+                onsuccess: function(m){
+                    log(m);
+                },
+                data: {
+                    "asd": "个"
+                },
+                oncomplete: function(m){
+                    log(m);
+                },
+                onerror: trace.error,
+                ontimeout: log
+            });
+            var fns = [["ajax", function(){
+                ajax.send();
+            }], ["ajax.get", function(){
+                Ajax.get(url, {
+                    "asd": "个"
+                }, log);
+            }
+            ]];
+            
+        </script>
+    </body>
+</html>

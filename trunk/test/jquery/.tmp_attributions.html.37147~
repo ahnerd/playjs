@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>jQuery  测试</title>
+		<script src="../../libs/jquery-1.5b1.js" type="text/javascript"></script>
+		
+		<script src="../assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/test.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div style="background: yellow;" id="a">
+				<div style="background: red; width:200px;" id="aa">id=aa<div style="background: black; color:white" id="aba">id=aba</div></div>
+				<div style="background: green;" id="ab">id=ab<input type="button" name="button" id="button" value="子控件" /></div>
+			<a href="../" id="ac"></a>
+			</div>
+			<hr>
+		<script>
+			var a = $('#a'), aa = $('#aa'), aaa = $('#aa'), ab = $('#ab');
+			var fns = [
+				["jQuery.prototype.css", function(){ return a.css('font-size', 14); }],
+				["jQuery.prototype.attr", function(){ return a.attr('innerText', '12121'); }],
+				["jQuery.prototype.addClass", function(){ return a.addClass('light'); }],
+				["jQuery.prototype.removeClass", function(){ return a.removeClass('light'); }],
+				["jQuery.prototype.toggleClass", function(){ return a.toggleClass('light'); }],
+				["jQuery.prototype.text", function(){ return a.text(); }],
+				["jQuery.prototype.show", function(){ return a.show(); }],
+				["jQuery.prototype.val", function(){ return a.val(); }],
+				["jQuery.prototype.hide", function(){ return a.hide(); }],
+				["jQuery.prototype.animate", function(){ return a.animate({height: 2}); }],
+				["jQuery.prototype.toggle", function(){ return a.toggle(); }]
+			];
+		</script>
+	</body>
+</html>

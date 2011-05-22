@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>jQuery  测试</title>
+		<script src="../../common/libs/jquery-1.5b1.js" type="text/javascript"></script>
+		
+		<script src="../../common/project/project.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/default.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/debug.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div style="background: yellow;" id="a">
+				<div style="background: red; width:200px;" id="aa">s<div style="background: black; color:white" id="aaa">sadsd</div></div>
+				<div style="background: green;" id="ab">f<input type="button" name="button" id="button" value="子控件" /></div>
+			</div>
+		</div>
+			
+			<hr>
+		<script>
+			var a = $('#a'), aa = $('#aa'), aaa = $('#aa'), ab = $('#ab');
+			var fns = [
+				["jQuery.prototype.append", function(){ return a.append('asdasdasdasda'); }],
+				["jQuery.prototype.prepend", function(){ return a.prepend('asd'); }],
+				["$(html)",function(){   return $("<div>aaa</div>");}],
+				["jQuery.prototype.clone", function(){ return a.clone(); }],
+				["jQuery.prototype.prev", function(){ return a.prev(); }],
+				["jQuery.prototype.next", function(){ return a.next(); }],
+				["jQuery.prototype.children", function(){ return a.children(); }],
+				["jQuery.prototype.prevUntil", function(){ return a.prevUntil(); }],
+				["jQuery.prototype.parent", function(){ return a.parent(); }],
+				["jQuery.prototype.siblings", function(){ return a.siblings(); }],
+				["jQuery.prototype.prevAll", function(){ return a.prevAll(); }],
+				["jQuery.prototype.nextAll", function(){ return a.nextAll(); }],
+				["jQuery.prototype.parent", function(){ return a.parent(); }],
+				["jQuery.prototype.parents", function(){ return a.parents(); }],
+				["jQuery.prototype.nextUntil()", function(){ return aa.nextUntil(); }],
+				["jQuery.prototype.wrap", function(){ return a.wrap("<i></i>"); }],
+				["jQuery.prototype.replaceWith", function(){ return aa.replaceWith(ab); }],
+				["jQuery.prototype.filter", function(){ return aa.filter('div'); }],
+				["jQuery.prototype.appendTo", function(){ return a.appendTo(document.body); }],
+				["jQuery.prototype.has", function(){ return a.has(ab); }],
+				["jQuery.prototype.detach", function(){ return a.detach(); }],
+				["jQuery.prototype.empty", function(){ return a.empty(); }],
+				["jQuery.prototype.remove", function(){ return a.remove(); }]
+			];
+		</script>
+	</body>
+</html>

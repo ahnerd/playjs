@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>System.Fx  测试</title>
+		<link href="../assets/styles/default.css" rel="stylesheet"><link>
+		<script src="../../py/py.js" type="text/javascript"></script>
+		<script src="../../py/System/Dom/Element.js" type="text/javascript"></script>
+		<script src="../../py/System/Fx/Base.js" type="text/javascript"></script>
+		<script src="../../py/System/Fx/Element.js" type="text/javascript"></script>
+		
+		<script src="../assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/test.js" type="text/javascript"></script>
+	</head>
+	<body> 
+		<div style="background: yellow; margin:30px; padding-top: 27px; padding-bottom:30px;" id="a">
+				<div style="background: red; width:200px;" id="aa">s<div style="background: black; color:white" id="aba">sadsd</div></div>
+				<div style="background: green;" id="ab">f<input type="button" name="button" id="button" value="子控件" /></div>
+			</div>
+			<hr>
+		<script>
+			var a = $('a'), aa = $('aa'), aba = $('aba'), ab = $('ab');
+			var fns = [
+				["show", function(){
+					a.show(1000);
+				}, null, 8],
+				["hide", function(){
+					a.hide(1000);
+				}, null, 8],
+				["hide(0)", function(){
+					a.hide(0);
+				}]
+			];
+			
+		</script>
+	</body>
+</html>

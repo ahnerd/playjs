@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>jQuery  测试</title>
+		<script src="../assets/scripts/jquery-1.4.1.js" type="text/javascript"></script>
+		<script src="../assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/test.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div style="background: yellow;  margin:30px; padding-top: 27px; padding-bottom:30px;" id="a">
+				<div style="background: red; width:200px;" id="aa">s<div style="background: black; color:white" id="aaa">sadsd</div></div>
+				<div style="background: green;" id="ab">f<input type="button" name="button" id="button" value="子控件" /></div>
+			</div>
+			<div style="position:absolute; left:330px; top:40px;margin:20px; width:300px; height:404px; padding:17px;  border:4px #f32323 solid;  overflow:scroll; " >
+			
+			<div style="position:absolute; left:330px; top:40px; margin:20px; height:60px; padding:17px; overflow:scroll; border:4px #f32323 solid; background: blue" id="f">sssss  <table id="t" style='position:absolute;top:5px;left:6px;margin:3px;border:5px solid #000;padding:0;width:1px;height:200px;' cellpadding='0' cellspacing='0'><tr><td></td></tr></table></div>
+			
+			</div>
+			<hr>
+		<script>
+			var a = $('#a'), aa = $('#aa'), aaa = $('#aaa'), ab = $('#ab'), s =$('#ab,#aaa'), f = $('#f'), t = $('#t');
+			var fns = [
+				function(){
+					return $.each(["1","2"], out);
+				},
+				function(){
+					
+				},
+				
+				["jq.onclick", function(){
+					aa.bind('click', function(e){
+						out("aaa");
+					});
+				}, 1000],
+				["jq.event", function(){
+					$('#res')
+						.bind('mouseenter', function(e){
+							out( this.id  + "  down   " );
+						}).bind('mouseleave', function(e){
+							out( this.id  + "  up  " );
+						}).bind('mousewheel', function(e){
+							out( this.id  + "  up  " );
+						});
+				}]	,
+				["$.append", function(){
+					a.append("asdasdasdasda");
+				}],
+				["parse", function(){
+					$("<div>aaa</div>");
+				}],
+				function(){
+					return $("<div id='ss'>adad</div>")[ 0 ].id;
+				},
+				function(){
+					return s.bind('click', function(e){
+						out("aaa");
+					});
+				},
+				["Position", function(){return a.position();}],
+				["Offset", function(){return a.offset();}],
+				["全部测试", function(){
+						log("Height = ", f.height());
+						log("Width = ", f.width());
+						log("outerHeight = ", f.outerHeight());
+						log("outerWidth = ", f.outerWidth());
+						log("innerHeight = ", f.innerHeight());
+						log("innerWidth = ", f.innerWidth());
+						log("------------------------","");
+						log("Position = ", f.position());
+						log("------------------------","");
+						log("stop = ", f.scrollTop());
+						log("sleft = ", f.scrollLeft()); 
+						log("Offsets = ", f.offset());
+					}],
+				["query", function(){
+					return $("a #a");
+				}],
+				["ajax", function(){
+					$.ajax({
+						url: "http://localhost/%E6%B5%8B%E8%AF%95/ce.asp4",
+						success: function(m){
+							trace(this);
+							out(m);
+						},
+						data:{
+							"asd": "个"
+						},
+						complete: out,
+						onerror: out,
+						timeout: out
+					})
+				},10],
+				["animate", function(){
+					a.animate({
+						height: 400
+					}).animate({
+						width: 400
+					});
+				}],
+				['height', function(){
+					out(a.css('height'));
+					out(a.height());
+				}]
+				
+				
+			];
+		</script>
+	</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>System.Fx  测试</title>
+		<link href="../assets/styles/default.css" rel="stylesheet"><link>
+		<script src="../../py/py.js" type="text/javascript"></script>
+		<script src="../../py/System/Dom/Element.js" type="text/javascript"></script>
+		<script src="../../py/System/Fx/Base.js" type="text/javascript"></script>
+		<script src="../../py/System/Fx/Element.js" type="text/javascript"></script>
+		<script src="../../py/System/Fx/Transitions.js" type="text/javascript"></script>
+		<script src="../../py/System/Fx/Color.js" type="text/javascript"></script>
+		
+		<script src="../assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/test.js" type="text/javascript"></script>
+		
+		<style>
+			
+			
+			.p {
+				height: 3px;
+				position: absolute;
+				width: 3px;
+				background: black;
+			}
+			
+		</style>
+		
+		
+		
+	</head>
+	<body> 
+		<div style="position:absolute; height: 200px; width: 300px;  border: 1px solid purple" id="v"></div>
+		
+		<div style="height: 200px; "></div>
+		<div style=" border: 1px solid purple ; height: 20px; position: absolute;"><div style="position: absolute; width: 20px ; left: -19px; top: 0px; height: 20px;  background: black;"  id="f"></div></div>
+			<hr>
+			
+		
+		<script>
+			
+			var height = 200;
+			
+			var Trans = Py.Fx.Base.extend({
+				
+				link:  'wait' ,
+				
+				fps: 100,
+				
+				duration: 3000,
+				
+				set: function(delta){
+					this.x++;
+					this.y = height - Py.Fx.compute(this.from, this.to, delta);
+					
+					Py.Element.createDiv('p').renderTo('v').setOffset(this);
+					
+					$('f').style.left = - 20 + this.x +  'px' ;
+				},
+				
+				onStart: function(){
+					$('v') .empty();
+					this.x = 0;
+				}
+				
+			});
+			
+			
+			var fx =  new  Trans();
+			
+			for(var i in Py.Fx.Transitions) {
+				document.write('<input type="button" onclick="fx.transition = Transitions.' + i + ';   fx.start(0, 200);" value="' + i + '">');
+				document.write('<input type="button" onclick="fx.transition = Transitions.easeOut(Transitions.' + i + ');   fx.start(0, 200);" value="easeOut( ' + i + ' )">');
+				document.write('<input type="button" onclick="fx.transition = Transitions.easeInOut(Transitions.' + i + ');   fx.start(0, 200);" value="easeInOut( ' + i + ' )">');
+				document.write('<p />');
+			}
+			
+		</script>
+	</body>
+</html>

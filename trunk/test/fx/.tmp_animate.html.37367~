@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>System.Fx  测试</title>
+		<link href="../assets/styles/default.css" rel="stylesheet"><link>
+		<script src="../../py/py.js" type="text/javascript"></script>
+		<script src="../../py/system/dom/element.js" type="text/javascript"></script>
+		<script src="../../py/system/fx/base.js" type="text/javascript"></script>
+		<script src="../../py/system/fx/animate.js" type="text/javascript"></script>
+		
+		<script src="../../common/project/project.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/default.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/debug.js" type="text/javascript"></script>
+	</head>
+	<body> 
+		<div style="background: yellow; margin:30px; padding-top: 27px; padding-bottom:30px;" id="a">
+				<div style="background: red; width:200px;" id="aa">s<div style="background: black; color:white" id="aba">sadsd</div></div>
+				<div style="background: green;" id="ab">f<input type="button" name="button" id="button" value="子控件" /></div>
+			</div>
+			<hr>
+		<script>
+			var a = $('a'), aa = $('aa'), aba = $('aba'), ab = $('ab');
+			var fns = [
+				["Fx.Base", function(){
+					var a = Py.Fx.Base.extend({
+						set: function(now){
+							log(Py.Fx.compute(this.from, this.to, now));
+						},
+						link: 'wait',
+						onStart: function(e){
+							log("START   ");
+						},
+						onComplete: function(){
+							log("COMPLETE");
+						}
+					});
+					
+					aaa = new a()
+						.start(1,2)
+						.start(4,3);
+				}, null, 8],
+				["Fx->height", function(){
+					new Fx(a).start(null, {height: 500});
+				}, null, 8],
+				["Fx->size", function(){
+					new Fx(a).start(null, {size: {x: 400, y: 500}});
+				}, null, 8],
+				["Fx->opacity", function(){
+					new Fx(a).start(null, {opacity: 0});
+				}, null, 8],
+				["Fx->offsets", function(){
+					new Fx(a).start(null, {offsets: {x: 400, y: 500}});
+				}, null, 8],
+				["Fx->position", function(){
+					new Fx(a).start(null, {position: {x: 400, y: 500}});
+				}, null, 8],
+				["Fx->scroll", function(){
+					new Fx(a).start(null, {scroll: {x: 400, y: 500}});
+				}, null, 8],
+				["Fx->background-color", function(){
+					new Fx(a).start(null, {'background-color': '#efefef'});
+				}, null, 8],
+				["Fx.Fx", function(){ 
+					fx = new Py.Fx.Fx(a);
+					fx.transition = Transitions.easeInOut(Transitions.elastic);
+					fx.start({
+						"font-size": 40,
+						"height": 60
+					}).start({
+						"width": 10
+					});
+					
+				 }],
+				 ["animate", function(){ 
+					a.animate({
+						height: 10,
+						'font-size': 70,
+						'opacity': 30
+					}).animate({
+						height: 10,
+						'font-size': 20,
+						'opacity': 60
+					}).animate({
+						height: 10,
+						'font-size': 30,
+						'opacity': 70
+					})
+					
+				 }],
+				 ["toggle", function(){
+					a.toggle(5000, null, 'left');
+				}],
+				["highlight", function(){
+					aa.highlight();
+				}]
+			];
+			
+		</script>
+	</body>
+</html>

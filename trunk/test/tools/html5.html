@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script src="../../py/system.js" type="text/javascript"></script>
+        <script src="../../py/System/Dom/Element.js" type="text/javascript"></script>
+        <style>
+            [draggable = true] {
+                -khtml-user-drag: element;
+            }
+        </style>
+    </head>
+    <body>
+    	<div id="et">拖动委托层</div>
+        <div id="drag" draggable="true">
+            被拖动
+        </div>
+        <div class="asd" id="zone">
+            拖动区域
+        </div>
+        <script>
+            
+            Py.defineDomEvents('dragstart drag dragend dragover dragenter dragleave drop', Py.Events.element.mousemove.trigger);
+            
+            $('drag').on('dragstart', dragstart).on('drag', Function.returnTrue).on('dragend', cancel);
+            
+            $('zone').on('dragover', Function.returnFalse).on('dragenter', dragenter).on('dragleave', out).on('drop', drop);
+			
+			function dragstart(e){
+
+				// 火狐必须加这句
+				e.dataTransfer.setData('Text', this.id);
+				
+				e.dataTransfer.dropEffect = "link";
+				e.dataTransfer.effectAllowed = "move";
+				
+				e.dataTransfer.setDragImage($('et'),0,0);
+				
+				out(e);	
+			}
+			
+			
+			function dragenter(e){
+				
+				
+				//  e.dataTransfer.dropEffect = "link";
+
+				// 火狐必须加这句
+				trace("{0},   {1}", e.dataTransfer.effectAllowed, e.dataTransfer.dropEffect );
+				
+				
+				return  cancel(e);	
+			}
+			
+            function out(e){
+                trace(e.type);
+            }
+			            
+            function cancel(e){
+                out(e);
+                return false;
+            }
+			            
+            function drop(e){
+                
+				
+				e.dataTransfer.dropEffect = "link";
+
+				return  cancel(e);	
+            }
+        </script>
+    </body>
+</html>
