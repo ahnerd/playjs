@@ -8,7 +8,7 @@
 (function(w) {
 	
 	/// #region Core
-
+ 
     /**
      * Py 简写。
      * @type Py
