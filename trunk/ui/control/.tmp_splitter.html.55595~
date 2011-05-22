@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   		<title>控件</title>
+        <link href="../../py/resources/share/control/core.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/share/control/splitter.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/default/control/core.css" rel="stylesheet" type="text/css" />
+        
+        <script src="../../py/py.js" type="text/javascript"></script>
+		<script src="../../py/System/Dom/Element.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/Surround.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/Resizing.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/Splitter.js" type="text/javascript"></script>
+		
+		<script src="../../test/assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/common.js" type="text/javascript"></script>
+		
+    <script type="text/javascript">
+    
+        document.ready(function(){
+                
+                //     $('ct')
+                
+                new Splitter('left',   new Control( {
+					
+					
+					dom: $('ct'),
+					
+					onSplitterResize: Function.empty,
+					
+					onSplitterBeforeResize: Function.empty,
+					
+					onSplitterAfterResize: Function.empty
+					
+				}))
+				.renderTo('ct');
+            
+            
+                
+                
+        });
+        
+    </script>
+</head>
+
+<body>
+    <div id="ct" style="position: absolute; top: 100px;  left:400px;  width: 198px; height: 251px;" class="x-box">
+        
+        <div id="p1" style="background: yellow; height: 100%; position: absolute;  width: 100px" class="x-box"></div>
+        <div id="p2" style="background: green; height: 100%; left:106px; position: absolute;  width: 100px" class="x-box"></div>
+    </div>
+</body>
+</html>
