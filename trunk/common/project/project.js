@@ -11,7 +11,7 @@ var core = {
 };
 
 var controls = {
-	'control    ': ['control', 'mask', '@', 'splitter', 'resizing', 'shadow', 'itargetedcontrol'],
+	'control    ': ['control', 'mask', 'splitter', 'resizing', 'shadow', '@', 'itargetedcontrol'],
 	'layout     ': ['@', 'layoutengine', 'flowlayout', 'absolutelayout', 'alignedlayout', 'anchorlayout', 'borderlayout', 'boxlayout', 'fitlayout', 'layoutengines', 'defaultlayout', 'relativelayout', 'linelayout', 'tablelayout', 'columnlayout', 'tablayout'],
 	'viewer     ': ['@', 'label', 'picturebox', 'webbroswer', 'processbar', 'scrollbar', 'tooltip'],
 	'container  ': ['@', 'contentcontrol', 'containercontrol', 'listcontrol', 'window', 'balloontip', 'groupbox', 'panel', '@', 'accordion', 'tabcontrols', '@', '~', 'splitcontainer', 'tablelayoutpanel', 'flowlayoutpanel', 'toolstripcontainer'],
