@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>jQuery  测试</title>
+		<script src="../assets/scripts/jquery-1.5b1.js" type="text/javascript"></script>
+		
+		<script src="../assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/test.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div style="height:300px; width:200px; background: #768567;position:absolute; margin:67px; left:600px; z-index:100; overflow: scroll; border: 20px solid #768567; padding:3px; " id="a">
+		<div id='b' style='width:600px; margin: 45px;padding:6px;'>contents</div>
+		</div>
+		
+		<div style='position:absolute;left:0px;top:0px; background:blue; z-index:100' id='info'></div>
+		<script>
+			var a = $('#a'), b = $('#b');
+			
+			adocument = $(document);
+			abody = $(document.body);
+			var fns = [
+				"basic element",
+				["jQuery.prototype.offsetParent", function(){ return a.offsetParent(); }],
+				["jQuery.prototype.offset", function(){ return showInfo(a.offset(), a); }],
+				["jQuery.prototype.position", function(){ return showInfo(a.position(), a); }],
+				["jQuery.prototype.position(true)", function(){ return showInfo(a.position(true), a); }],
+				"inner element",
+				["jQuery.prototype.offsetParent", function(){ return b.offsetParent(); }],
+				["jQuery.prototype.offset", function(){ return showInfo(b.offset(), b); }],
+				["jQuery.prototype.position", function(){ return showInfo(b.position(), b); }],
+				["jQuery.prototype.position(true)", function(){ return showInfo(b.position(true), b); }],
+				"document",
+				["$(document).offsetParent", function(){ return adocument.offsetParent(); }],
+				["$(document).offset", function(){ return adocument.offset(); }],
+				["$(document).position", function(){ return 'not support' }],
+				["$(document).position(value)", function(){ return 'not support' }],
+				"document.body",
+				["$(document.body).offsetParent", function(){ return abody.offsetParent(); }],
+				["$(document.body).offset", function(){ return abody.offset(); }],
+				["$(document.body).position", function(){ return abody.position(); }],
+				["$(document.body).position(value)", function(){ return abody.position(abody.position()); }]
+			];
+			
+			$('#info').css('opacity', (.5));
+			function showInfo(p, elem){
+				var style = $('#info')[0].style;
+				style.left = p.left + 'px';
+				style.top = p.top+ 'px';
+				style.width = elem.outerWidth() + 'px';
+				style.height = elem.outerHeight() + 'px';
+				$('#info').show();
+				return {x: p.left,  y: p.top};
+			}
+			
+			function c(){
+				$('#info').hide();
+			}
+		</script>
+	</body>
+</html>

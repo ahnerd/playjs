@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>jQuery  测试</title>
+		<script src="../assets/scripts/jquery-1.5b1.js" type="text/javascript"></script>
+		
+		<script src="../assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/test.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div style="background: yellow;" id="a">
+				<div style="background: red; width:200px;" id="aa">id=aa<div style="background: black; color:white" id="aba">id=aba</div></div>
+				<div style="background: green;" id="ab">id=ab<input type="button" name="button" id="button" value="子控件" /></div>
+			</div>
+			<div style="position:absolute; left:330px; top:40px;margin:20px; width:300px; height:404px; padding:17px;  border:4px #f32323 solid;  overflow:scroll; " >
+			<div style="position:absolute; left:330px; top:40px; margin:20px; height:60px; padding:17px; overflow:scroll; border:4px #f32323 solid; background: blue" id="f">sssss  <table id="t" style='position:absolute;top:5px;left:6px;margin:3px;border:5px solid #000;padding:0;width:1px;height:200px;' cellpadding='0' cellspacing='0'><tr><td></td></tr></table></div>
+			</div>
+			
+			<hr>
+		<script>
+			var a = $('#a'), aa = $('#aa'), aaa = $('#aa'), ab = $('#ab'), f = $('#f'), t = $('#t');
+			var fns = [
+				["jQuery.prototype.scrollTop", function(){ return a.scrollTop(); }],
+				["jQuery.prototype.height", function(){ return a.height(); }],
+				["jQuery.prototype.offsetParent", function(){ return a.offsetParent(); }],
+				["jQuery.prototype.offset", function(){ return a.offset(); }],
+				["jQuery.prototype.position", function(){ return a.position(); }],
+				["全部测试", function(){
+						log("Height = ", f.height());
+						log("Width = ", f.width());
+						log("outerHeight = ", f.outerHeight());
+						log("outerWidth = ", f.outerWidth());
+						log("innerHeight = ", f.innerHeight());
+						log("innerWidth = ", f.innerWidth());
+						log("------------------------","");
+						log("Position = ", f.position());
+						log("------------------------","");
+						log("stop = ", f.scrollTop());
+						log("sleft = ", f.scrollLeft()); 
+						log("Offsets = ", f.offset());
+					}]
+			];
+		</script>
+	</body>
+</html>

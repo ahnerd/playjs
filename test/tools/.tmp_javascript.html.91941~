@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>js  测试</title>
+		<script src="../assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/test.js" type="text/javascript"></script>
+		
+		
+		<script>
+			
+			
+			aaa =   window.open('http://www.baidu.com'); 
+			
+			aaa.onload = function(){
+				alert('ss');
+			}
+			
+			function openAd(url){
+				url =  window.open(url);
+				document.onclick = function(){openAd(url)};
+				if (url) {
+					
+					url.onload = function() {
+						document.onclick = null;
+					};
+					
+				}
+				 
+			}
+			
+			
+			console.dir(  aaa     );
+			
+			
+			alert(aaa.document.scrollLeft = 2);
+			
+		</script>
+		
+	</head>
+	<body>
+		
+		<button onclick="">aa</button>
+		
+		
+		
+		<div style="position: relative" id="a">
+		  <div style="position: relative" id="b">
+		    <div style="position: absolute" onclick="alert(this.offsetParent.id)"> who is  my  offsetParent
+		    </div>
+		  </div>
+		</div>
+		
+		
+	</body>
+</html>

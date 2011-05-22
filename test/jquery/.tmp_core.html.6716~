@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>jQuery  测试</title>
+		<script src="../assets/scripts/jquery-1.5b1.js" type="text/javascript"></script>
+		
+		<script src="../assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/test.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<script>
+			var fns = [
+				"Array",
+				['jQuery.each', function(){ return jQuery.each({"a":"g"}, log);}],
+				['jQuery.extend', function(){ return jQuery.extend({"a":"g"}, []);}],
+				['jQuery.grep', function(){ return jQuery.grep([2, 5], function(v){return v > 2;});}],
+				['jQuery.makeArray', function(){ return jQuery.makeArray(["a","a",null,"a"]);}],
+				['jQuery.map', function(){ return jQuery.map([0,1,2], function(n){ return n + 4;});}],
+				['jQuery.inArray', function(){ return jQuery.inArray([5,4], 4);}],
+				['jQuery.merge', function(){ return jQuery.merge([3,5], [6]);}],
+				['jQuery.unique', function(){ return jQuery.unique([1,2,1]);}],
+				['jQuery.parseJSON', function(){ return jQuery.parseJSON('{"name":"John"}');}],
+				"Function",
+				['jQuery.proxy', function(){ return jQuery.proxy(function(args){trace(this, 'args')})('a');}],
+				"Test",
+				['jQuery.isArray', function(){ return jQuery.isArray({"a":"g"});}],
+				['jQuery.isFunction', function(){ return jQuery.isFunction({"a":"g"});}],
+				['jQuery.isEmptyObject', function(){ return jQuery.isEmptyObject({"a":"g"});}],
+				['jQuery.isPlainObject', function(){ return jQuery.isPlainObject({"a":"g"});}],
+				"String",
+				['jQuery.trim', function(){ return jQuery.trim("sdsd   ");}],
+				['jQuery.param', function(){ return jQuery.param({ width:1680, height:1050 });}],
+				['jQuery.isPlainObject', function(){ return jQuery.isPlainObject({"a":"g"});}],
+				"Broswer",
+				["jQuery.browser", function(){ return jQuery.browser;}],
+				["jQuery.browser.version", function(){ return jQuery.browser.version;}],
+				["jQuery.support", function(){ return jQuery.support;}]
+				
+				
+			];
+		</script>
+	</body>
+</html>
