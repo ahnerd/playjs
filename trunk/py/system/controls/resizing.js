@@ -1,6 +1,5 @@
 
 
-Py.using("System.Dom.Element");
 Py.using("System.Controls.Surround");
 Py.imports("Resources.*.Control.Resizing");
 
