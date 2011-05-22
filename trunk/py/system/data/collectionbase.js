@@ -1,8 +1,7 @@
 
 
 
-(function(){
-	
+(function(){	
 
 /**
  * 控件集合。
