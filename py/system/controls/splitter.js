@@ -3,7 +3,7 @@
 //  Copyright(c) 2009-2011 xuld
 //===========================================
 
-Py.using("System.Dom.Element");
+Py.using("System.Controls.Control");
 Py.using("System.Controls.Resizing");
 Py.imports("Resources.Share.Control.Splitter");
 
