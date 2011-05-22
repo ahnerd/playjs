@@ -84,9 +84,13 @@ function writeNavigator(){
 		'javascript: document.getElementById(\'_control\').style.display = \'\'; void -1': '控件',
 		'javascript: document.getElementById(\'_core\').style.display = \'\'; void -1': '核心',
 		'../': '测试主页',
-		'../dom/': 'DOM测试',
-		'../core/': 'CORE测试',
-		'../../ui/': 'UI主页',
+		'../../test/dom/': 'DOM测试',
+		'../../test/core/': 'CORE测试',
+		'../../tools/格式化/Javascript格式化工具.htm': '格式化',
+		'../../tools/加密/index.htm': '加密',
+		'../../tools/压缩/JavaScript代码压缩-js代码压缩-压缩JS.htm': '压缩',
+		'../../模块/': '模块',
+		'../../test/tools/javascript.html':'无框架',
 		'javascript: doTestOneClick(this); void(0);': '测试所有'
 	};
 	
@@ -98,10 +102,7 @@ function writeNavigator(){
 	writeWindow('_control', controls, 'ui');
 	writeWindow('_core', core, 'test');
 	
-	document.write('<p></p>')
-	
-	
-	
+	document.write('<hr>');
 	
 	function writeWindow(id, nst, b){
 		document.write('<div id="' + id + '" onmouseup="this.style.display = \'none\'" style="position:fixed;left:0; background: white; top: 20px; display: none; width:876px; border: green 1px solid;margin-bottom:30px; _position: absolute; z-index:10000000000">');
@@ -120,6 +121,8 @@ function writeNavigator(){
 			
 			document.write('<br>');
 		}
+	
+	
 		
 		document.write('</div>');
 	}
