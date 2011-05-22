@@ -1,0 +1,12 @@
+
+
+
+.x-linkbutton {
+	text-decoration: none;
+	color: #183152;
+}
+
+
+.x-linkbutton:hover {
+	text-decoration: underline;
+}

@@ -1,0 +1,13 @@
+
+.x-mask-content {
+	z-index: 901;
+	opacity: 1;
+	left: 50%;
+	top: 50%;
+	filter: none;
+	position:absolute;
+	cursor: wait;
+	border: 4pt double #a7c0c6;
+	padding:7px;
+}
+

@@ -1,0 +1,33 @@
+
+
+.x-mask {
+	position: absolute;
+}
+
+/* mask    */
+.x-mask-container {
+	width: 100%;
+	height: 100%;
+	opacity: 0.4;
+	filter: alpha( opacity = 40);
+	background: #FFF;
+	position:absolute;
+	top: 0;
+	left: 0;
+	z-index: 900;
+}
+
+
+
+.x-mask-content {
+	z-index: 901;
+	opacity: 1;
+	left: 50%;
+	top: 50%;
+	filter: none;
+	position:absolute;
+	cursor: wait;
+	border: 4pt double #a7c0c6;
+	padding:7px;
+}
+

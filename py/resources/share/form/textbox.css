@@ -1,0 +1,10 @@
+
+/*  文本框  */
+.x-textbox  {
+	padding: 2px;
+	font-size:12px;
+}
+
+input.x-textbox{
+	height:16px;
+}

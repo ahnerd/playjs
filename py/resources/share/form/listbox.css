@@ -1,0 +1,10 @@
+
+/*  列表	 */
+.x-listbox-container {
+	overflow: auto;
+	width: 190px;
+	cursor: default;
+	height:100px;
+	padding: 0;
+	margin: 0;
+}

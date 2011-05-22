@@ -1,0 +1,31 @@
+
+.x-table {
+	border-collapse: collapse;
+	border: 1px solid #ededed;
+	border-collapse: separate;
+	border-spacing: 0px;
+}
+
+.x-table th {
+	padding: 0pt 2px;
+	line-height: 21px;
+	border-right: 1px solid #d0d0d0;
+	border-bottom: 1px solid #d0d0d0;
+	background: url(images/tableth.png) repeat-x #f0eff0;
+	font-size: 14px;
+}
+
+.x-table td {
+	padding: 1px 3px;
+	line-height: 21px;
+	border-right: 1px solid #ededed;
+}
+
+.x-table tr:nth-child(odd) {
+	background-color: #f8f8f8;
+}
+
+.x-table .selected {
+	background-color: #7cc5e5;
+	border-color: #b8d0d6;
+}

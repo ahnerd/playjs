@@ -1,0 +1,84 @@
+
+
+.x-region-header{
+	background-repeat: repeat-x;
+    border-style: solid;
+    border-width: 1px 1px 0;
+    display: block;
+    height: 26px;
+    overflow: hidden;
+	background-color: #E7EFF0;
+    border-color: #B8D0D6;
+	background-image: url(images/border.png);
+	
+}
+
+.x-region-header h3 {
+	color: #183152;
+	line-height: 26px;
+	padding-left: 8px;
+	margin: 0;
+	white-space: nowrap;
+}
+
+
+
+.x-region-proxy {
+	 position: absolute;
+	   background: none repeat scroll 0 0 #EFF5F6;
+    border: 1px solid #B8D0D6;
+	
+	width: 24px;
+	height: 24px;
+	
+	cursor: pointer;
+	
+	z-index: 16;
+}
+
+.x-region-container {
+	overflow: hidden;
+}
+
+.x-region-proxy .x-icon{
+	margin-right: 2px;
+	margin-top: 1px;
+	float: right;
+	_margin-right: 1px;
+}
+
+/* 折叠  */
+
+
+.x-icon-left {
+	background-position: -125px -50px;
+}
+
+.x-icon-left:hover {
+    background-position: -125px -75px;
+}
+
+.x-icon-right {
+	background-position: -125px -0px;
+}
+
+.x-icon-right:hover {
+    background-position: -125px -25px;
+}
+.x-icon-top {
+	background-position: -75px 0px;
+}
+
+.x-icon-top:hover {
+	background-position: -75px -25px;
+}
+
+.x-icon-bottom {
+	background-position: -75px -50px;
+}
+
+.x-icon-bottom:hover {
+	background-position: -75px -75px;
+}
+
+

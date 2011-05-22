@@ -1,0 +1,11 @@
+
+
+
+/* 列   */
+.x-layout-column {
+    float:left;
+    padding:0;
+    margin:0;
+    overflow:hidden;
+    *zoom:1;
+}
