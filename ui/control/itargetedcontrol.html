@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>控件生成</title>
+		<script src="../../py/system.js" type="text/javascript"></script>
+		<script src="../../py/System/Dom/Element.js" type="text/javascript"></script>
+		
+        <script src="../../py/system.js" type="text/javascript"></script>
+		<script src="../../py/system/dom/element.js" type="text/javascript"></script>
+		<script src="../../py/system/dom/drag.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/itargetedcontrol.js" type="text/javascript"></script>
+		
+		<script src="../../test/assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/common.js" type="text/javascript"></script>
+	</head>
+	<body>
+		
+		
+		<div id="target" style="background: black; width: 300px; height: 200px;">
+			拖动本块。
+		</div>
+		
+		<div id="o" style="background: blue; position: absolute; top: 50px; width: 50px; height: 60px;"></div>
+		
+		&nsbp;&nsbp;&nsbp;&nsbp;
+		<input type="radio" name="d" value="lt" checked="checked">
+		<input type="radio" name="d" value="rt">
+		<br>
+		<input type="radio" name="d" value="tl">
+		<input type="radio" name="d" value="tb">
+		
+		<input type="radio" name="d" value="tl">
+		<input type="radio" name="d" value="tb">
+		<br>
+		&nsbp;&nsbp;&nsbp;&nsbp;
+		<input type="radio" name="d" value="lb">
+		<input type="radio" name="d" value="rb">
+		
+		
+		<script>
+			
+			
+			var d = $('o');
+			
+			Object.extend(d, Py.ITargetedControl );
+			
+			$('target').setDraggable().on('drag', function(){
+				d.alignBy(this, 'rb');
+			});
+		
+		</script>
+	</body>
+</html>
