@@ -1,0 +1,29 @@
+
+
+
+/* 文件上传   */
+.x-menubutton-fileupload input{
+	position: absolute;
+	width:60px;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	height:24px;
+	cursor: default;
+}
+
+
+.x-fileupload {
+	display: inline;
+}
+
+.x-menubutton-fileupload button{
+	width: 76px;
+}
+
+.x-menubutton-fileupload {
+	width:40px;
+	overflow: hidden;
+	
+	cursor: default;
+	height: 24px;
+}

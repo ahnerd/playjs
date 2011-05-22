@@ -1,0 +1,47 @@
+
+
+
+.x-tabcontrols-header {
+	position: relative;
+}
+
+/*  tabControls */
+.x-tabcontrols-header-container {
+	height: 28px;
+}
+
+.x-tabcontrols-header-content a.x-icon {
+	margin-right: -4px;
+	
+	*margin-top: -23px;
+}
+
+.x-tabcontrols-header-content {
+	float: left;
+	display: block;
+	height: 28px;
+	margin-right: 2px;
+	cursor: pointer;
+	margin:0 2px 0 0;
+	padding: 0;
+} 
+
+.x-tabcontrols-header-content div {
+	float: left;
+	display: block;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.x-tabcontrols-header-content h3 {
+	float: left;
+	display: block;
+	overflow: hidden;
+	line-height: 25px;
+	padding: 2px 0;
+	font-size: 14px;
+}
+
+.x-tabcontrols .x-content {
+	padding: 5px 5px 1px 5px;
+}

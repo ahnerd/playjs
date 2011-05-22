@@ -1,0 +1,51 @@
+body {
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.x-center {
+	top:50%!important;
+	left:50%!important;
+	margin:-100px 0 0 -100px;
+}
+
+
+
+
+/* 删除 <q>, <blockquote> 的 " */
+blockquote:before, blockquote:after, q:before, q:after {
+	content: "";
+}
+
+blockquote, q {
+	quotes: "" "";
+}
+
+
+/* 删除选中的虚线  */
+html:focus {
+	outline: 0;
+}
+
+/* 不可选 */
+.x-unselectable{
+	_line-break: expression(this.unselectable = 'on');
+	-moz-user-select: none;
+}
+
+
+
+
+
+

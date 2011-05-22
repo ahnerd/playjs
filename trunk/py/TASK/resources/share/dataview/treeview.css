@@ -1,0 +1,35 @@
+
+
+
+.x-treeview {
+	padding: 3px 0;
+	overflow: auto;
+}
+
+
+.x-treenode, .x-treeview a, .x-treenode-space {
+    height: 22px;
+}
+
+
+.x-treenode {
+    overflow: hidden;
+	cursor: pointer;
+}
+
+
+
+
+.x-treenode-space {
+    float: left;
+    display: block;
+    width: 19px;
+	background-repeat: no-repeat;
+	cursor: default;
+}
+
+
+
+.x-treeview a, .x-treeview a:hover {
+    text-decoration: none;
+}

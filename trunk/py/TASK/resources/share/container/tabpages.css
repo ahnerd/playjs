@@ -1,0 +1,192 @@
+
+
+/* tabPages  */
+.x-tabPages .x-header {
+   /*
+ display: block;
+	height: 27px;
+	border-style: solid;
+	border-width: 1px 1px 0 1px;
+*/
+	background-position: 0 -450px;
+background-repeat: repeat-x;
+	/*
+background-repeat: repeat-x;
+	position: relative; 
+*/ 
+}
+
+
+.x-tabPages .x-header-container {
+	/*
+display: block;
+	overflow: hidden;
+	height: 27px;
+	margin-right: 19px;
+	position: relative;
+*/
+background-position: 0 -450px;
+background-repeat: no-repeat;
+
+}
+
+
+.x-tabPages .x-headerMargin {
+	margin: 0 34px 0 17px;
+} .x-tabPages .x-header ul {
+	display: block;
+	width: 10000px;
+	height: 26px;
+	z-index: 1;
+} 
+
+.x-tabPages .x-header li {
+	float: left;
+	display: block;
+	height: 26px;
+	margin-left: 2px;
+	background-position: 0 -100px;
+	position: relative;
+	cursor: pointer;
+} .x-tabPages .x-header li a {
+	float: left;
+	display: block;
+	overflow: hidden;
+	height: 26px;
+	padding-left: 5px;
+	line-height: 25px;
+	background-position: 0 0;
+	background-repeat: no-repeat!important;
+} .x-tabPages .x-header li a:hover {
+	text-decoration: none;
+} .x-tabPages .x-header li span {
+	float: left;
+	display: block;
+	overflow: hidden;
+	width: 92px;
+	height: 24px;
+	padding: 2px 20px 0 3px;
+	line-height: 21px;
+	background-position: 100% -50px;
+	cursor: pointer;
+	background-repeat: no-repeat!important;
+} .x-tabPages .x-header li.hover {
+	background-position: 0 -250px;
+	background-repeat: repeat-x;
+} .x-tabPages .x-header li.hover a {
+	background-position: 0 -150px;
+} .x-tabPages .x-header li.hover span {
+	background-position: 100% -200px;
+} .x-tabPages .x-header li.selected {
+	background-position: 0 -400px;
+	background-repeat: repeat-x;
+} .x-tabPages .x-header li.selected a {
+	font-weight: bold;
+	background-position: 0 -300px;
+} .x-tabPages .x-header li.selected span {
+	background-position: 100% -350px;
+} .x-tabPages .x-header li.main span {
+	padding: 2px 8px 0 3px;
+} .x-tabPages .x-header li .home_icon, .x-tabPages .x-header li.main .home_icon {
+	width: auto;
+	padding: 0 0 0 15px;
+	background-position: 0 3px;
+}
+ 
+.x-tabPages .x-header li .x-close {
+	display: block;
+	overflow: hidden;
+	width: 11px;
+	height: 11px;
+	padding: 0;
+	text-indent: -1000px;
+	position: absolute;
+	top: 3px;
+	right: 2px;
+} .x-tabPages .x-header li .x-close:hover {
+	background-position: 0 -50px;
+} 
+
+.x-tabPages .x-tabsMove {
+	height: 25px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 2;
+} .x-tabPages .x-tabsLeft, .x-tabPages .x-tabsRight, .x-tabPages .x-tabsMore {
+	display: block;
+	overflow: hidden;
+	width: 17px;
+	height: 23px;
+	text-indent: -1000px;
+	position: absolute;
+	z-index: 2;
+} .x-tabPages .x-tabsLeft {
+	background-position: 0 0;
+	top: 1px;
+	left: 0;
+	cursor: pointer;
+} .x-tabPages .x-tabsLeftHover {
+	background-position: 0 -50px;
+} .x-tabPages .x-tabsLeftDisabled {
+	background-position: 0 -100px;
+	top: 1px;
+	left: 0;
+	cursor: default;
+} .x-tabPages .x-tabsRight {
+	background-position: 0 -150px;
+	top: 1px;
+	right: 17px;
+	cursor: pointer;
+} .x-tabPages .x-tabsRightHover {
+	background-position: 0 -200px;
+} .x-tabPages .x-tabsRightDisabled {
+	background-position: 0 -250px;
+	top: 1px;
+	right: 17px;
+	cursor: default;
+} .x-tabPages .x-tabsMore {
+	background-position: 0 -300px;
+	top: 1px;
+	right: 0;
+	cursor: pointer;
+} .x-tabPages .x-tabsMoreHover {
+	background-position: 0 -350px;
+} .x-tabPages .x-tabsMoreList {
+	display: none;
+	overflow: hidden;
+	width: 170px;
+	padding: 2px;
+	border-style: solid;
+	border-width: 1px;
+	position: absolute;
+	top: 24px;
+	right: 0;
+	z-index: 3;
+} .x-tabPages .x-tabsMoreList li {
+	display: block;
+	overflow: hidden;
+	height: 23px;
+	line-height: 21px;
+} .x-tabPages .x-tabsMoreList li a {
+	display: block;
+	width: 148px;
+	height: 21px;
+	padding: 0 10px;
+	border: solid 1px #FFF;
+	white-space: nowrap;
+	line-height: 21px;
+} .x-tabPages .x-tabsMoreList li a:hover {
+	border-color: #ececec;
+	text-decoration: none;
+	background: #f5f5f5;
+} .x-tabPages .x-tabsMoreList li.selected a {
+	font-weight: bold;
+	border-color: #dfe5ed;
+	background: #e8edf3;
+} 
+
+
+.x-tabPages .x-content {
+	border-width: 0 1px 1px 1px;
+}

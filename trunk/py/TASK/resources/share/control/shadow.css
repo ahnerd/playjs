@@ -1,0 +1,59 @@
+
+/* 阴影区 */ 
+.x-shadow{
+	overflow:visible!important ; 
+}
+
+.x-shadow-c{
+	overflow:hidden;
+}
+
+.x-shadow-lt, .x-shadow-rt, .x-shadow-t, .x-shadow-lb, .x-shadow-rb, .x-shadow-r, .x-shadow-b, .x-shadow-l  {
+	position: absolute; 
+	font-size: 0px; /* IE  */
+	opacity: 0.86;
+	filter: alpha(opacity = 86);
+	
+}
+
+.x-shadow-b, .x-shadow-c, .x-shadow-t{
+	left: 0px;
+	width: 100%;
+}
+/*
+
+.x-shadow {
+	_height: expression(this.firstChild.nextSibling.offsetHeight + 33);
+}
+*/
+
+.x-shadow-l, .x-shadow-c, .x-shadow-r{
+	top: 0px;
+	height: 100%;
+	_height: expression(this.parentNode.clientHeight);
+}
+
+.x-shadow-lt, .x-shadow-rt, .x-shadow-t{
+	top: -6px;
+	height: 6px;
+}
+
+.x-shadow-lb, .x-shadow-rb, .x-shadow-b{
+	bottom: -6px;
+	height: 6px;
+}
+
+.x-shadow-lt, .x-shadow-l, .x-shadow-lb{
+	left: -6px;
+	width: 6px;
+}
+
+.x-shadow-r, .x-shadow-rb, .x-shadow-rt{
+	right: -6px;
+	width: 6px;
+	_left: expression(this.parentNode.clientWidth);
+}
+
+.x-shadow-r{
+	_width: 5px;
+}

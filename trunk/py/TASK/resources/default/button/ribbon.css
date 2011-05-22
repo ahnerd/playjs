@@ -1,0 +1,262 @@
+
+
+
+
+
+
+@import url("buttongroup.css");
+
+.x-ribbon {
+	cursor: default;
+}
+
+
+/** 顶部 */
+
+/* 文件 */
+
+.x-ribbon-menulauncher {
+	height: 24px;
+	float: left;
+	padding-right: 4px;
+	_overflow:hidden;     /* IE6 */
+}
+
+.x-ribbon-menulauncher-left {
+	background-position: 0px -101px;
+	width: 14px;
+	height: 24px;
+	float: left;
+	background-image: url("images/ribbon-menulauncher.gif");
+}
+
+.x-ribbon-menulauncher-right {
+	background-position: 0px -126px;
+	width: 14px;
+	height: 24px;
+	float: left;
+	background-image: url("images/ribbon-menulauncher.gif");
+}
+
+.x-ribbon-menulauncher-content{
+	background-position: 0px -76px;
+	height: 24px;
+	line-height: 28px;
+	float: left;
+	color: #fff;
+	background-image: url("images/ribbon-menulauncher.gif");
+}
+
+.x-ribbon-menulauncher:hover .x-ribbon-menulauncher-left{
+	background-position: 0px -26px;
+}
+
+.x-ribbon-menulauncher:hover .x-ribbon-menulauncher-right{
+	background-position: 0px -51px;
+}
+
+.x-ribbon-menulauncher:hover .x-ribbon-menulauncher-content{
+	background-position: 0px -1px;
+}
+
+.x-ribbon-menulauncher.x-active .x-ribbon-menulauncher-left {
+	background-position: 0px -176px!important;
+}
+
+.x-ribbon-menulauncher.x-active .x-ribbon-menulauncher-right {
+	background-position: 0px -201px!important;
+}
+
+.x-ribbon-menulauncher.x-active .x-ribbon-menulauncher-content {
+	background-position: 0px -151px!important;
+}
+
+
+/* 选项 */
+
+.x-ribbon-tab {
+	width: 100%;
+	height: 24px;
+	font-size: 12px;
+	border-bottom: #898d92 solid 1px;
+	
+}
+
+.x-ribbon-tab-container{
+	height: 24px;
+	background: none;
+	overflow: visible;
+	width: auto;
+	border-bottom: none;
+}
+
+.x-ribbon-tab-content{
+	border: none;
+	height: 24px;
+	margin: 0 0 -1px 0px;
+	overflow: visible;
+	float: left;
+	background-image: url(images/ribbontab.gif);
+	background-repeat:  no-repeat;
+	background-position: 999px 999px;
+	padding-left: 5px;
+}
+
+/* 标题 */
+
+.x-ribbon-title{
+	display: block;
+	text-decoration: none;
+	padding: 2px 10px 0px 5px;
+	line-height: 22px;
+	font-size: 14px;
+	background-image: url(images/ribbontab.gif);
+	background-repeat:  no-repeat;
+	background-position: 999px 999px;
+	/*
+	border-width: 1px 1px 0 1px;
+	color: #6c6e70;
+	border-color: transparent;
+	border-style: solid;
+border-radius: 3px 3px 0 0;
+	
+	-moz-border-radius: 3px 3px 0 0;
+	-webkit-border-radius: 3px 3px 0 0;
+	-khtml-border-radius: 3px 3px 0 0;
+	_border-color: white;
+*/
+}
+
+.x-ribbon-tab-content:hover{
+	background-position: 0 0;
+}
+
+.x-ribbon-tab-content:hover .x-ribbon-title {
+	background-position: 100% -30px;
+}
+
+
+.x-ribbon-tab-content.x-active {
+	background-position: 0 -70px;
+	border-bottom: 1px solid white;
+}
+
+.x-ribbon-tab-content.x-active .x-ribbon-title {
+	background-position: 100% -98px;
+}
+
+
+/** 正文 */
+
+/* 内容 */
+
+.x-ribbon-container{
+	border-bottom: #898d92 solid 1px;
+	background: url(images/ribbon-ct.png) repeat-x bottom;
+	height: 90px;
+}
+
+.x-ribbon-content {
+	height: 86px;
+	border-right-color: #e7e7e8;
+	border-right-width: 1px;
+	border-right-style: solid;
+	float: left;
+}
+
+/* 分组 */
+
+
+/*
+
+
+
+.x-ribbon-button {
+	display: inline-block; 
+	text-align: center;
+	border-style: solid;
+	border-width: 1px 0;
+	border-color: #f2ca58;
+	height: 61px;
+}
+
+
+.x-ribbon-button-container {
+	margin: 0 -1px;
+	border-style: solid;
+	border-width: 0 1px;
+	border-color: #f2ca58;
+	display: block;
+	height: 61px;
+	background: url(images/ribbon-btn-bg.gif)  repeat-x;
+}
+
+
+.x-ribbon-button-container:active {
+	background-position: 0 -70px;
+}
+*/
+/*
+
+
+.x-ribbon-menu-button button{
+	height: 26px;
+	background: none;
+	padding: 0;
+	margin: 0;
+	border: none;
+}
+*/
+
+
+
+/** 按钮   */
+
+.x-ribbon .x-button, .x-ribbon .x-button-container{
+	background: url(images/ribbon-btn.gif);
+}
+
+.x-ribbon .x-button, .x-ribbon .x-button:hover {
+	background-position: 0 0; 
+}
+
+.x-ribbon .x-button-container, .x-ribbon .x-button:hover .x-button-container {
+	background-position: 100% -275px; 
+}
+
+.x-ribbon .x-button:active {
+	background-position: 0 -25px;; 
+}
+
+.x-ribbon .x-button:active .x-button-container{
+	background-position: 100% -300px; 
+}
+
+
+/* 组 */
+
+
+.x-ribbon .x-buttongroup-content.x-button{
+	background-position: 0 -125px; 
+}
+
+.x-ribbon .x-buttongroup-content.x-button .x-button-container{
+	background-position: 100% -400px; 
+}
+
+
+.x-ribbon .x-buttongroup-content.x-button:active{
+	background-position: 0 -200px; 
+}
+
+.x-ribbon .x-buttongroup-content.x-button:active .x-button-container{
+	background-position: 100% -481px;
+}
+
+.x-ribbon .x-split {
+	background-color: #999999;	
+}
+
+.x-ribbon .x-splitbutton .x-split {
+	background-color: #f1ca58;
+}

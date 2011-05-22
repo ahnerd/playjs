@@ -1,0 +1,44 @@
+
+.x-contextmenustrip {
+	background:url(images/menu.gif) #f0f0f0 repeat-y;
+	border:1px solid #999999;
+}
+
+.x-contextmenustrip-content.x-active {
+    background-image: url(images/item-over.gif);
+	background-color: #dbecf4;
+}
+
+.x-contextmenustrip-content.x-active, .x-contextmenustrip-content.x-active .x-contextmenustrip-item {
+	border-color:#aaccf6;
+}
+
+.x-contextmenustrip-icon-selected {
+	background-image: url(images/selected.gif);
+}
+
+.x-contextmenustrip-icon-checked {
+	background-image: url(images/checked.gif);
+}
+
+.x-contextmenustrip-icon-unchecked {
+	background-image: url(images/unchecked.gif);
+}
+
+.x-contextmenustrip-item-arrow {
+    background-image: url(images/menu-parent.gif);
+}
+
+
+.x-contextmenustrip-handle-top {
+	background-image: url(../control/images/mini-top.gif);
+}
+
+.x-contextmenustrip-handle-bottom {
+	background-image: url(../control/images/mini-bottom.gif);
+}
+
+.x-contextmenustrip-handle-top:hover , .x-contextmenustrip-handle-bottom:hover {
+	background-color: #dbecf4;
+	border-color: #aaccf6;
+}
