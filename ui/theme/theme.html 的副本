@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+   		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>全部控件一页</title>
+		<style type="text/css">
+			@import url(../../py/resources/themes/share/control/core.css);
+			@import url(../../py/resources/themes/share/control/shadow.css);
+			@import url(../../py/resources/themes/share/control/resizing.css);
+			@import url(../../py/resources/themes/share/control/splitter.css);
+			@import url(../../py/resources/themes/share/control/mask.css);
+			@import url(../../py/resources/themes/share/control/tooltip.css);
+			
+			@import url(../../py/resources/themes/share/container/window.css);
+			@import url(../../py/resources/themes/share/container/balloontip.css);
+			@import url(../../py/resources/themes/share/container/panel.css);
+			@import url(../../py/resources/themes/share/container/accordion.css);
+			
+			@import url(../../py/resources/themes/share/layout/anchor.css);
+			@import url(../../py/resources/themes/share/layout/box.css);
+			@import url(../../py/resources/themes/share/layout/column.css);
+			@import url(../../py/resources/themes/share/layout/default.css);
+			@import url(../../py/resources/themes/share/layout/flow.css);
+			@import url(../../py/resources/themes/share/layout/table.css);
+			
+			@import url(../../py/resources/themes/share/dataview/treeview.css);
+			
+			@import url(../../py/resources/themes/share/button/button.css);
+			@import url(../../py/resources/themes/share/button/menu.css);
+			@import url(../../py/resources/themes/share/button/splitbutton.css);
+			@import url(../../py/resources/themes/share/button/toolbar.css);
+			@import url(../../py/resources/themes/share/button/ribbon.css);
+			
+			
+			@import url(../../py/resources/themes/default/control/core.css);
+			@import url(../../py/resources/themes/default/control/shadow.css);
+			@import url(../../py/resources/themes/default/control/resizing.css);
+			@import url(../../py/resources/themes/default/control/splitter.css);
+			@import url(../../py/resources/themes/default/control/icons.css);
+			@import url(../../py/resources/themes/default/control/mask.css);
+			@import url(../../py/resources/themes/default/control/tooltip.css);
+			
+			@import url(../../py/resources/themes/default/container/window.css);
+			@import url(../../py/resources/themes/default/container/balloontip.css);
+			@import url(../../py/resources/themes/default/container/panel.css);
+			@import url(../../py/resources/themes/default/container/region.css);
+			@import url(../../py/resources/themes/default/container/accordion.css);
+			
+			@import url(../../py/resources/themes/default/dataview/treeview.css);
+			
+			@import url(../../py/resources/themes/default/button/button.css);
+			@import url(../../py/resources/themes/default/button/menu.css);
+			@import url(../../py/resources/themes/default/button/splitbutton.css);
+			@import url(../../py/resources/themes/default/button/toolbar.css);
+			@import url(../../py/resources/themes/default/button/ribbon.css);
+		</style>
+	</head>
+
+<body>
+
+		<div class="x-window  x-resizable x-shadow" style="top: 20px; left: 216px;  width: 899px; ">
+            <div class="x-header x-window-header">
+                <div class="x-header-container">
+                    <div class="x-header-content">
+                        <a class="x-icon x-icon-close" href="javascript:;"></a>
+                        <a class="x-icon x-icon-maximize" href="javascript:;"></a>
+                        <a class="x-icon x-icon-restore" href="javascript:;"></a>
+                        <a class="x-icon x-icon-minimize" href="javascript:;"></a>
+                        <h3><span class="x-icon x-icon-win"></span>窗口</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="x-container x-window-container" style="height: 397px; ">
+                    <div style="width: 100%; height: 100%; position: relative;"  >
+						
+						<div class="x-layout-top">
+								
+								<div class="x-toolbar x-layout-default">
+									<ul class="x-list-container">
+										<li class="x-list-content"><span class="x-button"><span class="x-button-container"><button type="button" onclick="alert('ok')"><span class="x-icon x-icon-win"></span>按钮<span class="x-button-menu"></span></button></span></span></li>
+										<li class="x-list-content"><span class="x-menu-seperator"></span></li>
+										<li class="x-list-content"><span class="x-button"><span class="x-button-container"><button type="button" onclick="alert('ok')">按钮</button></span></span></li>
+										<li class="x-list-content"><span class="x-button x-button-plain"><span class="x-button-container"><button type="button" onclick="alert('ok')">按钮</button></span></span></li>
+										<li class="x-list-content"><span class="x-menu-seperator"></span></li>
+										<li class="x-list-content"><span class="x-button x-splitbutton"><span class="x-button-container"><button type="button" onclick="alert('ok')">按钮</button><button type="button" class="x-button-menu" onclick="alert('sub');"></button><span class="x-splitbutton-sep"></span></span></span>
+										</li>
+									</ul>
+								</div>
+								
+						</div>
+						<div class="x-layout-middle" style="bottom: 100px; top: 26px; ">
+							<div class="x-layout-left" style="width: 101px;">
+						
+								<div class="x-treeview x-layout-default" style="width: 100px;">
+									<ul>
+							            <li>
+							                <div class="x-treenode">
+							                    <span class="x-treenode x-treenode-plus">
+							                    </span>
+							                    <a>菜单</a>
+							                </div>
+							                <ul>
+							                    <li>
+							                        <div class="x-treenode">
+							                            <span class="x-treenode x-treenode-space">
+							                            </span>
+							                            <span class="x-treenode x-treenode-normal">
+							                            </span>
+							                            <a>菜单</a>
+							                        </div>
+							                    </li>
+							                    <li>
+							                        <div class="x-treenode x-selected x-treenode-last">
+							                            <span class="x-treenode x-treenode-space">
+							                            </span>
+							                            <span class="x-treenode x-treenode">
+							                            </span>
+							                            <a>菜单</a>
+							                        </div>
+							                    </li>
+							                </ul>
+							            </li>
+							            <li>
+							                <div class="x-treenode">
+							                    <span class="x-treenode x-treenode-normal">
+							                    </span>
+							                    <a>菜单</a>
+							                </div>
+							            </li>
+							            <li>
+							                <div class="x-treenode">
+							                    <span class="x-treenode x-treenode-plus">
+							                    </span>
+							                    <a>菜单</a>
+							                </div>
+							                <ul>
+							                    <li>
+							                        <div class="x-treenode">
+							                            <span class="x-treenode x-treenode-space">
+							                            </span>
+							                            <span class="x-treenode x-treenode-minus">
+							                            </span>
+							                            <a>菜单</a>
+							                        </div>
+							                    </li>
+							                    <li>
+							                        <div class="x-treenode x-treenode-last">
+							                            <span class="x-treenode x-treenode-space">
+							                            </span>
+							                            <span class="x-treenode x-treenode-normal">
+							                            </span>
+							                            <a>菜单</a>
+							                        </div>
+							                    </li>
+							                </ul>
+							            </li>
+							            <li>
+							                <div class="x-treenode">
+							                    <span class="x-treenode x-treenode-normal">
+							                    </span>
+							                    <a>菜单</a>
+							                </div>
+							            </li>
+							            <li>
+							                <div class="x-treenode x-treenode-last">
+							                    <span class="x-treenode x-treenode-plus">
+							                    </span>
+							                    <a>菜单</a>
+							                </div>
+							            </li>
+							        </ul>
+							</div>
+							</div>
+							
+							<div class="x-layout-fill" style="right: 200px; left: 100px;">
+								<div class="x-accordion x-layout-default">
+									<div class="x-header x-accordion-header">
+										<h3 class="">面板1</h3>
+									</div>
+									<div style="height: 201px; display: none;" class="x-container x-accordion-container">
+										内容1
+									</div>
+									<div class="x-header x-accordion-header">
+										<h3 class="x-collapsable"><span class="x-icon x-icon-win"></span>面板2</h3>
+									</div>
+									<div class="x-container x-accordion-container" style="height: 195px; display: block;">
+										<div class="x-content x-accordion-content">
+											<div class="x-panel">
+								                <div class="x-header x-panel-header">
+								                    <div class="x-header-container">
+								                    	<div class="x-header-content">
+								                    		<a class="x-icon  x-icon-close"></a>
+								                    		<h3><span class="x-icon x-icon-win"></span>标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
+														</div>
+								                    </div>
+								                </div>
+								                <div class="x-container x-panel-container"  style="height: 150px; ">
+								                    内容
+								                </div>
+								                <div class="x-footer x-panel-footer">
+								                     <div class="x-footer-container">
+								                        <div class="x-footer-content"></div>
+								                    </div>
+								                </div>
+								            </div>
+										</div>
+									</div>
+									<div class="x-header x-accordion-header">
+										<h3>面板3</h3>
+									</div>
+									<div class="x-container x-accordion-container" style="height: 201px; display: none;">
+										内容3
+									</div>
+								</div>
+							</div>
+							
+							<div class="x-layout-right" style="width: 200px;">
+								<div class="x-layout-default x-region">
+					                <div class="x-header x-region-header">
+					                    <div class="x-header-container">
+					                    	<div class="x-header-content">
+					                    		<a class="x-icon  x-icon-close"></a>
+					                    		<h3><span class="x-icon x-icon-win"></span>标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
+											</div>
+					                    </div>
+					                </div>
+					                <div class="x-container x-region-container x-fit">
+					                    <div style="height:100%;  background: red;"  class="x-box"></div>
+					                </div>
+					            </div>
+							</div>
+						</div>
+						<div class="x-layout-bottom" style="height: 100px;">
+							<div class="x-layout-default" style="background: none repeat scroll 0% 0% orange; height: 100px; width: 100px;" id="p4">d</div>
+						</div>
+						
+						 
+					</div>
+				<div class="x-resizable-lt"></div>
+	            <div class="x-resizable-t"></div>
+	            <div class="x-resizable-rt"></div>
+	            <div class="x-resizable-l"></div>
+	            <div class="x-resizable-r"></div>
+	            <div class="x-resizable-lb"></div>
+	            <div class="x-resizable-b"></div>
+	            <div class="x-resizable-rb"></div>
+				<div class="x-shadow-lt"></div>
+	            <div class="x-shadow-t"></div>
+	            <div class="x-shadow-rt"></div>
+	            <div class="x-shadow-l"></div>
+	            <div class="x-shadow-r"></div>
+	            <div class="x-shadow-lb"></div>
+	            <div class="x-shadow-b"></div>
+	            <div class="x-shadow-rb"></div>
+            </div>
+            <div class="x-footer x-window-footer">
+                <div class="x-footer-container">
+                    <div class="x-footer-content">
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		
+		<div class="x-tooltip" style="left: 320px; top: 70px;">
+			<span class="x-container-contetnt">说明</span>
+		</div>
+		
+		
+		<div class="x-balloontip" style=" left: 801px; top: 102px;  width: 200px; ">
+		    <div class="x-header x-balloontip-header">
+		        <div class="x-header-container">
+		            <div class="x-header-content">
+		            	<a class="x-icon x-icon-ballontip-close" href="javascript:;"></a>
+		                <h3><span class="x-icon x-icon-win"></span>标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
+		            </div>
+		        </div>
+		    </div>
+		    <div class="x-container x-balloontip-container">
+		        <div class="x-content x-balloontip-content">
+		        	内容
+				</div>
+		    </div>
+		    <div class="x-footer x-balloontip-footer">
+		        <div class="x-footer-container">
+		            <div class="x-footer-content">
+		            </div>
+		        </div>
+		    </div>
+			<div class="x-balloontip-anchor x-balloontip-anchor-tl"></div>
+		</div>  	
+</body>
+</html>

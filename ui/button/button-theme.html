@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>文本编辑</title>
+        <link href="../../py/resources/share/control/core.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/core.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/icons.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/button/button.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/button/splitbutton.css" rel="stylesheet" type="text/css" />
+		
+		<script>
+			
+			function changeState(value){
+				this.className = value ? this.className + ' x-active' : this.className.replace(/ x\-active(.sub)?/g, "") ;
+			}
+			
+		</script>
+    </head>
+    <body>
+		<div>
+			<button class="xxx">
+				<span class="x-icon x-icon-win"></span>
+				按钮
+			</button>
+			
+			<a class="x-button" onmousedown="changeState.call(this, true); " style="*width: 60px;" onmouseup="changeState.call(this, false); ">
+				<span class="x-button-container">
+					<button  style="*width: 100%;" type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-icon x-icon-win">&nbsp;</span><span class="x-button-label">按钮</span></button>
+				</span>
+			</a>
+			
+			<a class="x-button x-menubutton" onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); ">
+				<span class="x-button-container">
+					<button type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span><span class="x-button-menu">&nbsp;</span></button>
+				</span>
+			</a>
+			
+			<a class="x-button x-splitbutton x-normal" onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); ">
+				<span class="x-button-container">
+					<button type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span></button><span class="x-split">&nbsp;</span><span class="x-button-menu" onclick="alert('sub');">&nbsp;</span>
+				</span>
+			</a>
+        </div>
+		
+    </body>
+</html>

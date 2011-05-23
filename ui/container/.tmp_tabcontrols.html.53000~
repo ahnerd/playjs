@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>面板</title>
+        <link href="../assets/themes/core/2core.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/themes/default/estyle.css" rel="stylesheet" type="text/css" />
+        
+        <link href="../assets/themes/core/_core.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/themes/default/_style.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+		<div class="x-tabControls" style="width:200px; height: 150px; ">
+                <div class="x-header">
+                    <div class="x-header-container">
+                        <ul class="x-header-content">
+                            <li>
+                                <a href="javascript:void(0)"><span>标题1</span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)"><span>标题2</span></a>
+                            </li>
+                            <li class="x-selected">
+                                <a href="javascript:void(0)"><span>标题3</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="x-container">
+                    <div class="x-content" style="display: none;">
+                        1
+                    </div>
+                    <div class="x-content" style="display: none;">
+                        2
+                    </div>
+                    <div class="x-content" style="display: block;">
+                        3
+                    </div>
+                </div>
+                <div class="x-footer">
+                    <div class="x-footer-container">
+                        <div class="x-footer-content"></div>
+                    </div>
+                </div>
+            </div>
+    </body>
+</html>
