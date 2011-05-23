@@ -10,62 +10,65 @@
 		<link href="../../py/resources/default/container/balloontip.css" rel="stylesheet" type="text/css" />
         
         <script src="../../py/system.js" type="text/javascript"></script>
-		<script src="../../py/System/Dom/Element.js" type="text/javascript"></script>
-		<script src="../../py/System/Controls/ContentControl.js" type="text/javascript"></script>
-		<script src="../../py/System/Controls/ScrollableControl.js" type="text/javascript"></script>
-		<script src="../../py/System/Controls/ContainerControl.js" type="text/javascript"></script>
-		<script src="../../py/System/Controls/Balloontip.js" type="text/javascript"></script>
+		<script src="../../py/system/dom/element.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/control.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/contentcontrol.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/scrollablecontrol.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/containercontrol.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/balloontip.js" type="text/javascript"></script>
 		
-		<script src="../../test/assets/scripts/debug.js" type="text/javascript"></script>
-		<script src="../assets/scripts/common.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/box.js" type="text/javascript"></script>
+		<script src="../../common/project/project.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/default.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/debug.js" type="text/javascript"></script>
    
-</head>
-
-<body>
+	</head>
 	
-	
-	
-	<div class="x-balloontip" style="left:30px; top: 50px;">
-		    <div class="x-header x-balloontip-header">
-		        <div class="x-header-container">
-		            <div class="x-header-content">
-		            	<a class="x-icon x-icon-balloontip-close" href="javascript:;"></a>
-		                <h3><span class="x-icon x-icon-balloontip-close"></span>标题标题题标题标题标题</h3>
-		            </div>
-		        </div>
-		    </div>
-		    <div class="x-container x-balloontip-container">
-		        <div class="x-content x-balloontip-content">
-		        	内容
-				</div>
-		    </div>
-		    <div class="x-footer x-balloontip-footer">
-		        <div class="x-footer-container">
-		            <div class="x-footer-content">
-		            </div>
-		        </div>
-		    </div>
-			<div class="x-balloontip-anchor x-balloontip-anchor-tl"></div>
-			<div class="x-balloontip-anchor x-balloontip-anchor-tr"></div>
-			<div class="x-balloontip-anchor x-balloontip-anchor-bl"></div>
-			<div class="x-balloontip-anchor x-balloontip-anchor-br"></div>
-			<div class="x-balloontip-anchor x-balloontip-anchor-lt"></div>
-			<div class="x-balloontip-anchor x-balloontip-anchor-lb"></div>
-			<div class="x-balloontip-anchor x-balloontip-anchor-rt"></div>
-			<div class="x-balloontip-anchor x-balloontip-anchor-rb"></div>
-		</div>  	
+	<body>
 		
+		
+		
+		<div class="x-balloontip" style="left:30px; top: 50px;">
+			    <div class="x-header x-balloontip-header">
+			        <div class="x-header-container">
+			            <div class="x-header-content">
+			            	<a class="x-icon x-icon-balloontip-close" href="javascript:;"></a>
+			                <h3><span class="x-icon x-icon-balloontip-close"></span>标题标题题标题标题标题</h3>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="x-container x-balloontip-container">
+			        <div class="x-content x-balloontip-content">
+			        	内容
+					</div>
+			    </div>
+			    <div class="x-footer x-balloontip-footer">
+			        <div class="x-footer-container">
+			            <div class="x-footer-content">
+			            </div>
+			        </div>
+			    </div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-tl"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-tr"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-bl"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-br"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-lt"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-lb"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-rt"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-rb"></div>
+			</div>  	
 			
+				
+		
 	
-
-	
-	
-	
-	 <script type="text/javascript">
-    
+		
+		
+		
+		 <script type="text/javascript">
 	    
-	           var b = new Balloontip({closable: true}).setTitle('提示').setAuthor('tl').setHtml('内容内容容容容容容容容容容容容容容容容内').show();
-   
-    </script>
-</body>
+		    
+		           var b = new Balloontip({closable: true}).setTitle('提示').setAuthor('tl').setHtml('内容内容容容容容容容容容容容容容容容容内').show();
+	   
+	    </script>
+	</body>
 </html>
