@@ -2710,7 +2710,7 @@ Object.extendIf(trace, {
 				console.error(msg); //   如果错误在此行产生，说明这是预知错误。
 				
 			else {
-				trace.alert("[错误]" + msg);
+				throw msg;
 			}
 		}
 	},
