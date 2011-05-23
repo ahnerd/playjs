@@ -4,6 +4,7 @@
 //============================================
 
 Py.using("System.Controls.Layout.LayoutEngine");
+Py.imports("Resources.share.Layout.Absolute");
 
 
 

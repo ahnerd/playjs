@@ -1,7 +1,7 @@
 
 
 
-Py.using("System.Dom.Element");
+Py.using("System.Controls.Control");
 
 /**
  * 表示一个有内置呈现的控件。
