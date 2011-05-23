@@ -6,6 +6,7 @@
 
 Py.using("System.Controls.ContentControl");
 Py.using("System.Controls.IFormControl");
+Py.imports("Resources.*.Viewer.ToolTip");
 
 
 Py.namespace("Py", "ToolTip", Py.ContentControl.extend({

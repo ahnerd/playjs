@@ -5,6 +5,7 @@
 
 
 Py.using("System.Controls.CombinedTextBox");
+Py.imports("Resources.*.Form.FileUpload");
 
 
 Py.namespace("Py", "FileUpload", Py.CombinedTextBox.extend({

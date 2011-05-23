@@ -1453,16 +1453,18 @@
 		 * @param {String} [type] 类型。
 		 * @return this
 		 */
-		animate: function (name, value, duration, callBack){
-			if(typeof value === 'object'){
-				name = value;
-				value = undefined;
-			} else if(typeof duration === 'function')
-				callBack = duration;
+		animate: function (){
+			var args = arguments, name = args[0], value = args[1];
+			if(typeof name === 'string'){
+				(args[1] = {})[name] = value;
+				args[0] = null;
+			} else if(typeof value !== 'object'){
+				Array.prototype.unshift.call(args, null);
+			}
 			
-			this.set(name, value);
-			if(callBack)
-				setTimeout(callBack, 0);
+			this.set(args[1]);
+			if(args[3])
+				setTimeout(args[3], 0);
 					
 			return  this;
 		}

@@ -3,6 +3,7 @@
 
 Py.using("System.Controls.ScrollableControl");
 Py.using("System.Controls.IParentControl");
+Py.imports("Resources.*.Container.TabControls");
 
 /**
  * 内容显示面板。

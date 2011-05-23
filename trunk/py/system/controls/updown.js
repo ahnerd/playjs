@@ -5,6 +5,7 @@
 
 
 Py.using("System.Controls.CombinedTextBox");
+Py.imports("Resources.*.Form.UpDown");
 
 
 Py.UpDown = Py.CombinedTextBox.extend({
@@ -23,10 +24,12 @@ Py.UpDown = Py.CombinedTextBox.extend({
 	
 	_bindEvent: function(d, fn){
 		var me = this;
-		d = this.updown.find('.x-menu-button-updown-' + d);
+		d = this.find('.x-menu-button-updown-' + d);
 		
 		d.onmousedown = function(){
 			me[fn]();
+			if(me.timer)
+				clearInterval(me.timer);
 			me.timer = setTimeout(function(){
 				me.timer = setInterval(function(){me[fn]();}, me.speed);
 			}, me.duration);
@@ -35,6 +38,7 @@ Py.UpDown = Py.CombinedTextBox.extend({
 		d.onmouseout = d.onmouseup = function(){
 			clearTimeout(me.timer);
 			clearInterval(me.timer);
+			me.timer = 0;
 		};
 	},
 	

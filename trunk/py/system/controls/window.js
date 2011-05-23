@@ -4,6 +4,7 @@
 //===========================================
 
 Py.using("System.Controls.ContainerControl");
+Py.imports("Resources.*.Container.Window");
 
 
 

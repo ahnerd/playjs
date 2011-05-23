@@ -8,6 +8,7 @@ Py.using("System.Dom.Element");
 Py.using("System.Controls.ContentControl");
 Py.using("System.Controls.ListControl");
 Py.using("System.Controls.ICollapsable");
+Py.imports("Resources.*.DataView.TreeView");
 
 
 (function(){

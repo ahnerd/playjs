@@ -2,6 +2,7 @@
 
 
 Py.using("System.Controls.TextBox");
+Py.imports("Resources.*.Form.Menubuttons");
 
 
 Py.namespace("Py", "CombinedTextBox", Py.TextBox.extend({

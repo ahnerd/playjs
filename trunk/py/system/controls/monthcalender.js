@@ -2,6 +2,8 @@
 
 
 Py.using("System.Core.Date")  ;
+Py.using("System.Controls.Control");
+Py.imports("Resources.*.Form.MonthCalender");
 
 
 (function(){
