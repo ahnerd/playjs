@@ -6,6 +6,7 @@
 
 Py.using("System.Dom.Element");
 Py.using("System.Dom.Drag");
+Py.imports("Resources.*.Viewer.ScrollBar");
 
 
 Py.namespace("Py", "ScrollBar", Py.Control.extend({

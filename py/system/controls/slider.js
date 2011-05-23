@@ -6,7 +6,7 @@
 
 Py.using("System.Dom.Element");
 Py.using("System.Dom.Drag");
-Py.imports("Resources.*.Form.Silder");
+Py.imports("Resources.*.Form.Slider");
 
 
 Py.namespace("Py", "Slider", Py.Control.extend({

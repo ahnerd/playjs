@@ -1,5 +1,6 @@
-Py.using("System.Dom.Element");
+Py.using("System.Controls.Control");
 Py.using("System.Controls.IFormControl");
+Py.imports("Resources.*.Form.TextBox");
 
 
 Py.namespace("Py", "TextBox", Py.Control.extend({
