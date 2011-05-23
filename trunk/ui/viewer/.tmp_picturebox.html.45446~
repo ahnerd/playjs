@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+   		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>控件</title>
+        <link href="../../py/resources/themes/share/control/core.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/themes/default/control/core.css" rel="stylesheet" type="text/css" />
+		
+        <script src="../../py/py.js" type="text/javascript"></script>
+		<script src="../../py/System/Dom/Element.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/Surround.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/Resizing.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/Splitter.js" type="text/javascript"></script>
+		
+		<script src="../../test/assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/common.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    
+        document.ready(function(){
+           
+            
+            
+                
+                
+        });
+   
+    </script>
+</head>
+
+<body>
+			
+	<img class="x-picturebox"/>
+	
+	
+</body>
+</html>

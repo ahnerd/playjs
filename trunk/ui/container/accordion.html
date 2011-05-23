@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>面板</title>
+        <link href="../../py/resources/share/control/core.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/share/container/accordion.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/default/control/core.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/container/accordion.css" rel="stylesheet" type="text/css" />
+       
+	   	<script src="../../py/system.js" type="text/javascript"></script>
+		<script src="../../py/System/Dom/Element.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/Surround.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/Resizing.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/Layout/LayoutEngine.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/Layout/AdvanceLayout.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/Layout/accordionlayout.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/accordion.js" type="text/javascript"></script>
+		
+		<script src="../assets/scripts/common.js" type="text/javascript"></script>
+    </head>
+    <body>
+		<div style="width: 300px; float: left; margin: 5px;" class="x-accordion">
+			<div class="x-header x-accordion-header">
+				<h3 class="">面板1</h3>
+			</div>
+			<div style="height: 201px; display: none;" class="x-container x-accordion-container">
+				内容1
+			</div>
+			<div class="x-header x-accordion-header">
+				<h3 class="x-collapsable"><span class="x-icon">icon</span>面板2</h3>
+			</div>
+			<div class="x-container x-accordion-container" style="height: 201px; display: block;">
+				<div class="x-content x-accordion-content">
+				内容2
+				</div>
+			</div>
+			<div class="x-header x-accordion-header">
+				<h3>面板3</h3>
+			</div>
+			<div class="x-container x-accordion-container" style="height: 201px; display: none;">
+				内容3
+			</div>
+		</div>
+    </body>
+</html>

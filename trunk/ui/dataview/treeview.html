@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>树视图</title>
+		<link href="../../py/resources/share/control/core.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/share/dataview/treeview.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/core.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/dataview/treeview.css" rel="stylesheet" type="text/css" />
+		
+        <script src="../../py/system.js" type="text/javascript"></script>
+		<script src="../../py/System/Data/CollectionBase.js" type="text/javascript"></script>
+		
+		<script src="../../py/System/Dom/Element.js" type="text/javascript"></script>
+		
+		<script src="../../py/System/Fx/Base.js" type="text/javascript"></script>
+		<script src="../../py/System/Fx/Element.js" type="text/javascript"></script>
+		
+		<script src="../../py/System/Controls/ICollapsable.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/ContentControl.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/ListControl.js" type="text/javascript"></script>
+		<script src="../../py/System/Controls/treeview.js" type="text/javascript"></script>
+		
+		<script src="../assets/scripts/common.js" type="text/javascript"></script>
+		
+		
+		<script>
+			
+			
+			
+			a = new TreeView({
+				
+				
+				nodes: [
+				
+					new TreeNode({
+						text: "1",
+						
+						nodes: [
+							new TreeNode({
+								text: "2-1",
+								
+								nodes: [
+									new TreeNode({
+										text: "2-1-2",
+										
+										
+										nodes: [
+											new TreeNode({text: "2-1-2-1"})
+										]
+										
+									})
+								]
+							})
+						]
+					}),
+
+					new TreeNode({
+						text: "2"
+					}),
+
+					new TreeNode({
+						text: "5"
+					})
+				]
+				
+			}).renderTo();
+			
+			
+			
+			
+			var    v = new TreeNode({text: "2-1-2-1"});
+			
+			
+		</script>
+		
+    </head>
+    <body>
+    	<ul class="x-treeview">
+    		<li>23</li>
+			<li>234</li>
+			<li><span class="x-icon"></span>23</li>
+			<li>sd
+				<ul>
+					<li>23</li>
+					<li>234</li>
+					<li>23</li>
+				</ul>
+			</li>
+		</ul>
+		<div class="x-treeview">
+        <ul class="x-list-container">
+            <li class="x-list-content">
+                <div class="x-treenode">
+                    <span class="x-treenode-space x-treenode-plus">
+                    </span>
+                    <a>菜单</a>
+                </div>
+                <ul class="x-list-container">
+                    <li class="x-list-content">
+                        <div class="x-treenode">
+                            <span class="x-treenode-space x-treenode-line">
+                            </span>
+                            <span class="x-treenode-space x-treenode-normal">
+                            </span>
+                            <a>菜单</a>
+                        </div>
+                    </li>
+                    <li class="x-list-content">
+                        <div class="x-treenode x-selected x-treenode-last">
+                            <span class="x-treenode-space x-treenode-line">
+                            </span>
+                            <span class="x-treenode-space x-treenode-line">
+                            </span>
+                            <a>菜单</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="x-list-content">
+                <div class="x-treenode">
+                    <span class="x-treenode-space x-treenode-normal">
+                    </span>
+                    <a>菜单</a>
+                </div>
+            </li>
+            <li class="x-list-content">
+                <div class="x-treenode">
+                    <span class="x-treenode-space x-treenode-plus">
+                    </span>
+                    <a>菜单</a>
+                </div>
+                <ul class="x-list-container">
+                    <li class="x-list-content">
+                        <div class="x-treenode">
+                            <span class="x-treenode-space x-treenode-space">
+                            </span>
+                            <span class="x-treenode-space x-treenode-minus">
+                            </span>
+                            <a>菜单</a>
+                        </div>
+                    </li>
+                    <li class="x-list-content">
+                        <div class="x-treenode x-treenode-last">
+                            <span class="x-treenode-space x-treenode-space">
+                            </span>
+                            <span class="x-treenode-space x-treenode-normal">
+                            </span>
+                            <a>菜单</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="x-list-content">
+                <div class="x-treenode">
+                    <span class="x-treenode-space x-treenode-normal">
+                    </span>
+                    <a>菜单</a>
+                </div>
+            </li>
+            <li class="x-list-content">
+                <div class="x-treenode x-treenode-last">
+                    <span class="x-treenode-space x-treenode-plus">
+                    </span>
+                    <a>菜单</a>
+                </div>
+            </li>
+        </ul>
+		</div>
+    </body>
+</html>

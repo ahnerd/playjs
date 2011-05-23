@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <title>布局    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="../../py/resources/themes/share/control/core.css" rel="stylesheet" type="text/css" />
+	<link href="../../py/resources/themes/share/control/layout/anchor.css" rel="stylesheet" type="text/css" />
+	<link href="../../py/resources/themes/default/control/core.css" rel="stylesheet" type="text/css" />
+    
+	<script src="../../py/py.js" type="text/javascript"></script>
+	<script src="../../py/System/Dom/Element.js" type="text/javascript"></script>
+    <script src="../../py/System/Controls/Layout/LayoutEngine.js" type="text/javascript"></script>
+    <script src="../../py/System/Controls/Layout/AdvanceLayout.js" type="text/javascript"></script>
+    <script src="../../py/System/Controls/Layout/AnchorLayout.js" type="text/javascript"></script>
+    
+	<script src="../../test/assets/scripts/debug.js" type="text/javascript"></script>
+		<script src="../assets/scripts/common.js" type="text/javascript"></script>
+</head>	
+
+<body style="padding:60px">
+	adasdasd
+	<div style="padding: 60px; position: relative" class="x-box">
+	    <div id="ct" style="width:50%; height:100%;   border-left-width: 30px;/*
+ padding: 20px;  margin:40px;
+*/" class="x-box">
+	        <div id="p1" style="background: yellow;" class="x-box">a</div>
+			<div id="p2" style="background: green; height: 100px; width: 100px" class="x-box">b</div>
+	        <div id="p3" style="background: red; height: 200px; width: 100px" class="x-box">c</div>
+	        <div id="p4" style="background: orange; height: 100px; width: 200px" class="x-box">d</div>
+	        <div id="p5" style="background: purple; height: 100px; width: 100px" class="x-box">e</div>
+	    </div>
+	</div>
+	
+	<input type="button" onclick="ctrl.setSize(900, 400)" value="resize">
+	
+        <script type="text/javascript">
+    
+   
+        var layout = new Layout.AnchorLayout();
+        
+        var ctrl = new Control({
+            dom: 'ct',
+            controls: [
+                new Control({
+                    dom: 'p1',
+					width: 300,
+					//margin: 20,
+					//padding: 10
+					anchor: 'left right'
+                })  //,
+                
+              /*
+  new Control({
+                    dom: 'p2',
+					right: 600,
+					left: 100, 
+					anchor: 'left right'
+                }),
+                
+                new Control({
+                    dom: 'p3'
+                }),
+                
+                new Control({
+                    dom: 'p4'
+                }),
+                
+                new Control({
+                    dom: 'p5'
+                })
+*/
+            ]
+        });
+        
+        
+        
+        layout.initLayout(ctrl);
+        
+        layout.layout(ctrl);
+		
+		
+	
+        </script>
+		
+</body>
+</html>
