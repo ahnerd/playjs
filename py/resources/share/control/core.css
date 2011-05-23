@@ -151,3 +151,9 @@ input {
     *display: inline;
 	letter-spacing: 0px;
 }
+
+
+
+#py_proxy {
+	z-index: 100000;
+}

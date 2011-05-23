@@ -6,6 +6,7 @@
 Py.using("System.Controls.Layout.AdvanceLayout");
 Py.using("System.Controls.Splitter");
 Py.using("System.Controls.ScrollableControl");
+Py.imports("Resources.*.Layout.Box");
 
 
 
