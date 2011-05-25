@@ -311,7 +311,7 @@
 				p.alignTo = function(elem){
 					
 					return this.show()
-							.setOffset(elem.getOffsets())
+							.setOffset(elem.getPosition())
 							.setSize(elem.getSize());
 				};
 			}
@@ -1608,7 +1608,7 @@
 		 * @method getOffsets
          * @return {Point} 位置。
          */
-		getOffsets: getWindowScroll,
+		getPosition: getWindowScroll,
 
 		/**
 		 * 获取滚动区域大小。
@@ -1691,7 +1691,7 @@
 				
 				// 绝对定位需要返回绝对位置。
 				if(checkPosition(me, 'absolute'))
-					return this.getPosition(this.getOffsetParent());
+					return this.getOffsets(this.getOffsetParent());
 				
 				// 非绝对的只需检查 css 的style。
 				left = getStyle(me, 'left');
@@ -1735,7 +1735,7 @@
 		 * @return {Rectange} 大小。
 		 */
 		getBound: function() {
-			var p = this.getOffsets(), s = this.getSize();
+			var p = this.getPosition(), s = this.getSize();
 			return {
 				left: p.x,
 				top: p.y,
@@ -1746,10 +1746,10 @@
 		
         /**
          * 获取距父元素的偏差。
-		 * @method getOffsets
+		 * @method getPosition
          * @return {Point} 位置。
          */
-        getOffsets: div.getBoundingClientRect   ? function() {
+        getPosition: div.getBoundingClientRect   ? function() {
 
             var me = this.getDom(),
 				bound = me.getBoundingClientRect(),
@@ -1791,16 +1791,17 @@
 		
 		/**
          * 获取包括滚动位置的位置。
-		 * @method getPosition
+		 * @method getOffsets
          * @param {Element/String/Boolean} relative 相对的节点。
          * @return {Point} 位置。
          */
-        getPosition: function( relative) {
+        getOffsets: function( relative) {
 			if (isBody(this.getDom())) return new Point(0, 0);
-            var me = this.getDom(), pos = this.getOffsets().minus(getScrolls(me));
-			if(relative)
-				pos.minus(p.$(relative).getPosition()).add( -styleNumber(me, 'marginLeft') - styleNumber(relative, borderLeftWidth) ,-styleNumber(me, 'marginTop') - styleNumber(relative,  borderTopWidth) );
-            return pos;
+            var me = this.getDom(), pos = this.getPosition().minus(getScrolls(me));
+			if(relative) {
+				pos.minus(p.$(relative).getOffsets()).add( -styleNumber(me, 'marginLeft') - styleNumber(relative, borderLeftWidth) ,-styleNumber(me, 'marginTop') - styleNumber(relative,  borderTopWidth) );
+            }
+			return pos;
         },
 		
         /**
@@ -1894,7 +1895,7 @@
          * @return {Element} this
          */
 		setPosition: function(x, y) {
-			var me = this, offset = me.getOffset().minus(me.getOffsets()), p = getXY(x,y);
+			var me = this, offset = me.getOffset().minus(me.getPosition()), p = getXY(x,y);
 		   
 			if (p.x)
 				offset.x += p.x;
