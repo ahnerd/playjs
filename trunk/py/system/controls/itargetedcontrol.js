@@ -30,8 +30,8 @@ var names = {
 			    thisPos=this.getBound(),
 				thisSize=this.getSize(),
 				x,y;
-			x=ctrlPos.right+offsetX+thisSize.x>document.getWindowSize().x?ctrlPos.left-offsetX-thisSize.x:ctrlPos.right+offsetX;
-			y=ctrlPos.bottom+offsetY+thisSize.y>document.getWindowSize().y?ctrlPos.top-offsetY-thisSize.y:ctrlPos.bottom+offsetY;
+			x=ctrlPos.right+offsetX+thisSize.x>=document.getSize().x?ctrlPos.left-offsetX-thisSize.x:ctrlPos.right+offsetX;
+			y=ctrlPos.bottom+offsetY+thisSize.y>=document.getSize().y?ctrlPos.top-offsetY-thisSize.y:ctrlPos.bottom+offsetY;
 			this.setPosition(x,y);
 	}, alignByBottom =  function(ctrl, offsetX, offsetY){
 		
