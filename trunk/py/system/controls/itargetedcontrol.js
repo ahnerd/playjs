@@ -1,6 +1,3 @@
-
-
-
 Py.using("System.Dom.Element");
 
 
@@ -28,7 +25,14 @@ var names = {
 	 * @param {Number} offsetY 偏移的y大小。
 	 */
 	var alignByRight = function(ctrl, offsetX, offsetY){
-		 trace('up');
+		    var ctrlPos=ctrl.getBound(),
+			    ctrlSize=ctrl.getSize(),
+			    thisPos=this.getBound(),
+				thisSize=this.getSize(),
+				x,y;
+			x=ctrlPos.right+offsetX+thisSize.x>document.getWindowSize().x?ctrlPos.left-offsetX-thisSize.x:ctrlPos.right+offsetX;
+			y=ctrlPos.bottom+offsetY+thisSize.y>document.getWindowSize().y?ctrlPos.top-offsetY-thisSize.y:ctrlPos.bottom+offsetY;
+			this.setPosition(x,y);
 	}, alignByBottom =  function(ctrl, offsetX, offsetY){
 		
 	};
@@ -129,19 +133,13 @@ return;
 		
 		offsetY: 0,
 		
-		showBy: function(ctrl){
+		showBy: function(ctrl,offsetX, offsetY){
 			this.dom.show(this.duration.open);
-			(this.position == 'rt' ? alignByRight : alignByBottom)  (ctrl, this.offsetX, this.offsetY);
+			(this.position == 'rt' ? alignByRight : alignByRight).call(this,ctrl, offsetX, offsetY);
 		},
-		
 		onOverflowY: function(){
 			
 		}
 	};
 
-
-
-	
-	
-	
 })()  ;
