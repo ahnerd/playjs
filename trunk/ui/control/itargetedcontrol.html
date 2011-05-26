@@ -29,7 +29,12 @@
 			
 			var d = new  TargetedControl('o');
 			
-			d.showBy($('target'),-10,-20);
+			$('target').setDraggable().on('dragend', function(){
+				d.showBy(this,-10,-20);
+			});
+			
+			
+			
 		
 		</script>
 	</body>
