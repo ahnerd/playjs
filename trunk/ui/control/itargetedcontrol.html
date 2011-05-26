@@ -21,7 +21,6 @@
 		
 		<div id="o" style="background: blue; position: absolute; top: 50px; width: 50px; height: 60px;"></div>
 		
-		<div id="o4" style="background: blue; position: absolute; top: 50px; width: 50px; height: 60px;"></div>
 		
 		<script>
 			
@@ -29,14 +28,8 @@
 			var TargetedControl = Control.extend({}).implement(Py.ITargetedControl);
 			
 			var d = new  TargetedControl('o');
-			var d4 = new  TargetedControl('o4');
-			d4.position = 'bl';
 			
-			$('target').setDraggable().on('dragend', function(){
-				d.showBy(this);
-				
-				d4.showBy(this);
-			});
+			d.showBy($('target'),-10,-20);
 		
 		</script>
 	</body>
