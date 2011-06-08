@@ -34,7 +34,14 @@
 	 background-image:url(images/accordion.gif);
 }
 
-
+h3.x-collapsable {
+	background-image:url(images/accordion.gif);
+	background-position: 100% -100px;
+}
+h3.x-collapsable:hover{
+	background-image:url(images/accordion.gif);
+	background-position: 100% -125px;
+}
 .x-accordion-container {
     border-width: 0 0 1px 0;
 }
