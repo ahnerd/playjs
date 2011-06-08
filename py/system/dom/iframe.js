@@ -2,8 +2,6 @@
 //  元素   Dom.js
 //  Copyright(c) 2009-2010 xuld
 //===========================================
-
-
 Py.using("System.Dom.Element");
 
 /**
@@ -34,8 +32,7 @@ Py.namespace("Py", "IFrame", Py.Control.extend({
 					setTimeout(arguments.callee, 10);
 			}, 20);
 		} else {
-		
-			elem.on('load', elem.onReady);
+				elem.on('load', elem.onReady);
 		}
 	},
 	
