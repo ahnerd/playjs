@@ -12,24 +12,24 @@ var Py = {
 	
 	/**
 	 * 是否打开调试。
-	 * @property debug
 	 * @type Boolean
+	 * @ignore
 	 */
 	debug: true,
 
 	/**
 	 * 根目录。
 	 * @type String
-	 * @property rootPath
 	 * 程序会自动搜索当前脚本的位置为跟目录。
+	 * @ignore
 	 */
 	rootPath: undefined,
 	
 	/**
 	 * 启用控制台调试。
-	 * @property trace
 	 * @type Boolean 
 	 * 如果不存在控制台，将自动调整为 false 。
+	 * @ignore
 	 */
 	trace: true
 
@@ -44,10 +44,10 @@ var Py = {
 //===========================================
 
 /**
- * Py.Core in Javascript
  * @author xuld
  * @license MIT license
  * @copyright 2009-2011 xuld
+ * @projectDescription Py.Core in Javascript
  */
 
 (function(w) {
@@ -108,6 +108,7 @@ var Py = {
 		/**
 		 * nv 简写。
 		 * @type Navigator
+		 * @name navigator
 		 */
 		nv = w.navigator,
 		
@@ -216,6 +217,7 @@ var Py = {
 					},
 				
 					createEventArgs: function(e, target){
+						assert(!e || ( e.stopPropagation && e.preventDefault), "IEvent.trigger(e): 参数 e 必须有成员 stopPropagation 和 preventDefault ，可使用类型 Py.EventArgs 代替。");
 						return e || new p.EventArgs(target);
 					},
 					
@@ -295,7 +297,7 @@ var Py = {
 			 */
 			value: function(path, root) {
 				
-				assert(path, "path 等于空");
+				assert(path, "Object.value(path, root): 参数 path 不能为空。");
 				
 				// 依次遍历。
 				for (var obj = root || w, i = 0, t, n = path.split ? path.split('.') : path; t = n[i]; ++i) {
@@ -331,7 +333,7 @@ var Py = {
 			 */
 			each: function(iterable, fn, bind) {
 	
-				assert(o.isFunction(fn), "遍历的 fn 必须是可执行的函数。 ");
+				assert(o.isFunction(fn), "Object.each(iterable, fn, bind): 参数 fn 必须是可执行的函数。 ");
 				
 				// 如果 iterable 是 null， 无需遍历 。
 				if (iterable != null) {
@@ -534,7 +536,7 @@ var Py = {
 			 */
 			implement: function (obj) {
 	
-				assert(obj && this.prototype, "无法扩展类，因为 obj 或 this.prototype 为空。\n\t{0}", obj);
+				assert(obj && this.prototype, "Py.Native.prototype.implement(obj): 无法扩展类，因为 obj 或 this.prototype 为空。\n\t 当前类为 {0}", obj);
 		
 				// 复制到原型
 				o.extend(this.prototype, obj);
@@ -551,7 +553,7 @@ var Py = {
 			 */
 			implementIf: function(obj) {
 			
-				assert(obj && this.prototype, "无法扩展类，因为 obj 或 this.prototype 为空。\n\t{0}", obj);
+				assert(obj && this.prototype, "Py.Native.prototype.implementIf(obj): 无法扩展类，因为 obj 或 this.prototype 为空。\n\t 当前类为 {0}", obj);
 		
 				applyIf(this.prototype, obj);
 				
@@ -567,6 +569,8 @@ var Py = {
 			addEvents: function (events) {
 				
 				var ep = this.prototype;
+				
+				assert(!events || o.isObject(events), "Py.Native.prototype.addEvents(events): 参数 event 必须是一个包含事件的对象。 如 {click: { add: ..., remove: ..., trigger: ..., setup: ... } ");
 				
 				applyIf(ep, p.IEvent);
 				
@@ -723,6 +727,8 @@ var Py = {
 			 */
 			data: function (obj, type) {
 				
+				assert(o.isObject(obj) || o.isFunction(obj), "Py.data(obj, type): 参数 obj 必须是一个引用类型。");
+				
 				// 创建或测试。
 				var d = obj.data || (obj.data = {}) ;
 				
@@ -739,6 +745,8 @@ var Py = {
 			 */
 			dataIf:function (obj, type) {
 				
+				assert(o.isObject(obj) || o.isFunction(obj), "Py.dataIf(obj, type): 参数 obj 必须是一个引用类型。");
+				
 				// 获取变量。
 				var d = obj.data;
 				return d && d[type];
@@ -753,6 +761,8 @@ var Py = {
 			 */
 			setData: function(obj, type, data) {
 				
+				assert(o.isObject(obj) || o.isFunction(obj), "Py.setData(obj, type): 参数 obj 必须是一个引用类型。");
+				
 				// 简单设置变量。
 				return (obj.data || (obj.data = {}))[type] = data;
 			},
@@ -763,6 +773,10 @@ var Py = {
 			 * @param {Object} dest
 			 */
 			cloneData: function(src, dest){
+				
+				assert(o.isObject(src) || o.isFunction(src), "Py.cloneData(src, dest): 参数 src 必须是一个引用类型。");
+				assert(o.isObject(dest) || o.isFunction(dest), "Py.cloneData(src, dest): 参数 dest 必须是一个引用类型。");
+				
 				var data = src.data;
 				
 				if(data){
@@ -796,7 +810,7 @@ var Py = {
 			 */
 			loadText: function(uri, callback) {
 	
-				assert(w.location.protocol != "file:", "请求错误:  当前正使用 file 协议，请使用 http 协议。 \r\n请求地址: {0}",  uri);
+				//     assert(w.location.protocol != "file:", "Py.loadText(uri, callback):  当前正使用 file 协议，请使用 http 协议。 \r\n请求地址: {0}",  uri);
 				
 				// 新建请求。
 				var xmlHttp = new XMLHttpRequest();
@@ -812,7 +826,7 @@ var Py = {
 					// 检查当前的 XMLHttp 是否正常回复。
 					if (!XMLHttpRequest.isOk(xmlHttp)) {
 						//载入失败的处理。
-						throw String.format("请求失败:  \r\n   地址: {0} \r\n   状态: {1}   {2} ", uri, xmlHttp.status, xmlHttp.statusText);
+						throw String.format("请求失败:  \r\n   地址: {0} \r\n   状态: {1}   {2}  {3}", uri, xmlHttp.status, xmlHttp.statusText, w.location.protocol == "file:" ? '\r\n原因: 当前正使用 file 协议打开文件，请使用 http 协议。' : '');
 					}
 					
 					// 运行处理函数。
@@ -877,6 +891,8 @@ var Py = {
 				 */
 				on: function(type, fn) {
 					
+					assert(o.isFunction(fn), 'IEvent.on(type, fn): 参数 fn 必须是可执行的函数。');
+					
 					// 获取本对象     本对象的数据内容   本事件值
 					var me = this, d = p.data(me, 'event'), evt = d[type];
 					
@@ -935,6 +951,10 @@ var Py = {
 				 * @return Object this
 				 */
 				one: function(type, fn) {
+					
+					assert(o.isFunction(fn), 'IEvent.on(type, fn): 参数 fn 必须是可执行的函数。');
+					
+					
 					return this.on(type, function() {
 						
 						// 删除先。
@@ -953,6 +973,8 @@ var Py = {
 				 * @return Object this
 				 */
 				un: function (type, fn) {
+					
+					assert(!fn || o.isFunction(fn), 'IEvent.un(type, fn): 参数 fn 必须是可执行的函数或空参数。');
 					
 					// 获取本对象     本对象的数据内容   本事件值
 					var me = this, d = p.dataIf(me, 'event'), evt;
@@ -1215,6 +1237,8 @@ var Py = {
 		     * @memberOf Py
 		     */
 		    setupWindow: function(w) {
+					
+				assert(w.setInterval, 'Py.setupWindow(w): 参数 w 必须是一个 Window 对象。');
 		    
 		        /**
 		         * 本地化 Element 。
@@ -1357,6 +1381,8 @@ var Py = {
 		 * @param {Object} bind 位置。
 		 */
 		bind: function(fn, bind) {
+					
+			assert(o.isFunction(fn), 'Function.bind(fn): 参数 fn 必须是一个可执行的函数。');
 			
 			// 返回对 bind 绑定。
 			return function() {
@@ -1395,7 +1421,9 @@ var Py = {
 		 */
 		format: function(format, object) {
 
-			if (format == null) return "";
+			if (!format) return "";
+					
+			assert(format.replace, 'String.format(format, object): 参数 format 必须是字符串。');
 
 			//支持参数2为数组或对象的直接格式化。
 			var toString = this,
@@ -1424,6 +1452,9 @@ var Py = {
 		 * </code>
 		 */
 		map: function(str, source, dest, copyIf) {
+					
+			assert(typeof str == 'string', 'String.map(str, source, dest, copyIf): 参数 str 必须是字符串。');
+			
 			var isFn = o.isFunction(source);
 			// 分隔。
 			str.split(' ').forEach(function(v, k, c) {
@@ -1480,6 +1511,10 @@ var Py = {
 		 * @example  Class.addCallback(window, "onload",trace.empty);
 		 */
 		addCallback: function(obj, name, fn) {
+			
+			assert(obj, 'Class.addCallback(obj, name, fn): 参数 obj 不能为空。');
+			
+			assert(o.isFunction(fn), 'Class.addCallback(obj, name, fn): 参数 fn 必须是函数。');
 			
 			// 获取已有的句柄。
 			var f = obj[name];
@@ -1851,6 +1886,7 @@ var Py = {
 		 */
 		insert: function(index, value){
 			
+			assert(typeof index == 'number', "Array.prototype.insert(index, value): 参数 index 必须是数字类型。");
 			
 			for(var i = this.length++; i > index; i--)
 				this[i] = this[i - 1];
@@ -1870,6 +1906,7 @@ var Py = {
 			forEach.call(this, o.isFunction(fn) ? function(value, index){
 				r.push(fn.call(args, value, index));
 			} : function(value){ 
+				assert(value && o.isFunction(value[fn]), "Array.prototype.invoke(fn, args): {0} 不包含可执行的函数 {1}。", value, fn);
 				r.push(value[fn].apply(value, args));
 			});
 			
@@ -1974,7 +2011,7 @@ var Py = {
 		
 	}
 	
-	if(!w.XMLHttpRequest) {
+	if(!w.XMLHttpRequest || isQuirks) {
 		
 		try{
 			(w.XMLHttpRequest = function() {
@@ -2002,6 +2039,8 @@ var Py = {
 	 * @memberOf XMLHttpRequest
 	 */
 	w.XMLHttpRequest.isOk = function(xmlHttp) {
+		
+		assert(xmlHttp.close, 'XMLHttpRequest.isOk(xmlHttp): 参数 xmlHttp 不是合法的 XMLHttpRequest 对象');
 		
 		// 获取状态。
 		var status = xmlHttp.status;
@@ -2034,7 +2073,7 @@ var Py = {
 		ready: {
 			add: function(elem, type, fn) {
 				
-				assert(elem.nodeType === 9, '只有文档对象才能添加 ready 。');
+				assert(elem.nodeType === 9, 'Elememt.prototype.on(type, fn) 只有文档对象才能添加 "ready" 事件 。');
 				
 				// 使用系统文档完成事件。
 				elem.addEventListener(this.eventName, fn, false);
@@ -2209,7 +2248,8 @@ var Py = {
 	 */
 	function apply(dest, src) {
 		
-		assert(dest && src, "复制属性异常 : dest 或 src 为空");
+		assert(dest != null, "Object.extend(dest, src): 参数 dest 不可为空。");
+		assert(src != null, "Object.extend(dest, src): 参数 src 不可为空。");
 		
 		
 		for (var b in src)
@@ -2224,8 +2264,9 @@ var Py = {
 	 * @return {Object} 复制后的对象。
 	 */
 	function applyIf(dest, src) {
-
-		assert(dest && src, "复制属性异常 : dest 或 src 为空。");
+		
+		assert(dest != null, "Object.extendIf(dest, src): 参数 dest 不可为空。");
+		assert(src != null, "Object.extendIf(dest, src): 参数 src 不可为空。");
 
 		for (var b in src)
 			if (dest[b] === undefined)
@@ -2331,6 +2372,9 @@ var Py = {
 	 * 现在大多数浏览器已含此函数.除了 IE8-  。
 	 */
 	function each(fn, bind) {
+		
+		assert(o.isFunction(fn), "Array.prototype.each(fn, bind): 参数 fn 必须是一个函数。");
+		
 		var i = -1,
 			me = this,
 			l = me.length;
@@ -2399,6 +2443,8 @@ var Py = {
 	 */
 	function namespace(name, className, obj) {
 		
+		assert(name, "namespace(name, className, obj): 参数 name 不可为空。");
+		
 		// 简单声明。
 		if (!className) {
 			
@@ -2433,7 +2479,7 @@ var Py = {
 	 */
 	function include(name, theme, isStyle){
 		
-		assert(name, "name不是合法的名字空间");
+		assert(name && name.indexOf, "include(name, theme, isStyle): 参数 name 不是合法的名字空间。");
 		
 		if(name.indexOf('*') > -1){
 		 	return (theme || (isStyle ?['share', Py.theme] : [])).forEach(function(value){
