@@ -353,7 +353,7 @@
          */
         constructor: function(doms) {
 			
-			assert(dom && dom.length !== undefined, 'ElementList.prototype.constructor(doms): 参数 doms 必须是一个 NodeList 或 Array 类型的变量。');
+			assert(doms && doms.length !== undefined, 'ElementList.prototype.constructor(doms): 参数 doms 必须是一个 NodeList 或 Array 类型的变量。');
 			
             this.doms = doms;
 			
