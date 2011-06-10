@@ -1588,15 +1588,6 @@ var Py = {
 		/// #ifndef Std
 		
 		/**
-		 * 根据 id 获取元素。
-		 * @method getDom
-		 * @param {String/Element} id 元素的id 或 元素。
-		 * @return {Element} 元素。
-		 * @memberOf document
-		 */
-		id: getElementById,
-		
-		/**
 		 * 获取节点本身。
 		 * @return {Element}
 		 */
