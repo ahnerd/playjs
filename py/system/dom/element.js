@@ -1173,6 +1173,8 @@
          */
         setStyle: function(name, value) {
 			
+		   	assert(name && name.toCamelCase, "Element.prototype.setStyle(name, value): 参数 name 必须是字符串。");
+			
 			// 获取样式
             var me = this, style = me.getDom().style;
 			
@@ -2243,7 +2245,17 @@
             }
 
             return ds;
-        };
+        },
+		
+		hasChild = !div.compareDocumentPosition ? function(elem, child){
+			while(child = child.parentNode){
+				if(elem === child)
+					return true;
+			};
+			return false;
+		} : function(elem, child) {
+			return !!(elem.compareDocumentPosition(child) & 16);
+		};
 		
 	apply(e, {
 		
@@ -2420,6 +2432,12 @@
 	}, 4)
 	
 	.implement( {
+		
+		contains: function(child){
+			var me = this.getDom();
+			assert(me, "Element.prototype.contains(child): this.getDom() 返回的必须是 DOM 节点。");
+			return child == me || hasChild(me, child);
+		},
 			
 		/**
 		 * 判断一个节点是否有子节点。
@@ -2427,16 +2445,9 @@
 		 * @param {Element} child 子节点。
 		 * @return {Boolean} 有返回true 。
 		 */
-		contains: !div.compareDocumentPosition ? function(child) {
+		hasChild: function(child) {
 			var me = this.getDom();
-			if(!child)
-				return me.firstChild !== null;
-			while(child = child.parentNode)
-				if(me === child)
-					return true;
-			return false;
-		} : function(child) {
-			return !child ? this.getDom().firstChild !== null : !!(this.getDom().compareDocumentPosition(child) & 16);
+			return arguments.length ? hasChild(me, child) : me.firstChild !== null;
 		}
 	}, 5)
 	
@@ -2540,6 +2551,7 @@
 		insert: 'insertAdjacentElement' in div ? function(html, swhere) {
 			var me = this.getDom();
 			assert(me && me.insertAdjacentElement, "Element.prototype.insert(html, swhere): this.getDom() 返回的必须是 DOM 节点。");
+			assert('afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数 swhere 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。");
 			me[typeof html === 'string' ? 'insertAdjacentHTML' : 'insertAdjacentElement'](swhere, html);
 			switch (swhere) {
 				case "afterEnd":
@@ -2552,7 +2564,6 @@
 					html = me.firstChild;
 					break;
 				default:
-					assert(arguments.length == 1 || !swhere || swhere == 'beforeEnd', 'Element.prototype.insert(html, swhere): 参数 swhere 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。');
 					html = me.lastChild;
 					break;
 			 }
@@ -2563,6 +2574,7 @@
 			var me = this.getDom();
 			
 			assert(me, "Element.prototype.insert(html, swhere): this.getDom() 返回的必须是 DOM 节点。");
+			assert('afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数 swhere 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。");
 			if (typeof html === 'string') {
 				return manip(this, 'insert', html, swhere);
 			}
@@ -2612,6 +2624,8 @@
 				else
 					return manip(me, 'append', html);
 			}
+			
+			assert(html && html.nodeType, "Element.prototype.append(html, escape): 参数 html 不是合法的 节点或 HTML 片段。");
 			return me.appendChild(html);
 		},
 		
@@ -2644,6 +2658,7 @@
 			}
 			
 			me = me.getDom();
+			assert(html && html.nodeType, "Element.prototype.replaceWith(html, escape): 参数 html 不是合法的 节点或 HTML 片段。");
 			return me.parentNode.replaceChild(html, me);
 		}
 	}, 3)
@@ -2681,6 +2696,7 @@
          */
         remove: function(child) {
 			var me = this.getDom();
+			assert(child && this.hasChild(child), 'Element.prototype.remove(child): 参数 child 不是当前节点的子节点');
             child ? this.removeChild(child) : ( me.parentNode && me.parentNode.removeChild(me) );
             return this;
         },
