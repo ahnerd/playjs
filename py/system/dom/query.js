@@ -1,5 +1,5 @@
 //===========================================
-//  遍历   Query.js
+//  遍历   query.js
 // Copyright (C) Peppy    by  James Donaghue
 //===========================================
 
@@ -12,7 +12,7 @@
  * @param {Boolean} quick 是否快速查找。
  * @return {Array} 元素集合。
  * @author James Donaghue - james.donaghue@gmail.com
- * @author Peppy - A lightning fast CSS 3 Compliant Selector Engine.
+ * @fileOverview Peppy - A lightning fast CSS 3 Compliant Selector Engine.
  * @see http://www.w3.org/TR/css3-selectors/#selectors
  */
 document.queryDom = (function(){
@@ -37,6 +37,11 @@ document.queryDom = (function(){
 			recursive: /:(not|has)\((\w+|\*)?([#.](\w|\d)+)*(\:(\w|-)+(\([^\)]+\))?|\[[^\}]+\])*(\s*,\s*(\w+|\*)?([#.](\w|\d)+)*(\:(\w|-)+(\([^\)]+\))?|\[[^\}]+\])*)*\)/gi
 	    },
 		
+		map = {
+			'class': 'className',
+			'for': 'htmlFor'
+		},
+		
 		_uid = 0  ;
 	
 	// Filters a list of elements for uniqueness.
@@ -54,11 +59,7 @@ document.queryDom = (function(){
 	
 	// inspired by EXT
 	function getAttribute( e, a ){
-		if( !e ) return null;
-		if( a === "class" || a === "className" )
-			return e.className;
-		if( a === "for" ) 
-			return e.htmlFor;	
+		e = map[e] || e;	
 		return e.getAttribute( a ) || e[a];
 	}
 	
