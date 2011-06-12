@@ -77,19 +77,6 @@
 					new MYCLASS5().a(4,5);
 					new MYCLASS6().a(6,9);
 				}],
-				["Class.extend", function(){ 
-					var MYCLASS = new Class({
-						types : [],
-						setA: log,
-						constructor: function(args){
-							Class.extend(this, args);
-							log(this.types);
-							assert(this.types.length == 1);
-						}
-					});
-					
-					var instance = new MYCLASS({a: 's', types:[2]});
-				}],
 				["Class.addEvents", function(){ 
 					var MYCLASS = new Class({
 						constructor: function(){
@@ -124,12 +111,6 @@
 					});
 					
 					new MYSCLASS().on('click', log);
-				}],
-				["Class.addCallback", function(){ 
-					var a = {click: function(){log(1);}}, flag = false;
-					Class.addCallback(a, 'click',function(){flag = true, log(2);} );
-					a.click();
-					assert(flag);
 				}]
 			];
 			
