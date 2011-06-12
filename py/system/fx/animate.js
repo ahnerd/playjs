@@ -153,7 +153,7 @@ Py.using("System.Fx.Base");
 		/**
 		 * @class Element
 		 */
-		pfe = p.namespace("Py.Fx", "Fx", p.Fx.Base.extend({
+		pfe = p.namespace(".Fx.Fx", p.Fx.Base.extend({
 			
 			current: null,
 			
