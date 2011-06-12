@@ -546,10 +546,40 @@ var Py = {
 			 */
 			set: function(obj, config) {
 				
-				// 对每项进行复制。
-				o.each(config, extendClass, obj);
+				if(!config)
+					return;
 				
-				return obj;
+				for(var key in config){
+					
+					// 检查 setValue 。
+					var setter = 'set' + key.capitalize(),
+						val = config[key];
+			
+			
+					if (o.isFunction(obj[setter])) {
+						obj[setter](val);
+					} 
+					
+					// 是否存在函数。
+					else if(o.isFunction(obj[key])) {
+						obj[key](val);
+					}
+					
+					// 检查 value.set 。
+					else if (obj[key] && obj[key].set) {
+						obj[key].set(val);
+					} 
+					
+					// 检查 set 。
+					else if(obj.set)
+						obj.set(key, val);
+					else
+					
+						// 最后，就直接赋予。
+						obj[key] = val;
+			
+				}
+				
 			},
 			
 			/**
@@ -2294,46 +2324,6 @@ var Py = {
      */
 	function getElementById(id) {  
 		return typeof id == "string" ? document.getElementById(id) : id;
-	}
-	
-	/**
-	 * 扩展类。
-	 * @param {Object} v 值。
-	 * @param {String} k 键。
-	 */
-	function extendClass(v, k) {
-				
-		var obj = this,
-		
-		// 检查 setValue 。
-			setter = 'set' + k.capitalize();
-
-
-		if (o.isFunction(obj[setter])) {
-			obj[setter](v);
-			return;
-		} 
-		
-		// 是否存在函数。
-		if(o.isFunction(obj[k])) {
-			obj[k](v);
-			return;
-		}
-		
-		// 检查 value.set 。
-		if (obj[k] && obj[k].set) {
-			obj[k].set(v);
-			return;
-		} 
-		
-		// 检查 set 。
-		if(obj.set)
-			obj.set(k, v);
-		else
-		
-			// 最后，就直接赋予。
-			obj[k] = v;
-		
 	}
 	
 	/**
