@@ -7,7 +7,7 @@
  * 控件集合。
  * @class CollectionBase
  */
-Py.namespace("Py.Data", "CollectionBase", Py.Class({
+Py.namespace(".Data.CollectionBase", Py.Class({
 		
 	length: 0,
 	

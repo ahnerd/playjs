@@ -52,12 +52,6 @@
 		o = Object,
 		
 		/**
-		 * "Py" 简写。
-		 * @type String
-		 */
-		PY = "Py",
-		
-		/**
 		 * 空函数。
 		 * @type Function
 		 */
@@ -120,7 +114,7 @@
 		 * renderTo - 渲染控件到文档。 不建议重写，如果你希望额外操作渲染事件，则重写。
 		 * dispose - 删除控件。不建议重写，如果一个控件用到多个 dom 内容需重写。
 		 */
-		Control = p.namespace(PY, "Control", p.Class({
+		Control = p.namespace(".Control", p.Class({
 			
 			/**
 			 * 封装的节点。
@@ -179,7 +173,7 @@
 				me.init(t);
 				
 				// 复制各个选项。
-				p.Class.extend(me, t);
+				Object.set(me, t);
 			},
 			
 			/**
@@ -344,7 +338,7 @@
      * 节点集合。
      * @class ElementList
      */
-    p.namespace(PY, "ElementList", p.Class({
+    p.namespace(".ElementList", p.Class({
 
         /**
          * 初始化 ElementList  实例。
@@ -664,7 +658,7 @@
 				e.srcElement = e.target.nodeType === 3 ? e.target.parentNode : e.target;
 
             //重写  preventDefault
-            p.Class.addCallback(e, 'preventDefault', pep.preventDefault);
+            Object.addCallback(e, 'preventDefault', pep.preventDefault);
 
         };
 		
@@ -1555,7 +1549,7 @@
 		 * @class Point
 		 * @memberOf Py.Drawing
 		 */
-		Point = p.namespace(PY, "Point", p.Class({
+		Point = p.namespace(".Point", p.Class({
 			
 			/**
 			 * 初始化 Point 的实例。
@@ -1575,8 +1569,6 @@
 			 * @return {Point} this
 			 */
 			set: function(x, y) {
-			
-		   		assert(typeof x == 'number' && typeof y == 'number', "Point.prototype.set(x, y): 参数 x 和 参数 y 必须是数字。");
 				
 				this.x = x;
 				this.y = y;
@@ -2069,7 +2061,7 @@
 	 */
 	function getScroll() {
 		var doc = this.getDom();
-		assert(elem, "Element.prototype.getScroll(): this.getDom() 必须返回 DOM 节点。");
+		assert(doc, "Element.prototype.getScroll(): this.getDom() 必须返回 DOM 节点。");
 		return new Point(doc.scrollLeft, doc.scrollTop);
 	}
 
@@ -2568,7 +2560,7 @@
 					break;
 			 }
 			 
-			 return Py.$(html);
+			 return p.$(html);
 		} : function(html, swhere) {
 			
 			var me = this.getDom();
@@ -2850,7 +2842,7 @@
 				elem.clearAttributes();
 			}
 
-			Py.IEvent.un.call(elem);
+			p.IEvent.un.call(elem);
 
 			if (elem.nodeName === "OBJECT") {
 				for (var p in elem) {

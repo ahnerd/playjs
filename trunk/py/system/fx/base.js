@@ -32,7 +32,7 @@
 	 * @class Base
 	 * @abstract
 	 */
-	p.namespace("Py.Fx", {
+	p.namespace(".Fx", true, {
 	
 		Base: p.Class({
 			
