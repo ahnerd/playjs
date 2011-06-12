@@ -33,13 +33,17 @@
 				["trace.clear", function(){ return trace.clear(); }],
 				["trace.empty", function(){ return trace.empty(); }],
 				["trace.ifNot", function(){ return trace.ifNot(false, "d"); }],
+				["trace.test", function(){ return trace.test(trace); }],
 				["trace.runTime", function(){ return trace.runTime(trace); }],
-				["assert", function(){   return assert(false,'ssss');   }],
+				["assert", function(){   return assert(false,'{v} <- ?', 6);   }],
+				["assert.isFunction", function(){   return assert.isFunction(3,'{v} <- ?');   }],
+				["assert.isArray", function(){   return assert.isArray(5,'{v} ~');   }],
+				["assert.isObject", function(){   return assert.isObject(5,'{v} ~');   }],
+				["assert.isString", function(){   return assert.isString(5,'{v} ~');   }],
 				["assert.notNull", function(){ return assert.notNull(null,"ssss"); }],
 				["assert.between", function(){ return assert.between(1,-2,5,"sss"); }],
 				["assert.instanceOf", function(){ return assert.instanceOf("a", String, "sss"); }],
-				["assert.notEmpty", function(){ return assert.notEmpty([],"ssss"); }],
-				["assert.notStatic", function(){ return assert.notStatic([], "wqewe"); }]
+				["assert.notEmpty", function(){ return assert.notEmpty([],"ssss"); }]
 			];
 		
 		</script>
