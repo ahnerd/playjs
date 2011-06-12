@@ -12,7 +12,7 @@
 	<body>
 		<script>
 			var fns = [
-				["namespace", function(){return namespace("MyName","MyClass", {a:1});}, function(){assert(window.MyClass);}],
+				["namespace", function(){return namespace("MyName.MyClass", {a:1});}, function(){assert(MyName.MyClass);}],
 				["using", function(){return using("System.Ajax.Ajax");}]
 			];
 		
