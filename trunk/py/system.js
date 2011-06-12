@@ -2,6 +2,15 @@
 //  PyJs v0.4
 //===========================================
 
+
+//
+// DefaultConfig -  使用默认设置。
+// Html  -   只支持 HTML5， 支持 IE9+ FF3+ Chrome10+ Opera10+ Safari4+ 。
+// Std   -     只支持 IE8+ FF3+ Chrome1+ Opera10+ Safari4+ 。
+// Framework -  不支持 using 等。
+// Global  -   不污染全局对象。
+
+
 /// #ifdef DefaultConfig
 
 /**
@@ -12,22 +21,36 @@ var Py = {
 	
 	/**
 	 * 是否打开调试。
-	 * @type Boolean
+	 * @config {Boolean}
 	 * @ignore
 	 */
 	debug: true,
 
 	/**
 	 * 根目录。
-	 * @type String
+	 * @config {String}
 	 * 程序会自动搜索当前脚本的位置为跟目录。
 	 * @ignore
 	 */
 	rootPath: undefined,
 	
 	/**
+	 * 默认的全局名字空间。
+	 * @config {String}
+	 * @ignore
+	 */
+	defaultNamespace: 'Py',
+	
+	/**
+	 * 如果使用了 UI 库，则 theme 表示默认皮肤。
+	 * @config {String}
+	 * @ignore
+	 */
+	theme: 'default',
+	
+	/**
 	 * 启用控制台调试。
-	 * @type Boolean 
+	 * @config {Boolean} 
 	 * 如果不存在控制台，将自动调整为 false 。
 	 * @ignore
 	 */
@@ -53,13 +76,8 @@ var Py = {
 (function(w) {
 	
 	/// #define PyJs
-	/// #namespace System
-	//
-	// 可选宏: 
-	//   Html:   只支持 HTML5， 支持 IE9+ FF3+ Chrome10+ Opera10+ Safari4+
-	//   Std:    只支持 IE8+ FF3+ Chrome1+ Opera10+ Safari4+
-	//
-	// 默认支持:  IE6+ FF2+ Chrome1+ Opera8+ Safari4+ 。
+	
+	
 
 	/// #region 全局变量
 	
@@ -152,6 +170,10 @@ var Py = {
 		 */
 		Element = w.Element || function() {},
 		
+		/**
+		 * @class
+		 */
+		
 		/// #else
 		
 		/// isQuirks = false,
@@ -163,6 +185,7 @@ var Py = {
 		/**
 		 * 管理所有事件类型的工具。
 		 * @type Object
+		 * @private
 		 */
 		eventMgr = {
 			
@@ -238,13 +261,14 @@ var Py = {
 		
 		/**
 		 * Object  简写。
-		 * @namespace Object
+		 * @class Object
 		 */
 		o = apply(Object, {
 	
 			/**
 			 * 如果目标成员不存在就复制对象的所有属性到其它对象。 
-			 * @method extendIf
+			 * @static
+			 * @method
 			 * @param {Object} dest 复制目标。
 			 * @param {Object} obj 要复制的内容。
 			 * @return {Object} 复制后的对象。
@@ -254,7 +278,8 @@ var Py = {
 	
 			/**
 			 * 复制对象的所有属性到其它对象。 
-			 * @method extend
+			 * @static
+			 * @method
 			 * @param {Object} dest 复制目标。
 			 * @param {Object} obj 要复制的内容。
 			 * @return {Object} 复制后的对象。
@@ -270,7 +295,9 @@ var Py = {
 				for(var item in {toString: true})
 					return apply;
 				
-				var members = ["toString", "hasOwnProperty"]
+				// IE6  需要复制
+				
+				var members = ["toString", "hasOwnProperty"];
 				return function(dest, src){
 					for(var i = members.length, value; i--;)
 						if(hasOwnProperty.call(src, value = members[i]))
@@ -278,47 +305,10 @@ var Py = {
 					return apply(dest, src);
 				}
 			})(),
-			
-			/**
-			 * 不用 eval() 方法返回变量的值。 
-			 * @method value
-			 * @param {Object/String} path 变量路径或变量自身。
-			 * @param {Object} [root] 开始位置。
-			 * @return 返回的值，如果位置已经为变量直接返回。
-			 * @example
-			 * <code>
-			 * var obj={a: 'aaa'};
-			 * alert(Object.value('obj.a'));//aaa
-			 * obj=new function() {this.a="bbb"};
-			 * alert(Object.value('obj.a'));//bbb
-			 * current.target
-			 * alert(Object.value('s'));//object 空对象 s={}; 
-			 *</code>
-			 */
-			value: function(path, root) {
-				
-				assert(path, "Object.value(path, root): 参数 path 不能为空。");
-				
-				// 依次遍历。
-				for (var obj = root || w, i = 0, t, n = path.split ? path.split('.') : path; t = n[i]; ++i) {
-					
-					// 如果对象空。
-					if (obj[t] == undefined) {
-							
-						// 创建空对象，用于下次继续循环。
-						obj[t] = {};
-					}
-					
-					// 进行第二次循环。
-					obj = obj[t];
-				}
-	
-				return obj;
-			},
 	
 			/**
 			 * 在原有可迭代对象遍历。
-			 * @method each
+			 * @static
 			 * @param {Array/Object} iterable 对象，不支持函数。
 			 * @param {Function} fn 执行的函数。参数 value (值), key|index (键), iterable (对象)。
 			 * @param {Object} bind 迭代函数的环境变量。
@@ -367,7 +357,7 @@ var Py = {
 	
 			/**
 			 * 更新可迭代对象。
-			 * @method update
+			 * @static
 			 * @param {Array/Object} iterable 对象。
 			 * @param {String/Function} fn 属性/执行的函数。参数 value。如果函数返回 undefined , 则不更新。
 			 * @param {Object} dest=iterable 更新目标。
@@ -418,7 +408,7 @@ var Py = {
 	
 			/**
 			 * 判断一个变量是否是引用变量。
-			 * @method isObject
+			 * @static
 			 * @param {Object} object 变量。
 			 * @return {Boolean} 所有 {} 和 new Object() 对象变量返回 true。
 			 */
@@ -430,7 +420,7 @@ var Py = {
 	
 			/**
 			 * 判断一个变量是否是数组。
-			 * @method isArray
+			 * @static
 			 * @param {Object} object 变量。
 			 * @return {Boolean} 判断是否数组。
 			 */
@@ -442,7 +432,7 @@ var Py = {
 	
 			/**
 			 * 判断一个变量是否是函数。
-			 * @method isFunction
+			 * @static
 			 * @param {Object} object 变量。
 			 * @return {Boolean} 判断是否是函数。
 			 */
@@ -454,7 +444,7 @@ var Py = {
 			
 			/**
 			 * 返回一个变量的类型的字符串形式。
-			 * @method type
+			 * @static
 			 * @param {Object} obj 变量。
 			 * @return {String} 所有可以返回的字符串：  string  number   boolean   undefined	null	array	function   element  class   date   regexp object。
 			 */
@@ -478,7 +468,7 @@ var Py = {
 	
 			/**
 			 * 深拷贝一个对象本身, 不深复制函数。
-			 * @method clone
+			 * @static
 			 * @param {Object} obj 对象。
 			 * @return {Object} 复制的对象。
 			 * @example
@@ -510,6 +500,54 @@ var Py = {
 				}
 				
 				return obj;
+			},
+			
+			/**
+			 * 将一个对象解析成一个类的属性。
+			 * @static
+			 * @param {Object} obj 类实例。
+			 * @param {Object} config 参数。
+			 */
+			set: function(obj, config) {
+				
+				// 对每项进行复制。
+				o.each(config, extendClass, obj);
+				
+				return obj;
+			},
+			
+			/**
+			 * 添加一个对象的成员函数调用结束后的回调函数。
+			 * @static
+			 * @param {Object} obj 对象。
+			 * @param {String} name 成员函数名。
+			 * @param {Function} fn 对象。
+			 * @return {Object} 对象。
+			 * @example  Object.addCallback(window, "onload",trace.empty);
+			 */
+			addCallback: function(obj, name, fn) {
+				
+				assert(obj, 'Object.addCallback(obj, name, fn): 参数 obj 不能为空。');
+				
+				assert(o.isFunction(fn), 'Object.addCallback(obj, name, fn): 参数 fn 必须是函数。');
+				
+				// 获取已有的句柄。
+				var f = obj[name];
+				
+				// 如果不存在则直接拷贝，否则重新拷贝。新函数对原函数调用。
+				obj[name] = typeof f === 'function' ? function() {
+					
+					// 获取上次的函数。
+					var v = f.apply(this, arguments);
+					
+					// 调用回调函数。
+					fn.apply(this, arguments);
+					
+					// 返回原值。
+					return v;
+					
+				} : fn;
+				return obj;
 			}
 	
 		}),
@@ -523,7 +561,7 @@ var Py = {
 		hasOwnProperty = o.prototype.hasOwnProperty,
 		
 		/**
-		 * @class Class
+		 * @class Py.Class
 		 */
 		np = Native.prototype = {
 		
@@ -577,12 +615,14 @@ var Py = {
 				// 如果有自定义事件，则添加。
 				if (events) {
 					
+					var xType = hasOwnProperty.call(ep, 'xType') ? ep.xType : ( ep.xType = (p.id++).toString() );
+					
 					// 更新事件对象。
 					o.update(events, function(e) {
 						return applyIf(e, eventMgr.$default);
 						
 						// 添加 Py.Events 中事件。
-					}, o.value(hasOwnProperty.call(ep, 'xType') ? ep.xType : (ep.xType = (p.id++).toString()), eventMgr));
+					}, eventMgr[xType] || (eventMgr[xType] = {}));
 				
 				}
 				
@@ -601,10 +641,6 @@ var Py = {
 		
 				// 未指定函数   使用默认构造函数(Object.prototype.constructor);
 				
-				/**
-				 * 初始化类。
-				 * @constructor Class
-				 */ 
 				var constructorDefined = hasOwnProperty.call(members =  members instanceof Function ? {
 						constructor: members
 					} : (members || {}), "constructor"),
@@ -677,7 +713,7 @@ var Py = {
 		 * Py静态对象。
 		 * @namespace Py
 		 */
-		p = namespace('Py', {
+		p = namespace('Py', true, {
 			
 			/**
 			 * 管理所有事件类型的工具。
@@ -696,9 +732,8 @@ var Py = {
 	
 			/**
 		     * 根据一个 id 或 对象获取节点。
-			 * @method $
+			 * @method
 		     * @param {String/Element} id 对象的 id 或对象。
-			 * @memberOf window, Py
 		     */
 			$: isQuirks ? function(id){
 				var dom = getElementById(id);
@@ -716,18 +751,18 @@ var Py = {
 			
 			/// $: getElementById,
 			
-			/// #endif     
+			/// #endif
 			
 			/**
 			 * 获取属于一个元素的数据。
-			 * @method data
+			 * @static
 			 * @param {Object} obj 元素。
 			 * @param {String} type 类型。
 			 * @return {Object} 值。
 			 */
 			data: function (obj, type) {
 				
-				assert(o.isObject(obj) || o.isFunction(obj), "Py.data(obj, type): 参数 obj 必须是一个引用类型。");
+				assert(obj, "Py.data(obj, type): 参数 obj 必须是一个引用类型。");
 				
 				// 创建或测试。
 				var d = obj.data || (obj.data = {}) ;
@@ -738,14 +773,14 @@ var Py = {
 		
 			/**
 			 * 如果存在，获取属于一个元素的数据。
-			 * @method dataIf
+			 * @static
 			 * @param {Object} obj 元素。
 			 * @param {String} type 类型。
 			 * @return {Object} 值。
 			 */
 			dataIf:function (obj, type) {
 				
-				assert(o.isObject(obj) || o.isFunction(obj), "Py.dataIf(obj, type): 参数 obj 必须是一个引用类型。");
+				assert(obj, "Py.dataIf(obj, type): 参数 obj 必须是一个引用类型。");
 				
 				// 获取变量。
 				var d = obj.data;
@@ -792,7 +827,9 @@ var Py = {
 						}
 					}
 				}
-			},
+			}, 
+			
+			/// #ifndef Framework
 		
 			/**
 			 * 全部已载入的名字空间。
@@ -802,7 +839,6 @@ var Py = {
 			
 			/**
 			 * 同步载入文本。
-			 * @method loadText
 			 * @param {String} uri 地址。
 			 * @param {Function} callback 对返回值的处理函数。
 			 * @return {String} 载入的值。
@@ -845,10 +881,12 @@ var Py = {
 				return null;
 	
 			},
+			
+			/// #endif
 	
 			/**
 			 * 全局运行一个函数。
-			 * @method eval
+			 * @method
 			 * @param {String} statement 语句。
 			 * @return {Object} 执行返回值。
 			 */
@@ -858,7 +896,12 @@ var Py = {
 				return w.eval(statement);
 			},
 			
-			addCss: document.createStyleSheet ?function(text){
+			/**
+			 * 动态增加一个函数。
+			 * @param {String} statement 语句。
+			 * @return {Object} 执行返回值。
+			 */
+			addCss: document.createStyleSheet ? function(text){
 				document.createStyleSheet().cssText = text;
 			} : function(text) {
 				var style = document.createElement('STYLE');
@@ -868,23 +911,21 @@ var Py = {
 			
 			/**
 			 * 创建一个类。
-			 * @method Class
+			 * @method
 			 * @param {Object/Function} methods 用于创建类的对象。/ 用于创建类的构造函数。
 			 * @param {Boolean} quick=true 如果 true 那么这个类只能有1个实例，且不能复制，这会明显地提高创建类实例效率。
 			 * @return {Class} 生成的类。
-			 * @sdoc window.Class
 			 */
 			Class: Class,
 			
 			/**
 			 * 表示一个事件接口。
-			 * @namespace Py.IEvent
+			 * @interface Py.IEvent
 			 */
 			IEvent: {
 			
 				/**
 				 * 增加一个监听者。
-				 * @method on
 				 * @param {String} type 监听名字。
 				 * @param {Function} fn 调用函数。
 				 * @return Object this
@@ -945,14 +986,13 @@ var Py = {
 				
 				/**
 				 * 增加一个只执行一次的监听者。
-				 * @method one
 				 * @param {String} type 监听名字。
 				 * @param {Function} fn 调用函数。
 				 * @return Object this
 				 */
 				one: function(type, fn) {
 					
-					assert(o.isFunction(fn), 'IEvent.on(type, fn): 参数 fn 必须是可执行的函数。');
+					assert(o.isFunction(fn), 'IEvent.one(type, fn): 参数 fn 必须是可执行的函数。');
 					
 					
 					return this.on(type, function() {
@@ -967,7 +1007,6 @@ var Py = {
 				
 				/**
 				 * 删除一个监听器。
-				 * @method un
 				 * @param {String} [type] 监听名字。
 				 * @param {Function/undefined} fn 回调器。
 				 * @return Object this
@@ -1002,7 +1041,6 @@ var Py = {
 				
 				/**
 				 * 触发一个监听器。
-				 * @method trigger
 				 * @param {String} type 监听名字。
 				 * @param {Object/undefined} e 事件参数。
 				 * @return Object this
@@ -1020,14 +1058,13 @@ var Py = {
 			
 			/**
 			 * 所有类的基类。
-			 * @namespace Py.Object
+			 * @class Py.Object
 			 */
 			Object: Native(from).implement({
 				
 				/**
 				 * 调用父类的构造函数。
-				 * @method base
-				 * @return {mixed} 父类返回。
+				 * @return {Object} 父类返回。
 				 */
 				base: function() {
 					
@@ -1037,11 +1074,10 @@ var Py = {
 				
 				/**
 				 * 调用父类的成员变量。
-				 * @method baseCall
 				 * @param {Class} me 当前类。
 				 * @param {Class} args 调用的参数数组。
 				 * @param {String} name 属性名。
-				 * @return {mixed} 父类返回。
+				 * @return {Object} 父类返回。
 				 */
 				baseCall: function(name, args) {
 					
@@ -1081,6 +1117,7 @@ var Py = {
 				
 				/**
 				 * 创建当前 Object 的浅表副本。
+				 * @return {Object} 当前变量的副本。
 				 */
 				memberwiseClone : function(){
 					
@@ -1098,38 +1135,41 @@ var Py = {
 				}
 			
 			}),
+			
+			/// #ifndef Framework
 	
 			/**
 			 * 使用一个名空间。
-			 * @method using
+			 * @method
 			 * @param {String} name 名字空间。
-			 * @param {Function} callBack 处理函数。
-			 * @return Boolean 是否成功载入。
-			 * @sdoc window.using
 			 */
 			using: include,
 	
 			/**
 			 * 定义名字空间。
-			 * @method namespace
 			 * @param {String} name 名字空间。
-			 * @param {String} className 类的名字。
-			 * @param {Object} obj 值。
-			 * @sdoc window.namespace
+			 * @param {Object/Boolean} obj 值。
+			 * @param {Object} value 如果 obj 为 true， value 指示复制的成员。
 			 */
 			namespace: namespace,
 			
+			/**
+			 * 导入一个名字空间的资源。
+			 * @param {String} resource 资源地址。
+			 * @param {Array} [theme] 主题。
+			 */
 			imports: function (resource, theme){
 				include(resource, theme, true);
 			},
+			
+			/// #endif
 								
 			/**
 			 * 绑定一个监听器。
-			 * @method addListener
 			 * @param {Element} elem 元素。
 			 * @param {String} type 类型。
 			 * @param {Function} fn 函数。
-			 * @see Py.removeListener
+			 * @seeAlso Py.removeListener
 			 */
 			addEventListener: document.addEventListener ? function( type, fn) {
 				this.addEventListener(type, fn, false);
@@ -1141,11 +1181,10 @@ var Py = {
 			
 			/**
 			 * 移除一个监听器。
-			 * @method removeListener
 			 * @param {Element} elem 元素。
 			 * @param {String} type 类型。
 			 * @param {Function} fn 函数。
-			 * @see Py.addListener
+			 * @seeAlso Py.addListener
 			 */
 			removeEventListener: document.removeEventListener ? function(type, fn) {
 				this.removeEventListener(type, fn, false);
@@ -1157,7 +1196,6 @@ var Py = {
 			
 			/**
 			 * 定义事件。 
-			 * @method defineDomEvents
 			 * @param {String} 事件名。
 			 * @param {Function} trigger 触发器。
 			 * @return {Function} Py.defineDomEvents
@@ -1197,14 +1235,19 @@ var Py = {
 				// 方便继续使用本函数，如果重命名，返回事件对象，否则返回此函数。
 				return baseEvent ? ee[events] : arguments.callee;
 			},
+		
+			/**
+			 * id种子 。
+			 * @type Number
+			 */
+			id: Date.now() % 100,
 	
 			/**
 			 * 由存在的类修改创建类。即为类添加一个 implement 和 implementIf 成员。
-			 * @method Native
+			 * @method
 			 * @param {Function/Class} nativeClass 将创建的类。
-			 * @see Py.Class
+			 * @seeAlso Py.Class
 			 * @return {Class} 生成的类。
-			 * @remark 
 			 * 如果引入 System.Core.Native
 			 * Native和Class一样，生成一个类，但Native是在原有对象或类（包括JavaScript内置对象）上转成类。见示例。
 			 * <code>
@@ -1217,24 +1260,21 @@ var Py = {
 			 * </code>
 			 */
 			Native: Native,
-				
+	
 			/**
-			 * 页面加载时执行。
-			 * @param {Functon/undefined} fn 执行的函数。
-			 * @memberOf document
+			 * 默认的全局名字空间。
 			 */
-			ready: function(fn) {
-				
-				// 已经完成则执行函数，否则 on 。
-				document.isReady ? fn.call(document) : document.on('ready', fn);
-				
-			},
+			defaultNamespace: 'Py',
+			
+			/**
+			 * 主题。
+			 * @type String
+			 */
+			theme: 'default',
 			
 		    /**
 		     * 将窗口对象本地化。
-			 * @method setupWindow
 		     * @param {Window} w 窗口。
-		     * @memberOf Py
 		     */
 		    setupWindow: function(w) {
 					
@@ -1270,9 +1310,15 @@ var Py = {
 		        if (!('defaultView' in wd)) wd.defaultView = wd.parentWindow;
 		        
 				/// #endif
+				
+				/// #ifndef Global
 	
 				// 将以下成员赋予 window ，这些成员是全局成员。
-				String.map('$ ready Class addEventListener removeEventListener using imports data setData namespace dataIf', p, w, true);
+				String.map('$ Class addEventListener removeEventListener using imports namespace', p, w, true);
+				
+				/// #endif
+				
+				
 				w.undefined = w.undefined;
 				
 				
@@ -1292,15 +1338,15 @@ var Py = {
 
 	/**
 	 * 数组。
-	 * @namespace Array
+	 * @class Array
 	 */
 	applyIf(Array, {
 
 		/**
 		 * 在原有可迭代对象生成一个数组。
-		 * @method create
+		 * @static
 		 * @param {Object} iterable 可迭代的实例。
-		 * @param {Number} start (默认 0)开始的位置。
+		 * @param {Number} start=0 开始的位置。
 		 * @return {Array} 复制得到的数组。
 		 */
 		create: function(iterable, start) {
@@ -1321,10 +1367,10 @@ var Py = {
 		},
 
 		/**
-		 * 连接数组。
-		 * @method plain
-		 * @param {Array} ... 数据成员。
-		 * @return 新数组。
+		 * 把传入的值连接为新的数组。如果元素本身是数组，则合并。此函数会过滤以存在的值。
+		 * @static
+		 * @param {Object} ... 数据成员。
+		 * @return {Array} 新数组。
 		 */
 		plain: function() {
 
@@ -1348,13 +1394,14 @@ var Py = {
 
 	/**
 	 * 函数。
-	 * @namespace Function
+	 * @class Function
 	 */
 	apply(Function, {
 		
 		/**
 		 * 空函数。
-		 * @property empty
+		 * @static
+		 * @property
 		 * @type Function
 		 * Function.empty返回空函数的引用。
 		 */
@@ -1362,21 +1409,23 @@ var Py = {
 
 		/**
 		 * 一个返回 true 的函数。
-		 * @property returnTrue
+		 * @static
+		 * @property
 		 * @type Function
 		 */
 		returnTrue: from(true),
 
 		/**
 		 * 一个返回 false 的函数。
-		 * @property returnFalse
+		 * @static
+		 * @property
 		 * @type Function
 		 */
 		returnFalse: from(false),
 		
 		/**
 		 * 绑定函数作用域。
-		 * @method bind
+		 * @static
 		 * @param {Function} fn 函数。
 		 * @param {Object} bind 位置。
 		 */
@@ -1392,6 +1441,7 @@ var Py = {
 		
 		/**
 		 * 返回自身的函数。
+		 * @static
 		 */
 		from: from
 		
@@ -1399,17 +1449,18 @@ var Py = {
 
 	/**
 	 * 字符串。
-	 * @namespace String
+	 * @class String
 	 */
 	apply(String, {
 
 		/**
 		 * 格式化字符串。
-		 * @method format
+		 * @static
 		 * @param {String} format 字符。
 		 * @param {Object} object 数组或对象。
 		 * @param {Object} ... 参数。
 		 * @return {String} 格式化后的字符串。
+		 * @example
 		 * <code>
 		 *  String.format("{0}转换", 1); //  "1转换"
 		 *  String.format("{1}翻译",0,1); // "1翻译"
@@ -1441,7 +1492,7 @@ var Py = {
 		
 		/**
 		 * 将一个数组源形式的字符串内容拷贝。
-		 * @method map
+		 * @static
 		 * @param {Object} str 字符串。用空格隔开。
 		 * @param {Object/Function} source 更新的函数或源。
 		 * @param {Object} [dest] 目标。
@@ -1467,6 +1518,7 @@ var Py = {
 		
 		/**
 		 * 返回变量的地址形式。
+		 * @static
 		 * @param {Object} obj 变量。
 		 * @return {String} 字符串。
 		 */
@@ -1481,71 +1533,14 @@ var Py = {
 	});
 	
 	/**
-	 * 所有的类。
-	 * @namespace Class
-	 */
-	apply(Class, {
-		
-		/**
-		 * 将一个对象解析成一个类的属性。
-		 * @method extend
-		 * @param {Object} obj 类实例。
-		 * @param {Object} config 参数。
-		 * @param {Object} [dft] 默认。
-		 */
-		extend: function(obj, config) {
-			
-			// 对每项进行复制。
-			o.each(config, extendClass, obj);
-			
-			return obj;
-		},
-		
-		/**
-		 * 添加一个对象的成员函数调用结束后的回调函数。
-		 * @method addCallback
-		 * @param {Object} obj 对象。
-		 * @param {String} name 成员函数名。
-		 * @param {Function} fn 对象。
-		 * @return {Object} 对象。
-		 * @example  Class.addCallback(window, "onload",trace.empty);
-		 */
-		addCallback: function(obj, name, fn) {
-			
-			assert(obj, 'Class.addCallback(obj, name, fn): 参数 obj 不能为空。');
-			
-			assert(o.isFunction(fn), 'Class.addCallback(obj, name, fn): 参数 fn 必须是函数。');
-			
-			// 获取已有的句柄。
-			var f = obj[name];
-			
-			// 如果不存在则直接拷贝，否则重新拷贝。新函数对原函数调用。
-			obj[name] = typeof f === 'function' ? function() {
-				
-				// 获取上次的函数。
-				var v = f.apply(this, arguments);
-				
-				// 调用回调函数。
-				fn.apply(this, arguments);
-				
-				// 返回原值。
-				return v;
-				
-			} : fn;
-			return obj;
-		}
-		
-	});
-	
-	/**
 	 * 日期。
-	 * @namespace Date
+	 * @class Date
 	 */
 	applyIf(Date, {
 		
 		/**
 		 * 获取当前时间。
-		 * @method now
+		 * @static
 		 * @return {Number} 当前的时间点。
 		 */
 		now: function() {
@@ -1556,20 +1551,26 @@ var Py = {
 	
 	/// #endregion
 	
+	/**
+	 * @namespace document
+	 */
 	applyIf(document, {
 				
 		/**
 		 * 页面加载时执行。
 		 * @param {Functon/undefined} fn 执行的函数。
-		 * @memberOf document
 		 */
-		ready: p.ready,
+		ready: function(fn) {
+				
+			// 已经完成则执行函数，否则 on 。
+			document.isReady ? fn.call(document) : document.on('ready', fn);
+			
+		},
 		
 		/// #ifndef Html
 		
 		/**
 		 * 绑定一个监听器。
-		 * @method addEventListener
 		 * @param {String} type 类型。
 		 * @param {Function} fn 函数。
 		 */
@@ -1577,7 +1578,6 @@ var Py = {
 		
 		/**
 		 * 移除一个监听器。
-		 * @method removeEventListener   
 		 * @param {String} type 类型。
 		 * @param {Function} fn 函数。
 		 */
@@ -1619,7 +1619,7 @@ var Py = {
 
 	/**
 	 * 浏览器。
-	 * @namespace nv
+	 * @namespace navigator
 	 */
 	applyIf(nv, (function(ua) {
 
@@ -1632,48 +1632,69 @@ var Py = {
 			//详细信息
 			fullBrowser = browser + match[3];
 		
-		/**
-		 * 浏览器信息。
-		 * @property isIE isFirefox isChrome isOpera isSafari
-		 * @type Boolean 是否为某个名字的浏览器。
-		 * @alias nv.isIE, nv.isFirefox, nv.isChrome, nv.isOpera, nv.isSafari
-		 */
+		
 		nv["is" + browser] = nv["is" + fullBrowser] = true;
+		
+		/**
+		 * 获取一个值，该值指示是否为 IE 浏览器。
+		 * @getter isIE
+		 * @type Boolean
+		 */
+		
+		
+		/**
+		 * 获取一个值，该值指示是否为 Firefox 浏览器。
+		 * @getter isFirefox
+		 * @type Boolean
+		 */
+		
+		/**
+		 * 获取一个值，该值指示是否为 Chrome 浏览器。
+		 * @getter isChrome
+		 * @type Boolean
+		 */
+		
+		/**
+		 * 获取一个值，该值指示是否为 Opera 浏览器。
+		 * @getter isOpera
+		 * @type Boolean
+		 */
+		
+		/**
+		 * 获取一个值，该值指示是否为 Safari 浏览器。
+		 * @getter isSafari
+		 * @type Boolean
+		 */
 		
 		//结果
 		return {
 			
 			/**
 			 * 浏览器信息。
-			 * @property browser
 			 * @type String
 			 */
 			browser: browser,
 			
 			/**
 			 * 浏览器版本。
-			 * @property version
 			 * @type String
 			 */
 			version: match[2],
 			
 			/**
 			 * 浏览器详细信息。
-			 * @property fullBrowser
 			 * @type String
 			 */
 			fullBrowser: fullBrowser,
 			
 			/**
 			 * 是否为标准浏览器模式。IE6,7不被认为是标准的。
-			 * @property isQuirks
 			 * @type Boolean
 			 */
 			isQuirks: isQuirks,
 			
 			/**
 			 * 是否为标准浏览器事件。
-			 * @property isQuirks
 			 * @type Boolean
 			 */
 			isStd: !!-[1,]
@@ -1689,24 +1710,18 @@ var Py = {
 	/// #region 内部函数
 
 	/**
-	 * 类型。
-	 * @property xType
-	 * @type String
-	 * @memberOf Date.prototype
+	 * xType。
 	 */
 	Date.prototype.xType = "date";
 	
 	/**
-	 * 类型。
-	 * @property xType
-	 * @type String
-	 * @memberOf RegExp.prototype
+	 * xType。
 	 */
 	RegExp.prototype.xType = "regexp";
 	
 	
 	// 把所有内建对象本地化
-	forEach.call([String, Array, Function, Date, Class, Element, Number], Native);
+	forEach.call([String, Array, Function, Date, Element, Number], Native);
 	
 	/**
 	 * @class String 
@@ -1715,10 +1730,8 @@ var Py = {
 		
 		/**
 	     * 转为骆驼格式。
-	     * @method toCamelCase
 	     * @param {String} value 内容。
 	     * @return {String} 返回的内容。
-	     * @memberOf String
 	     */
 		toCamelCase: function() {
 	        return this.replace(rToCamelCase, toCamelCase);
@@ -1728,7 +1741,6 @@ var Py = {
 
 		/**
 		 * 去除首尾空格。
-		 * @method trim
 		 * @return {String}    处理后的字符串。
 		 */
 		trim: function() {
@@ -1741,7 +1753,6 @@ var Py = {
 		
 		/**
 		 * 将字符首字母大写。
-		 * @method capitalize
 		 * @return {String} 大写的字符串。
 		 */
 		capitalize: function() {
@@ -1761,11 +1772,11 @@ var Py = {
 
 		/**
 		 * 返回数组某个值的第一个位置。值没有,则为-1 。
-		 * @method indexOf
 		 * @param {Object} item 成员。
 		 * @param {Number} start 开始查找的位置。
 		 * @return Number 位置，找不到返回 -1 。 
 		 * 现在大多数浏览器已含此函数.除了 IE8-  。
+		 * @method
 		 */
 		indexOf: indexOf,
 		
@@ -1773,7 +1784,6 @@ var Py = {
 
 		/**
 		 * 返回数组是否包含一个值。
-		 * @method contains
 		 * @param {Object} item 成员。
 		 * @return {Boolean} 存在返回 true 。
 		 */
@@ -1785,10 +1795,10 @@ var Py = {
 
 		/**
 		 * 对数组运行一个函数。
-		 * @method each
 		 * @param {Function} fn 函数.参数 value, index
 		 * @param {Object} bind 对象。
 		 * @return {Boolean} 有无执行完。
+		 * @method
 		 */
 		each: each,
 
@@ -1796,7 +1806,6 @@ var Py = {
 
 		/**
 		 * 对数组每个元素通过一个函数过滤。返回所有符合要求的元素的数组。
-		 * @method filter
 		 * @param {Function} fn 函数。参数 value, index, this。
 		 * @param {Object} bind 绑定的对象。
 		 * @return {Array} this
@@ -1816,9 +1825,9 @@ var Py = {
 
 		/**
 		 * 对数组运行一个函数。
-		 * @method forEach
 		 * @param {Function} fn 函数.参数 value, index
 		 * @param {Object} bind 对象。
+		 * @method
 		 */
 		forEach: each,
 		
@@ -1826,7 +1835,6 @@ var Py = {
 		
 		/**
 		 * 对数组每个元素查找一个函数返回true的项。 或按属性返回数组一个元素。
-		 * @method select
 		 * @param {Function/String} name 函数。参数 value, index。 /数组成员的字段。
 		 * @param {Object} value 值。
 		 * @return {Array} 新数组。
@@ -1857,7 +1865,6 @@ var Py = {
 
 		/**
 		 * 包含一个元素。元素存在直接返回。
-		 * @method include
 		 * @param {Object} value 值。
 		 * @return {Boolean} 是否包含元素。
 		 */
@@ -1916,7 +1923,6 @@ var Py = {
 		
 		/**
 		 * 删除元素, 参数为元素的内容。
-		 * @method remove
 		 * @param {Object} value 值。
 		 * @return {Number} 删除的值的位置。
 		 */
@@ -1930,8 +1936,6 @@ var Py = {
 		
 		/**
 		 * xType。
-		 * @property xType
-		 * @type String
 		 */
 		xType: "array"
 
@@ -1944,9 +1948,6 @@ var Py = {
 		
 		/**
 		 * xType
-		 * @method xType
-		 * @type String
-		 * @memberOf Element.prototype, document
 		 */
 		xType: document.xType = "element",
 		
@@ -1962,7 +1963,6 @@ var Py = {
 		
 		/**
 		 * 绑定一个监听器。
-		 * @method addEventListener
 		 * @param {String} type 类型。
 		 * @param {Function} fn 函数。
 		 */
@@ -1970,7 +1970,6 @@ var Py = {
 		
 		/**
 		 * 移除一个监听着。
-		 * @method removeEventListener   
 		 * @param {String} type 类型。
 		 * @param {Function} fn 函数。
 		 */
@@ -1985,12 +1984,6 @@ var Py = {
 	
 	/// #region 远程请求
 	
-	/**
-	 * 生成一个请求。
-	 * @method XMLHttpRequest
-	 * @return {XMLHttpRequest} 请求的对象。
-	 * @memberOf window
-	 */
 	
 	/// #ifndef Std
 		
@@ -2001,6 +1994,12 @@ var Py = {
 		Element.prototype.domVersion = 1;
 		
 	}
+	
+	/**
+	 * 生成一个请求。
+	 * @class window.XMLHttpRequest
+	 * @return {XMLHttpRequest} 请求的对象。
+	 */
 	
 	if(!w.XMLHttpRequest || isQuirks) {
 		
@@ -2024,14 +2023,13 @@ var Py = {
 	
 	/**
 	 * 判断当前请求是否有正常的返回。
-	 * @method isOk
 	 * @param {XMLHttpRequest} xmlHttp 请求。
 	 * @return {Boolean} 正常返回true 。
-	 * @memberOf XMLHttpRequest
+	 * @static
 	 */
 	w.XMLHttpRequest.isOk = function(xmlHttp) {
 		
-		assert(xmlHttp.close, 'XMLHttpRequest.isOk(xmlHttp): 参数 xmlHttp 不是合法的 XMLHttpRequest 对象');
+		assert(xmlHttp && xmlHttp.open, 'XMLHttpRequest.isOk(xmlHttp): 参数 xmlHttp 不是合法的 XMLHttpRequest 对象');
 		
 		// 获取状态。
 		var status = xmlHttp.status;
@@ -2047,6 +2045,10 @@ var Py = {
 		// 检查， 各浏览器支持不同。
 		return (status >= 200 && status < 300) || status == 304 || status == 1223;
 	};
+	
+	/**
+	 * @class
+	 */
 	
 	/// #endregion
 
@@ -2156,18 +2158,9 @@ var Py = {
 	 * @namespace Py
 	 */
 	apply(p, {
-		
-		/**
-		 * id种子 。
-		 * @property id
-		 * @type {Number}
-		 * @private
-		 */
-		id: Date.now() % 100,
 			
 		/**
 		 * PyJs 安装的根目录, 可以为相对目录。
-		 * @property rootPath
 		 * @type String
 		 */
 		rootPath: p.rootPath || (function(d) {
@@ -2185,8 +2178,6 @@ var Py = {
 				return (b.match(/[\S\s]*\//) || [""])[0];
 				
 		}) (document),
-		
-		theme: p.theme || 'default',
 			
 		/**
 		 * 表示事件的参数。
@@ -2228,10 +2219,6 @@ var Py = {
 	/// #region 函数
 	
 	/**
-	 * @private
-	 */
-	
-	/**
 	 * 复制所有属性到任何对象。 
 	 * @param {Object} dest 复制目标。
 	 * @param {Object} src 要复制的内容。
@@ -2268,7 +2255,6 @@ var Py = {
 	/**
      * 根据一个 id 或 对象获取节点。
      * @param {String/Element} id 对象的 id 或对象。
-	 * @memberOf window
      */
 	function getElementById(id) {  
 		return typeof id == "string" ? document.getElementById(id) : id;
@@ -2316,7 +2302,6 @@ var Py = {
 	
 	/**
 	 * 由存在的类修改创建类。即为类添加一个 implement 和 implementIf 成员。
-	 * @method Native
 	 * @param {Function/Class} nativeClass 将创建的类。
 	 * @see Py.Class
 	 * @return {Class} 生成的类。
@@ -2429,57 +2414,79 @@ var Py = {
 	/**
 	 * 定义名字空间。
 	 * @param {String} name 名字空间。
-	 * @param {String} className 类的名字。
-	 * @param {Object} obj 值。
+	 * @param {Object/Boolean} obj 值。
+	 * @param {Object} value 如果 obj 为 true， value 指示复制的成员。
 	 */
-	function namespace(name, className, obj) {
+	function namespace(name, obj, value) {
 		
-		assert(name, "namespace(name, className, obj): 参数 name 不可为空。");
+		assert(name && name.split, "namespace(name, className, obj): 参数 name 不是合法的名字空间。");
+		
+		/// #ifndef Framework
 		
 		// 简单声明。
-		if (!className) {
+		if (arguments.length == 1) {
 			
 			// 加入已使用的名字空间。
 			return   p.namespaces.include(name);
 		}
+			
+		/// #endif
 		
 		// 取值，创建。
-		name = o.value(name);
+		name = name.split('.');
+		
+		var current = w, i = -1, len = name.length - 1;
+		
+		if(!name[0].length) name[0] = Py.defaultNamespace;
+		
+		while(++i < len)
+			current = current[name[i]] || (current[name[i]] = {});
+			
+		name = name[len];
+			
+		if(value)
+			return applyIf(current[name] || (current[name] = {}), value);
+			
+		current[name] = obj;
+		
+		/// #ifndef Global
 		
 		// 指明的是对象。
-		if (obj) {
-			
-			// 获取类。
-			var q = name[className];
+		if (!(name in w)) {
 			
 			// 复制到全局对象和名字空间。
-			return w[className] = (q ? apply(q, obj) : (name[className] = obj));
+			w[name] = obj;
 			
 		}
 		
-		// 只复制当前成员。
-		return apply(  name, className);
+		/// #endif
+		
+		return obj;
+		
+		
 		
 	}
+			
+	 /// #ifndef Framework
 	
 	/**
 	 * 同步载入一个脚本或样式表。
-	 * @param {Object} name
+	 * @param {Strung} name
 	 * @param {Object} theme
 	 * @param {Object} isStyle
 	 */
 	function include(name, theme, isStyle){
 		
-		assert(name && name.indexOf, "include(name, theme, isStyle): 参数 name 不是合法的名字空间。");
+		assert(name && name.indexOf, "using(name): 参数 name 不是合法的名字空间。");
 		
 		if(name.indexOf('*') > -1){
-		 	return (theme || (isStyle ?['share', Py.theme] : [])).forEach(function(value){
+		 	return (theme || (isStyle ?['share', p.theme] : [])).forEach(function(value){
 				include(name.replace('*', value), null, isStyle);
 			});
 		 }
 		
 		// 已经载入。
-		if(Py.namespaces.include(name))
+		if(p.namespaces.include(name))
 			return;
 		
 		if(name.indexOf('/') == -1){
@@ -2513,6 +2520,8 @@ var Py = {
 		 	return !dom[src] || dom[src].toLowerCase().indexOf(name) == -1;
 		 }) && p.loadText(p.rootPath + name, e );
 	}
+			
+	/// #endif
 	
 	/**
 	 * 创建一个类。
