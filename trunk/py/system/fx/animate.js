@@ -155,6 +155,10 @@ Py.using("System.Fx.Base");
 		 */
 		pfe = p.namespace(".Fx.Fx", p.Fx.Base.extend({
 			
+			/**
+			 * 当前的状态存储。
+			 * @type {Object}
+			 */
 			current: null,
 			
 			/**
@@ -163,6 +167,10 @@ Py.using("System.Fx.Base");
 			 */
 			link: "wait",
 			
+			/**
+			 * 获取当前封装的节点。
+			 * @return {Element} 返回节点。
+			 */
 			getDom: function(){
 				return this.dom.getDom();
 			},
@@ -184,6 +192,11 @@ Py.using("System.Fx.Base");
 				this._competeHandlerList = [];
 			},
 			
+			/**
+			 * 根据指定变化量设置值。
+			 * @param {Number} delta 变化量。 0 - 1 。
+			 * @override
+			 */
 			set: function(delta){
 				var me = this,
 					key,
@@ -206,8 +219,6 @@ Py.using("System.Fx.Base");
 				
 				// 对于每个键, 转换目前属性。
 				parseStyle(me.current = {}, me.dom, from || {}, to);
-				
-				
 				
 				return me;
 			}
@@ -254,7 +265,7 @@ Py.using("System.Fx.Base");
 					return String.hexToArray(value) ||
 						String.rgbToArray(value);
 				},
-				get: e.styleString
+				get: e.getStyle
 				
 			}
 			
@@ -321,6 +332,8 @@ Py.using("System.Fx.Base");
 					to: parsed === null ? parser.parse(toV, key) : parsed,
 					parser: parser
 				};
+				
+				assert(current.from !== null && current.to !== null, "Py.Fx.Fx.prototype.complie(from, to): 无法处理属性 {key} 的值。", key);
 			}
 			
 		}
@@ -483,9 +496,11 @@ Py.using("System.Fx.Base");
 		 * @return this
 		 */
 		highlight: function(color, duration, callBack){
+			assert(!color || Object.isArray(color) || rhex.test(color) || rRgb.test(color), "Element.prototype.highlight(color, duration, callBack): 参数 {color} 不是合法的颜色。", color);
+			assert(!callBack || Object.isFunction(callBack), "Element.prototype.highlight(color, duration, callBack): 参数 {callBack} 不是可执行的函数。", callBack);
 			var fx = getFx(this),
 				from = {
-					backgroundColor: e.styleString(this, 'backgroundColor')
+					backgroundColor: e.getStyle(this, 'backgroundColor')
 				},
 				to = {
 					backgroundColor: color || '#ffff88'

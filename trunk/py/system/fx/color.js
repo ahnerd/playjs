@@ -1,6 +1,8 @@
 
 
-Py.namespace("System.Fx.Color");
+
+
+
 Py.using("System.Fx.Animate");
 
 
