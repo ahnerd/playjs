@@ -8,7 +8,7 @@ Py.using("System.Controls.Control");
 Py.imports("Resources.*.Viewer.ProcessBar");
 
 
-Py.namespace("Py", "ProcessBar", Py.Control.extend({
+Py.namespace(".ProcessBar", Py.Control.extend({
 	tpl: '<div class="x-processbar">\
 		<div class="x-processbar-fore"> \
 			<div class="x-processbar-label"></div>\

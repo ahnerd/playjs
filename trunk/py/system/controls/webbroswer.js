@@ -7,6 +7,6 @@
 Py.using("System.Dom.IFrame");
 
 
-Py.namespace("Py", "WebBroswer", Py.IFrame.extend({
+Py.namespace(".WebBroswer", Py.IFrame.extend({
 	
 }));

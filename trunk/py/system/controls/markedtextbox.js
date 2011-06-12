@@ -4,7 +4,7 @@
 
 Py.using("System.Controls.TextBox");
 
-Py.namespace("Py", "MarkedTextBox", Py.TextBox.extend({
+Py.namespace(".MarkedTextBox", Py.TextBox.extend({
 	
 	init: function(){
 		this.on('keydown', this.onKeyDown);

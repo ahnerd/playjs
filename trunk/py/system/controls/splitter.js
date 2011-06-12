@@ -14,7 +14,7 @@ Py.imports("Resources.Share.Control.Splitter");
  * @class Panel
  * @extends Control
  */
-Py.namespace("Py", "Splitter", Py.Control.extend({
+Py.namespace(".Splitter", Py.Control.extend({
 	
 	/**
 	 * xType

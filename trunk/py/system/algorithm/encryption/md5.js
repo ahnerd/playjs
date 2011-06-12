@@ -8,7 +8,7 @@
  * @param {String} s 字符串。
  * @return {String} md5 字符串。 
  */
-Py.namespace("Py.Algorithm", "Encryption", (function(hexcase){
+Py.namespace("Py.Algorithm.Encryption", (function(hexcase){
 	
 	/**
 	 * @param {Boolean} hexcase 输出格式， false - 小写，  true - 大写。

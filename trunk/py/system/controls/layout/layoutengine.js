@@ -11,7 +11,7 @@ Py.using("System.Controls.Control");
 /**
  * @namespace Py.Layout
  */
-Py.namespace("Py", "Layout", {
+Py.namespace(".Layout", {
 
 	/**
 	 * 表示布局引擎。

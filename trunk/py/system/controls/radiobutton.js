@@ -8,7 +8,7 @@ Py.using("System.Controls.ContentControl");
 Py.using("System.Controls.IFormControl");
 
 
-Py.namespace("Py", "RadioButton", Py.ContentControl.extend({
+Py.namespace(".RadioButton", Py.ContentControl.extend({
 	
 	tpl: '<label><input type="radio" class="x-radiobutton"><span></span></label>',
 	

@@ -8,7 +8,7 @@ Py.using("System.Controls.ListControl");
 Py.imports("Resources.*.Form.ListBox");
 
 
-Py.namespace("Py", "ListBox", Py.ListControl.extend({
+Py.namespace(".ListBox", Py.ListControl.extend({
 	
 	xType: 'listbox',
 	
