@@ -1,6 +1,6 @@
 
 
-Py.namespace("Py.Fx", "Transitions", {
+Py.namespace(".Fx.Transitions", {
 	
 	linear: function(zero){
 		return zero;

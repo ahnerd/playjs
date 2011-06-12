@@ -118,13 +118,14 @@
 			},
 			
 			/**
-			 * 当被子类重写时，实现设置目前的值。
-			 * @param {Object} now 当前值。
+			 * 根据指定变化量设置值。
+			 * @param {Number} delta 变化量。 0 - 1 。
 			 * @abstract
 			 */
 			set: Function.empty,
 			
 			addOnComplete: function(fn){
+				assert.isFunction(fn, "Py.Fx.Base.prototype.addOnComplete(fn): 参数 {fn} ~。");
 				this._competeHandlerList.push(fn);	
 				return this;
 			},
@@ -188,7 +189,10 @@
 				else if(duration < -1) this.duration *= -duration;
 				
 				// 如果有回调， 加入回调。
-				if (callback) this._competeHandlerList.push(callback);	
+				if (callback) {
+					assert.isFunction(callback, "Py.Fx.Base.prototype.check(from, to, duration, callback, link): 参数 {callback} ~。");
+					this._competeHandlerList.push(callback);
+				}
 				
 				return true;
 			},
