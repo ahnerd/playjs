@@ -2,7 +2,7 @@
 
 Py.using("System.Controls.ContainerControl");
 
-Py.namespace('Py', 'Balloontip', Py.ContainerControl.extend({
+Py.namespace('.Balloontip', Py.ContainerControl.extend({
 	
 	options: {
 		hide: 0,

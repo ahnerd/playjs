@@ -9,7 +9,7 @@ Py.using("System.Dom.Drag");
 Py.imports("Resources.*.Form.Slider");
 
 
-Py.namespace("Py", "Slider", Py.Control.extend({
+Py.namespace(".Slider", Py.Control.extend({
 	
 	xType: 'slider',
 	

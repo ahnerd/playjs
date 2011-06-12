@@ -80,6 +80,6 @@ Py.Layout.register(Py.Layout.TabLayout = Py.Layout.FitLayout.extend({
 
 
 
-Py.namespace("Py", "TabPage", Py.Control.extend({
+Py.namespace(".TabPage", Py.Control.extend({
 	
 }));

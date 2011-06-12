@@ -8,7 +8,7 @@ Py.using("System.Controls.ContentControl");
  * @class ContainerControl
  * @abstract
  */
-Py.namespace("Py", "ScrollableControl", Py.ContentControl.extend({
+Py.namespace(".ScrollableControl", Py.ContentControl.extend({
 	
 	/**
 	 * 外容器左右边框+边距。

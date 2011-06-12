@@ -8,7 +8,7 @@ Py.using("System.Controls.Control");
 Py.imports("Resources.*.Button.LinkButton");
 
 
-Py.namespace("Py", "LinkButton", Py.Control.extend({
+Py.namespace(".LinkButton", Py.Control.extend({
 	
 	tpl: '<a class="x-linkbutton" href="#" target="_blank"></a>',
 	

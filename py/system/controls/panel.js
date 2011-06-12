@@ -12,7 +12,7 @@ Py.using("System.Controls.ContainerControl");
  * @class Panel
  * @extends Control
  */
-Py.namespace("Py", "Panel", Py.ContainerControl.extend({
+Py.namespace(".Panel", Py.ContainerControl.extend({
 	
 	/**
 	 * 默认配置。

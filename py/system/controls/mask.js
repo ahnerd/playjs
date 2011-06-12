@@ -6,7 +6,7 @@
 Py.using("System.Controls.Control");
 Py.imports("Resources.Share.Control.Mask");
 
-Py.namespace('Py', 'Mask', Py.Control.extend({
+Py.namespace('.Mask', Py.Control.extend({
 	
 	tpl: '<div class="x-mask"><div class="x-mask-container"></div></div>',
 	

@@ -1,7 +1,7 @@
 
 Py.imports("Resources.*.Container.Accordion");
 Py.using("System.Controls.Control");
-Py.namespace("Py", "Accordion", Py.Control.extend({
+Py.namespace(".Accordion", Py.Control.extend({
 	/**
 	 * 默认配置。
 	 * @type Object
