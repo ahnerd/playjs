@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Pyjs 测试</title>
+        <script src="../../py/system.js" type="text/javascript"></script>
+		<script src="../../py/system/core/check.js" type="text/javascript"></script>
+		
+		<script src="../../common/project/project.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/default.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/debug.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <script>
+            
+            var fns = [
+				["Check.isNumber", function() { return Check.isNumber("24.2")}, true],
+				["Check.isInteger", function() { return Check.isInteger("24")}, true],
+				["Check.isEMail", function() { return Check.isEMail("x@c.z")}, true],
+				["Check.isDate", function() { return Check.isDate("2011/1/1")}, true],
+				["Check.isId", function() { return Check.isId("2222231231232123")}, true],
+				["Check.isQQ", function() { return Check.isQQ("123231323123")}, true]
+			];
+            
+        </script>
+    </body>
+</html>
