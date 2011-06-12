@@ -22,6 +22,29 @@
 				}
 				 
 			}
+			
+			function a(obj, prop){
+				return obj[prop] || (obj[prop] == {});
+			}
+			
+			var i = 100000;
+			var date = new Date();
+			while (i--) {
+				d = {};
+				e = a(d, 'p');
+			}
+			date = new Date() - date;
+			
+			
+			var i = 100000;
+			var date4 = new Date();
+			while(i--) {
+				d = {};
+				e =d.p || (d.p == {});
+			}
+			date4 = new Date() - date4;
+			
+			alert(date + "  " + date4);
 		
 		</script>
 		
