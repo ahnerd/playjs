@@ -7,7 +7,7 @@
 Py.using("System.Dom.Element");
 
 
-Py.namespace("Py", "LinkButton", Py.Control.extend({
+Py.namespace(".LinkButton", Py.Control.extend({
 	
 	tpl: '<a class="x-linkbutton" href="#" target="_blank"></a>',
 	

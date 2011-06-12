@@ -13,7 +13,7 @@ Py.using("System.Controls.ICollapsable");
 (function(){
 	
 
-Py.namespace("Py", "TreeNode", Py.ListControl.extend({
+Py.namespace(".TreeNode", Py.ListControl.extend({
 	
 	xType: 'treenode',
 	
@@ -248,7 +248,7 @@ Py.namespace("Py", "TreeNode", Py.ListControl.extend({
 
 Py.Control.delegate(Py.TreeNode, 'label', 'setHtml setText', 2, 'getHtml getText', 1);
 
-Py.namespace("Py", "TreeView", Py.TreeNode.extend({
+Py.namespace(".TreeView", Py.TreeNode.extend({
 	
 	xType: 'treeview'
 	

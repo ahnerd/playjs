@@ -12,7 +12,7 @@ Py.using("System.Native");
  * 委托。
  * @class Delegate
  */
-Py.namespace("Py", "Delegate", Function.extend({
+Py.namespace(".Delegate", Function.extend({
 	
 	/**
 	 * 初始化一个委托。

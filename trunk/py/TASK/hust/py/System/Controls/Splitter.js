@@ -13,7 +13,7 @@ Py.using("System.Controls.Resizing");
  * @class Panel
  * @extends Control
  */
-Py.namespace("Py", "Splitter", Py.Control.extend({
+Py.namespace(".Splitter", Py.Control.extend({
 	
 	/**
 	 * xType

@@ -3,7 +3,7 @@
 Py.using("System.Controls.ContextMenu");
 
 
-Py.namespace("Py", "ContextMenu", Py.Menu.extend({
+Py.namespace(".ContextMenu", Py.Menu.extend({
 	
 	floating: true,
 	

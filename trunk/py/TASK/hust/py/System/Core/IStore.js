@@ -5,7 +5,7 @@
  * 使类具有存储的方法。
  * @class Py.IStore
  */
-Py.namespace('Py', 'IStore', {
+Py.namespace('.IStore', {
 	
 	/**
 	 * 获取属于一个元素的数据。

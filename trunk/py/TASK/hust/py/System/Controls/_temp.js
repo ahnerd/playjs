@@ -7,7 +7,7 @@
 Py.using("System.Dom.Element");
 
 
-Py.namespace("Py", "", Py.Control.extend({
+Py.namespace(".", Py.Control.extend({
 	
 	tpl: ''
 	

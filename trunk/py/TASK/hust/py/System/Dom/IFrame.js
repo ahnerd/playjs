@@ -10,7 +10,7 @@ Py.using("System.Dom.Element");
  * IFrame
  * @class IFrame
  */
-Py.namespace("Py", "IFrame", Py.Control.extend({
+Py.namespace(".IFrame", Py.Control.extend({
 	
 	xType: 'iframe',
 	

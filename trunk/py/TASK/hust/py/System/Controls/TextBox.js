@@ -2,7 +2,7 @@ Py.using("System.Dom.Element");
 Py.using("System.Controls.IFormControl");
 
 
-Py.namespace("Py", "TextBox", Py.Control.extend({
+Py.namespace(".TextBox", Py.Control.extend({
 	
 	tpl: '<input type="text" class="x-textbox">',
 	

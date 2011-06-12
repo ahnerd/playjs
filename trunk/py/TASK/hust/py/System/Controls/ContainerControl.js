@@ -8,7 +8,7 @@ Py.using("System.Controls.ScrollableControl");
  * @class ContainerControl
  * @abstract
  */
-Py.namespace("Py", "ContainerControl", Py.ScrollableControl.extend({
+Py.namespace(".ContainerControl", Py.ScrollableControl.extend({
 	
 	heightFix: 33,
 	

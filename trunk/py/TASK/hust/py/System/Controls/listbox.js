@@ -7,7 +7,7 @@
 Py.using("System.Controls.ListControl");
 
 
-Py.namespace("Py", "ListBox", Py.ListControl.extend({
+Py.namespace(".ListBox", Py.ListControl.extend({
 	
 	xType: 'listbox',
 	

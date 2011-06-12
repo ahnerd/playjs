@@ -9,7 +9,7 @@ Py.using("System.Dom.Element");
 
 
 
-Py.namespace("Py", "Button", Py.ContentControl.extend({
+Py.namespace(".Button", Py.ContentControl.extend({
 	
 	options: {
 		type: 'button'
