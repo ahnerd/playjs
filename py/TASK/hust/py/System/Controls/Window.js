@@ -13,7 +13,7 @@ Py.using("System.Controls.ContainerControl");
  * @class Window
  * @extends Panel
  */
-Py.namespace("Py", "Window", Py.ContainerControl.extend({
+Py.namespace(".Window", Py.ContainerControl.extend({
 	
 	/**
 	 * xType

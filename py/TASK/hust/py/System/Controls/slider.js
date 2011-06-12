@@ -8,7 +8,7 @@ Py.using("System.Dom.Element");
 Py.using("System.Dom.Drag");
 
 
-Py.namespace("Py", "Slider", Py.Control.extend({
+Py.namespace(".Slider", Py.Control.extend({
 	
 	xType: 'slider',
 	

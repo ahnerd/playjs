@@ -8,7 +8,7 @@ Py.using("System.Dom.Element");
 
 
 
-Py.namespace('Py', 'Mask', Py.Control.extend({
+Py.namespace('.Mask', Py.Control.extend({
 	
 	tpl: '<div class="x-mask"><div class="x-mask-container"></div></div>',
 	

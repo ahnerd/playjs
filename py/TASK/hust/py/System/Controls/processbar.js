@@ -7,7 +7,7 @@
 Py.using("System.Dom.Element");
 
 
-Py.namespace("Py", "ProcessBar", Py.Control.extend({
+Py.namespace(".ProcessBar", Py.Control.extend({
 	tpl: '<div class="x-processbar">\
 		<div class="x-processbar-fore"> \
 			<div class="x-processbar-label"></div>\

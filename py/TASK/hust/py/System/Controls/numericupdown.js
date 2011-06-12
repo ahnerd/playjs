@@ -7,7 +7,7 @@
 Py.using("System.Controls.UpDown");
 
 
-Py.namespace('Py', 'NumericUpDown', Py.UpDown.extend({
+Py.namespace('.NumericUpDown', Py.UpDown.extend({
 	
 	value: 0,
 	

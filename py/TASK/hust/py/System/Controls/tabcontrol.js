@@ -9,7 +9,7 @@ Py.using("System.Controls.IParentControl");
  * @class ContainerControl
  * @abstract
  */
-Py.namespace("Py", "TabControl", Py.ScrollableControl.extend({
+Py.namespace(".TabControl", Py.ScrollableControl.extend({
 	
 	heightFix: 33,
 	
@@ -117,7 +117,7 @@ Py.TabControl.ControlCollection = Py.Control.ControlCollection.extend({
 	
 });
 
-Py.namespace("Py", "TabPage", Py.Control.extend({
+Py.namespace(".TabPage", Py.Control.extend({
 	
 	header: null,
 	

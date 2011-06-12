@@ -7,7 +7,7 @@ Py.using("System.Controls.Button");
 
 
 
-Py.namespace("Py", "MenuButton", Py.Button.extend({
+Py.namespace(".MenuButton", Py.Button.extend({
 
 	setSubMenu: function(subMenu){
 		

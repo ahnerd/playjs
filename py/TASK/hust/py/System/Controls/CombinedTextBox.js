@@ -4,7 +4,7 @@
 Py.using("System.Controls.TextBox");
 
 
-Py.namespace("Py", "CombinedTextBox", Py.TextBox.extend({
+Py.namespace(".CombinedTextBox", Py.TextBox.extend({
 	
 	tpl: '<div><input type="text" class="x-textbox"><input type="button" value="工具按钮" class="x-menu-button"></div>',
 	

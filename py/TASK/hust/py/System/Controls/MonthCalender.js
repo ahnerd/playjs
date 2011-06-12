@@ -306,7 +306,7 @@ Py.using("System.Core.Date")  ;
 		
 	};
 	
-	Py.namespace("Py", "MonthCalender", Py.Control.extend({
+	Py.namespace(".MonthCalender", Py.Control.extend({
 	
 		tpl: '<div class="x-monthcalender">\
 		        <div class="x-monthcalender-header">\
