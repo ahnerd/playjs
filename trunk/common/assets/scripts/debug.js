@@ -3,7 +3,7 @@
  *     - An Open Source Framework Writen in Javascript for Debugging HTML, CSS and Javascript.
  * @author xuld
  * @license MIT LICENSE
- * @version 1.1
+ * @version 1.3
  * @example
  *    simple log:    log("My Value");
  *    				 trace("My Value");
@@ -38,6 +38,7 @@
 		deep: 2,			 // 遍历对象的最大级数。
 		maxLog: 1024,        // 最大的日志缓存。
 		display: true,		 // 是否默认打开。
+		useConsole: true,	 // 如果存在控制台，优先考虑使用浏览器的开发工具。
 		names: {
 			'warn': '<b>[警告]</b>',
 			'info': '<b>[提示]</b>',
@@ -208,7 +209,7 @@
 				<a href="javascript:;" onmousedown="PyDebug.bringToFront()">置顶</a>\
 				<a href="javascript:;" onmousedown="PyDebug.cookies()">cookies</a>\
 				<a href="javascript:;" onmousedown="trace(\' 按 F8 打开或关闭本窗口 \'); trace(\' 使用函数 trace 输出到本窗口。\')">帮助</a>\
-				<a href="javascript:;" onmousedown="trace(\' PyDebug 1.1 by xuld  \')">关于</a>\
+				<a href="javascript:;" onmousedown="trace(\' PyDebug 1.3 by xuld  \')">关于</a>\
 			</div>\
 			<ul class="content" style="width:480px; height:300px;" id="py_debug_content">\
 			\
@@ -515,21 +516,28 @@
 	}
 	
 	function trace(){
-		out.apply('trace', arguments);
+		out.apply('log', arguments);
 	}
 	
 	function out(values){
 		if (arguments.length == 0) return;
+		var useConsole = options.useConsole && window.console && !!console.log;
+		
 		if (typeof values == "string") {
-			if(arguments.length > 1)
+			if (arguments.length > 1) {
 				values = format.apply(inspect, arguments);
-			else
-				values = encode(encodeScript(values)) ;
-		} else 
+				useConsole = false;
+			} else if (!useConsole) values = encode(encodeScript(values));
+		} else if (!useConsole) {
 			values = inspect(values);
+		}
 		
 		
-		PyDebug.log(this, values);
+		if (useConsole) {
+			console[this](values);   // 如果错误在此行产生，说明这是预知错误。
+		} else 
+			PyDebug.log(this, values);
+
 	}
 	
 	function inspect(obj, deep){
@@ -646,30 +654,29 @@
 	
 	function assert(bValue){
 		if(!bValue)
-			out.apply('error', arguments.length == 1 ? ['assert  Error'] : Array.prototype.slice.call( arguments ,1) );
+			out.apply('error', arguments.length == 1 ? ['断言失败'] : Array.prototype.slice.call( arguments ,1) );
 		else if(!options.ignoreAssert)
 			out.call('m', 'assert  OK');
 	}
 	
 	if(this.trace)
 		copy(trace, this.trace);
-		
-	if(this.assert)
-		copy(trace, this.assert);
 	
 	copy(trace, {
 		
-		alert: function(message){
-			alert(message);
-		},
-		
 		log: function(){
+			
+			if (options.useConsole && window.console && !!console.log) {
+				console.log.apply(console, arguments);
+				return;
+			}
+			
 			var r = [];
 			for(var i = 0; i < arguments.length  ; i++){
 				r.push(inspect(arguments[i], 1));
 			}
 			
-			PyDebug.log('trace', r.toString());
+			PyDebug.log('log', r.toString());
 		},
 		
 		debug: function(v){
@@ -687,6 +694,12 @@
 		},
 		
 		dir: function(v){
+			
+			if (options.useConsole && window.console && console.dir) {
+				console.dir(v)
+				return;
+			}
+			
 			PyDebug.log('', dirObj(v));
 		},
 		
@@ -705,6 +718,10 @@
 		},
 
 		clear: function() {
+			if (options.useConsole && window.console && console.clear) {
+				console.clear();
+				return;
+			}
 			PyDebug.clearLogs();
 		},
 
@@ -743,7 +760,7 @@
 	});
 	
 	window.onerror = function(msg,url,line){
-		trace.error('#' + line + ' ' + msg);
+		PyDebug.log('error',  ' ' + msg + '<br>' + url + '#' + line);
 	};
 	
 	
@@ -753,40 +770,15 @@
 		PyDebug.hide();
 	}
 	
-	copy(assert, {
-		
-		notNull: function(value, argsName) {
-			return assert(value != null, "{0} 为 null 。", argsName || "参数");
-		},
-
-		between: function(value, min, max, argsName){
-			return assert(value >= min && (max === undefined || value < max), "{0} 超出索引, 它必须在 [{1}, {2}) 间。",  argsName || "参数", min, max === undefined ? "+∞" : max);
-		},
-		
-		instanceOf: function(v, types, message) {
-			if (!types.length || typeof types == 'string') types = [types];
-			var ty = typeof v;
-			return assert(types.filter(function(type) {
-				return type == ty;
-			}).length, message || "类型错误。");
-		},
-
-		notEmpty: function(value, argsName) {
-			return assert(value && value.length, "{0} 为空 。", argsName || "参数");
-		},
-
-		notStatic: function(value, argsName) {
-			return assert(typeof value == 'object' && value, "{0} 为引用变量。", argsName || "参数");
-		}
-	
-	});
+	if(isNaN(-[1, ]))
+		options.useConsole = false;
 	
 	PyDebug.moveTo(2);
 	
 	copy(this, {
 		trace: trace,
 		log: trace.log,
-		assert: assert,
+		assert: this.assert || assert,
 		dir: trace.dir
 	});
 	
