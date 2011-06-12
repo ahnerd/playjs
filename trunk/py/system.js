@@ -35,6 +35,11 @@ var Py = {
 	rootPath: undefined,
 	
 	/**
+	 * 是否输出 assert 来源。
+	 */
+	stackTrace: false,
+	
+	/**
 	 * 默认的全局名字空间。
 	 * @config {String}
 	 * @ignore
@@ -185,7 +190,6 @@ var Py = {
 		/**
 		 * 管理所有事件类型的工具。
 		 * @type Object
-		 * @private
 		 */
 		eventMgr = {
 			
@@ -211,6 +215,10 @@ var Py = {
 				 */
 				$default: {
 					
+					/**
+					 * 事件初始化。
+					 * @return {Function} 启用当前事件的函数。
+					 */
 					setup: function() {
 						return function(e) {
 						
@@ -239,17 +247,39 @@ var Py = {
 						}  ;
 					},
 				
+					/**
+					 * 创建当前事件可用的参数。
+					 * @param {EventArgs} e 事件参数。
+					 * @param {Object} target 事件目标。
+					 * @return {EventArgs} e 事件参数。
+					 */
 					createEventArgs: function(e, target){
 						assert(!e || ( e.stopPropagation && e.preventDefault), "IEvent.trigger(e): 参数 e 必须有成员 stopPropagation 和 preventDefault ，可使用类型 Py.EventArgs 代替。");
 						return e || new p.EventArgs(target);
 					},
 					
+					/**
+					 * 事件触发后对参数进行处理。
+					 * @param {EventArgs} e 事件参数。
+					 */
 					trigger: emptyFn,
 				
+					/**
+					 * 添加绑定事件。
+					 * @param {Object} obj 对象。
+					 * @param {String} type 类型。
+					 * @param {Function} fn 函数。
+					 */
 					add: function(obj, type, fn) {
 						obj.addEventListener(type, fn, false);
 					},
 					
+					/**
+					 * 删除事件。
+					 *@param {Object} obj 对象。
+					 * @param {String} type 类型。
+					 * @param {Function} fn 函数。
+					 */
 					remove: function(obj, type, fn) {
 						obj.removeEventListener(type, fn, false);
 					}
@@ -273,6 +303,11 @@ var Py = {
 			 * @param {Object} obj 要复制的内容。
 			 * @return {Object} 复制后的对象。
 			 * @see Object.extend
+			 * <code>
+			 * var a = {v: 3, g: 5}, b = {g: 2};
+			 * Object.extendIf(a, b);
+			 * trace(a); // {v: 3, g: 5}  b 未覆盖 a 任何成员。
+			 * </code>
 			 */
 			extendIf: applyIf,
 	
@@ -323,7 +358,8 @@ var Py = {
 			 */
 			each: function(iterable, fn, bind) {
 	
-				assert(o.isFunction(fn), "Object.each(iterable, fn, bind): 参数 fn 必须是可执行的函数。 ");
+				assert(!o.isFunction(iterable), "Object.each(iterable, fn, bind): 参数 {iterable} 不能是可执行的函数。 ", iterable);
+				assert(o.isFunction(fn), "Object.each(iterable, fn, bind): 参数 {fn} 必须是可执行的函数。 ", fn);
 				
 				// 如果 iterable 是 null， 无需遍历 。
 				if (iterable != null) {
@@ -527,9 +563,9 @@ var Py = {
 			 */
 			addCallback: function(obj, name, fn) {
 				
-				assert(obj, 'Object.addCallback(obj, name, fn): 参数 obj 不能为空。');
+				assert.notNull(obj, 'Object.addCallback(obj, name, fn): 参数 obj ~。');
 				
-				assert(o.isFunction(fn), 'Object.addCallback(obj, name, fn): 参数 fn 必须是函数。');
+				assert.isFunction(fn, 'Object.addCallback(obj, name, fn): 参数 {fn} ~。');
 				
 				// 获取已有的句柄。
 				var f = obj[name];
@@ -608,7 +644,7 @@ var Py = {
 				
 				var ep = this.prototype;
 				
-				assert(!events || o.isObject(events), "Py.Native.prototype.addEvents(events): 参数 event 必须是一个包含事件的对象。 如 {click: { add: ..., remove: ..., trigger: ..., setup: ... } ");
+				assert(!events || o.isObject(events), "Py.Native.prototype.addEvents(events): 参数 {event} 必须是一个包含事件的对象。 如 {click: { add: ..., remove: ..., trigger: ..., setup: ... } ", events);
 				
 				applyIf(ep, p.IEvent);
 				
@@ -762,7 +798,7 @@ var Py = {
 			 */
 			data: function (obj, type) {
 				
-				assert(obj, "Py.data(obj, type): 参数 obj 必须是一个引用类型。");
+				assert.isObject(obj, "Py.data(obj, type): 参数 {obj} ~。");
 				
 				// 创建或测试。
 				var d = obj.data || (obj.data = {}) ;
@@ -780,7 +816,7 @@ var Py = {
 			 */
 			dataIf:function (obj, type) {
 				
-				assert(obj, "Py.dataIf(obj, type): 参数 obj 必须是一个引用类型。");
+				assert.isObject(obj, "Py.dataIf(obj, type): 参数 {obj} ~。");
 				
 				// 获取变量。
 				var d = obj.data;
@@ -796,7 +832,7 @@ var Py = {
 			 */
 			setData: function(obj, type, data) {
 				
-				assert(o.isObject(obj) || o.isFunction(obj), "Py.setData(obj, type): 参数 obj 必须是一个引用类型。");
+				assert.isObject(obj, "Py.setData(obj, type): 参数 {obj} ~。");
 				
 				// 简单设置变量。
 				return (obj.data || (obj.data = {}))[type] = data;
@@ -809,8 +845,8 @@ var Py = {
 			 */
 			cloneData: function(src, dest){
 				
-				assert(o.isObject(src) || o.isFunction(src), "Py.cloneData(src, dest): 参数 src 必须是一个引用类型。");
-				assert(o.isObject(dest) || o.isFunction(dest), "Py.cloneData(src, dest): 参数 dest 必须是一个引用类型。");
+				assert.isObject(src, "Py.cloneData(src, dest): 参数 {src} ~。");
+				assert.isObject(dest, "Py.cloneData(src, dest): 参数 {dest} ~。");
 				
 				var data = src.data;
 				
@@ -932,7 +968,7 @@ var Py = {
 				 */
 				on: function(type, fn) {
 					
-					assert(o.isFunction(fn), 'IEvent.on(type, fn): 参数 fn 必须是可执行的函数。');
+					assert.isFunction(fn, 'IEvent.on(type, fn): 参数 {fn} ~。');
 					
 					// 获取本对象     本对象的数据内容   本事件值
 					var me = this, d = p.data(me, 'event'), evt = d[type];
@@ -992,7 +1028,7 @@ var Py = {
 				 */
 				one: function(type, fn) {
 					
-					assert(o.isFunction(fn), 'IEvent.one(type, fn): 参数 fn 必须是可执行的函数。');
+					assert.isFunction(fn, 'IEvent.one(type, fn): 参数 {fn} ~。');
 					
 					
 					return this.on(type, function() {
@@ -1013,7 +1049,7 @@ var Py = {
 				 */
 				un: function (type, fn) {
 					
-					assert(!fn || o.isFunction(fn), 'IEvent.un(type, fn): 参数 fn 必须是可执行的函数或空参数。');
+					assert(!fn || o.isFunction(fn), 'IEvent.un(type, fn): 参数 {fn} 必须是可执行的函数或空参数。', fn);
 					
 					// 获取本对象     本对象的数据内容   本事件值
 					var me = this, d = p.dataIf(me, 'event'), evt;
@@ -1278,7 +1314,7 @@ var Py = {
 		     */
 		    setupWindow: function(w) {
 					
-				assert(w.setInterval, 'Py.setupWindow(w): 参数 w 必须是一个 Window 对象。');
+				assert(w.setInterval, 'Py.setupWindow(w): 参数 {w} 必须是一个 Window 对象。', w);
 		    
 		        /**
 		         * 本地化 Element 。
@@ -1431,7 +1467,7 @@ var Py = {
 		 */
 		bind: function(fn, bind) {
 					
-			assert(o.isFunction(fn), 'Function.bind(fn): 参数 fn 必须是一个可执行的函数。');
+			assert.isFunction(fn, 'Function.bind(fn): 参数 {fn} ~。');
 			
 			// 返回对 bind 绑定。
 			return function() {
@@ -1474,7 +1510,7 @@ var Py = {
 
 			if (!format) return "";
 					
-			assert(format.replace, 'String.format(format, object): 参数 format 必须是字符串。');
+			assert(format.replace, 'String.format(format, object): 参数 {format} 必须是字符串。', format);
 
 			//支持参数2为数组或对象的直接格式化。
 			var toString = this,
@@ -1504,7 +1540,7 @@ var Py = {
 		 */
 		map: function(str, source, dest, copyIf) {
 					
-			assert(typeof str == 'string', 'String.map(str, source, dest, copyIf): 参数 str 必须是字符串。');
+			assert(typeof str == 'string', 'String.map(str, source, dest, copyIf): 参数 {str} 必须是字符串。', str);
 			
 			var isFn = o.isFunction(source);
 			// 分隔。
@@ -1884,7 +1920,7 @@ var Py = {
 		 */
 		insert: function(index, value){
 			
-			assert(typeof index == 'number', "Array.prototype.insert(index, value): 参数 index 必须是数字类型。");
+			assert.isNumber(index, "Array.prototype.insert(index, value): 参数 index ~。");
 			
 			for(var i = this.length++; i > index; i--)
 				this[i] = this[i - 1];
@@ -1904,7 +1940,7 @@ var Py = {
 			forEach.call(this, o.isFunction(fn) ? function(value, index){
 				r.push(fn.call(args, value, index));
 			} : function(value){ 
-				assert(value && o.isFunction(value[fn]), "Array.prototype.invoke(fn, args): {0} 不包含可执行的函数 {1}。", value, fn);
+				assert(value && o.isFunction(value[fn]), "Array.prototype.invoke(fn, args): {args} 内的 {value} 不包含可执行的函数 {fn}。", args, value, fn);
 				r.push(value[fn].apply(value, args));
 			});
 			
@@ -2029,7 +2065,7 @@ var Py = {
 	 */
 	w.XMLHttpRequest.isOk = function(xmlHttp) {
 		
-		assert(xmlHttp && xmlHttp.open, 'XMLHttpRequest.isOk(xmlHttp): 参数 xmlHttp 不是合法的 XMLHttpRequest 对象');
+		assert(xmlHttp && xmlHttp.open, 'XMLHttpRequest.isOk(xmlHttp): 参数 {xmlHttp} 不是合法的 XMLHttpRequest 对象', xmlHttp);
 		
 		// 获取状态。
 		var status = xmlHttp.status;
@@ -2066,7 +2102,7 @@ var Py = {
 		ready: {
 			add: function(elem, type, fn) {
 				
-				assert(elem.nodeType === 9, 'Elememt.prototype.on(type, fn) 只有文档对象才能添加 "ready" 事件 。');
+				assert(elem.nodeType === 9, 'Elememt.prototype.on(type, fn) 只有文档对象才能添加 "ready" 事件 。 {elem} 不是合法的文档对象', elem);
 				
 				// 使用系统文档完成事件。
 				elem.addEventListener(this.eventName, fn, false);
@@ -2226,8 +2262,8 @@ var Py = {
 	 */
 	function apply(dest, src) {
 		
-		assert(dest != null, "Object.extend(dest, src): 参数 dest 不可为空。");
-		assert(src != null, "Object.extend(dest, src): 参数 src 不可为空。");
+		assert(dest != null, "Object.extend(dest, src): 参数 {dest} 不可为空。", dest);
+		assert(src != null, "Object.extend(dest, src): 参数 {src} 不可为空。", src);
 		
 		
 		for (var b in src)
@@ -2243,8 +2279,8 @@ var Py = {
 	 */
 	function applyIf(dest, src) {
 		
-		assert(dest != null, "Object.extendIf(dest, src): 参数 dest 不可为空。");
-		assert(src != null, "Object.extendIf(dest, src): 参数 src 不可为空。");
+		assert(dest != null, "Object.extendIf(dest, src): 参数 {dest} 不可为空。", dest);
+		assert(src != null, "Object.extendIf(dest, src): 参数 {src} 不可为空。", src);
 
 		for (var b in src)
 			if (dest[b] === undefined)
@@ -2349,7 +2385,7 @@ var Py = {
 	 */
 	function each(fn, bind) {
 		
-		assert(o.isFunction(fn), "Array.prototype.each(fn, bind): 参数 fn 必须是一个函数。");
+		assert(o.isFunction(fn), "Array.prototype.each(fn, bind): 参数 {fn} 必须是一个可执行的函数。", fn);
 		
 		var i = -1,
 			me = this,
@@ -2419,7 +2455,7 @@ var Py = {
 	 */
 	function namespace(name, obj, value) {
 		
-		assert(name && name.split, "namespace(name, className, obj): 参数 name 不是合法的名字空间。");
+		assert(name && name.split, "namespace(namespace, obj, value): 参数 {namespace} 不是合法的名字空间。", name);
 		
 		/// #ifndef Framework
 		
@@ -2477,7 +2513,7 @@ var Py = {
 	 */
 	function include(name, theme, isStyle){
 		
-		assert(name && name.indexOf, "using(name): 参数 name 不是合法的名字空间。");
+		assert(name && name.indexOf, "using(namespace): 参数 {namespace} 不是合法的名字空间。", name);
 		
 		if(name.indexOf('*') > -1){
 		 	return (theme || (isStyle ?['share', p.theme] : [])).forEach(function(value){
@@ -2584,6 +2620,15 @@ Object.extend(String, {
 	 */
 	fromUTF8:function(s) {
 		return s.replace(/\\u([0-9a-f]{3})([0-9a-f])/gi,function(a,b,c) {return String.fromCharCode((parseInt(b,16)*16+parseInt(c,16)))})
+	},
+	
+	/**
+	 * 把字符串转为指定长度。
+	 * @param {String} s   字符串。
+	 * @param {Number} len 需要的最大长度。
+	 */
+	toLength: function(s, len){
+		return s.length > len ? s.substring(0, len) + "..." : s;
 	}
 		
 });
@@ -2811,7 +2856,7 @@ Object.extendIf(trace, {
 	},
 
 	/**
-	 * 空函数，用于证明输出。
+	 * 空函数，用于证明函数已经执行过。
 	 */
 	empty: function(msg) {
 		trace("函数运行了    " + ( msg || Py.id++));
@@ -2827,10 +2872,19 @@ Object.extendIf(trace, {
 	},
 	
 	/**
+	 * 输出一个函数执行指定次使用的时间。
+	 * @param {Function} fn 函数。
+	 * @param {Number} times=1000 运行次数。
+	 */
+	test: function(fn, times){
+		trace("[时间] " + trace.runTime(fn, null, times));
+	},
+	
+	/**
 	 * 测试某个函数运行一定次数的时间。
 	 * @param {Function} fn 函数。
 	 * @param {Array} args 函数参数。
-	 * @param {Number} times 运行次数。默认1000。
+	 * @param {Number} times=1000 运行次数。
 	 * @return {Number} 运行的时间 。
 	 */
 	runTime: function(fn, args, times) {
@@ -2847,92 +2901,219 @@ Object.extendIf(trace, {
 /**
  * 确认一个值正确。
  * @param {Object} bValue 值。
- * @param {String} format 错误后的提示。默认为“错误”。
+ * @param {String} msg="断言失败" 错误后的提示。
  * @return {Boolean} 返回 bValue 。
+ * @example
+ * <code>
+ * assert(true, "{value} 错误。", value
+ * 
+ * </code>
  */
-function assert(bValue, format) {
+function assert(bValue, msg) {
 	if (!bValue && Py.debug) { // LOG : bValue === false 
+	
+		 var val = arguments;
+
+		// 如果启用 [参数] 功能
+		if (val.length > 2) {
+			var i = 2;
+			msg = msg.replace(/\{([\w$]*?)\}/g, function(s, x){
+				return val.length <= i ? s : x + " = " + String.toLength(trace.inspect(val[i++]), 200);
+			});
+		}else {
+			msg = msg || "断言失败";
+		}
 
 		// 错误源
-		var cal = arguments.callee.caller,
-			mess = format ? String.format.apply(trace.inspect, Array.create(arguments, 1)) : " assert 出现错误。 ";
+		val = arguments.callee.caller;
+		
+		if (Py.stackTrace !== false) {
+		
+			while (val.debugStepThrough) 
+				val = val.caller;
+			
+			if (val) msg += "\r\n--------------------------------------------------------------------\r\n" + String.toLength(String.fromUTF8(val.toString()), 600);
+			
+		}
 
-		if (cal) mess += "\r\n来自: " + String.fromUTF8(cal.toString());
-
-		if(trace.error)
-			trace.error(mess);
+		if(Py.trace)
+			trace.error(msg);
 		else
-			throw new Error(mess);
+			throw new Error(msg);
 
 	}
 
 	return bValue;
 }
 
-/**
- * @namespace assert
- */
-Object.extend(assert, {
-
+(function(){
+	
+	function  assertInternal(asserts, msg, value, dftMsg){
+		return assert(asserts, msg ?  msg.replace('~', dftMsg) : dftMsg, value);
+	}
+	
+	function assertInternal2(fn, dftMsg, args){
+		return assertInternal(fn(args[0]), args[1], args[0], dftMsg);
+	}
+	
 	/**
-	 * 确认一个值非空。
-	 * @param {Object} value 值。
-	 * @param {String} argsName 变量的名字字符串。
-	 * @return {Boolean} 返回 assert 是否成功 。
+	 * @namespace assert
 	 */
-	notNull: function(value, argsName) {
-		return assert(value != null, "{0} 为 null 。", argsName || "参数");
-	},
+	Object.extend(assert, {
+		
+		/**
+		 * 确认一个值为函数变量。
+		 * @param {Object} bValue 值。
+		 * @param {String} msg="断言失败" 错误后的提示。
+		 * @return {Boolean} 返回 bValue 。
+		 * @example
+		 * <code>
+		 * assert.isFunction(a, "a ~");
+		 * </code>
+		 */
+		isFunction: function(){
+			return assertInternal2(Object.isFunction, "必须是可执行的函数", arguments);
+		},
+		
+		/**
+		 * 确认一个值为数组。
+		 * @param {Object} bValue 值。
+		 * @param {String} msg="断言失败" 错误后的提示。
+		 * @return {Boolean} 返回 bValue 。
+		 */
+		isArray: function(){
+			return assertInternal2(Object.isArray, "必须是数组", arguments);
+		},
+		
+		/**
+		 * 确认一个值为函数变量。
+		 * @param {Object} bValue 值。
+		 * @param {String} msg="断言失败" 错误后的提示。
+		 * @return {Boolean} 返回 bValue 。
+		 */
+		isObject: function(value, msg){
+			return assertInternal(Object.isObject(value) || Object.isFunction(value), msg, value,  "必须是引用的对象", arguments);
+		},
+		
+		/**
+		 * 确认一个值为数字。
+		 * @param {Object} bValue 值。
+		 * @param {String} msg="断言失败" 错误后的提示。
+		 * @return {Boolean} 返回 bValue 。
+		 */
+		isNumber: function(value, msg){
+			return assertInternal(typeof value == 'number' || value instanceof Number, msg, value, "必须是数字");
+		},
+		
+		/**
+		 * 确认一个值为节点。
+		 * @param {Object} bValue 值。
+		 * @param {String} msg="断言失败" 错误后的提示。
+		 * @return {Boolean} 返回 bValue 。
+		 */
+		isNode: function(value, msg){
+			return assertInternal(value && value.nodeType, msg, value, "必须是 DOM 节点");
+		},
+		
+		/**
+		 * 确认一个值为节点。
+		 * @param {Object} bValue 值。
+		 * @param {String} msg="断言失败" 错误后的提示。
+		 * @return {Boolean} 返回 bValue 。
+		 */
+		isElement: function(value, msg){
+			return assertInternal(value && value.style, msg, value, "必须是 Element 对象");
+		},
+		
+		/**
+		 * 确认一个值是字符串。
+		 * @param {Object} bValue 值。
+		 * @param {String} msg="断言失败" 错误后的提示。
+		 * @return {Boolean} 返回 bValue 。
+		 */
+		isString: function(value, msg){
+			return assertInternal(typeof value == 'string' || value instanceof String, msg, value, "必须是字符串");
+		},
+		
+		/**
+		 * 确认一个值是日期。
+		 * @param {Object} bValue 值。
+		 * @param {String} msg="断言失败" 错误后的提示。
+		 * @return {Boolean} 返回 bValue 。
+		 */
+		isDate: function(value, msg){
+			return assertInternal(Object.type(value) == 'date' || value instanceof Date, msg, value, "必须是日期");
+		},
+		
+		/**
+		 * 确认一个值是正则表达式。
+		 * @param {Object} bValue 值。
+		 * @param {String} msg="断言失败" 错误后的提示。
+		 * @return {Boolean} 返回 bValue 。
+		 */
+		isRegExp: function(value, msg){
+			return assertInternal2(Object.type(value) == 'regexp' || value instanceof RegExp, msg, value, "必须是正则表达式");
+		},
+	
+		/**
+		 * 确认一个值非空。
+		 * @param {Object} value 值。
+		 * @param {String} argsName 变量的名字字符串。
+		 * @return {Boolean} 返回 assert 是否成功 。
+		 */
+		notNull: function(value, msg) {
+			return assertInternal(value != null, msg, value, "不可为空");
+		},
+	
+		/**
+		 * 确认一个值在 min ， max 间。
+		 * @param {Number} value 判断的值。
+		 * @param {Number} min 最小值。
+		 * @param {Number} max 最大值。
+		 * @param {String} argsName 变量的米各庄。
+		 * @return {Boolean} 返回 assert 是否成功 。
+		 */
+		between: function(value, min, max, msg) {
+			return assertInternal(value >= min && !(value >= max), msg, value, "超出索引, 它必须在 [" + min + ", " + (max === undefined ? "+∞" : max) + ") 间");
+		},
+	
+		/**
+		 * 确认一个值属于一个类型。
+		 * @param {Object} v 值。
+		 * @param {String/Array} types 类型/表示类型的参数数组。
+		 * @param {String} message 错误的提示信息。
+		 * @return {Boolean} 返回 assert 是否成功 。
+		 */
+		instanceOf: function(v, types, msg) {
+			if (!Object.isArray(types)) types = [types];
+			var ty = typeof v,
+				iy = Object.type(v);
+			return assertInternal(types.filter(function(type) {
+				return type == ty || type == iy;
+			}).length, msg, v, "类型错误。");
+		},
+	
+		/**
+		 * 确认一个值非空。
+		 * @param {Object} value 值。
+		 * @param {String} argsName 变量的参数名。
+		 * @return {Boolean} 返回 assert 是否成功 。
+		 */
+		notEmpty: function(value, msg) {
+			return assertInternal(value && value.length, msg, value, "为空");
+		}
 
-	/**
-	 * 确认一个值在 min ， max 间。
-	 * @param {Number} value 判断的值。
-	 * @param {Number} min 最小值。
-	 * @param {Number} max 最大值。
-	 * @param {String} argsName 变量的米各庄。
-	 * @return {Boolean} 返回 assert 是否成功 。
-	 */
-	between: function(value, min, max, argsName) {
-		return assert(value >= min && (max === undefined || value < max), "{0} 超出索引, 它必须在 [{1}, {2}) 间。",  argsName || "参数", min, max === undefined ? "+∞" : max);
-	},
-
-	/**
-	 * 确认一个值属于一个类型。
-	 * @param {Object} v 值。
-	 * @param {String/Array} types 类型/表示类型的参数数组。
-	 * @param {String} message 错误的提示信息。
-	 * @return {Boolean} 返回 assert 是否成功 。
-	 */
-	instanceOf: function(v, types, message) {
-		if (!Object.isArray(types)) types = [types];
-		var ty = typeof v,
-			iy = Object.type(v);
-		return assert(types.filter(function(type) {
-			return type == ty || type == iy;
-		}).length, message || "类型错误。");
-	},
-
-	/**
-	 * 确认一个值非空。
-	 * @param {Object} value 值。
-	 * @param {String} argsName 变量的参数名。
-	 * @return {Boolean} 返回 assert 是否成功 。
-	 */
-	notEmpty: function(value, argsName) {
-		return assert(value && value.length, "{0} 为空 。", argsName || "参数");
-	},
-
-	/**
-	 * 确认一个值非静态。
-	 * @param {Object} value 值。
-	 * @param {String} argsName 变量的参数名。
-	 * @return {Boolean} 返回 assert 是否成功 。
-	 */
-	notStatic: function(value, argsName) {
-		return assert(Object.isObject(value), "{0} 为引用变量。", argsName || "参数");
+	});
+	
+	assertInternal.debugStepThrough = assertInternal2.debugStepThrough = true;
+	
+	
+	for(var fn in assert){ 
+		assert[fn].debugStepThrough = true;
 	}
 
-});
+	
+})();
 
 /// #endregion
 /// #endif
