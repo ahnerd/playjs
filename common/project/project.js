@@ -1,6 +1,6 @@
 
 var core = {
-	'core       ': ['class', 'classbase', 'namespace', 'native', 'navigator', 'object', 'py', 'ready', 'trace', '@', 'date', 'interface'],
+	'core       ': ['class', 'classbase', 'namespace', 'navigator', 'object', 'py', 'ready', 'trace', '@', 'array', 'date', 'interface', '@', 'native'],
 	'data       ': ['collectionbase', '@', 'collectionbaseex'],
 	'dom        ': ['attributions', 'clone', 'control', 'dimension', 'event', 'memleak', 'node', 'nodes', 'position', 'dragdrop', 'contextmenu', 'query', 'image', '@','iframe', 'keys', 'selection', 'submit', 'borderradius'],
 	'fx         ': ['animate', 'transitions', 'multifade', 'showhide'],
