@@ -3,8 +3,6 @@
 //===========================================
 
 
-Py.namespace("System.Broswer.Png");
-
 
 
 if (navigator.isIE && navigator.version < 7) {

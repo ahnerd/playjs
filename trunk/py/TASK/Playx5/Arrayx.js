@@ -2,7 +2,7 @@
 //  数组x   Arrayx.js  MIT LICENCE
 //===========================================
 
-playjs.applyIf(Array.prototype,{
+py.applyIf(Array.prototype,{
 	
 	findFirstOf : Array.prototype.indexOf,
 	

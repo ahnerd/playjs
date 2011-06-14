@@ -4,8 +4,6 @@
 //===========================================
 
 
-Py.namespace("System.Broswer.QueryString");
-
 (function(q){
         var search = location.search;
         var dc = decodeURIComponent;

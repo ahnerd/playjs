@@ -1,3 +1,6 @@
+
+// BY 司徒正美
+
 ;;(function(WIN,DOM,undefined){
     var
     reg_module_name = /(?:^|\/)([^(\/]+)(?=\(|$)/,
