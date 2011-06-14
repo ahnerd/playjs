@@ -137,8 +137,12 @@ Array.implementIf({
 		return this;
 	},
 
-	getLast: function(){
-		return (this.length) ? this[this.length - 1] : null;
+	first: function(){
+		return this[0];
+	},
+
+	last: function(){
+		return this[this.length - 1];
 	},
 
 	getRandom: function(){
