@@ -1,12 +1,13 @@
 
 var core = {
-	'core       ': ['class', 'classbase', 'namespace', 'navigator', 'object', 'py', 'ready', 'trace', 'chineseid', 'date', 'classex', '@', 'array', 'string', 'regexp', 'number', 'function', 'check', 'objectex', 'enumerable', 'json', '~',  'native'],
+	'core       ': ['class', 'classbase', 'namespace', 'navigator', 'object', 'py', 'ready', 'trace', 'chineseid', 'date', 'classex', '@', 'array', 'string', 'regexp', 'number', 'function', 'check', 'objectex', 'enumerable', 'json', 'delegate', 'taskrunner', 'delayedtask', 'enum', '~',  'native'],
+	'broswer	': ['clipboard', 'cookies', 'png', 'querystring', 'simulateie', 'action'],
 	'data       ': ['collectionbase', '@', 'collectionbaseex'],
-	'dom        ': ['attributions', 'clone', 'control', 'dimension', 'event', 'memleak', 'node', 'nodes', 'position', 'dragdrop', 'contextmenu', 'query', 'image', '@','event',  'iframe', 'keys', 'selection', 'submit', 'borderradius'],
+	'dom        ': ['attributions', 'clone', 'control', 'dimension', 'event', 'memleak', 'node', 'nodes', 'position', 'dragdrop', 'contextmenu', 'query', 'image', '@','event',  'iframe', 'keys', 'selection', 'submit', 'borderradius', 'css'],
 	'fx         ': ['animate', 'transitions', 'multifade', 'showhide'],
 	'jquery     ': ['attributions', 'core', 'dimension', 'event', 'node', 'position'],
 	'mootools   ': ['attributions', 'core', 'dimension', 'event', 'node', 'position'],
-	'ajax       ': ['ajax', '@', 'submit'],
+	'ajax       ': ['ajax', '@', 'submit', 'json', 'jsonp', 'update', 'ajaxex'],
 	'algorithm  ': ['encryption', 'sorter']
 };
 
