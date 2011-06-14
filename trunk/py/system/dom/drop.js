@@ -252,15 +252,15 @@ Py.using("System.Dom.Drag");
 		 * @return {Rectange} 位置。
 		 */
 		calcBound: function(){
-			
 			var bound = this.bound,
-				d = dm.delta;
+				dx = this.to.x - this.from.x,
+				dy = this.to.y - this.from.y;
 			
 			return {
-				left: bound.left + d.x,
-				top: bound.top + d.y,
-				right: bound.right + d.x,
-				bottom: bound.bottom + d.y
+				left: bound.left + dx,
+				top: bound.top + dy,
+				right: bound.right + dx,
+				bottom: bound.bottom + dy
 			};
 			
 		},
