@@ -257,6 +257,8 @@ Py.namespace(".Ajax", Py.Class({
 	 */
 	setEncoding: function(value){
 		
+		if(value)
+			this.setHeader("Accept-Charset", value);
 		return this.setHeader('contentType', 'application/x-www-form-urlencoded' + (value ? '; charset=' + value : ''));
 
 	},

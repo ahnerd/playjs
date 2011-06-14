@@ -4,15 +4,14 @@
 //===========================================
 
 
-Py.namespace("System.Delegate");
-Py.using("System.Native");
+
 
 
 /**
  * 委托。
  * @class Delegate
  */
-Py.namespace(".Delegate", Function.extend({
+Py.namespace(".Delegate", Py.Class({
 	
 	/**
 	 * 初始化一个委托。
@@ -25,11 +24,10 @@ Py.namespace(".Delegate", Function.extend({
 		 * @return {Boolean} 是否成功调用所有委托成员。
 		 */
 		var fn = function(){
-			var args = arguments, target = this.target;
-			return fn.handlers.each(function(f){
-				return f.apply(target, args);
-			});
+			arguments.callee.apply(this, arguments);
 		};
+		
+		Object.extend(fn, this);
 		fn.handlers = Array.create(arguments);
 		return fn;
 		
@@ -66,7 +64,7 @@ Py.namespace(".Delegate", Function.extend({
 	 * @param {Function} f 函数。
 	 * @return {Delegate} this。
 	 */
-	removeAll: function(){
+	clear: function(){
 		this.handlers.length = 0;
 		return this;
 	},
@@ -76,9 +74,14 @@ Py.namespace(".Delegate", Function.extend({
 	 * @param {Object} 对象。
 	 * @return {Boolean} 是否成功调用所有委托成员。
 	 */
-	invoke: function(target){
-		this.target = target;
-		return this();
+	apply: function(bind, args){
+		return fn.handlers.each(function(f){
+			return f.apply(bind, args);
+		});
+	},
+	
+	call: function(bind){
+		return this.apply(bind, Array.create(arguments, 1));
 	}
 							   
 }));
