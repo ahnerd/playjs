@@ -6,7 +6,7 @@ var core = {
 	'fx         ': ['animate', 'transitions', 'multifade', 'showhide'],
 	'jquery     ': ['attributions', 'core', 'dimension', 'event', 'node', 'position'],
 	'mootools   ': ['attributions', 'core', 'dimension', 'event', 'node', 'position'],
-	'ajax       ': ['@', 'ajax', 'submit'],
+	'ajax       ': ['ajax', '@', 'submit'],
 	'algorithm  ': ['encryption', 'sorter']
 };
 
