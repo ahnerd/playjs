@@ -38,7 +38,7 @@
 		deep: 2,			 // 遍历对象的最大级数。
 		maxLog: 1024,        // 最大的日志缓存。
 		display: true,		 // 是否默认打开。
-		useConsole: true,	 // 如果存在控制台，优先考虑使用浏览器的开发工具。
+		useConsole: false,	 // 如果存在控制台，优先考虑使用浏览器的开发工具。
 		names: {
 			'warn': '<b>[警告]</b>',
 			'info': '<b>[提示]</b>',
