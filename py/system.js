@@ -715,16 +715,13 @@ var Py = {
 					useDefinedConstructor = (quick = quick !== false) && constructorDefined,
 				
 					// 生成子类
-					subClass = useDefinedConstructor ? members.constructor :  function() {
-				 	
-						// 去除闭包
-				 		var me = this, subClass = arguments.callee, c = me.constructor;
-				 		
-				 		if (subClass.cloneMembers)  // 解除引用
-							o.update(me, o.clone);
+					subClass = useDefinedConstructor ? members.constructor : function(){
 						
+						// 去除闭包
+				 		var me = this, c = me.constructor;
+				 		
 						// 重写构造函数
-						me.constructor = subClass;
+						me.constructor = arguments.callee;
 						
 						// 重新调用构造函数
 						c.apply(me, arguments);
@@ -732,7 +729,10 @@ var Py = {
 					},
 					
 					// 基类( this )
-					baseClass = this;
+					baseClass = this,
+					
+					// 强制复制构造函数。  FIX  6
+					constructor = constructorDefined ? members.constructor : baseClass.prototype.constructor;
 				
 				// 代理类
 				defaultConstructor.prototype = baseClass.prototype;
@@ -743,14 +743,16 @@ var Py = {
 				/// #ifndef Std
 				
 				// 强制复制构造函数。  FIX  6
-				subClass.prototype.constructor = constructorDefined ? members.constructor : baseClass.prototype.constructor;
-				
-				
-				if (!useDefinedConstructor && !quick) {
-					
-					// 设置是否为快速模式。
-					subClass.cloneMembers = true;
-				}
+				// 是否需复制成员。
+				subClass.prototype.constructor = !useDefinedConstructor && !quick ?  function(){
+						
+						// 解除引用。
+						o.update(this, o.clone);
+						
+						// 重新调用构造函数
+						constructor.apply(this, arguments);
+						
+					} : constructor;
 				
 				/// #else
 				
@@ -759,8 +761,16 @@ var Py = {
 				/// 	if(quick)
 				///			subClass.cloneMembers = true;
 				/// 
-				///		// 强制复制构造函数。  FIX  6
-				/// 	subClass.prototype.constructor = constructorDefined ? members.constructor : baseClass.prototype.constructor;
+				///		// 强制复制构造函数。
+				/// 	subClass.prototype.constructor = quick ?  function(){
+				/// 			
+				/// 		// 解除引用。
+				/// 		o.update(this, o.clone);
+				/// 			
+				/// 		// 重新调用构造函数
+				/// 		constructor.apply(this, arguments);
+				/// 		
+				/// 	} : constructorDefined ? members.constructor : baseClass.prototype.constructor;
 				/// }
 				
 				/// #endif
@@ -1589,6 +1599,7 @@ var Py = {
 		 * @return {String} 字符串。
 		 */
 		param: function(obj){
+			if(!obj) return "";
 			var s = [], e = encodeURIComponent;
 			o.each(obj, function( value, key ){
 				s.push(e(key) + '=' + e(value));
@@ -2665,6 +2676,24 @@ Object.extendIf(trace, {
 	},
 	
 	/**
+	 * 输出类的信息。
+	 * @param {Object} 成员。
+	 */
+	api: function(obj){
+		if(obj && obj.prototype) {
+			for (var i in obj.prototype) {
+				trace.dir(obj.prototype);
+				return;
+			}
+		} else if(Object.isObject(obj)) {
+			trace.dir(obj);
+			return;
+		} 
+		
+		  trace(obj);
+	},
+	
+	/**
 	 * 得到输出指定内容的函数。
 	 * @return {Function}
 	 */
@@ -2907,7 +2936,7 @@ function assert(bValue, msg) {
 		// 如果启用 [参数] 功能
 		if (val.length > 2) {
 			var i = 2;
-			msg = msg.replace(/\{([\w$]*?)\}/g, function(s, x){
+			msg = msg.replace(/\{([\w$\.\(\)]*?)\}/g, function(s, x){
 				return val.length <= i ? s : x + " = " + String.toLength(trace.inspect(val[i++]), 200);
 			});
 		}else {
