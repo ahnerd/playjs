@@ -293,7 +293,7 @@ var Py = {
 		 * Object  简写。
 		 * @class Object
 		 */
-		o = apply(Object, {
+		o = apply(w.Object, {
 	
 			/**
 			 * 如果目标成员不存在就复制对象的所有属性到其它对象。 
@@ -738,7 +738,7 @@ var Py = {
 				defaultConstructor.prototype = baseClass.prototype;
 				
 				// 指定成员
-				Native(subClass).prototype = o.extend(new defaultConstructor, members);
+				Native(subClass).prototype = apply(new defaultConstructor, members);
 				
 				/// #ifndef Std
 				
@@ -783,7 +783,7 @@ var Py = {
 
 			}
 	
-		},
+		}, 
 
 		/**
 		 * Py静态对象。
@@ -796,7 +796,7 @@ var Py = {
 			 * @property Events
 			 * @type Object
 			 */
-			Events: eventMgr,   
+			Events: eventMgr,  
 			
 			/**
 			 * 元素。
@@ -913,6 +913,14 @@ var Py = {
 			 */
 			namespaces: [],
 			
+			loadStyle: function(url){
+				document.getElementsByTagName("HEAD")[0].appendChild(apply(document.createElement('link'), {
+					href: url,
+					rel: 'stylesheet',
+					type: 'text/css'
+				}));
+			},
+			
 			/**
 			 * 同步载入文本。
 			 * @param {String} uri 地址。
@@ -970,19 +978,6 @@ var Py = {
 				
 				// 如果正常浏览器，使用 window.eval
 				return w.eval(statement);
-			},
-			
-			/**
-			 * 动态增加一个函数。
-			 * @param {String} statement 语句。
-			 * @return {Object} 执行返回值。
-			 */
-			addCss: document.createStyleSheet ? function(text){
-				document.createStyleSheet().cssText = text;
-			} : function(text) {
-				var style = document.createElement('STYLE');
-				style.textContent = text;
-				(document.getElementsByTagName('HEAD')[0] || document).appendChild(style);
 			},
 			
 			/**
@@ -1136,7 +1131,7 @@ var Py = {
 			 * 所有类的基类。
 			 * @class Py.Object
 			 */
-			Object: Native(from).implement({
+			Object: Native(Object).implement({
 				
 				/**
 				 * 调用父类的构造函数。
@@ -1144,8 +1139,20 @@ var Py = {
 				 */
 				base: function() {
 					
-					// 调用父类的函数。
-					return this.baseCall('constructor', arguments);
+					var ctor = arguments.callee.caller;
+					
+					ctor.bubble = true;
+					
+					try {
+					
+						// 调用父类的函数。
+						this.baseCall('constructor', arguments);
+						
+					} finally {
+						
+						delete ctor.bubble;
+						
+					}
 				},
 				
 				/**
@@ -1175,17 +1182,23 @@ var Py = {
 					//  or 2. use base.prototype[name].apply(this, araguments) instead
 					
 					fn.bubble = true;
+					assert(!me || me.prototype[name], "baseCall(name, args): 父类不存在 {name} 的属性或方法。", name);
 					
 					// 保证得到的是父类的成员。
 					while(me && (fn = me.prototype[name]).bubble){
 						me = me.base;
+						assert(!me || me.prototype[name], "baseCall(name, args): 父类不存在 {name} 的属性或方法。", name);
 					}
 					
 					fn.bubble = true;
 					
 					// 确保 bubble 记号被移除。
 					try {
-						return fn.apply(this, args === arguments.callee.caller.arguments ? args : makeArray.call(arguments, 1));
+						if(args === arguments.callee.caller.arguments)
+							return fn.apply(this, args);
+						arguments[0] = this;
+						return fn.call.apply(fn, arguments);
+						//return fn.apply(this, args === arguments.callee.caller.arguments ? args : makeArray.call(arguments, 1));
 					} finally {
 						delete fn.bubble;
 					}
@@ -1284,7 +1297,7 @@ var Py = {
 				delete ee[events];
 				
 				// 对每个事件执行定义。
-				String.map(events, from(applyIf({
+				String.map(events, Object(applyIf({
 					
 					trigger: baseEvent && trigger ? function(e){
 							eventMgr.element[baseEvent].trigger.call(this, e);
@@ -1311,12 +1324,6 @@ var Py = {
 				// 方便继续使用本函数，如果重命名，返回事件对象，否则返回此函数。
 				return baseEvent ? ee[events] : arguments.callee;
 			},
-		
-			/**
-			 * id种子 。
-			 * @type Number
-			 */
-			id: Date.now() % 100,
 	
 			/**
 			 * 由存在的类修改创建类。即为类添加一个 implement 和 implementIf 成员。
@@ -1489,7 +1496,7 @@ var Py = {
 		 * @property
 		 * @type Function
 		 */
-		returnTrue: from(true),
+		returnTrue: Object(true),
 
 		/**
 		 * 一个返回 false 的函数。
@@ -1497,7 +1504,7 @@ var Py = {
 		 * @property
 		 * @type Function
 		 */
-		returnFalse: from(false),
+		returnFalse: Object(false),
 		
 		/**
 		 * 绑定函数作用域。
@@ -1519,7 +1526,7 @@ var Py = {
 		 * 返回自身的函数。
 		 * @static
 		 */
-		from: from
+		from: Object
 		
 	});
 
@@ -2235,6 +2242,12 @@ var Py = {
 	 * @namespace Py
 	 */
 	apply(p, {
+		
+		/**
+		 * id种子 。
+		 * @type Number
+		 */
+		id: Date.now() % 100,
 			
 		/**
 		 * PyJs 安装的根目录, 可以为相对目录。
@@ -2533,11 +2546,14 @@ var Py = {
 		 var doms, check, callback;
 		 
 		 if(isStyle){
-		 	e = p.addCss;
+		 	callback = p.loadStyle;
+			//e = function (text){
+				//     Py.addCss(text.replace(/url\s*\(\s*"?([^)]+)"?\s*\)/gi, "url(" + name + "../$1)"));
+			//};
 		 	doms = document.styleSheets;
 			src = 'href';
 		 } else {
-		 	e = p.eval;
+		 	callback = p.loadText;
 		 	doms = document.getElementsByTagName("SCRIPT");
 			src = 'src';
 
@@ -2553,12 +2569,14 @@ var Py = {
 		 }
 		 
 		 
-		  Object.each(doms, function(dom){
+		  o.each(doms, function(dom){
 		 	return !dom[src] || dom[src].toLowerCase().indexOf(name) == -1;
-		 }) && p.loadText(p.rootPath + name, e );
+		 }) && callback(p.rootPath + name, p.eval );
 	}
 			
 	/// #endif
+	
+	
 	
 	/**
 	 * 创建一个类。
@@ -2577,7 +2595,8 @@ var Py = {
 	 * @param {mixed} v 结果。
 	 * @return {Function} 函数。
 	 */
-	function from(v) {
+	function Object() {
+		var v = arguments[0];
 		return function() {
 			return v;
 		}
