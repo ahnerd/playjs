@@ -1,3 +1,5 @@
+// 实现 载入  JS  或 CSS
+
 
 // BY 司徒正美
 
@@ -122,3 +124,27 @@
     dom.require.getBasePath();
     window.dom = dom;
 })(this,this.document)
+
+
+
+	/**
+			 * 同步载入css文件。
+			 * @param {String} uri 地址。
+			 * @param {Function} callback (默认空函数)对返回值的处理函数。
+			 */
+			loadCss: function(v, callback) {
+				var head = document.getElementsByTagName('head')[0], css = document.createElement('link');
+				if(!head) return false;
+				css.href = v;
+				css.rel = 'stylesheet';
+				css.type = 'text/css';
+				head.appendChild(css);
+				if (callback)
+					css.onload = css.onreadystatechange = function() {
+						if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') {
+							css.onload = css.onreadystatechange = null;
+							callback();
+						}
+					};
+
+			},
