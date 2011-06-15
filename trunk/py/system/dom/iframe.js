@@ -2,7 +2,7 @@
 //  元素   Dom.js
 //  Copyright(c) 2009-2010 xuld
 //===========================================
-Py.using("System.Dom.Element");
+Py.using("System.Controls.Control");
 
 /**
  * IFrame

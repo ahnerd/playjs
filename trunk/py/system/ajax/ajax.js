@@ -254,6 +254,7 @@ Py.namespace(".Ajax", Py.Class({
 	/**
 	 * 设置地址的编码。
 	 * @param {String} [value] 字符集。
+	 * @return this
 	 */
 	setEncoding: function(value){
 		
@@ -263,6 +264,12 @@ Py.namespace(".Ajax", Py.Class({
 
 	},
 	
+	/**
+	 * 设置请求头。
+	 * @param {String} key 键。
+	 * @param {String} text 值。
+	 * @return this
+	 */
 	setHeader: function(key, text){
 		if(!this.hasOwnProperty("header"))
 			this.header = Object.clone(this.header);
@@ -274,6 +281,7 @@ Py.namespace(".Ajax", Py.Class({
 	
 	/**
 	 * 停止当前的请求。
+	 * @return this
 	 */
 	abort: function() {
 		if (this.xhr) {
@@ -286,8 +294,7 @@ Py.namespace(".Ajax", Py.Class({
 	},
 	
 	/**
-	 * xType
-	 * @type String
+	 * xType。
 	 */
 	xType: "ajax"
 	

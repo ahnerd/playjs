@@ -32,7 +32,7 @@
 	 * @class Base
 	 * @abstract
 	 */
-	p.namespace(".Fx", true, {
+	p.namespace(".Fx.", {
 	
 		Base: p.Class({
 			

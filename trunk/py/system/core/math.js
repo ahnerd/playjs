@@ -66,3 +66,21 @@ Object.extendIf(Math,{
 	
 	
 });
+
+
+
+
+//Math
+
+
+Math.nextRandom = function(minValue, maxValue) {
+///<summary>产生一个随机整数并返回。语法：Math.nextRandom(minValue, maxValue)</summary>
+///<param name="minValue" type="int">随机整数可能出现的最小值。</param>
+///<param name="maxValue" type="int">随机整数可能出现的最大值。</param>
+///<returns type="int">返回产生的随机整数。</returns>
+    return Math.floor(((maxValue - minValue) + 1) * Math.random() + minValue);
+}
+
+
+//================================================================================
+

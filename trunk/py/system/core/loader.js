@@ -148,3 +148,98 @@
 					};
 
 			},
+
+			
+			
+			
+//================================================================================
+
+
+EZJ.JavaScript = function() {
+///<summary>处理 JavaScript 加载的对象。</summary>
+}
+
+
+EZJ.JavaScript.load = function(jsUrls, onComplete) {
+///<summary>按顺序加载一个或多个 JavaScript 文件。语法：EZJ.JavaScript.load(jsUrls[, onComplete])</summary>
+///<param name="jsUrls" type="string/array">要加载的一个或多个 JavaScript 文件的 URL，多个时请使用数组类型。</param>
+///<param name="onComplete" type="function">可选。所有 js 文件加载完成（不判断成功与否）后要执行的函数。</param>
+    var urls = (typeof (jsUrls) == "string") ? [jsUrls] : jsUrls;
+
+    //由于多个 JavaScript 文件之间可能存在引用，为了保障引用的可用性，采用依次读取的方式。
+    //每轮只读取一个 JavaScript 文件，当该文件读取完成后，利用类似递归的方式继续读取下一个文件。
+
+    var script = EZJ.$C("script", { type: "text/javascript" });
+
+    //Firefox 一类响应 onload，无 readyState。
+    script.onload = function() {
+        if (urls.length == 1) {
+            //无可继续读取的文件
+            if (typeof (onComplete) == "function") {
+                onComplete();
+            }
+        }
+        else {
+            EZJ.JavaScript.load(urls.slice(1), onComplete);
+        }
+    }
+
+    //IE 一类浏览器。
+    script.onreadystatechange = function() {
+        if (script.readyState == 4 || script.readyState == "loaded" || script.readyState == "complete") {
+            if (urls.length == 1) {
+                //无可继续读取的文件
+                if (typeof (onComplete) == "function") {
+                    onComplete();
+                }
+            }
+            else {
+                EZJ.JavaScript.load(urls.slice(1), onComplete);
+            }
+        }
+    }
+
+    script.setAttribute("src", urls[0]); //一轮只读取一个
+    EZJ.$C(script, null, document.body);
+}
+
+
+//================================================================================
+
+
+
+
+
+
+
+EZJ.Css = function() {
+///<summary>处理 CSS 的对象。</summary>
+}
+
+
+EZJ.Css.addText = function(cssText) {
+///<summary>添加 CSS 文字。语法：EZJ.Css.addText(cssText)</summary>
+///<param name="cssText" type="string">CSS 文字，比如：body { font-size:13px; }。</param>
+    try {
+        //IE
+        var style = document.createStyleSheet();
+        style.cssText = cssText;
+    }
+    catch (e) {
+        var style = EZJ.$C("style", { type: "text/css" }, document.getElementsByTagName("head").item(0));
+        style.textContent = cssText;
+    }
+}
+
+
+EZJ.Css.addLink = function(cssUrl) {
+///<summary>添加 CSS 链接。语法：EZJ.Css.addLink(cssUrl)</summary>
+///<param name="cssUrl" type="string">要添加的 CSS 文件的 URL。</param>
+    EZJ.$C("link", { rel: "stylesheet", type: "text/css", href: cssUrl }, document.getElementsByTagName("head").item(0));
+}
+
+
+
+
+
+

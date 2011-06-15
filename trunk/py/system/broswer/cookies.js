@@ -8,7 +8,7 @@
  * 浏览器 Cookies 处理。
  * @param {Object} name 名字。
  */
-Py.namespace("Py.Broswer.Cookies", {
+Py.namespace(".Cookies.", {
 	
 	/**
 	 * 获取 Cookies 。
@@ -55,6 +55,47 @@ Py.namespace("Py.Broswer.Cookies", {
 
 
 
+
+
+//================================================================================
+
+
+EZJ.Cookie = function() {
+///<summary>处理 Cookie 的对象。</summary>
+}
+
+
+EZJ.Cookie.read = function(name) {
+///<summary>获取 Cookie 的值。语法：EZJ.Cookie.read(name)</summary>
+///<param name="name" type="string">Cookie 名称。</param>
+///<returns type="string">返回 Cookie 的值，若对应的 Cookie 不存在，则返回 ""。</returns>
+    var value = "";
+
+    var cookieStr = document.cookie; //取 cookie 字符串，由于 expires 不可读，所以 expires 将不会出现在 cookieStr 中。
+    var cookies = cookieStr.split("; "); //将各个 cookie 分隔开，并存为数组，多个 cookie 之间用分号加空隔隔开。
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].left(name.length + 1) == (name + "=")) {
+            value = unescape(cookies[i].right(cookies[i].length - name.length - 1)); //-1 为等号长度
+            break;
+        }
+    }
+
+    return value;
+}
+
+
+EZJ.Cookie.write = function(name, value, expires) {
+///<summary>写入 Cookie。语法：EZJ.Cookie.write(name, value[, expires])</summary>
+///<param name="name" type="string">Cookie 名称。</param>
+///<param name="value" type="string">Cookie 值。</param>
+///<param name="expires" type="date">可选。Cookie 失效时间。</param>
+    if (typeof (expires) == "object" && expires != null) {
+        document.cookie = name + "=" + escape(value) + "; expires=" + expires.toUTCString();
+    }
+    else {
+        document.cookie = name + "=" + escape(value);
+    }
+}
 
 
 
