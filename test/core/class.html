@@ -34,10 +34,13 @@
 				xType: "MYCLASS3",
 				constructor: function MYCLASS3CTR(args){
 					this.base(args);
+					log(args + "    MYCLASS3 构造");
 				}
 			});
 			
 			var MYCLASS4 = MYCLASS3.extend({
+				
+				xType: "MYCLASS4",
 				
 				a: function(a,b){
 					log("MYCLASS3->", a, b);
@@ -45,6 +48,8 @@
 			});
 			
 			var MYCLASS5 = MYCLASS4.extend({
+				
+				xType: "MYCLASS5",
 				
 				a: function(a,b){
 					this.baseCall('a', a, b);
@@ -54,6 +59,8 @@
 			
 			var MYCLASS6 = MYCLASS5.extend({
 				
+				xType: "MYCLASS6",
+				
 				a: function(a,b){
 					this.baseCall('a', arguments);
 				}
@@ -62,7 +69,7 @@
 			
 			var fns = [
 				["创建类", function(){
-					new MYCLASS3("3");
+					new MYCLASS6("3");
 				 }],
 				["类之间关系", function(){
 					var instance1 = new MYCLASS('a'),
@@ -75,7 +82,7 @@
 				}],
 				["Object", function(){
 					new MYCLASS5().a(4,5);
-					new MYCLASS6().a(6,9);
+					//  new MYCLASS6().a(6,9);
 				}],
 				["Class.addEvents", function(){ 
 					var MYCLASS = new Class({
