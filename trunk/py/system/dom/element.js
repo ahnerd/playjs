@@ -3,8 +3,6 @@
 //  Copyright(c) 2009-2011 xuld
 //===========================================
 
-// ClearControl - 不需 Control  
-
 (function(w) {
 	
 	/// #region Core
@@ -29,7 +27,6 @@
 		
 		/**
 		 * 元素。
-		 * @class Element
 		 */
 		e = p.Element, 
 		
@@ -99,239 +96,11 @@
 			td: [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ],
 			col: [ 2, "<table><tbody></tbody><colgroup>", "</colgroup></table>" ],
 			area: [ 1, "<map>", "</map>" ]
-		},
-		
-		/// #ifndef ClearControl
-		
-		/**
-		 * 所有控件基类。
-		 * @class Control
-		 * @extends Element
-		 * 控件的周期：
-		 * constructor  -  创建控件对于的 Javascript 类。 不建议重写，除非你知道你在做什么。
-		 * create - 创建本身的 dom 节点。 可重写 - 默认使用  this.tpl 创建。
-		 * init - 初始化控件本身。 可重写 - 默认为无操作。
-		 * renderTo - 渲染控件到文档。 不建议重写，如果你希望额外操作渲染事件，则重写。
-		 * dispose - 删除控件。不建议重写，如果一个控件用到多个 dom 内容需重写。
-		 */
-		Control = p.namespace(".Control", p.Class({
-			
-			/**
-			 * 封装的节点。
-			 * @property dom
-			 * @type Element
-			 */
-			dom: null,
-			
-			/**
-			 * xType 。
-			 * @property xType
-			 * @type String
-			 */
-			xType: "control",
-			
-			/**
-			 * 获取当然控件对应的元素。
-			 * @return {Element}
-			 */
-			getDom: function(){
-				return this.dom;
-			},
-		
-			/**
-			 * 根据一个节点返回。
-			 * @param {String/Element/Object} [options] 对象的 id 或对象或各个配置。
-			 * @constructor Control
-			 */
-			constructor: function (options) {
-				
-				var me = this,
-					t = o.clone.call(1, me.options) || {},
-					d;
-				
-				// 如果存在配置。
-				if (options) {
-					
-					// 存在的为 Element 。
-					if (typeof options == 'string' || options.nodeType) {
-						d = options;
-					} else {
-						
-						// 保存 dom 。
-						d = options.dom;
-						delete options.dom;
-						apply(t, options);
-					}
-				}
-				
-				// 赋值。
-				me.dom = d ? p.$(d) : me.create(t);
-				
-				assert(me.dom && me.dom.nodeType, "Control.prototype.constructor(options): 当前实例的 dom 属性为空，或此属性不是 DOM 对象。(检查 options.dom 是否是合法的节点或ID(options 或 options.dom 指定的ID的节点不存在?) 或当前实例的 create 方法是否正确返回一个节点)\r\n当前控件: {dom} {xType}", me.dom, me.xType);
-				
-				// 初始化控件。
-				me.init(t);
-				
-				// 复制各个选项。
-				Object.set(me, t);
-			},
-			
-			/**
-			 * 当被子类重写时，生成当前控件。
-     		 * @method create
-			 * @param {Object} options 选项。
-			 * @protected
-			 */
-			create: function() {
-				
-				assert(this.tpl, "Control.prototype.create(): 当前类不存在 tpl 属性。Control.prototype.create 会调用 tpl 属性，根据这个属性中的 HTML 代码动态地生成节点并返回。子类必须定义 tpl 属性或重写 Control.prototype.create 方法。");
-				
-				// 转为对 tpl解析。
-				return e.parse(this.tpl);
-			},
-			
-			/**
-			 * 当被子类重写时，渲染控件。
-     		 * @method init
-     		 * @param {Object} [options] 配置。
-     		 * @protected
-			 */
-			init: emptyFn,
-			
-			/**
-	         * 复制属性。
-     		 * @method clone
-	         * @param {Boolean} copyListener (默认 false )是否复制事件。
-	         * @param {Boolean} contents  (默认 true )是否复制子元素。
-	         * @param {Boolean} keepid  (默认 false )是否复制 id 。
-	         * @return {Element} 元素。
-	         */
-			clone: function(copyListener, contents, keepid) {
-				
-				// 创建一个控件。
-				var newControl = this.memberwiseClone();
-
-				newControl.dom = this.dom.clone(copyListener, contents, keepid);
-					
-				p.cloneData(this, newControl);
-					
-				return newControl;
-
-			}
-			
-		}));
-		
-		/// #else
-		
-		/// ;
-		
-		/// #endif
+		};
 		
 	function getDoc(elem) {
 		return elem.ownerDocument || elem.document || elem;
 	}
-	
-	/// #ifndef ClearControl
-
-	apply(Control, {
-		
-		/**
-		 * 设置类的基类。
-		 * @type Element
-		 */
-		base: e,
-		
-		/**
-		* 将指定名字的方法委托到当前对象指定的成员。
-		* @method delegate
-		* @param {Object} control 类。
-		* @param {String} delegate 委托变量。
-		* @param {String} methods 所有成员名。
-		* @param {Number} type 类型。 1 - 返回委托返回 2 - 返回本身 3 - 返回自己，参数作为控件。
-		* @param {String} [m2] 成员。
-		* @param {String} [t2] 类型。
-		* @memberOf Control
-		*/
-		delegate: function(control, delegate, methods, type, m2, t2) {
-			
-			if (m2) 
-				arguments.callee(control, delegate, m2, t2);
-			
-			assert(control && control.prototype, "Control.delegate(control, delegate, methods, type, m2, t2): 参数 {control} 必须是一个类", control);
-			assert.isNumber(type, "Control.delegate(control, delegate, methods, type, m2, t2): 参数 {type} ~。");
-			   
-			String.map(methods, function(name) {
-				switch (type) {
-					case 2:
-						return function() {
-							var me = this[delegate];
-							me[name].apply(me, arguments);
-							return this;
-						};
-					case 3:
-						return function(ctrl, args) {
-							return this[delegate][name](ctrl && ctrl.dom || ctrl, args);
-						};
-					case 4:
-						var onName = 'on' + delegate;
-						delegate = delegate.toLowerCase();
-						control.prototype[onName] = function(){
-							this.trigger(delegate);
-						}; 
-						return  function(args1, args2){
-							this.getDom()[name](args1, args2);
-							this[onName]();
-							return this;
-						};
-					case 5:
-						return function(newControl, childControl) {
-							return this[delegate][name](newControl && newControl.dom || newControl, childControl ? childControl.dom || childControl : null);
-						};
-					default:
-						return function() {
-							var me = this[delegate];
-							return me[name].apply(me, arguments);
-						};
-				}
-			}, control.prototype);
-			
-			return arguments.callee;
-		},
-		
-		getProxy: function(className){
-			var p = document.getElementById('py_proxy');
-			if(!p){
-			
-				p = d.createDiv()
-					.setAttr('id', 'py_proxy')
-					.setStyle('display: none; position: absolute; overflow: hidden;')
-					.renderTo();
-					
-				/**
-				 * 打开代理元素。
-				 */
-				p.alignTo = function(elem){
-					
-					return this.show()
-							.setOffset(elem.getPosition())
-							.setSize(elem.getSize());
-				};
-			}
-			
-			p.className = className;
-			return p;
-		}
-
-	});
-	
-	Control.delegate
-		(Control, "dom", 'addEventListener removeEventListener scrollIntoView focus blur remove', 2, 'appendChild contains insert replaceWith wrapWith removeChild', 3)
-  		(Control, "dom", 'insertBefore replaceChild', 5)
-		(Control, 'Move', 'setOffset', 4)
-		(Control, 'ResizeX', 'setWidth', 4)
-		(Control, 'ResizeY', 'setHeight', 4);
-		
-	/// #endif
 		
 	///   #region ElementList
 
@@ -376,17 +145,17 @@
     /// #endregion
 	
 	/**
-	 * @namespace Element
+	 * @class Element
 	 */
 	apply(e,  {
 		 
 	    /**
 	     * 转换一个HTML字符串到节点。
-		 * @method parse
 	     * @param {String/Element} html 字符。
 	     * @param {Document} context 内容。
 	     * @param {Boolean} cachable=true 是否缓存。
 	     * @return {Element} 元素。
+	     * @static
 	     */
 	    parse: function(html, context, cachable) {
 			
@@ -401,7 +170,9 @@
 				context = context || d;
 				
 				// 过滤空格  // 修正   XHTML
-				var h = html.trim().replace(rXhtmlTag, "<$1></$2>"), tag = rTagName.exec(h), notSaveInCache = cachable !== false && rNoClone.test(html);
+				var h = html.trim().replace(rXhtmlTag, "<$1></$2>"),
+					tag = rTagName.exec(h),
+					notSaveInCache = cachable !== false && rNoClone.test(html);
 				
 				
 				if (tag) {
@@ -443,73 +214,27 @@
 	        return div;
 	
 	    },
-	
-		/**
-		 * 将一个成员附加到 Element 对象和相关类。
-		 * @method implement
-		 * @param {Object} obj 要附加的对象。
-		 * @param {Number} listType = 1 说明如何复制到 ElementList 实例。 
-		 * @param {Number} docType = 2 说明如何复制到 Document 实例。 
-		 * @return {Element} this
-		 * 对 Element 扩展，内部对 Element ElementList document Control 皆扩展。
-		 * 这是由于不同的函数需用不同的方法扩展，必须指明扩展类型。
-		 * 所谓的扩展，即使一个类含需要的函数。
-		 * 
-		 * 
-		 * DOM 方法 有 以下种
-		 *  
-		 *  1  getText - 返回结果 
-		 *  2  setText - 返回 this
-		 *  3  getElementById - 返回 DOM
-		 *  4  getElementsByTagName - 返回  DOM 数组
-		 *  5  appendChild  - 参数 DOM
-		 *  
-		 *  对 Element , 按 docType，
-		 *     其它，复制。(默认1)
-		 *     0, 不复制。
-		 *
-		 *  对 ElementList ，按 listType，
-		 *      1, 其它 - 执行结果是数据，返回结果数组。 (默认)
-		 *  	2 - 执行结果返回 this， 返回 this 。
-		 * 		3 - 执行结果是DOM，返回 ElementList 包装。
-		 * 		4 - 执行结果是DOM数组，返回 ElementList 包装。 
-		 * 		5 - 不复制。
-		 * 
-		 *  对 document ， 按 docType，
-		 *  	0，1 - 复制。(默认1) 
-		 *  	>1 - 不复制。
-		 * 		
-		 *  对 Control  ， 按 docType，
-		 *  	1, 2 - 复制。(默认1) 
-		 *  	<1 - 不复制。
-		 *  
-		 *  
-		 *  参数 copyIf 仅内部使用。
-		 */
-		implement: function (obj, listType, docType, copyIf) {
+		
+		implementListeners: [function(obj, listType, copyIf){
 			
-			o.each(obj, function(value, key) {
+			for(var key in obj){
 				
+				var value = obj[key];
+					
 				//  复制到  Element.prototype
-				if(docType != 0 && (!copyIf || !(key in ep)))
+				if(!copyIf || !(key in ep))
 					ep[key] = value;
 					
-				/// #ifndef ClearControl
-				
-				//  复制到 Control.prototype
-				if(!(docType < 1)  && !(key in Control.prototype))
-					Control.prototype[key] = value;
-					
-				/// #endif
-				
 				//  复制到 Document
-				if (!(docType > 1) && !(key in d))
+				if (!(key in d))
 					d[key] = value;
-				
+					
+				var fn;
+						
 				// 复制到  ElementList
 				switch (listType) {
 					case 2:
-						fn =  function() {
+						fn = function() {
 							var doms = this.doms, l = doms.length, i = -1;
 							while (++i < l) 
 								doms[i][key].apply(doms[i], arguments);
@@ -524,7 +249,7 @@
 					case 4:
 						fn = function() {
 							var args = arguments;
-							return new p.ElementList(Array.plain.apply(Array, this.each(function(elem, index){
+							return new p.ElementList(Array.plain.apply(Array, this.each(function(elem, index) {
 								var r = this[index][key].apply(this[index], args);
 								return r && r.doms || r;
 							}, this.doms)));
@@ -532,16 +257,70 @@
 						
 						break;
 					case 5:
-						return;
+						fn = function() {
+							var result = true, args = arguments;
+							this.each(function(node){
+								return  result = node[key].apply(node[key], args);
+							});
+							
+							return result;
+						};
+						
+						break;
 					default:
 						fn = function() {
 							return this.each(key, arguments);
 						};
 						break;
 				}
-				
+						
 				p.ElementList.prototype[key] = fn;
-					
+			
+			
+			}
+		}],
+	
+		/**
+		 * 将一个成员附加到 Element 对象和相关类。
+		 * @param {Object} obj 要附加的对象。
+		 * @param {Number} listType = 1 说明如何复制到 ElementList 实例。 
+		 * @return {Element} this
+	     * @static
+		 * 对 Element 扩展，内部对 Element ElementList document Control 皆扩展。
+		 * 这是由于不同的函数需用不同的方法扩展，必须指明扩展类型。
+		 * 所谓的扩展，即一个类含需要的函数。
+		 * 
+		 * 
+		 * DOM 方法 有 以下种
+		 *  
+		 *  1  getText - 返回结果  
+		 *  2  setText - 返回 this
+		 *  3  getElementById - 返回 DOM
+		 *  4  getElementsByTagName - 返回  DOM 数组
+		 *  5  appendChild  - 参数 DOM
+		 *  
+		 *  对 Element ，
+		 *     如果 copyIf 是 false 或不存在复制。
+		 *
+		 *  对 ElementList ，按 listType，
+		 *      1, 其它 - 执行结果是数据，返回结果数组。 (默认)
+		 *  	2 - 执行结果返回 this， 返回 this 。
+		 * 		3 - 执行结果是DOM，返回 ElementList 包装。
+		 * 		4 - 执行结果是DOM数组，返回 ElementList 包装。 
+		 * 		5 - 如果每个返回值都是 true， 则返回 true， 否则返回 false。
+		 * 
+		 *  对 document ， 
+		 *  	如果不存在则复制。
+		 *  
+		 *  
+		 *  参数 copyIf 仅内部使用。
+		 */
+		implement: function (obj, listType, copyIf) {
+			
+			assert.notNull(obj, "Element.implement(obj, listType): 参数 {obj} ~。");
+		
+			this.implementListeners.forEach(function(fn){
+				fn(obj, listType, copyIf);
 			});
 			
 			/// #ifndef Std
@@ -557,18 +336,19 @@
 		
 		/**
 		 * 若不存在，则将一个对象附加到 Element 对象。
-		 * @method implementIf
+	     * @static
 		 * @param {Object} obj 要附加的对象。
 		 * @param {Number} listType 说明如何复制到 ElementList 实例。
 		 * @param {Number} docType 说明如何复制到 Document 实例。
 		 * @return {Element} this
 		 */
-		implementIf: function (obj, listType, docType) {
-			return this.implement(obj, listType, docType, true);
+		implementIf: function (obj, listType) {
+			return this.implement(obj, listType, true);
 		},
 		
 		/**
 		 * 获取一个元素的文档。
+	     * @static
 		 * @param {Element/Document/Window} elem 元素。
 		 * @return {Document} 当前节点所在文档。
 		 */
@@ -608,8 +388,7 @@
 	     * @param {String/Element} ... 对象的 id 或对象。
 	     */
 	    id: function() {
-			
-			return new p.ElementList(o.update(arguments, p.$));
+			return arguments.length < 2 ? p.$(arguments[1]) : new p.ElementList(o.update(arguments, p.$));
 			
 	        /*
 			return new p.ElementList(o.update(arguments, function(id){
@@ -892,7 +671,7 @@
 		};
 	
 	/**
-	 * @namespace Element
+	 * @class Element
 	 */
 	apply(e, {
 		
@@ -902,37 +681,36 @@
 		 * @param {Element} dom 节点。
 		 * @param {String} name 名字。
 		 * @return {String} 样式。
+		 * @static
 		 * @private
 		 */
 		getStyle: getStyle,
 		
 		/**
 	     * 读取样式字符串。
-	     * @method styleString
 	     * @param {Element} elem 元素。
 	     * @param {String} name 属性名。
 	     * @return {String} 字符串。
-	     * @private
+		 * @static
 	     */
 		styleString:  styleString,
 		
 		/**
 	     * 读取样式数字。
-	     * @method styleNumber
 	     * @param {Element} elem 元素。
 	     * @param {String} name 属性名。
 	     * @return {String} 字符串。
-	     * @private
+		 * @static
 	     */
 		styleNumber: styleNumber,
 		
 		/**
 		 * 将 offsetWidth 转为 style.width。
-		 * @method widthPadding
+		 * @private
 		 * @param {Element} elem 元素。
 	     * @param {Number} width 输入。
 	     * @return {Number} 转换后的大小。
-	     * @private
+		 * @static
 		 */
 		getSize: defaultView ? function (elem, type, names) {
 			
@@ -966,35 +744,42 @@
 		
 		/**
 		 * 特殊属性集合。
-		 * @property attributes
+		 * @property
 		 * @type Object
+		 * @static
 		 * @private
 		 */
 		attributes: attributes,
 		
+		/**
+		 * 样式表。
+		 * @static
+		 */
 		styleMaps: styleMaps,
 		
 		/**
 		 * 特殊属性。
-		 * @property specialAttr
+		 * @property
 		 * @type Object
 		 * @private
+		 * @static
 		 */
 		specialAttr: {},
 		
 		/**
 		 * 默认最大的 z-index 。
-		 * @property zIndex
+		 * @property
 		 * @type Number
 		 * @private
+		 * @static
 		 */
 		zIndex: 10000,
 		
 		/**
 		 * 判断一个节点是否隐藏。
-		 * @method isHidden
 		 * @param {Element} elem 元素。
 		 * @return {Boolean} 隐藏返回 true 。
+		 * @static
 		 */
 		isHidden: function(elem) {
 			
@@ -1014,6 +799,7 @@
      * @param {Element} elem 元素。
      * @param {String} name 属性名。
      * @return {String} 字符串。
+     * @ignore
      */
 	function styleString(elem, name) {
 			
@@ -1025,6 +811,7 @@
      * @param {Object} elem 元素。
      * @param {Object} name 属性名。
      * @return {Number} 数字。
+     * @ignore
      */
     function styleNumber(elem, name) {
         return parseFloat(getStyle(elem, name)) || 0;
@@ -1034,6 +821,7 @@
 	 * 将属性拷贝到目标。
 	 * @param {String} props 属性字符串。
 	 * @param {Object} target 目标。
+     * @ignore
 	 */
 	function updateToObj(props, target) {
 		props.split(' ').forEach(function(value) { target[value.toLowerCase()] = value; });
@@ -1051,11 +839,14 @@
 		return me;
 	}
 	
+	/**
+	 * @class Element
+	 */
+	
 	e.implement( {
 	
         /**
          * 获取节点样式。
-		 * @method getStyle
          * @param {String} key 键。
          * @param {String} value 值。
          * @return {String} 样式。
@@ -1066,7 +857,7 @@
 
             var me = this.getDom(), css = name.toCamelCase();
 			
-		   	assert.isElement(me, "Element.prototype.getStyle(name): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isElement(me, "Element.prototype.getStyle(name): {this.getDom()} 必须返回 DOM 节点。");
 
             return me.style[css] || getStyle(me, css);
 
@@ -1074,7 +865,6 @@
 		
 		/**
          * 获取一个节点属性。
-		 * @method getAttr
          * @param {String} name 名字。
          * @return {String} 属性。
          */
@@ -1084,7 +874,6 @@
 		
         /**
          * 检查是否含指定类名。
-		 * @method hasClass
          * @param {String} className
          * @return {Boolean} 如果存在返回 true。
          */
@@ -1094,14 +883,12 @@
 		
         /**
          * 获取值。
-		 * @method getText
-         * @return {Object} 内容。
-         * @return {String} 值。对普通节点返回 text 属性。
+         * @return {Object/String} 值。对普通节点返回 text 属性。
          */
         getText: function() {
             var me = this.getDom();
 			
-		   	assert.isNode(me, "Element.prototype.getText(): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isNode(me, "Element.prototype.getText(): {this.getDom()} 必须返回 DOM 节点。");
 		   
             switch(me.tagName) {
                 case "INPUT":
@@ -1122,9 +909,13 @@
             }
         },
 		
+		/**
+         * 获取值。
+         * @return {String} 值。
+         */
 		getHtml: function(){
 			
-		   	assert.isNode(this.getDom(), "Element.prototype.getHtml(): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isNode(this.getDom(), "Element.prototype.getHtml(): {this.getDom()} 必须返回 DOM 节点。");
 			
 			return this.getDom().innerHTML;
 		},
@@ -1159,9 +950,9 @@
 	})
 	
 	.implement( {
+		
         /**
          * 设置内容样式。
-		 * @method setStyle
          * @param {String} name 键。
          * @param {String/Number} value 值。
          * @return {Element} this
@@ -1173,7 +964,7 @@
 			// 获取样式
             var me = this, style = me.getDom().style;
 			
-		   	assert.isElement(me, "Element.prototype.getStyle(name): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isElement(me.getDom(), "Element.prototype.setStyle(name, value): {this.getDom()} 必须返回 DOM 节点。");
 
 			//没有键  返回  cssText
 			if (arguments.length == 1) {
@@ -1206,7 +997,6 @@
 		
         /**
          * 设置节点属性。
-		 * @method setAttr
          * @param {String} name 名字。
          * @param {String} value 值。
          * @return {Element} this
@@ -1216,7 +1006,7 @@
             //简写
             var me = this.getDom();
 			
-		   	assert.isNode(me, "Element.prototype.setAttr(name, value): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isNode(me, "Element.prototype.setAttr(name, value): {this.getDom()} 必须返回 DOM 节点。");
 
             //属性
             name = attributes[name] || name;
@@ -1246,7 +1036,6 @@
 	
 		/**
 		 * 快速设置节点全部属性和样式。
-		 * @method set
 		 * @param {String/Object} name 名字。
          * @param {Object} [value] 值。
          * @return {Element} this
@@ -1260,7 +1049,7 @@
 				// 允许 this 为 Element 或 Control
 				var dom = me.getDom();
 			
-		   		assert.isNode(dom, "Element.prototype.set(name, value): this.getDom() 必须返回 DOM 节点。");
+		   		assert.isNode(dom, "Element.prototype.set(name, value): {this.getDom()} 必须返回 DOM 节点。");
 				
 				// 特殊属性。
 				if(name in e.specialAttr)
@@ -1296,14 +1085,13 @@
 				
 	    /**
          * 增加类名。
-		 * @method addClass
          * @param {String} className 类名。
          * @return {Element} this
          */
         addClass: function(className) {
             var me = this.getDom();
 			
-		   	assert.isNode(me, "Element.prototype.addClass(className): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isNode(me, "Element.prototype.addClass(className): {this.getDom()} 必须返回 DOM 节点。");
 				
             if(!me.className)
                 me.className = className;
@@ -1314,13 +1102,12 @@
 		
         /**
          * 删除类名。
-		 * @method removeClass
          * @param {String} className 类名。
          * @return {Element} this
          */
         removeClass: function(className) {
 			
-		   	assert.isNode(this.getDom(), "Element.prototype.removeClass(className): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isNode(this.getDom(), "Element.prototype.removeClass(className): {this.getDom()} 必须返回 DOM 节点。");
 			
             this.getDom().className = className ? this.getDom().className.replace(new RegExp('\\b' + className + '\\b\\s*', "g"), '') : '';
             return this;
@@ -1328,7 +1115,6 @@
 		
 		 /**
          * 切换类名。
-		 * @method toggleClass
          * @param {String} className 类名。
          * @return {Element} this
          */
@@ -1338,14 +1124,13 @@
 		
         /**
          * 设置值。
-		 * @method setText
          * @param {String/Boolean} 值。
          * @return {Element} this
          */
         setText: function(value) {
             var me = this.getDom();
 			
-		   	assert.isNode(me, "Element.prototype.setText(value): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isNode(me, "Element.prototype.setText(value): {this.getDom()} 必须返回 DOM 节点。");
 			
             switch(me.tagName) {
                 case "INPUT":
@@ -1366,9 +1151,14 @@
             return  this;
         },
 		
+		/**
+         * 设置 HTML 。
+         * @param {String} value 值。
+         * @return {Element} this
+         */
 		setHtml: function(value){
 			
-		   	assert.isNode(this.getDom(), "Element.prototype.setHtml(value): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isNode(this.getDom(), "Element.prototype.setHtml(value): {this.getDom()} 必须返回 DOM 节点。");
 			
 			this.getDom().innerHTML = value;
 			return this;
@@ -1378,13 +1168,12 @@
 		
         /**
          * 设置连接的透明度。
-		 * @method setOpacity
          * @param {Number} value 透明度， 0 - 1 。
          * @return {Element} this
          */
         setOpacity: !('opacity' in div.style) ? function(value) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.setOpacity(value): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isElement(this.getDom(), "Element.prototype.setOpacity(value): {this.getDom()} 必须返回 DOM 节点。");
 
             var style = this.getDom().style;
 			
@@ -1401,7 +1190,7 @@
 
         } : function(value) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.setOpacity(value): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isElement(this.getDom(), "Element.prototype.setOpacity(value): {this.getDom()} 必须返回 DOM 节点。");
 
 			assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): 参数 {value} 必须在 0~1 间。', value);
 
@@ -1425,7 +1214,6 @@
 		
 		/**
 		 * 显示当前元素。
-		 * @method show
 		 * @param {Number} duration=500 时间。
 		 * @param {Function} [callBack] 回调。
 		 * @param {String} [type] 方式。
@@ -1433,7 +1221,7 @@
 		 */
 		show: function(duration, callBack) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.show(duration, callBack, type): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isElement(this.getDom(), "Element.prototype.show(duration, callBack, type): {this.getDom()} 必须返回 DOM 节点。");
 			
 			this.getDom().style.display = '';
 			if(callBack)
@@ -1443,7 +1231,6 @@
 		
 		/**
 		 * 隐藏当前元素。
-		 * @method hide
 		 * @param {Number} duration=500 时间。
 		 * @param {Function} [callBack] 回调。
 		 * @param {String} [type] 方式。
@@ -1451,7 +1238,7 @@
 		 */
 		hide: function(duration, callBack) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.hide(duration, callBack, type): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isElement(this.getDom(), "Element.prototype.hide(duration, callBack, type): {this.getDom()} 必须返回 DOM 节点。");
 			
 			this.getDom().style.display = 'none';
 			if(callBack)
@@ -1461,25 +1248,24 @@
 		
 		/**
 		 * 设置元素不可选。
-		 * @method setUnselectable
 		 * @param {Boolean} value 是否可选。
 		 * @return this
 		 */
 		setUnselectable: 'unselectable' in div ? function(value) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): {this.getDom()} 必须返回 DOM 节点。");
 			
 			this.getDom().unselectable = value !== false ? 'on' : '';
 			return this;
 		} : 'onselectstart' in div ? function(value) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): {this.getDom()} 必须返回 DOM 节点。");
 			
 			this.getDom().onselectstart = value !== false ? Function.returnFalse : null;
 			return this;
 		} : function(value) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): {this.getDom()} 必须返回 DOM 节点。");
 			
 			this.getDom().style.MozUserSelect = value !== false ? 'none' : '';
 			return this;
@@ -1487,13 +1273,12 @@
 		
 		/**
 		 * 将元素引到最前。
-		 * @method bringToFront
 		 * @param {Element} [elem] 参考元素。
 		 * @return this
 		 */
 		bringToFront: function(elem) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.bringToFront(elem): this.getDom() 必须返回 DOM 节点。");
+		   	assert.isElement(this.getDom(), "Element.prototype.bringToFront(elem): {this.getDom()} 必须返回 DOM 节点。");
 			
 			this.getDom().style.zIndex = Math.max(parseInt(styleString(this.getDom(), 'zIndex')) || 0, elem && elem.nodeType && (parseInt(styleString(elem, 'zIndex')) + 1) || e.zIndex++);
 			return this;
@@ -1501,7 +1286,6 @@
 		
 		/**
 		 * 切换显示当前元素。
-		 * @method toggle
 		 * @param {Number} duration=500 时间。
 		 * @param {Function} [callBack] 回调。
 		 * @param {String} [type] 方式。
@@ -1513,7 +1297,6 @@
 		
 		/**
 		 * 变化到某值。
-		 * @method animate
 		 * @param {String} value 变化的值。可以为 height opacity width all size position left top right bottom。
 		 * @param {Function} [callBack] 回调。
 		 * @param {Number} duration=500 时间。
@@ -1632,7 +1415,7 @@
 	/**
 	 * @class Document
 	 */
-	e.implement( {
+	apply(d, {
 		
 		/**
 		 * 获取元素可视区域大小。
@@ -1714,9 +1497,9 @@
 			return this;
         }
 		
-	}, 5, 0)
+	});
 	
-	.implement( {
+	e.implement( {
 		
 		/**
 		 * 获取滚动区域大小。
@@ -1726,7 +1509,7 @@
         getScrollSize: function() {
 			var me = this.getDom();
 			
-			assert.isNode(me, "Element.prototype.getScrollSize(): this.getDom() 必须返回 DOM 节点。");
+			assert.isNode(me, "Element.prototype.getScrollSize(): {this.getDom()} 必须返回 DOM 节点。");
 			return new Point(me.scrollWidth, me.scrollHeight);
         },
 		
@@ -1738,7 +1521,7 @@
 		getSize: function() {
 			var me = this.getDom();
 			
-			assert.isNode(me, "Element.prototype.getSize(): this.getDom() 必须返回 DOM 节点。");
+			assert.isNode(me, "Element.prototype.getSize(): {this.getDom()} 必须返回 DOM 节点。");
 			return new Point(me.offsetWidth, me.offsetHeight);
 		},
 		
@@ -1760,7 +1543,7 @@
 		 */
 		getOffset: function() {
 			
-			assert.isElement(this.getDom(), "Element.prototype.getOffset(): this.getDom() 必须返回 DOM 节点。");
+			assert.isElement(this.getDom(), "Element.prototype.getOffset(): {this.getDom()} 必须返回 DOM 节点。");
 			
 			// 如果设置过 left top ，这是非常轻松的事。
 			var me = this.getDom(),
@@ -1790,7 +1573,7 @@
 		 */
 		getWidth: function(){
 			
-			assert.isElement(this.getDom(), "Element.prototype.getWidth(): this.getDom() 必须返回 DOM 节点。");
+			assert.isElement(this.getDom(), "Element.prototype.getWidth(): {this.getDom()} 必须返回 DOM 节点。");
 			var me = this.getDom(), width = parseFloat(me.style.width);
 			return isNaN(width) ? styleNumber(me, 'width') : width;
 		},
@@ -1802,7 +1585,7 @@
 		 */
 		getHeight: function(){
 			
-			assert.isElement(this.getDom(), "Element.prototype.getWidth(): this.getDom() 必须返回 DOM 节点。");
+			assert.isElement(this.getDom(), "Element.prototype.getWidth(): {this.getDom()} 必须返回 DOM 节点。");
 			var me = this.getDom(), height = parseFloat(me.style.height);
 			return isNaN(height) ? styleNumber(me, 'height') : height;
 		},
@@ -1838,7 +1621,7 @@
          */
         getPosition: div.getBoundingClientRect   ? function() {
 			
-			assert.isNode(this.getDom(), "Element.prototype.getPosition(): this.getDom() 必须返回 DOM 节点。");
+			assert.isNode(this.getDom(), "Element.prototype.getPosition(): {this.getDom()} 必须返回 DOM 节点。");
 
             var me = this.getDom(),
 				bound = me.getBoundingClientRect(),
@@ -1903,7 +1686,7 @@
          */
         getOffsetParent: function() {
 			
-			assert.isNode(this.getDom(), "Element.prototype.getOffsetParent(): this.getDom() 必须返回 DOM 节点。");
+			assert.isNode(this.getDom(), "Element.prototype.getOffsetParent(): {this.getDom()} 必须返回 DOM 节点。");
 			var elem = this.getDom().offsetParent || getDoc(this.getDom()).body;
 			while ( elem && !isBody(elem) && checkPosition(elem, "static") ) {
 				elem = elem.offsetParent;
@@ -1917,7 +1700,6 @@
 		
         /**
          * 改变大小。
-		 * @method setSize
          * @param {Number} x 坐标。
          * @param {Number} y 坐标。
          * @return {Element} this
@@ -1926,37 +1708,40 @@
 			return setSize(this, 'pb', x, y);
         },
 	
+		/**
+         * 改变大小。
+         * @param {Number} x 坐标。
+         * @param {Number} y 坐标。
+         * @return {Element} this
+         */
 		setOuterSize: function(x, y){
 			return setSize(this, 'mpb', x, y);
 		},
 		
         /**
 		 * 获取元素自身大小（不带滚动条）。
-		 * @method setWidth
 		 * @return {Element} this
 		 */
 		setWidth: function(value){
 			
-			assert.isElement(this.getDom(), "Element.prototype.setWidth(value): this.getDom() 必须返回 DOM 节点。");
+			assert.isElement(this.getDom(), "Element.prototype.setWidth(value): {this.getDom()} 必须返回 DOM 节点。");
 			this.getDom().style.width = (value > 0 ? value : 0) + 'px';
 			return this;
 		},
 	
         /**
 		 * 获取元素自身大小（不带滚动条）。
-		 * @method setHeight
 		 * @return {Element} this
 		 */
 		setHeight: function(value){
 			
-			assert.isElement(this.getDom(), "Element.prototype.setWidth(value): this.getDom()this.getDom() 必须返回 DOM 节点。");
+			assert.isElement(this.getDom(), "Element.prototype.setWidth(value): this.getDom(){this.getDom()} 必须返回 DOM 节点。");
 			this.getDom().style.height = (value > 0 ? value : 0) + 'px';
 			return this;
 		},
 		
 		/**
          * 滚到。
-		 * @method setScroll
          * @param {Element} dom
          * @param {Number} x 坐标。
          * @param {Number} y 坐标。
@@ -1965,7 +1750,7 @@
         setScroll: function(x, y) {
             var me = this.getDom(), p = getXY(x,y);
 			
-			assert.isNode(me, "Element.prototype.setScrothis.getDom() 必须返回 DOM 节点。返回 DOM 节点。");
+			assert.isNode(me, "Element.prototype.setScro{this.getDom()} 必须返回 DOM 节点。返回 DOM 节点。");
 	        if(p.x != null)
 	            me.scrollLeft = p.x;
 	        if(p.y != null)
@@ -1976,13 +1761,12 @@
 		
 		/**
 		 * 设置元素的相对位置。
-		 * @method setOffset
 		 * @param {Point} p
 		 * @return {Element} this
 		 */
 		setOffset: function(p) {
 			
-			assert.isElement(this.getDom(), "Element.prototype.setOffset(p): this.getDom() 必须返回 DOM 节点。");
+			assert.isElement(this.getDom(), "Element.prototype.setOffset(p): {this.getDom()} 必须返回 DOM 节点。");
 			assert(p && 'x' in p && 'y' in p, "Element.prototype.setOffset(p): 参数 {p} 必须有 'x' 和 'y' 属性。", p);
 			var s = this.getDom().style;
 			s.top = p.y + 'px';
@@ -1992,7 +1776,6 @@
 
 		/**
          * 设置元素的固定位置。
-		 * @method setPosition
          * @param {Number} x 坐标。
          * @param {Number} y 坐标。
          * @return {Element} this
@@ -2012,16 +1795,14 @@
 		}
 		
     } ,2);
-	
-	/**
-	 * @namespace Element
-	 */
+
 	apply(e, {
 		
 		/**
 		 * 设置一个元素可拖动。
 		 * @method setMovable
 		 * @param {Element} elem 要设置的节点。
+		 * @static
 		 */
 		setMovable: function(elem) {
 		   assert.isElement(elem, "Element.setMovable(elem): 参数 elem ~。");
@@ -2034,12 +1815,24 @@
 		 * @param {Element} elem 元素。
 		 * @param {String} position 方式。
 		 * @return {Boolean} 一致，返回 true 。
+		 * @static
 		 */
 		checkPosition: checkPosition,
 		
+		/**
+		 * 根据 x, y 获取 {x: x y: y} 对象
+		 * @param {Number/Point} x 
+		 * @param {Number} y
+		 * @static
+		 * @private
+		 */
 		getXY: getXY
 	
 	});
+	
+	/**
+	 * @class
+	 */
 	
 	/**
 	 * 检查元素的 position 是否和指定的一致。
@@ -2065,7 +1858,7 @@
 	 */
 	function getScroll() {
 		var doc = this.getDom();
-		assert.isNode(doc, "Element.prototype.getScroll(): this.getDom() 必须返回 DOM 节点。返回 DOM 节点。");
+		assert.isNode(doc, "Element.prototype.getScroll(): {this.getDom()} 必须返回 DOM 节点。返回 DOM 节点。");
 		return new Point(doc.scrollLeft, doc.scrollTop);
 	}
 
@@ -2073,7 +1866,6 @@
      * 检查是否为 body 。
      * @param {Element} elem 内容。
      * @return {Boolean} 是否为文档或文档跟节点。
-     * @private
      */
     function isBody(elem) {
         return rBody.test(elem.nodeName);
@@ -2083,7 +1875,6 @@
 	 * 未使用盒子边框
 	 * @param {Element} elem 元素。
 	 * @return {Boolean} 是否使用。
-	 * @private
 	 */
 	function nborderBox(elem) {
 		return getStyle(elem, 'MozBoxSizing') != 'border-box';
@@ -2252,7 +2043,11 @@
 		} : function(elem, child) {
 			return !!(elem.compareDocumentPosition(child) & 16);
 		};
-		
+	
+	/**
+	 * @class Element
+	 */
+	
 	apply(e, {
 		
 		/**
@@ -2459,7 +2254,6 @@
 		
 		/**
 		 * 执行一个简单的选择器。
-		 * @method find
 		 * @param {String} selecter 选择器。 如 h2 .cls attr=value 。
 		 * @return {Element/undefined} 节点。
 		 */
@@ -2482,7 +2276,6 @@
 		
 		/**
          * 复制节点。
-		 * @method clone
          * @param {Boolean} copyListener=false 是否复制事件。
          * @param {Boolean} contents=true 是否复制子元素。
          * @param {Boolean} keepid=false 是否复制 id 。
@@ -2545,7 +2338,6 @@
 		
 		/**
 		 * 在某个位置插入一个HTML 。
-		 * @method insert
 		 * @param {String/Element} html 内容。
 		 * @param {String} [swhere] 插入地点。 beforeBegin   节点外    beforeEnd   节点里    afterBegin    节点外  afterEnd     节点里
 		 * @return {Element} 插入的节点。
@@ -2612,7 +2404,6 @@
 
 		/**
 		 * 插入一个HTML 。
-		 * @method append
 		 * @param {String/Element} html 内容。
 		 * @param {Boolean} escape 是否转义 HTML 代码，这样插入的为文本。
 		 * @return {Element} 元素。
@@ -2633,7 +2424,6 @@
 		
 		/**
 		 * 将一个节点用html包围。
-		 * @method wrapWith
 		 * @param {String} html 内容。
 		 * @return {Element} 元素。
 		 */
@@ -2646,7 +2436,6 @@
 		
 		/**
 		 * 将一个节点用另一个节点替换。 
-		 * @method replaceWith
 		 * @param {String} html 内容。
 		 * @return {Element} 元素。
 		 */
@@ -2678,7 +2467,7 @@
 			elem = elem && elem !== true ? p.$(elem) : d.body;
 			
 			assert.isNode(elem, 'Element.prototype.renderTo(elem): 参数 {elem} ~。');
-			assert.isNode(this.getDom(), "Element.prototype.renderthis.getDom() 必须返回 DOM 节点。返回 DOM 节点。");
+			assert.isNode(this.getDom(), "Element.prototype.render{this.getDom()} 必须返回 DOM 节点。返回 DOM 节点。");
 			
 			if (this.getDom().parentNode !== elem) {
 				
@@ -2692,7 +2481,6 @@
 		
 		/**
          * 删除元素子节点或本身。
-		 * @method remove
          * @param {Object/undefined} child 子节点。
          * @return {Element} this
          */
@@ -2705,11 +2493,10 @@
 		
         /**
          * 删除一个节点的所有子节点。
-		 * @method empty
          * @return {Element} this
          */
         empty: function() {
-			assert.isNode(this.getDom(), "Element.prototype.empty(): this.getDom() 必须返回 DOM 节点。");
+			assert.isNode(this.getDom(), "Element.prototype.empty(): {this.getDom()} 必须返回 DOM 节点。");
 			empty(this.getDom());
             return this;
         },
@@ -2719,7 +2506,7 @@
 		 * @method dispose
          */
         dispose: function() {
-			assert.isNode(this.getDom(), "Element.prototype.dispose(): this.getDom() 必须返回 DOM 节点。");
+			assert.isNode(this.getDom(), "Element.prototype.dispose(): {this.getDom()} 必须返回 DOM 节点。");
 			dispose(this.getDom());
         }
 		
@@ -2732,7 +2519,7 @@
      * @param {String} walk 路径。
      * @param {String} first 第一个节点。
      * @return {Element} 节点。
-     * @private
+     * @ignore
      */
 	function walk(elem, fn, walk, first) {
         elem = elem[first];
@@ -2752,7 +2539,7 @@
      * @param {String} walk 路径。
      * @param {String} first 第一个节点。
 	 * @return {ElementList} 集合。
-	 * @private
+	 * @ignore
      */
 	function dir(elem, fn, walk, first) {
 		elem = elem[first || walk];
@@ -2786,6 +2573,7 @@
 	 * @param {Element} elem 元素。
 	 * @param {String} selector 选择器。
 	 * @return {ElementList} 元素集合。
+	 * @ignore
 	 */
 	function findBy(elem, selector){
 		switch(selector.charAt(0)){
@@ -2808,7 +2596,7 @@
 	 * 获取一个选择器。
 	 * @param {Number/Function/undefined} fn
 	 * @return {Funtion} 函数。
-	 * @private
+	 * @ignore
 	 */
 	function getFilter(fn) {
 		switch (typeof fn) {

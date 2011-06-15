@@ -4,7 +4,7 @@
 
 
 
-Py.using("System.Controls.Control");
+Py.using("System.Controls.ContentControl");
 Py.imports("Resources.*.Button.Button");
 
 

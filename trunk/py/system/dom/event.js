@@ -1,6 +1,3 @@
-/*  ÊÂ¼þ´¦ÀíÍ¨ÓÃ³ÌÐò 
-
-*/
 
 using("common");
 
@@ -10,10 +7,10 @@ if(namespace("playEvent")){
 		var Event = {
 				
 				//---------------------------------------
-				//»ù±¾
+				//ï¿½ï¿½
 				//---------------------------------------
 				
-				//»ñµÃÊÂ¼þ
+				//ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 				getEvent : function(){
 					if(browser.isIE || browser.isOpera)    return window.event;        
 					f=playEvent.getEvent.caller;            
@@ -30,10 +27,10 @@ if(namespace("playEvent")){
 				}, 
 				
 				//---------------------------------------
-				//ÊäÈë
+				//ï¿½ï¿½ï¿½ï¿½
 				//---------------------------------------	
 				
-				//Êó±êÎ»ÖÃ
+				//ï¿½ï¿½ï¿½Î»ï¿½ï¿½
 				mouseX : function(e){
 					if(browser.isIE || browser.isOpera){
 						return event.clientX+(document.documentElement&&document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft);
@@ -43,7 +40,7 @@ if(namespace("playEvent")){
 					}
 				},
 				
-				//Êó±êÎ»ÖÃ
+				//ï¿½ï¿½ï¿½Î»ï¿½ï¿½
 				mouseY : function(e){
 					if(browser.isIE || browser.isOpera){
 						return event.clientY+(document.documentElement&&document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop);
@@ -53,7 +50,7 @@ if(namespace("playEvent")){
 					}
 				},
 		
-				//Êó±êÎ»ÖÃ
+				//ï¿½ï¿½ï¿½Î»ï¿½ï¿½
 				mouseXY : function(e){
 					if(browser.isIE || browser.isOpera){
 						return [event.clientX+(document.documentElement&&document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft),event.clientY+(document.documentElement&&document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop)];
@@ -63,7 +60,7 @@ if(namespace("playEvent")){
 					}
 				},
 				
-				//Êó±êÏà¶ÔÎ»ÖÃ
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
 				offsetX : function(e){
 					return e = playEvent.getEvent().offsetX;
 				},
@@ -77,7 +74,7 @@ if(namespace("playEvent")){
 					return {x:e.offsetX,y:e. offsetY};
 				},
 	
-				//ÅÐ¶ÏÊÇ·ñÓÒ¼ü
+				//ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½Ò¼ï¿½
 				isRightClick : function(){
 					if(browser.isIE || browser.isOpera){
 						return event.button == 2;
@@ -125,7 +122,7 @@ if(namespace("playEvent")){
 					return  E.keyCode == 13;
 				},
 				
-				//»ñµÃ¼ü
+				//ï¿½ï¿½Ã¼ï¿½
 				getKey : function(e){
 					var down = (e || playEvent.getEvent()).keyCode;
 					if(down==91) return "Windows";
@@ -200,15 +197,15 @@ if(namespace("playEvent")){
 							return "'";
 							
 						default:
-							return "Î´Ö¸¶¨";
+							return "Î´Ö¸ï¿½ï¿½";
 					}
 					
 				},
 	
 				//---------------------------------------
-				//´¦Àí
+				//ï¿½ï¿½ï¿½ï¿½
 				//---------------------------------------	
-				//Ôö¼ÓÒ»¸öÊÂ¼þ
+				//ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Â¼ï¿½
 				on : function(o,a,f){
 					if(f===undefined){
 						f = a;a = o;o = document;
@@ -227,17 +224,17 @@ if(namespace("playEvent")){
 					o.onclick = F(o.onclick,f);
 				},
 							
-				//Í£Ö¹ÊÂ¼þ´«µÝ
+				//Í£Ö¹ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
 				stopon : function(){
 					playEvent.getEvent().cancelBubble = true;
 				},
 				
-				//Í£Ö¹ÏÔÊ¾´íÎó
+				//Í£Ö¹ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
 				stopError : function() {
 					 window.onerror = ignoreError = function(){return true}
 				},
 				
-				//Í£Ö¹Ò»¸öÊÂ¼þ
+				//Í£Ö¹Ò»ï¿½ï¿½ï¿½Â¼ï¿½
 				stopEvent : function(o,a,f){
 					if(f===undefined){
 						f = a;a = o;o = document;
@@ -246,7 +243,7 @@ if(namespace("playEvent")){
 					eval("o.on" + a +" = function(){}");
 				},
 				
-				//Ö´ÐÐÒ»¸öÊÂ¼þ
+				//Ö´ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Â¼ï¿½
 				onEvent : function(o,a,f){
 					if(f===undefined){
 						f = a;a = o;o = document;
@@ -255,7 +252,7 @@ if(namespace("playEvent")){
 					eval("o.on" + a +"()");
 				},
 				
-				//É¾³ýÒ»¸öÊÂ¼þ
+				//É¾ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Â¼ï¿½
 				un : function(o,a,f){
 					if(f===undefined){
 						f = a;a = o;o = document;
@@ -265,7 +262,7 @@ if(namespace("playEvent")){
 				},
 
 				//---------------------------------------
-				//¶ÔÏó
+				//ï¿½ï¿½ï¿½ï¿½
 				//---------------------------------------			
 				xType : "playEvent",
 				
@@ -284,7 +281,7 @@ if(namespace("playEvent")){
 			
 			if(window.jsExtend) playEvent.init();
 			
-			//Èç¹ûÒÑ¼ÓÔØ  common.js  ÒÔÏÂÕâ¸ö¿ÉÒÔ²»ÓÃ
+			//ï¿½ï¿½ï¿½ï¿½Ñ¼ï¿½ï¿½ï¿½  common.js  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½
 			//-------------------------------------------------
 			else{
 							
@@ -309,7 +306,182 @@ if(namespace("playEvent")){
 
 
 
-function using(arg){var arg1,argx ,win = "playjs/";if(arg.indexOf(":")>0){argx = arg.split(":");arg1 = argx[1].split(",");arg1 = arg1[arg1.length-1];arg = argx[0];}else{arg1 = arg.split(".");arg1 = arg1[arg1.length-1];arg1 = arg1.indexOf("play")>0?arg1:"play" + arg1.charAt(0).toUpperCase() + arg1.substr(1);}if(arg.indexOf(".")==-1)arg = (win+arg+"/"+arg) + ".js";else arg = win+arg.replace(/\./ig,"/") +".js";if(setted(arg1)) set(arg,function(){eval("if(typeof "+ arg1 +"==\"undefined\") alert(\"±¾Ò³ÐèÒªÎÄ¼þ:"+ arg.replace(win,"Pyjs/")+"\");");});	function setted(v){return eval("typeof " + v)=="undefined"} function set(arg,f){if(window.playjs){playjs.loadJs(arg,f)} else{document.write("\n<script type=\"text/javascript\" src=\"" + arg + "\"><\/script>\n");if(window.onload){var c = window.onload;window.onload = function(){c();f();}}else{window.onload = f}}}}
 
 
-function namespace(arg){if(window._system)window._system.push(arg);else window._system = [arg];return eval('typeof ' + arg + '=="undefined" || ' + arg + '.xType != "' + arg + '"');}
+
+
+
+var Event = new Type('Event', function(event, win){
+	if (!win) win = window;
+	var doc = win.document;
+	event = event || win.event;
+	if (event.$extended) return event;
+	this.$extended = true;
+	var type = event.type,
+		target = event.target || event.srcElement,
+		page = {},
+		client = {};
+	while (target && target.nodeType == 3) target = target.parentNode;
+
+	if (type.indexOf('key') != -1){
+		var code = event.which || event.keyCode;
+		var key = Object.keyOf(Event.Keys, code);
+		if (type == 'keydown'){
+			var fKey = code - 111;
+			if (fKey > 0 && fKey < 13) key = 'f' + fKey;
+		}
+		if (!key) key = String.fromCharCode(code).toLowerCase();
+	} else if (type.test(/click|mouse|menu/i)){
+		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
+		page = {
+			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
+			y: (event.pageY != null) ? event.pageY : event.clientY + doc.scrollTop
+		};
+		client = {
+			x: (event.pageX != null) ? event.pageX - win.pageXOffset : event.clientX,
+			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
+		};
+		if (type.test(/DOMMouseScroll|mousewheel/)){
+			var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+		}
+		var rightClick = (event.which == 3) || (event.button == 2),
+			related = null;
+		if (type.test(/over|out/)){
+			related = event.relatedTarget || event[(type == 'mouseover' ? 'from' : 'to') + 'Element'];
+			var testRelated = function(){
+				while (related && related.nodeType == 3) related = related.parentNode;
+				return true;
+			};
+			var hasRelated = (Browser.firefox2) ? testRelated.attempt() : testRelated();
+			related = (hasRelated) ? related : null;
+		}
+	} else if (type.test(/gesture|touch/i)){
+		this.rotation = event.rotation;
+		this.scale = event.scale;
+		this.targetTouches = event.targetTouches;
+		this.changedTouches = event.changedTouches;
+		var touches = this.touches = event.touches;
+		if (touches && touches[0]){
+			var touch = touches[0];
+			page = {x: touch.pageX, y: touch.pageY};
+			client = {x: touch.clientX, y: touch.clientY};
+		}
+	}
+
+	return Object.append(this, {
+		event: event,
+		type: type,
+
+		page: page,
+		client: client,
+		rightClick: rightClick,
+
+		wheel: wheel,
+
+		relatedTarget: document.id(related),
+		target: document.id(target),
+
+		code: code,
+		key: key,
+
+		shift: event.shiftKey,
+		control: event.ctrlKey,
+		alt: event.altKey,
+		meta: event.metaKey
+	});
+});
+
+Event.Keys = {
+	'enter': 13,
+	'up': 38,
+	'down': 40,
+	'left': 37,
+	'right': 39,
+	'esc': 27,
+	'space': 32,
+	'backspace': 8,
+	'tab': 9,
+	'delete': 46
+};
+
+
+
+
+
+    
+    /**
+     * èŽ·å–äº‹ä»¶çš„åˆæ³•é”®ã€‚
+     */
+    function getKey(){
+        var e = this, code = e.which || e.keyCode;
+        var key = Object.keyOf(Event.Keys, code);
+        if (!key) 
+            key = String.fromCharCode(code).toLowerCase();
+        return key;
+    }
+    
+    
+    function getPageX(){
+        var e = this, doc = document.documentElement, body = document.body;
+        return e.clientX + (doc && doc.scrollLeft || body && body.scrollLeft || 0) - (doc && doc.clientLeft || body && body.clientLeft || 0);
+    }
+    
+    function getPageY(){
+        var e = this, doc = document.documentElement, body = document.body;
+        return e.clientY + (doc && doc.scrollTop || body && body.scrollTop || 0) - (doc && doc.clientTop || body && body.clientTop || 0);
+    }
+    
+    function getMetaKey(){
+        return this.ctrlKey;
+    }
+    
+    function srcElement(){
+        var target = this.target;
+        if (target.nodeType === 3) {
+            target = target.parentNode;
+        }
+        return target;
+    }
+    
+    /**
+     * èŽ·å¾—å½“å‰äº‹ä»¶æŒ‰é”®ã€‚
+     * @return 1 ï¼š å•å‡»  2 ï¼š  ä¸­é”®ç‚¹å‡» 3 ï¼š å³å‡»
+     */
+    function getWhich(){
+        var button = this.button;
+        return (button & 1 ? 1 : (button & 2 ? 3 : (button & 4 ? 2 : 0)));
+    }
+    
+
+	 
+	
+	
+
+
+
+         function createEventArgs(e){
+         if ( !e.relatedTarget && e.fromElement ) {
+         e.relatedTarget = e.fromElement === e.target ? e.toElement : e.fromElement;
+         }
+         if (e.pageX == null && e.clientX != null) {
+         e.pageX = e.clientX + (d.documentElement.scrollLeft || d.body.scrollLeft);
+         e.pageY = e.clientY + (d.documentElement.scrollTop || d.body.scrollTop);
+         }
+         //  1 ï¼š å•å‡»  2 ï¼š  ä¸­é”®ç‚¹å‡» 3 ï¼š å³å‡»
+         if (!e.which && e.button !== undefined) {
+         e.which = (e.button & 1 ? 1 : (e.button & 2 ? 3 : (e.button & 4 ? 2 : 0)));
+         }
+         }
+         
+         
+        
+         
+         Dom.addListener = function(type, fn){
+	         var me = this, d = p.data(me, 0), evt = d[type];
+	         if (!evt) {
+	        	evt = d[type] = true;
+	         	me.addEvent(type, fn, p.Events[type] || createEventArgs);
+	         }
+	         me.addEvent(type, fn);
+         }; 
+		   

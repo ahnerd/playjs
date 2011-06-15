@@ -28,6 +28,20 @@ Number.implement({
 
 
 
+	
+	
+	//  数字
+	/**
+	 * 返回在指定范围的随机值。
+	 * @param {Number} min 最小值。
+	 * @param {Number} max 最大值。
+	 * @memberOf Number
+	 */
+	Number.random = function(min, max){
+		return Math.floor(Math.random() * (max - min + 1) + min);
+	};
+	
+	
 
 
 Number.alias('each', 'times');

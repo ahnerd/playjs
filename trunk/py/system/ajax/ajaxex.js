@@ -1,12 +1,13 @@
 
-
-
-/// <summary>
-	/// 判断请求是否修改
-	/// </summary>
-	/// <params name="xhr" type="XMLHttpRequest">请求</params>
-	/// <params name="url" type="String">地址</params>
-	/// <returns type="Boolean">布尔</returns>
+			
+	  
+	
+	/**
+	 * 判断请求是否修改。
+	 * @param {XMLHttpRequest} xhr 请求。
+	 * @param {String} url 地址。
+	 * @return {Boolean} 布尔值。
+	 */
 	XMLHttpRequest.httpNotModified = function( xhr, url ){
 		try{
 			var xhrRes = xhr.getResponseHeader('Last-Modified');
@@ -16,3 +17,9 @@
 		}catch(e){}
 		return false;
 	 }
+	
+	
+	
+	
+	
+	
