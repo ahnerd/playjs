@@ -801,3 +801,56 @@ var parseWord = function(type, word, num){
 			return 28 + Date.isLeapYear(year);
 		return 30  + ( month <= 7 || !(month % 2) ) ;
 	}
+	
+	
+	
+	
+//Date
+
+
+Date.getIsLeapYear = function(year) {
+///<summary>判断指定的年份是否是闰年。语法：Date.getIsLeapYear(year)</summary>
+///<param name="year" type="int">要进行判断的年份。</param>
+///<returns type="boolean">若指定的年份是闰年，则返回 true，否则返回 false。</returns>
+    return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
+}
+
+
+Date.getDaysCount = function(year, month) {
+///<summary>获取指定年的指定月有多少天。语法：Date.getDaysCount(year, month)</summary>
+///<param name="year" type="int">指定的年</param>
+///<param name="month" type="int">指定的月。</param>
+///<returns type="int">返回指定年的指定月的天数。</returns>
+    var daysCount = 0;
+    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+        daysCount = 31;
+    }
+    else if (month == 4 || month == 6 || month == 9 || month == 11) {
+        daysCount = 30;
+    }
+    else if (month == 2) {
+        if (!Date.getIsLeapYear(year)) {
+            daysCount = 28;
+        }
+        else {
+            daysCount = 29;
+        }
+    }
+
+    return daysCount;
+}
+
+
+Date.prototype.getIsLeapYear = function() {
+///<summary>判断当前日期所在年是否是闰年。语法：getIsLeapYear()</summary>
+///<returns type="boolean">若当前日期所在年是闰年，则返回 true，否则返回 false。</returns>
+    return Date.getIsLeapYear(this.getFullYear());
+}
+
+
+Date.prototype.getDaysCount = function() {
+///<summary>获取当前日期所在月有多少天。语法：getDaysCount()</summary>
+///<returns type="int">返回当前日期所在月的天数。</returns>
+    return Date.getDaysCount(this.getFullYear(), this.getMonth());
+}
+

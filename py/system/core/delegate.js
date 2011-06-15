@@ -1,5 +1,5 @@
 //===========================================
-//  委托   Delegate.js
+//  委托   delegate.js
 //  Copyright(c) 2009-2010 xuld
 //===========================================
 
@@ -75,7 +75,7 @@ Py.namespace(".Delegate", Py.Class({
 	 * @return {Boolean} 是否成功调用所有委托成员。
 	 */
 	apply: function(bind, args){
-		return fn.handlers.each(function(f){
+		return this.handlers.each(function(f){
 			return f.apply(bind, args);
 		});
 	},

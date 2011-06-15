@@ -3,8 +3,6 @@
 //  Copyright(c) 2009-2010 xuld
 //===========================================
 
-Py.namespace("System.Broswer.Navigator")
-
 Object.extendIf(navigator, (function(ua) {
 
 	var w = this,

@@ -789,7 +789,7 @@ var Py = {
 		 * Py静态对象。
 		 * @namespace Py
 		 */
-		p = namespace('Py', true, {
+		p = namespace('Py.', {
 			
 			/**
 			 * 管理所有事件类型的工具。
@@ -2465,9 +2465,8 @@ var Py = {
 	 * 定义名字空间。
 	 * @param {String} name 名字空间。
 	 * @param {Object/Boolean} obj 值。
-	 * @param {Object} value 如果 obj 为 true， value 指示复制的成员。
 	 */
-	function namespace(name, obj, value) {
+	function namespace(name, obj) {
 		
 		assert(name && name.split, "namespace(namespace, obj, value): 参数 {namespace} 不是合法的名字空间。", name);
 		
@@ -2492,20 +2491,21 @@ var Py = {
 		while(++i < len)
 			current = current[name[i]] || (current[name[i]] = {});
 			
-		name = name[len];
+		i = name[len];
 			
-		if(value)
-			return applyIf(current[name] || (current[name] = {}), value);
-			
-		current[name] = obj;
+		if (!i) {
+			obj = applyIf(current, obj);
+			i = name[--len];
+		} else 
+			current[i] = obj;
 		
 		/// #ifndef Global
 		
 		// 指明的是对象。
-		if (!(name in w)) {
+		if (!(i in w)) {
 			
 			// 复制到全局对象和名字空间。
-			w[name] = obj;
+			w[i] = obj;
 			
 		}
 		

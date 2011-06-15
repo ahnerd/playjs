@@ -67,7 +67,7 @@ Py.using("System.Dom.Element");
 		/**
 		 * @namespace Py.DragDrop
 		 */
-		dd = p.namespace('Py.DragDrop', {
+		dd = p.namespace('.DragDrop', {
 			
 			/**
 			 * 表示一个拖动元素。

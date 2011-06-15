@@ -41,28 +41,28 @@
 						.start(4,3);
 				}, null, 8],
 				["Fx->height", function(){
-					new Fx(a).start(null, {height: 500});
+					new Animate(a).start(null, {height: 500});
 				}, null, 8],
 				["Fx->size", function(){
-					new Fx(a).start(null, {size: {x: 400, y: 500}});
+					new Animate(a).start(null, {size: {x: 400, y: 500}});
 				}, null, 8],
 				["Fx->opacity", function(){
-					new Fx(a).start(null, {opacity: 0});
+					new Animate(a).start(null, {opacity: 0});
 				}, null, 8],
 				["Fx->offsets", function(){
-					new Fx(a).start(null, {offsets: {x: 400, y: 500}});
+					new Animate(a).start(null, {offsets: {x: 400, y: 500}});
 				}, null, 8],
 				["Fx->position", function(){
-					new Fx(a).start(null, {position: {x: 400, y: 500}});
+					new Animate(a).start(null, {position: {x: 400, y: 500}});
 				}, null, 8],
 				["Fx->scroll", function(){
-					new Fx(a).start(null, {scroll: {x: 400, y: 500}});
+					new Animate(a).start(null, {scroll: {x: 400, y: 500}});
 				}, null, 8],
 				["Fx->background-color", function(){
-					new Fx(a).start(null, {'background-color': '#efefef'});
+					new Animate(a).start(null, {'background-color': '#efefef'});
 				}, null, 8],
 				["Fx.Fx", function(){ 
-					fx = new Py.Fx.Fx(a);
+					fx = new Py.Fx.Animate(a);
 					fx.start({
 						"font-size": 40,
 						"height": 60

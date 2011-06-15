@@ -34,6 +34,7 @@ Py.using("System.Fx.Base");
 		 * @return {Array} rgb RGB 数组。
 		 */
 		hexToArray: function(hex){
+			assert.isString(hex, "String.hexToArray(hex): 参数 {hex} ~。");
 			if(hex == 'transparent')
 				return [255, 255, 255];
 			var m = hex.match(rhex);
@@ -52,6 +53,7 @@ Py.using("System.Fx.Base");
 		 * @return {Array} rgb RGB 数组。
 		 */
 		rgbToArray: function(rgb){
+			assert.isString(rgb, "String.rgbToArray(rgb): 参数 {rgb} ~。");
 			var m = rgb.match(rRgb);
 			if(!m) return null;
 			var i = 0, r = [];
@@ -67,6 +69,7 @@ Py.using("System.Fx.Base");
 		 * @return {String} hex 十六进制色。
 		 */
 		arrayToHex: function(rgb){
+			assert.isArray(rgb, "String.arrayToHex(rgb): 参数 {rgb} ~。");
 			var i = -1, r = [];
 			while(++i < 3) {
 				var bit = rgb[i].toString(16);
@@ -153,7 +156,7 @@ Py.using("System.Fx.Base");
 		/**
 		 * @class Element
 		 */
-		pfe = p.namespace(".Fx.Fx", p.Fx.Base.extend({
+		pfe = p.namespace(".Fx.Animate", p.Fx.Base.extend({
 			
 			/**
 			 * 当前的状态存储。
@@ -225,7 +228,7 @@ Py.using("System.Fx.Base");
 		
 		}));
 		
-		Fx.Fx.specialAttr = specialAttr;
+		Fx.Animate.specialAttr = specialAttr;
 	
 		pfe.parsers = {
 			
@@ -333,7 +336,7 @@ Py.using("System.Fx.Base");
 					parser: parser
 				};
 				
-				assert(current.from !== null && current.to !== null, "Py.Fx.Fx.prototype.complie(from, to): 无法处理属性 {key} 的值。", key);
+				assert(current.from !== null && current.to !== null, "Animate.prototype.complie(from, to): 无法处理属性 {key} 的值。", key);
 			}
 			
 		}
@@ -367,7 +370,7 @@ Py.using("System.Fx.Base");
 			if(!d){
 				d = Py.dataIf(elem, 'fxcfg') || {};
 				d.dom = elem.getDom();
-				Py.setData(elem, 'fx', d = new Py.Fx.Fx(d));
+				Py.setData(elem, 'fx', d = new Py.Fx.Animate(d));
 			}
 			return d;
 		},

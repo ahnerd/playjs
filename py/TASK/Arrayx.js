@@ -248,3 +248,67 @@ py.applyIf(Array.prototype,{
 		}
 		
 		
+		
+		
+//Array
+
+
+Array.prototype.min = function() {
+///<summary>获取数组中的最小值。语法：min()</summary>
+///<returns type="number">返回数组中的最小值。</returns>
+    var min = this[0];
+    for (var i = 1; i < this.length; i++) {
+        if (min > this[i]) {
+            min = this[i];
+        }
+    }
+
+    return min;
+}
+
+
+Array.prototype.max = function() {
+///<summary>获取数组中的最大值。语法：max()</summary>
+///<returns type="number">返回数组中的最大值。</returns>
+    var max = this[0];
+    for (var i = 1; i < this.length; i++) {
+        if (max < this[i]) {
+            max = this[i];
+        }
+    }
+
+    return max;
+}
+
+
+Array.prototype.checkRepeat = function() {
+///<summary>检查数组中是否存在重复值。语法：checkRepeat()</summary>
+///<returns type="boolean">若数组中存在重复值，则返回 true，否则返回 false。</returns>
+    for (var i = 0; i < this.length - 1; i++) {
+        for (var j = i + 1; j < this.length; j++) {
+            if (this[i] == this[j]) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+
+Array.prototype.clear = function() {
+///<summary>清空数组的所有项。语法：clear()</summary>
+    this.splice(0, this.length);
+}
+
+
+Array.prototype.each = function(func) {
+///<summary>对数组的所有项执行 func 函数。语法：each(func)</summary>
+///<param name="func" type="function">要执行的函数，数组当前项的值通过参数传递给 func。</param>
+    for (var i = 0; i < this.length; i++) {
+        func(this[i]);
+    }
+}
+
+
+		

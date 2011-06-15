@@ -1,43 +1,34 @@
 //===========================================
-//  枚举   Enum.js  MIT LICENCE
+//  枚举   enum.js
 //  Copyright(c) 2009-2010 xuld
 //===========================================
 
 
+
+Object.extend(Py.namespace(".Enum", function (flag){
 	
-		
-/// <summary>
-/// 创建一个枚举
-/// <summary>
-/// <params name="obj" type="Object">obj 用于创建枚举的对象 {Array} obj 用于创建枚举的数组</params>
-/// <params name="flag" type="Boolean">指示该枚举是否用于标记</params>
-/// <params name="reverse" type="Boolean">指示该枚举是否使用值转化为键</params>
-/// <returns type="Enum">返回该类</returns>
-var Enum = Py.Enum = function (obj, flag, reverse){
-	assert(obj,"创建枚举使用对象{0}为空",obj);
+	var args = arguments, r = [];
 	
-	var m = flag ? .5 : 1;
+	if(flag === true){
+		Array.prototype.shift.call(args);
+	}
 	
-	Array.each(obj,reverse ?
-		
-		function(key, value){obj[key] = typeof value != "number" ? (flag ? (m *= 2) : (m++)) : value;} :
-		
-		function(value, key){r[key] = typeof value != "number" ? (flag ? (m *= 2) : (m++)) : value;}
-		
-	);
+	Object.each(args, function(value, i){
+		r[value] = flag === true ? 1 << i : i;
+	})
 	
 	return r;
-}
-
-///	<summary>
-/// 根据某个值返回枚举的大小。
-///	</summary>
-///	<param name="e" type="Enum" optional="false">枚举</param>
-///	<param name="n" type="Number" optional="false">值</param>
-///	<returns type="Object">枚举对应的值</returns>
-Py.Enum.getName = function(e,n){
-    for(var i in e)
-        if( e[i] == n)
-            return i;
-    return null;
-}
+}), {
+	
+	/**
+	 * 根据某个值返回枚举的大小。
+	 * @param {Object} enumObj 枚举类型对象。
+	 * @param {Number} enumValue 枚举的内容。
+	 */
+	getName: function(enumObj, enumValue){
+		for(var i in enumObj)
+        	if( enumObj[i] === enumValue)
+            	return i;
+    	return null;
+	}
+});

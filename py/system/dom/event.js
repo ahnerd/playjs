@@ -485,3 +485,85 @@ Event.Keys = {
 	         me.addEvent(type, fn);
          }; 
 		   
+		   
+		   
+		   
+		   
+//================================================================================
+
+
+EZJ.Event = function() {
+///<summary>处理 DOM 事件的对象。</summary>
+}
+
+
+EZJ.Event.addListener = function(element, eventName, handler) {
+///<summary>添加事件处理程序。语法：EZJ.Event.addListener(element, eventName, handler)</summary>
+///<param name="element" type="string/object">要添加事件处理程序的元素。</param>
+///<param name="eventName" type="string">事件名称，比如：click、mouseover、mouseout，注意不能以 on 开头。</param>
+///<param name="handler" type="function">事件处理程序。</param>
+    var e = EZJ.$(element);
+    if (e.attachEvent) {
+        e.attachEvent("on" + eventName, function() { handler(); });
+    }
+    else if (e.addEventListener) {
+        e.addEventListener(eventName, function() { handler(); }, false);
+    }
+}
+
+
+EZJ.Event.getEvent = function() {
+///<summary>用在事件处理程序中，获取引发事件的事件对象。语法：EZJ.Event.getEvent()</summary>
+///<returns type="object">返回引发事件的事件对象。</returns>
+    var event = null;
+    if (window.event) {
+        event = window.event;
+    }
+    else {
+        var curCaller = arguments.callee.caller;
+        while (curCaller.arguments.callee.caller) {
+            curCaller = curCaller.arguments.callee.caller;
+        }
+        event = curCaller.arguments[0];
+    }
+
+    return event;
+}
+
+
+EZJ.Event.getMouseButton = function() {
+///<summary>获取按下的鼠标按键。语法：EZJ.Event.getMouseButton()</summary>
+///<returns type="string/int">不同的浏览器，对不同的鼠标按键值有不值的定义，该函数返回统一的定义值：按下鼠标左键，返回 "l"；按下鼠标右键，返回 "r"；按下鼠标中键，返回 "m"，不是所有的浏览器都会触发鼠标中键。按下鼠标其他键，直接返回该键键值。</returns>
+    var event = EZJ.Event.getEvent();
+    if (window.navigator.appName.indexOf("Microsoft") >= 0) {
+        //IE5.0、IE6.0 的 appName 均为：Microsoft Internet Explorer
+        //腾讯TT、傲游等使用 IE 内核的浏览器，其 appName 也为：Microsoft Internet Explorer
+        //这里不能使用 document.all 来判断，因为 Opera 也具有 document.all 属性，但其鼠标按钮值却和 FireFox 是一类的。
+        if (event.button == 1) {
+            return "l";
+        }
+        else if (event.button == 2) {
+            return "r";
+        }
+        else if (event.button == 4) {
+            return "m";
+        }
+    }
+    else {
+        if (event.button == 0) {
+            return "l";
+        }
+        else if (event.button == 2) {
+            return "r";
+        }
+        else if (event.button == 1) {
+            return "m";
+        }
+    }
+
+    return event.button;
+ }
+
+
+
+

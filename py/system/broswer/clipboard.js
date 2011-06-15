@@ -8,7 +8,7 @@
  * @param {String} content 内容。
  * @return {Boolean} 是否成功。
  */
-Py.namespace("Py.Broswer", 'copyContent', (function(){
+Py.namespace(".Broswer.", 'copyContent', (function(){
     if (window.clipboardData) {
 		return function(content){
 			window.clipboardData.clearData();

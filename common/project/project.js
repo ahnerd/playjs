@@ -1,14 +1,14 @@
 
 var core = {
-	'core       ': ['class', 'classbase', 'namespace', 'navigator', 'object', 'py', 'ready', 'trace', 'chineseid', 'date', 'classex', '@', 'array', 'string', 'regexp', 'number', 'function', 'check', 'objectex', 'enumerable', 'json', 'delegate', 'taskrunner', 'delayedtask', 'enum', '~',  'native'],
-	'broswer    ': ['clipboard', 'cookies', 'png', 'querystring', 'simulateie', 'action'],
+	'core       ': ['core', 'class', 'classbase', 'namespace', 'navigator', 'object', 'py', 'ready', 'trace', 'chineseid', 'date', 'classex', 'delegate', 'enum', '@', 'array', 'string', 'regexp', 'number', 'function', 'check', 'objectex', 'enumerable', 'json', 'taskrunner', 'delayedtask', '~',  'native'],
+	'broswer    ': ['action', '@', 'clipboard', 'cookies', 'png', 'querystring', 'simulateie'],
 	'data       ': ['collectionbase', '@', 'collectionbaseex'],
 	'dom        ': ['attributions', 'clone', 'control', 'dimension', 'event', 'memleak', 'node', 'nodes', 'position', 'dragdrop', 'contextmenu', 'query', 'image', '@','event',  'iframe', 'keys', 'selection', 'submit', 'borderradius', 'css', 'window'],
 	'fx         ': ['animate', 'transitions', 'multifade', 'showhide'],
 	'jquery     ': ['attributions', 'core', 'dimension', 'event', 'node', 'position'],
 	'mootools   ': ['attributions', 'core', 'dimension', 'event', 'node', 'position'],
-	'drawing    ': ['color'],
-	'ajax       ': ['ajax', '@', 'submit', 'json', 'jsonp', 'update', 'ajaxex'],
+	'drawing    ': ['@', 'color'],
+	'ajax       ': ['ajax', 'submit', '@', 'json', 'jsonp', 'update', 'ajaxex'],
 	'algorithm  ': ['encryption', 'sorter']
 };
 
@@ -23,4 +23,8 @@ var controls = {
 	'dialog     ': ['@', 'messagebox',  'balloonbox', '~', 'inputbox', 'colordialog', 'folderbroswerdialog', 'filedialog', 'fileopendialog', 'filesavedialog']
 };
 
+
+var components = {
+	
+};
 

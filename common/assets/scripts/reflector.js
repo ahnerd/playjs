@@ -8,7 +8,7 @@
 // DO NOT USE THIS CODE WITHOUT PERMISSION
 
 
-var url = 'http://localhost/py/pyjs/ui/assets/scripts/reflector.js';
+var url = '';
 
 // 注入
 function initReflector(){
@@ -53,17 +53,19 @@ Element.prototype._addEventListener = Element.prototype.addEventListener;
 	
 	this.Reflector = {
 		
+		document: this.document || document,
+		
 		id: function(value){
-			return this.node(document.getElementById(value));
+			return this.node(this.document.getElementById(value));
 		},
 		
 		cls: function(cls){
-			return this.node( document.getElementsByClassName(cls)[0] );
+			return this.node( this.document.getElementsByClassName(cls)[0] );
 		},
 		
 		node: function(elem){
 		
-		var d = window.open('about:blank', 'n').document;
+		var d = s.open('about:blank', 'n').document;
 		
 			d.write( this.inString(elem)  );
 			
@@ -156,7 +158,7 @@ Element.prototype._addEventListener = Element.prototype.addEventListener;
 		},
 		
 		inElemString: function(node){
-			var div = document.createElement('span');
+			var div = this.document.createElement('span');
 			
 			node.parentNode.replaceChild(div, node);
 			div.appendChild(node);
@@ -214,7 +216,7 @@ Element.prototype._addEventListener = Element.prototype.addEventListener;
 		getStyles: function(elems){
 			
 			
-			var styleSheets =  document.styleSheets;
+			var styleSheets =  this.document.styleSheets;
 			
 			var styles = [];
 			
@@ -240,7 +242,7 @@ Element.prototype._addEventListener = Element.prototype.addEventListener;
 					if(!rule.selectorText)
 						continue;
 						
-					var results = document.querySelectorAll(rule.selectorText.replace(/:(hover|active|link|visited)/g, ''));
+					var results = this.document.querySelectorAll(rule.selectorText.replace(/:(hover|active|link|visited)/g, ''));
 					
 					if(this._inArray(results, elems)){
 						c.push(rule);
@@ -256,7 +258,7 @@ Element.prototype._addEventListener = Element.prototype.addEventListener;
 		getRelations: function(elem){
 			
 			var r = [elem], parent = elem.parentNode, cache = [elem];
-			while(parent && parent != document){
+			while(parent && parent != this.document){
 				r.push(parent);
 				parent = parent.parentNode;
 			}

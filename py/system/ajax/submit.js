@@ -15,7 +15,7 @@ Py.using("System.Ajax.Ajax");
  */
 Ajax.submit = function(formId, onsuccess, onerror, oninit) {
 	formId = Py.$(formId);
-	return Ajax[formId.action](HTMLFormElement.param(formId), onsuccess, onerror, oninit);
+	return Ajax[formId.method](formId.action, HTMLFormElement.param(formId), onsuccess, onerror, oninit);
 };
 
 /**
@@ -23,7 +23,7 @@ Ajax.submit = function(formId, onsuccess, onerror, oninit) {
  * @param {HTMLFormElement} formElem 表单元素。
  * @return {String} 参数形式。
  */
-Py.namespace("HTMLFormElement", true, {
+Py.namespace("HTMLFormElement.", {
 
 	"param": function(formElem) {
 		assert(formElem && formElem.tagName == "FORM", "formElem 不是合法的 表单 元素");

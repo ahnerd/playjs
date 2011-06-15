@@ -83,9 +83,8 @@ function writeNavigator(){
 	var ns = {
 		'javascript: document.getElementById(\'_control\').style.display = \'\'; void -1': '控件',
 		'javascript: document.getElementById(\'_core\').style.display = \'\'; void -1': '核心',
+		'javascript: document.getElementById(\'_componets\').style.display = \'\'; void -1': '组件',
 		'../': '测试主页',
-		'../../test/dom/': 'DOM测试',
-		'../../test/core/': 'CORE测试',
 		'../../tools/格式化/Javascript格式化工具.htm': '格式化',
 		'../../tools/加密/index.htm': '加密',
 		'../../tools/压缩/JavaScript代码压缩-js代码压缩-压缩JS.htm': '压缩',
@@ -101,6 +100,7 @@ function writeNavigator(){
 		
 	writeWindow('_control', controls, 'ui');
 	writeWindow('_core', core, 'test');
+	writeWindow('_componets', components, 'componet');
 	
 	document.write('<hr>');
 	

@@ -7,7 +7,7 @@
 Py.namesapce("System.Drawing");
 
 
-Py.namespace("Py.Drawing", "Color", function() {
+Py.namespace(".Drawing.Color.", function() {
 		
 	var PARSE_INT = parseInt,
 	    RE = RegExp,

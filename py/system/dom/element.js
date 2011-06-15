@@ -217,7 +217,7 @@
 		
 		implementListeners: [function(obj, listType, copyIf){
 			
-			for(var key in obj){
+			Object.each(obj, function(value, key){
 				
 				var value = obj[key];
 					
@@ -277,7 +277,7 @@
 				p.ElementList.prototype[key] = fn;
 			
 			
-			}
+			});
 		}],
 	
 		/**
@@ -356,6 +356,9 @@
 		
 	});
 	
+	/**
+	 * @namespace Document
+	 */
 	apply(d, {
 	   
 		/**
@@ -368,6 +371,11 @@
 			return d.create("div", className);
 		},
 		
+		/**
+		 * 创建一个节点。
+		 * @param {Object} tagName
+		 * @param {Object} className
+		 */
 		create: function(tagName, className){
 					
 			/// #ifdef Std
