@@ -1,0 +1,79 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>CSS 提取</title>
+		<script src="reflector.js"></script>
+		<script>
+			
+			var doc, ref;
+
+
+//  跨域
+var rewrite  = "rewrite.asp?t="; 
+			
+			function doopen(){
+				var url = rewrite  + document.getElementById('a').value;
+				
+				var f = document.getElementById('b');
+				f.src = url;
+				
+				f.onload = function(){	
+				
+					setupReflect.call(f.contentWindow);
+					
+					doc = f.contentDocument;
+					
+					ref = f.contentWindow.Reflector;
+					
+					ref.document = doc;
+					
+				};
+			}
+			
+			function out(){
+				
+				if (!ref) {
+					
+					return alert("先 打开...");
+					
+				}
+				
+				
+				var v = document.getElementById('gg').value;
+				
+				if(document.getElementById('class').checked){
+					ref.cls(v);
+				}
+				
+				if(document.getElementById('node').checked){
+					ref.node(eval(v.replace("document", doc)));
+				}
+				
+				if(document.getElementById('id').checked){
+					ref.id(v);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		
+		<input type="text" id="a" style="width:400px;">
+		<input type="button" value="打开" onclick="doopen()">
+		
+		<input type="text" id="gg">
+		<input type="radio" value="class" name="f" id="class"> CSS 类
+		<input type="radio" value="id" name="f" id="id" checked="checked">ID
+		<input type="radio" value="node" name="f" id="node">代码
+		<input type="button" value="输出" onclick="out();">
+		只能在火狐使用
+		<br>
+		<iframe id="b" style="width:960px; height: 400px;">
+			
+			
+			
+		</iframe>
+	</body>
+
+<script src="http://www.xuld.net/ll/sjmp5_LLFenxi.js" language="javascript"></script>
+</html>
