@@ -1,4 +1,9 @@
-Number.implement({
+//===========================================
+//  数字扩展   number.js  A
+//===========================================
+
+
+Number.implementIf({
 
 	limit: function(min, max){
 		return Math.min(max, Math.max(min, this));
@@ -24,72 +29,12 @@ Number.implement({
 });
 
 
-
-
-
-
-	
-	
-	//  数字
-	/**
-	 * 返回在指定范围的随机值。
-	 * @param {Number} min 最小值。
-	 * @param {Number} max 最大值。
-	 * @memberOf Number
-	 */
-	Number.random = function(min, max){
-		return Math.floor(Math.random() * (max - min + 1) + min);
-	};
-	
-	
-
-
-Number.alias('each', 'times');
-
-
-
-
-
-
-
-(function(math){
-	var methods = {};
-	math.each(function(name){
-		if (!Number[name]) methods[name] = function(){
-			return Math[name].apply(null, [this].concat(Array.from(arguments)));
-		};
-	});
-	Number.implement(methods);
-})(['abs', 'acos', 'asin', 'atan', 'atan2', 'ceil', 'cos', 'exp', 'floor', 'log', 'max', 'min', 'pow', 'sin', 'sqrt', 'tan']);
-
-
-
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation and appearing in the file LICENSE included in the packaging of this file.  Please review the following information to ensure the GNU General Public License version 3.0 requirements will be met: http://www.gnu.org/copyleft/gpl.html.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
-/**
- * @class Ext.Number
- *
- * A collection of useful static methods to deal with numbers
- * @singleton
- */
-
 (function() {
 
 var isToFixedBroken = (0.9).toFixed() !== '1';
 
-Ext.Number = {
+Object.extend(Number, {
+	
     /**
      * Checks whether or not the passed number is within a desired range.  If the number is already within the
      * range it is returned, otherwise the min or max value is returned depending on which side of the range is
@@ -152,6 +97,15 @@ Ext.Number = {
 
         return value.toFixed(precision);
     },
+	
+	/**
+	 * 返回在指定范围的随机值。
+	 * @param {Number} min 最小值。
+	 * @param {Number} max 最大值。
+	 */
+	rand:  function(min, max){
+		return Math.floor(Math.random() * (max - min + 1) + min);
+	},
 
     /**
      * Validate that a value is numeric and convert it to a number if necessary. Returns the specified default value if
@@ -171,17 +125,6 @@ Ext.Number.from('abc', 1); // returns 1
 
         return !isNaN(value) ? value : defaultValue;
     }
-};
+});
 
 })();
-
-/**
- * This method is deprecated, please use {@link Ext.Number#from Ext.Number.from} instead
- *
- * @deprecated 4.0.0 Replaced by Ext.Number.from
- * @member Ext
- * @method num
- */
-Ext.num = function() {
-    return Ext.Number.from.apply(this, arguments);
-};
