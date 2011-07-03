@@ -45,6 +45,7 @@
 				["String.map", function(){ return String.map("a b c", function(a){return a + '.';}, {}); }, function(r){assert(r['a'] === 'a.')}],
 				["String.format", function(){ return String.format("{0}", 3); }, '3'],
 				["String.param", function(){ return String.param({f: 2, w: 4}); }, 'f=2&w=4'],
+				["String.ellipsis", function(){ return String.ellipsis("saasasdasd", 4); }, 'saas...'],
 				'Array',
 				["Array.create", function(){ return Array.create(["a","a",null,"a"]); }, function(r){assert(r.length === 4);}],
 				["Array.plain", function(){return Array.plain([3,5], [6]);}, function(r){assert(r.length === 3);}],
