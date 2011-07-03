@@ -6,7 +6,7 @@ Py.using("System.Controls.Mask");
 
 Py.Mask.implement({
 	
-	setContent: function(value){
+	setText: function(value){
 		
 		var content = this.conetnt;
 		
@@ -20,7 +20,7 @@ Py.Mask.implement({
 		return this;
 	},
 	
-	getContent: function(){
+	getText: function(){
 		return this.conetnt ? this.conetnt.innerHTML : '';
 	}
 	

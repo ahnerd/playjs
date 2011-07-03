@@ -2353,7 +2353,7 @@
 		insert: 'insertAdjacentElement' in div ? function(html, swhere) {
 			var me = this.getDom();
 			assert.isNode(me, "Element.prototype.insert(html, swhere): this.getDom() 返回的必须是 DOM 节点。");
-			assert('afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数 swhere 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。");
+			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数 swhere 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。");
 			me[typeof html === 'string' ? 'insertAdjacentHTML' : 'insertAdjacentElement'](swhere, html);
 			switch (swhere) {
 				case "afterEnd":
@@ -2376,7 +2376,7 @@
 			var me = this.getDom();
 			
 			assert.isNode(me, "Element.prototype.insert(html, swhere): this.getDom() 返回的必须是 DOM 节点。");
-			assert('afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数 {swhere} 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。", swhere);
+			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数 {swhere} 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。", swhere);
 			if (typeof html === 'string') {
 				return manip(this, 'insert', html, swhere);
 			}

@@ -15,8 +15,17 @@
 			textBox.select();
 			var r =  document.selection.createRange() ; //   getSelection(textBox);
 			r.moveStart("character", start);
-			r.moveEnd("character", 3);
-			r.select();
+			r.moveEnd("character", end);
+			r.select(); 
+  /*
+
+
+ range.collapse(true);
+    range.moveStart('character', -0x7FFFFFFF);//Move to the beginning
+    range.moveStart('character', start);
+    range.moveEnd('character', length);
+
+*/
 		} : function(textBox, start, end){
 			textBox.select();
 			textBox.selectionEnd = end;

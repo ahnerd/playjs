@@ -81,8 +81,14 @@ Py.namespace(".Ajax", Py.Class({
 		if (obj) Object.extend(this, obj);
 	},
 	
+	/**
+	 * 获取或设置请求类型。
+	 */
 	type: 'GET',
 	
+	/**
+	 * 获取或设置是否为异步请求。
+	 */
 	async: true,
 	
 	/**
@@ -90,11 +96,17 @@ Py.namespace(".Ajax", Py.Class({
 	 */
 	link: 'wait',
 	
+	/**
+	 * 获取请求头。
+	 */
 	headers: {
 		'X-Requested-With': 'XMLHttpRequest',
 		'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
 	},
 	
+	/**
+	 * 获取或设置是否允许缓存。
+	 */
 	enableCache: true,
 	
 	/**
@@ -145,23 +157,27 @@ Py.namespace(".Ajax", Py.Class({
 		/**
 		 * 当前实例。
 		 * @type Ajax
+		 * @ignore
 		 */
 		var me = this,  
 			
 			/**
 			 * 类型。
 			 * @type String
+		  	 * @ignore
 			 */
 			type = me.type,  
 			
 			/**
 			 * 当前请求。
 			 * @type String
+			 * @ignore
 			 */
 			url = me.url,  
 			
 			/**
 			 * 是否异步请求。
+			 * @ignore
 			 */
 			async = me.async,
 			
@@ -310,7 +326,18 @@ String.map("get post", function(k) {
 	 * @param {Object} data 数据。
 	 * @param {Object} callback 成功回调函数。
 	 * @param {Object} type 类型。
+	 * @method Ajax.get
 	 */
+	
+	/**
+	 * 快速请求一个地址。
+	 * @param {Object} url 地址。
+	 * @param {Object} data 数据。
+	 * @param {Object} callback 成功回调函数。
+	 * @param {Object} type 类型。
+	 * @method Ajax.post
+	 */
+	
 	return function(url, data, onsuccess, onerror, timeouts, ontimeout) {
 		new Ajax({
 			url: url,

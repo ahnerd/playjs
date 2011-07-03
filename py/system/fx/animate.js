@@ -154,7 +154,8 @@ Py.using("System.Fx.Base");
 		},
 	
 		/**
-		 * @class Element
+		 * @class Py.Fx.Animate
+		 * @extends Py.Fx.Base
 		 */
 		pfe = p.namespace(".Fx.Animate", p.Fx.Base.extend({
 			
@@ -376,9 +377,9 @@ Py.using("System.Fx.Base");
 		},
 		
 		getData = Fx.getData = function(elem, start){
-			var from = p.data(elem, 'fxdata'), i;
+			var from = p.data(elem, 'fxdata'), i, dom = elem.getDom();
 			for(i in start){
-				from[i] = styleNumber(elem, i);
+				from[i] = styleNumber(dom, i);
 			}
 			return from;
 		},
@@ -455,10 +456,10 @@ Py.using("System.Fx.Base");
 		show: function(duration, callBack, type){
 			var me = this, dom = me.getDom();
 			if (duration && isHidden(dom)) {
-				this.setStyle('overflow', 'hidden');
 				var fx = getFx(me), from, to;
 				if (!fx.timer) {
-					show.call(dom);
+					dom.style.overflow = 'hidden';
+					dom.style.display = '';
 					from = getStart(me, type);
 					to = p.dataIf(me, 'fxdata') || getData(me, from);
 					fx.start(from, to, duration, callBack);
@@ -477,10 +478,10 @@ Py.using("System.Fx.Base");
 		 * @return {Element} this
 		 */
 		hide: function(duration, callBack, type){
-			var me = this;
-			if (duration && !isHidden(me)) {
+			var me = this, dom = me.getDom();
+			if (duration && !isHidden(dom)) {
 				var fx = getFx(me), to;
-				this.setStyle('overflow', 'hidden');
+				me.setStyle('overflow', 'hidden');
 				if (!fx.timer) {
 					to = getStart(me, type);
 					fx.addOnComplete(hide).start(getData(me, to), to, duration, callBack);

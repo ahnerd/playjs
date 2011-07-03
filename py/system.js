@@ -75,7 +75,7 @@ var Py = {
  * @author xuld
  * @license MIT license
  * @copyright 2009-2011 xuld
- * @projectDescription Py.Core in Javascript
+ * @projectDescription Py.Core for Javascript
  */
 
 (function(w) {
@@ -640,8 +640,7 @@ var Py = {
 			 */
 			implement: function (obj) {
 	
-				assert(obj && this.prototype, "Py.Native.prototype.implement(obj): 无法扩展类，因为 obj 或 this.prototype 为空。\n\t 当前类为 {0}", obj);
-		
+				assert(obj && this.prototype, "Py.Native.prototype.implement(obj): 无法扩展类，因为 {obj} 或 this.prototype 为空。", obj);
 				// 复制到原型
 				o.extend(this.prototype, obj);
 		        
@@ -657,7 +656,7 @@ var Py = {
 			 */
 			implementIf: function(obj) {
 			
-				assert(obj && this.prototype, "Py.Native.prototype.implementIf(obj): 无法扩展类，因为 obj 或 this.prototype 为空。\n\t 当前类为 {0}", obj);
+				assert(obj && this.prototype, "Py.Native.prototype.implementIf(obj): 无法扩展类，因为 {obj} 或 this.prototype 为空。", obj);
 		
 				applyIf(this.prototype, obj);
 				
@@ -695,7 +694,7 @@ var Py = {
 				
 				return this;	
 			},
-	
+		
 			/**
 			 * 完成动态类的自身继承。
 			 * @method extend
@@ -913,6 +912,10 @@ var Py = {
 			 */
 			namespaces: [],
 			
+			/**
+			 * 异步载入样式。
+			 * @param {String} uri 地址。
+			 */
 			loadStyle: function(url){
 				document.getElementsByTagName("HEAD")[0].appendChild(apply(document.createElement('link'), {
 					href: url,
@@ -1525,6 +1528,8 @@ var Py = {
 		/**
 		 * 返回自身的函数。
 		 * @static
+		 * @type Function
+		 * @hide
 		 */
 		from: Object
 		
@@ -1612,6 +1617,16 @@ var Py = {
 				s.push(e(key) + '=' + e(value));
 			});
 			return s.join('&').replace(rWhite, '+');
+		},
+	
+		/**
+		 * 把字符串转为指定长度。
+		 * @param {String} value   字符串。
+		 * @param {Number} len 需要的最大长度。
+		 */
+		ellipsis: function(value, len){
+			assert.isString(value, "String.ellipsis(value, len): {value} ~。");
+			return value.length > len ?  value.substr(0, len) + "..." : value;
 		}
 		
 	});
@@ -2640,15 +2655,6 @@ Object.extend(String, {
 	 */
 	fromUTF8:function(s) {
 		return s.replace(/\\u([0-9a-f]{3})([0-9a-f])/gi,function(a,b,c) {return String.fromCharCode((parseInt(b,16)*16+parseInt(c,16)))})
-	},
-	
-	/**
-	 * 把字符串转为指定长度。
-	 * @param {String} s   字符串。
-	 * @param {Number} len 需要的最大长度。
-	 */
-	toLength: function(s, len){
-		return s.length > len ? s.substring(0, len) + "..." : s;
 	}
 		
 });
@@ -2956,7 +2962,7 @@ function assert(bValue, msg) {
 		if (val.length > 2) {
 			var i = 2;
 			msg = msg.replace(/\{([\w$\.\(\)]*?)\}/g, function(s, x){
-				return val.length <= i ? s : x + " = " + String.toLength(trace.inspect(val[i++]), 200);
+				return val.length <= i ? s : x + " = " + String.ellipsis(trace.inspect(val[i++]), 200);
 			});
 		}else {
 			msg = msg || "断言失败";
@@ -2970,7 +2976,7 @@ function assert(bValue, msg) {
 			while (val.debugStepThrough) 
 				val = val.caller;
 			
-			if (val) msg += "\r\n--------------------------------------------------------------------\r\n" + String.toLength(String.fromUTF8(val.toString()), 600);
+			if (val) msg += "\r\n--------------------------------------------------------------------\r\n" + String.ellipsis(String.fromUTF8(val.toString()), 600);
 			
 		}
 

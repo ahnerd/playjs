@@ -251,10 +251,12 @@ Py.using("System.Dom.Element");
 				set: function(elem, handler, options) {
 					
 					if(handler !== false) {
-						if(handler && handler.getDom)
+						if (handler && handler.getDom) {
 							Py.setData(handler, 'dragTarget', elem);
-						else
+							Py.setData(elem, 'dragHandler', handler);
+						} else {
 							handler = elem;
+						}
 						
 						Py.Element.setMovable(elem.dom || elem);
 						
@@ -268,7 +270,7 @@ Py.using("System.Dom.Element");
 				 * @param {Element} handle 拖动句柄。
 				 */
 				stop: function(handle) {
-					handle.un  ('mousedown', startDrag);
+					(Py.dataIf(handle, 'dragHandler') || handle).un  ('mousedown', startDrag);
 				}
 			
 			}

@@ -14,7 +14,7 @@ Py.imports("Resources.*.Container.Window");
  * @class Window
  * @extends Panel
  */
-Py.namespace(".Window", Py.ContainerControl.extend({
+Py.namespace(".Dialog", Py.ContainerControl.extend({
 	
 	/**
 	 * xType
@@ -50,7 +50,7 @@ Py.namespace(".Window", Py.ContainerControl.extend({
 			this.addHeaderItem('x-icon-close', options.closable ? this.close : this.hide, '关闭窗口');
 		delete options.closable;
 		
-		this.on('click', this.bringToFront)  ;
+		this.dom.on('click', this.bringToFront)  ;
 	},
 	
 	showModal: function() {
