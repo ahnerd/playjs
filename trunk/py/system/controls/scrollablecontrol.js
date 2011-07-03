@@ -91,6 +91,8 @@ Py.namespace(".ScrollableControl", Py.ContentControl.extend({
 	
 	setContent: function(content){
 		
+		assert(content && content.getDom, "ScrollableControl.prototype.setContent(content): 参数 {content} 必须是 Element。")
+		
 		// 删除 content
 		if(this.content != this.dom && this.content){
 			this.content.remove();

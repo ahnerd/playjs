@@ -17,8 +17,8 @@ Py.Panel.implement({
 	 * @method _toggleCollapseItem
 	 * @private
 	 */
-	_toggleCollapseItem: function() {
-		this.collapseItem.className =  'x-icon ' + (!this.isCollapsed() ? 'x-icon-collapsable' : 'x-icon-expandable');
+	oncollapsechanged: function() {
+		this.collapseItem.className =  'x-icon x-icon-' + (this.isCollapsed() ? 'expandable' : 'collapsable');
 	},
 	
 	/**
@@ -34,11 +34,15 @@ Py.Panel.implement({
 	 * 设置用来折叠的项。
 	 * @method setCollapseItem
 	 */
-	setCollapseItem: function() {
-		if(!this.collapseItem){
+	setCollapsable: function(value) {
+		if(value === false){
+			if (this.collapseItem) {
+				this.collapseItem.remove();
+				this.collapseItem = null;
+			}
+		} else if(!this.collapseItem){
 			this.collapseItem = this.addHeaderItem('', this.toggleCollapse);
-			this.on('toggleCollapse', this._toggleCollapseItem);
-			this._toggleCollapseItem();
+			this.oncollapsechanged();
 		}
 	},
 	
@@ -62,7 +66,7 @@ Py.Panel.implement({
 	toggleCollapse: function() {
 		var me = this;
 		me.content.toggle(this.duration, function(){
-			me.trigger('toggleCollapse');
+			me.trigger('collapsechanged');
 		}, 'height');
 		return me;
 	}

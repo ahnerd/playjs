@@ -3,11 +3,6 @@
 //  Copyright(c) 2009-2010 xuld
 //===========================================
 
-/**
- * @namespace Py.Fx
- */
-
-
 
 (function(p){
 	
@@ -28,12 +23,15 @@
 	/// #endregion
 		
 	/**
-	 * 实现特效。
-	 * @class Base
-	 * @abstract
+	 * @namespace Py.Fx
 	 */
 	p.namespace(".Fx.", {
-	
+		
+		/**
+		 * 实现特效。
+		 * @class Py.Fx.Base
+	 	 * @abstract
+		 */
 		Base: p.Class({
 			
 			/**
@@ -65,10 +63,22 @@
 			 */
 			xType: 'fx',
 			
+			/**
+			 * 在效果开始时执行
+			 * @protected
+			 */
 			onStart: Function.empty,
 			
+			/**
+			 * 在效果完成后执行
+			 * @protected
+			 */
 			onComplete: Function.empty,
 			
+			/**
+			 * 在效果停止后执行
+			 * @protected
+			 */
 			onStop: Function.empty,
 			
 			/**
@@ -124,9 +134,13 @@
 			 */
 			set: Function.empty,
 			
+			/**
+			 * 增加完成后的回调工具。
+			 * @param {Function} fn 回调函数。
+			 */
 			addOnComplete: function(fn){
 				assert.isFunction(fn, "Py.Fx.Base.prototype.addOnComplete(fn): 参数 {fn} ~。");
-				this._competeHandlerList.push(fn);	
+				this._competeHandlerList.unshift(fn);	
 				return this;
 			},
 			
@@ -146,7 +160,7 @@
 						
 						// 链式。
 						case 'wait':
-							this._competeHandlerList.unshift(function() {
+							this._competeHandlerList.push(function() {
 								
 								this.start(from, to, duration, callback, true);
 								return false;
@@ -166,7 +180,7 @@
 							
 						case 'restart':
 							me.pause();
-							me._competeHandlerList.pop();
+							while(me._competeHandlerList.pop());
 							break;
 							
 						// 停掉目前项。
@@ -191,7 +205,7 @@
 				// 如果有回调， 加入回调。
 				if (callback) {
 					assert.isFunction(callback, "Py.Fx.Base.prototype.check(from, to, duration, callback, link): 参数 {callback} ~。");
-					this._competeHandlerList.push(callback);
+					this._competeHandlerList.unshift(callback);
 				}
 				
 				return true;
@@ -284,7 +298,6 @@
 		 * @param {Object} from 开始。
 		 * @param {Object} to 结束。
 		 * @param {Object} delta 变化。
-		 * @memberOf Py.Fx.compute
 		 */
 		compute: function(from, to, delta){
 			return (to - from) * delta + from;

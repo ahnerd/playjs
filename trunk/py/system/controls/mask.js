@@ -12,23 +12,12 @@ Py.namespace('.Mask', Py.Control.extend({
 	
 	xType: 'mask',
 	
-	options: {
-		renderTo: true
-	},
-	
-	setTarget: function(elem){
-		this.target = Py.$(elem);
-		this.update();
+	renderTo: function(elem){
+		elem = Py.$(elem);
+		Py.Element.setMovable(elem.getDom());
+		elem.appendChild(this.dom);
+		this.bringToFront(elem);
 		return this;
-	},
-	
-	getTarget: function(){
-		return this.target;
-	},
-	
-	update: function(){
-		this.setSize(this.target.getSize());
-		this.setPosition(this.target.getOffsets());
 	}
 	
 }));
