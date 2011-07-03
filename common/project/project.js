@@ -20,7 +20,8 @@ var controls = {
 	'button     ': ['button', 'linkbutton', '@', 'menubutton', 'splitbutton', 'toolstrip', 'contextmenustrip', 'ribbon', 'commandbutton', '~', 'menustrip'],
 	'form       ': ['textbox', 'updown', 'listbox', 'checkbox', 'radiobutton', 'monthcalender', '@', 'slider', 'searchtextbox', 'fileupload', 'menubuttons', 'checklistbox', 'combobox', 'datetimepicker', 'markedtextbox',  'numericupdown', 'dateupdown',  'timeupdown', '~', 'richtextbox', 'htmleditor'],
 	'dataview   ': ['treeview', '@', '~', 'listview', 'datagridview', 'table', 'datanavigator'],
-	'dialog     ': ['@', 'messagebox',  'balloonbox', '~', 'inputbox', 'colordialog', 'folderbroswerdialog', 'filedialog', 'fileopendialog', 'filesavedialog']
+	'dialog     ': ['@', 'messagebox',  'balloonbox', '~', 'inputbox', 'colordialog', 'folderbroswerdialog', 'filedialog', 'fileopendialog', 'filesavedialog'],
+	'theme      ': ['all']
 };
 
 
