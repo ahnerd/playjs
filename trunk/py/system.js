@@ -4,17 +4,23 @@
 
 
 //
-// DefaultConfig -  使用默认设置。
-// Html  -   只支持 HTML5， 支持 IE9+ FF3+ Chrome10+ Opera10+ Safari4+ 。
-// Std   -     只支持 IE8+ FF3+ Chrome1+ Opera10+ Safari4+ 。
-// Framework -  不支持 using 等。
-// Global  -   不污染全局对象。
+// HtmlFive - 支持 IE10+ FF5+ Chrome12+ Opera12+ Safari6+ 。
+// SupportIE9 - 支持 IE9+ FF4+ Chrome10+ Opera10+ Safari4+ 。
+// SupportIE8  -   支持 IE8+ FF3+ Chrome10+ Opera10+ Safari4+ 。
+// SupportIE6   -  支持 IE6+ FF3+ Chrome1+ Opera10+ Safari4+ 。
+// Framework -  作为框架而非 UI 库使用。
+// SupportUsing - 支持 namespace 等。
+// Compact - 当前执行了打包操作。
+// Zip - 当前执行了压缩操作。
+// Format - 当前在格式化代码。
+// SupportGlobalObject  -   污染全局对象。
+// Debug - 启用调试， 启用调试将执行 assert 函数。
 
 
-/// #ifdef DefaultConfig
+
+// 配置。可省略。
 
 /**
- * 配置。可省略。
  * @type Object
  */
 var Py = {
@@ -63,11 +69,9 @@ var Py = {
 
 };
 
-/// #endif
-
 
 //===========================================
-//  核心   system.js
+//  核心   system.js  C
 //  Copyright(c) 2009-2011 xuld
 //===========================================
 
@@ -82,7 +86,34 @@ var Py = {
 	
 	/// #define PyJs
 	
+	/// #ifndef Debug
+	/// #define trace.
+	/// #define assert.
+	/// #define assert(
+	/// #define trace(
+	/// #endif
 	
+	/// #if !defined(SupportIE9) && !defined(SupportIE8) && !defined(SupportIE6) && !defined(HtmlFive)
+	/// #define SupportIE6
+	/// #endif
+	
+	/// #ifdef SupportIE6
+	/// #define SupportIE8
+	/// #endif
+	
+	/// #ifdef SupportIE8
+	/// #define SupportIE9
+	/// #endif
+	
+	/// #ifndef Compact
+	/// #define SupportUsing
+	/// #define SupportUsing
+	/// #endif
+	
+	/// #ifndef SupportUsing
+	/// #define using(
+	/// #define Py.using(
+	/// #endif
 
 	/// #region 全局变量
 	
@@ -141,17 +172,17 @@ var Py = {
 		 */
 		arp = Array.prototype,
 		
-		/// #ifdef Html
-		
-		/// forEach = arp.forEach,
-		
-		/// #else
+		/// #ifdef SupportIE8
 	
 		/**
 		 * forEach 简写。
 		 * @type Function
 		 */
 		forEach = arp.forEach || each,
+		
+		/// #else
+		
+		/// forEach = arp.forEach,
 		
 		/// #endif
 	
@@ -161,7 +192,7 @@ var Py = {
 		 */
 		makeArray = arp.slice,
 		
-		/// #ifndef Std
+		/// #ifdef SupportIE6
 		/**
 		 * 浏览器是否为标准事件。就目前浏览器状况， IE6，7 中 isQuirks = true  其它皆 false 。
 		 * @type Boolean
@@ -330,12 +361,11 @@ var Py = {
 				for(var item in {toString: true})
 					return apply;
 				
+				Py.enumerables = ["toString", "hasOwnProperty", "valueOf", "constructor", "isPrototypeOf"];
 				// IE6  需要复制
-				
-				var members = ["toString", "hasOwnProperty"];
 				return function(dest, src){
 					for(var i = members.length, value; i--;)
-						if(hasOwnProperty.call(src, value = members[i]))
+						if(hasOwnProperty.call(src, value = Py.enumerables[i]))
 							dest[value] = src[value];
 					return apply(dest, src);
 				}
@@ -624,6 +654,10 @@ var Py = {
 		 */
 		toString = o.prototype.toString,
 		
+		/**
+		 * Object.prototype.hasOwnProperty 简写。
+		 * @type Function
+		 */
 		hasOwnProperty = o.prototype.hasOwnProperty,
 		
 		/**
@@ -739,7 +773,7 @@ var Py = {
 				// 指定成员
 				Native(subClass).prototype = apply(new defaultConstructor, members);
 				
-				/// #ifndef Std
+				/// #ifdef SupportIE6
 				
 				// 强制复制构造函数。  FIX  6
 				// 是否需复制成员。
@@ -803,7 +837,7 @@ var Py = {
 			 */
 			Element: Element,
 			
-			/// #ifndef Std
+			/// #ifdef SupportIE6
 	
 			/**
 		     * 根据一个 id 或 对象获取节点。
@@ -904,7 +938,7 @@ var Py = {
 				}
 			}, 
 			
-			/// #ifndef Framework
+			/// #ifdef SupportUsing
 		
 			/**
 			 * 全部已载入的名字空间。
@@ -1228,7 +1262,7 @@ var Py = {
 			
 			}),
 			
-			/// #ifndef Framework
+			/// #ifdef SupportUsing
 	
 			/**
 			 * 使用一个名空间。
@@ -1236,6 +1270,8 @@ var Py = {
 			 * @param {String} name 名字空间。
 			 */
 			using: include,
+			
+			/// #endif
 	
 			/**
 			 * 定义名字空间。
@@ -1244,6 +1280,8 @@ var Py = {
 			 * @param {Object} value 如果 obj 为 true， value 指示复制的成员。
 			 */
 			namespace: namespace,
+			
+			/// #ifdef SupportUsing
 			
 			/**
 			 * 导入一个名字空间的资源。
@@ -1255,6 +1293,8 @@ var Py = {
 			},
 			
 			/// #endif
+			
+			/// #ifdef SupportIE8
 								
 			/**
 			 * 绑定一个监听器。
@@ -1285,6 +1325,8 @@ var Py = {
 				// IE8- 使用 detachEvent 。
 				this.detachEvent('on' + type, fn);
 			},
+			
+			/// #endif
 			
 			/**
 			 * 定义事件。 
@@ -1352,11 +1394,15 @@ var Py = {
 			 */
 			defaultNamespace: 'Py',
 			
+			/// #ifdef Framework
+			
 			/**
 			 * 主题。
 			 * @type String
 			 */
 			theme: 'default',
+			
+			/// #endif
 			
 		    /**
 		     * 将窗口对象本地化。
@@ -1371,7 +1417,7 @@ var Py = {
 		         * @class Element
 		         */
 				
-				/// #ifndef Std
+				/// #ifndef SupportIE6
 				
 		        if (!w.Element) w.Element = Element;
 				
@@ -1390,14 +1436,14 @@ var Py = {
 				
 				if(!wd.id)
 					copyIf(document, wd);
-				/// #ifndef Html
+				/// #ifndef SupportIE8
 		        
 		        // 修正 IE 不支持     defaultView
 		        if (!('defaultView' in wd)) wd.defaultView = wd.parentWindow;
 		        
 				/// #endif
 				
-				/// #ifndef Global
+				/// #ifdef SupportGlobalObject
 	
 				// 将以下成员赋予 window ，这些成员是全局成员。
 				String.map('$ Class addEventListener removeEventListener using imports namespace', p, w, true);
@@ -1666,7 +1712,7 @@ var Py = {
 			
 		},
 		
-		/// #ifndef Html
+		/// #ifdef SupportIE8
 		
 		/**
 		 * 绑定一个监听器。
@@ -1684,7 +1730,7 @@ var Py = {
 
 		/// #endif
 		
-		/// #ifndef Std
+		/// #ifdef SupportIE6
 		
 		/**
 		 * 获取节点本身。
@@ -1836,7 +1882,7 @@ var Py = {
 	        return this.replace(rToCamelCase, toCamelCase);
 	    },
 
-		/// #ifndef Html
+		/// #ifdef SupportIE8
 
 		/**
 		 * 去除首尾空格。
@@ -1867,7 +1913,7 @@ var Py = {
 	 */
 	Array.implementIf({
 
-		/// #ifndef Html
+		/// #ifdef SupportIE8
 
 		/**
 		 * 返回数组某个值的第一个位置。值没有,则为-1 。
@@ -1901,7 +1947,7 @@ var Py = {
 		 */
 		each: each,
 
-		/// #ifndef Html
+		/// #ifdef SupportIE8
 
 		/**
 		 * 对数组每个元素通过一个函数过滤。返回所有符合要求的元素的数组。
@@ -2058,7 +2104,7 @@ var Py = {
 			return this;
 		},
 		
-		/// #ifndef Html
+		/// #ifndef SupportIE8
 		
 		/**
 		 * 绑定一个监听器。
@@ -2084,7 +2130,7 @@ var Py = {
 	/// #region 远程请求
 	
 	
-	/// #ifndef Std
+	/// #ifdef SupportIE6
 		
 	if (isQuirks) {
 		
@@ -2179,7 +2225,7 @@ var Py = {
 				// 如果readyState 不是  complete, 说明文档正在加载。
 				if (elem.readyState !== "complete") { 
 					
-					/// #ifndef Html
+					/// #ifdef SupportIE8
 					
 					// 只对 IE 检查。
 					if (!navigator.isStd) {
@@ -2237,7 +2283,7 @@ var Py = {
 				this.un('ready');
 			},
 			
-			/// #ifndef Html
+			/// #ifdef SupportIE8
 			
 			eventName: nv.isStd ? 'DOMContentLoaded' : 'readystatechange'
 			
@@ -2485,16 +2531,22 @@ var Py = {
 		
 		assert(name && name.split, "namespace(namespace, obj, value): 参数 {namespace} 不是合法的名字空间。", name);
 		
-		/// #ifndef Framework
 		
 		// 简单声明。
 		if (arguments.length == 1) {
 			
+			/// #ifdef SupportUsing
+			
 			// 加入已使用的名字空间。
 			return   p.namespaces.include(name);
+			
+			/// #else
+			
+			/// return ;
+			
+			/// #endif
 		}
 			
-		/// #endif
 		
 		// 取值，创建。
 		name = name.split('.');
@@ -2514,7 +2566,7 @@ var Py = {
 		} else 
 			current[i] = obj;
 		
-		/// #ifndef Global
+		/// #ifdef SupportGlobalObject
 		
 		// 指明的是对象。
 		if (!(i in w)) {
@@ -2532,7 +2584,7 @@ var Py = {
 		
 	}
 			
-	 /// #ifndef Framework
+	 /// #ifdef SupportUsing
 	
 	/**
 	 * 同步载入一个脚本或样式表。
