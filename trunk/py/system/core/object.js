@@ -1,187 +1,66 @@
-
-    /**
-     * Get the number of objects in the map
-     *
-     * @signature function(map)
-     * @param map {Object} the map
-     * @return {Integer} number of objects in the map
-     */
-    objectGetLength :
-    ({
-      "count": function(map) {
-        return map.__count__;
-      },
-
-      "default": function(map)
-      {
-        var length = 0;
-
-        for (var key in map) {
-          length++;
-        }
-
-        return length;
-      }
-    })[(({}).__count__ == 0) ? "count" : "default"],
+//===========================================
+//  对象扩展   object.js  A
+//===========================================
 
 
+Object.extend(Object, {
 
-	
-	  
-		/**
-		 * 判断一个对象是否空。
-		 * @param {Object} object 所有变量，但不允许函数。
-		 * @return {Boolean} 除了null, undefined, 空字符数组,其它变量认为不空。
-		 */
-		isEmpty: function(object) {
-
-			assert(!Object.isFunction(object), "Object.isEmpty 不允许函数");
-
-			//if (object == null) return true;
-
-			//if (typeof object == "object" && !Object.isArray(object)) for (var name in obj) return false;
-
-			return object == null || object.length === 0;
-		},
+	/**
+	 * Get the number of objects in the map
+	 *
+	 * @param map {Object} the map
+	 * @return {Integer} number of objects in the map
+	 */
+	getLength: ({}).__count__ == 0 ? function(map) {
+		return map.__count__;
+	}
+ : function(map) {
+		var length = 0;
 		
+		for (var key in map) {
+			length++;
+		}
 		
+		return length;
+	},
+	
+	/**
+	 * 判断一个对象是否空。
+	 * @param {Object} object 所有变量，但不允许函数。
+	 * @return {Boolean} 除了null, undefined, 空字符数组,其它变量认为不空。
+	 */
+	isEmpty: function(object) {
+	
+		assert(!Object.isFunction(object), "Object.isEmpty 不允许函数");
 		
+		//if (object == null) return true;
 		
-	
-	
-	
-	
-	getObject: function(path, root) {
+		//if (typeof object == "object" && !Object.isArray(object)) for (var name in obj) return false;
+		
+		return object == null || object.length === 0;
+	},
+
+	value: function(path, root) {
 				
-				assert(path, "Object.value(path, root): 参数 path 不能为空。");
-				
-				// 依次遍历。
-				for (var obj = root || w, i = 0, t, n = path.split ? path.split('.') : path; t = n[i]; ++i) {
+		assert(path, "Object.value(path, root): 参数 path 不能为空。");
+		
+		// 依次遍历。
+		for (var obj = root || w, i = 0, t, n = path.split ? path.split('.') : path; t = n[i]; ++i) {
+			
+			// 如果对象空。
+			if (obj[t] == undefined) {
 					
-					// 如果对象空。
-					if (obj[t] == undefined) {
-							
-						// 创建空对象，用于下次继续循环。
-						obj[t] = {};
-					}
-					
-					// 进行第二次循环。
-					obj = obj[t];
-				}
-	
-				return obj;
-			},
+				// 创建空对象，用于下次继续循环。
+				obj[t] = {};
+			}
 			
-			
-			
-			
-			/*
+			// 进行第二次循环。
+			obj = obj[t];
+		}
 
-This file is part of Ext JS 4
+		return obj;
+	},
 
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation and appearing in the file LICENSE included in the packaging of this file.  Please review the following information to ensure the GNU General Public License version 3.0 requirements will be met: http://www.gnu.org/copyleft/gpl.html.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
-/**
- * @author Jacky Nguyen <jacky@sencha.com>
- * @docauthor Jacky Nguyen <jacky@sencha.com>
- * @class Ext.Object
- *
- * A collection of useful static methods to deal with objects
- *
- * @singleton
- */
-
-(function() {
-
-var ExtObject = Ext.Object = {
-
-    /**
-     * Convert a `name` - `value` pair to an array of objects with support for nested structures; useful to construct
-     * query strings. For example:
-
-    var objects = Ext.Object.toQueryObjects('hobbies', ['reading', 'cooking', 'swimming']);
-
-    // objects then equals:
-    [
-        { name: 'hobbies', value: 'reading' },
-        { name: 'hobbies', value: 'cooking' },
-        { name: 'hobbies', value: 'swimming' },
-    ];
-
-    var objects = Ext.Object.toQueryObjects('dateOfBirth', {
-        day: 3,
-        month: 8,
-        year: 1987,
-        extra: {
-            hour: 4
-            minute: 30
-        }
-    }, true); // Recursive
-
-    // objects then equals:
-    [
-        { name: 'dateOfBirth[day]', value: 3 },
-        { name: 'dateOfBirth[month]', value: 8 },
-        { name: 'dateOfBirth[year]', value: 1987 },
-        { name: 'dateOfBirth[extra][hour]', value: 4 },
-        { name: 'dateOfBirth[extra][minute]', value: 30 },
-    ];
-
-     * @param {String} name
-     * @param {Mixed} value
-     * @param {Boolean} recursive
-     * @markdown
-     */
-    toQueryObjects: function(name, value, recursive) {
-        var self = ExtObject.toQueryObjects,
-            objects = [],
-            i, ln;
-
-        if (Ext.isArray(value)) {
-            for (i = 0, ln = value.length; i < ln; i++) {
-                if (recursive) {
-                    objects = objects.concat(self(name + '[' + i + ']', value[i], true));
-                }
-                else {
-                    objects.push({
-                        name: name,
-                        value: value[i]
-                    });
-                }
-            }
-        }
-        else if (Ext.isObject(value)) {
-            for (i in value) {
-                if (value.hasOwnProperty(i)) {
-                    if (recursive) {
-                        objects = objects.concat(self(name + '[' + i + ']', value[i], true));
-                    }
-                    else {
-                        objects.push({
-                            name: name,
-                            value: value[i]
-                        });
-                    }
-                }
-            }
-        }
-        else {
-            objects.push({
-                name: name,
-                value: value
-            });
-        }
-
-        return objects;
-    },
 
     /**
      * Takes an object and converts it to an encoded query string
@@ -363,43 +242,6 @@ var ExtObject = Ext.Object = {
         return object;
     },
 
-    /**
-     * Iterate through an object and invoke the given callback function for each iteration. The iteration can be stop
-     * by returning `false` in the callback function. For example:
-
-    var person = {
-        name: 'Jacky'
-        hairColor: 'black'
-        loves: ['food', 'sleeping', 'wife']
-    };
-
-    Ext.Object.each(person, function(key, value, myself) {
-        console.log(key + ":" + value);
-
-        if (key === 'hairColor') {
-            return false; // stop the iteration
-        }
-    });
-
-     * @param {Object} object The object to iterate
-     * @param {Function} fn The callback function. Passed arguments for each iteration are:
-
-- {String} `key`
-- {Mixed} `value`
-- {Object} `object` The object itself
-
-     * @param {Object} scope (Optional) The execution scope (`this`) of the callback function
-     * @markdown
-     */
-    each: function(object, fn, scope) {
-        for (var property in object) {
-            if (object.hasOwnProperty(property)) {
-                if (fn.call(scope || object, property, object[property], object) === false) {
-                    return;
-                }
-            }
-        }
-    },
 
     /**
      * Merges any number of objects recursively without referencing them or their children.
@@ -476,6 +318,7 @@ var ExtObject = Ext.Object = {
         return source;
     },
 
+
     /**
      * Returns the first matching key corresponding to the given value.
      * If no matching value is found, null is returned.
@@ -500,7 +343,8 @@ var ExtObject = Ext.Object = {
 
         return null;
     },
-
+	
+	
     /**
      * Gets all values of the given object as an array.
 
@@ -525,6 +369,7 @@ var ExtObject = Ext.Object = {
 
         return values;
     },
+	
 
     /**
      * Gets all keys of the given object as an array.
@@ -550,73 +395,50 @@ var ExtObject = Ext.Object = {
 
         return keys;
     },
+	
+	subset: function(object, keys){
+		var results = {};
+		for (var i = 0, l = keys.length; i < l; i++){
+			var k = keys[i];
+			if (k in object) results[k] = object[k];
+		}
+		return results;
+	},
 
-    /**
-     * Gets the total number of this object's own properties
+	map: function(object, fn, bind){
+		var results = {};
+		for (var key in object){
+			if (hasOwnProperty.call(object, key)) results[key] = fn.call(bind, object[key], key, object);
+		}
+		return results;
+	},
 
-    var size = Ext.Object.getSize({
-        name: 'Jacky',
-        loves: 'food'
-    }); // size equals 2
+	filter: function(object, fn, bind){
+		var results = {};
+		for (var key in object){
+			var value = object[key];
+			if (hasOwnProperty.call(object, key) && fn.call(bind, value, key, object)) results[key] = value;
+		}
+		return results;
+	},
 
-     * @param {Object} object
-     * @return {Number} size
-     * @markdown
-     */
-    getSize: function(object) {
-        var size = 0,
-            property;
+	every: function(object, fn, bind){
+		for (var key in object){
+			if (hasOwnProperty.call(object, key) && !fn.call(bind, object[key], key)) return false;
+		}
+		return true;
+	},
 
-        for (property in object) {
-            if (object.hasOwnProperty(property)) {
-                size++;
-            }
-        }
+	some: function(object, fn, bind){
+		for (var key in object){
+			if (hasOwnProperty.call(object, key) && fn.call(bind, object[key], key)) return true;
+		}
+		return false;
+	},
+	
+	
 
-        return size;
-    }
-};
-
-
-/**
- * A convenient alias method for {@link Ext.Object#merge}
- *
- * @member Ext
- * @method merge
- */
-Ext.merge = Ext.Object.merge;
-
-/**
- * A convenient alias method for {@link Ext.Object#toQueryString}
- *
- * @member Ext
- * @method urlEncode
- * @deprecated 4.0.0 Use {@link Ext.Object#toQueryString Ext.Object.toQueryString} instead
- */
-Ext.urlEncode = function() {
-    var args = Ext.Array.from(arguments),
-        prefix = '';
-
-    // Support for the old `pre` argument
-    if ((typeof args[1] === 'string')) {
-        prefix = args[1] + '&';
-        args[1] = false;
-    }
-
-    return prefix + Ext.Object.toQueryString.apply(Ext.Object, args);
-};
-
-/**
- * A convenient alias method for {@link Ext.Object#fromQueryString}
- *
- * @member Ext
- * @method urlDecode
- * @deprecated 4.0.0 Use {@link Ext.Object#fromQueryString Ext.Object.fromQueryString} instead
- */
-Ext.urlDecode = function() {
-    return Ext.Object.fromQueryString.apply(Ext.Object, arguments);
-};
-
-})();
-
-
+	contains: function(object, value){
+		return Object.keyOf(object, value) != null;
+	}
+}); 

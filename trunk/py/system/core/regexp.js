@@ -15,6 +15,10 @@ Object.extendIf(RegExp,{
 
 
 
+
+	escapeRegExp: function(){
+		return this.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1');
+	},
 	
 		
 		
