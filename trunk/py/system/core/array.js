@@ -57,6 +57,8 @@ Array.implementIf({
 		return this;
 	},
 	
+	/// #endif
+
 	/// <summary>
 	/// 返回数组的副本
 	/// </summary>
@@ -70,8 +72,6 @@ Array.implementIf({
 		return m;
 	},
 	
-	/// #endif
-
 	/// <summary>
 	/// 删除数组中等价false的内容。
 	/// </summary>

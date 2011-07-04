@@ -1,31 +1,31 @@
-ï»¿//===========================================
-//  å…ƒç´    element.js       C
+//===========================================
+//  ÔªËØ   element.js       C
 //===========================================
 
 (function(w) {
 	
-	/// #region æ ¸å¿ƒ
+	/// #region ºËĞÄ
  
     /**
-     * Py ç®€å†™ã€‚
+     * Py ¼òĞ´¡£
      * @type Py
      */
     var p = w.Py,
 
 	    /**
-	     * document ç®€å†™ã€‚
+	     * document ¼òĞ´¡£
 	     * @type Document
 	     */
 	    document = w.document,
 		
 		/**
-		 * Object  ç®€å†™ã€‚
+		 * Object  ¼òĞ´¡£
 		 * @type Object
 		 */
 		o = Object,
 		
 		/**
-		 * ç©ºå‡½æ•°ã€‚
+		 * ¿Õº¯Êı¡£
 		 * @type Function
 		 */
 		emptyFn = Function.empty,
@@ -37,13 +37,13 @@
 		apply = o.extend,
 		
 		/**
-		 * æ•°ç»„åŸå‹ã€‚
+		 * Êı×éÔ­ĞÍ¡£
 		 * @type Object
 		 */
 		ap = Array.prototype,
 		
 		/**
-		 * è¢«æµ‹å…ƒç´ ã€‚
+		 * ±»²âÔªËØ¡£
 		 * @type Element
 		 */
 		div = document.createElement('DIV'),
@@ -51,7 +51,7 @@
 		/// #ifdef SupportIE6
 		
 		/**
-		 * å…ƒç´ ã€‚
+		 * ÔªËØ¡£
 		 * @type Function
 		 */
 		e = w.Element || (w.Element = function() {}), 
@@ -63,37 +63,37 @@
 		/// #endif
 		
 		/**
-		 * å…ƒç´ åŸå‹ã€‚
+		 * ÔªËØÔ­ĞÍ¡£
 		 * @type Object
 		 */
 		ep = e.prototype,
 		
 		/**
-		 * å…ƒç´ ã€‚
+		 * ÔªËØ¡£
 		 * @type Object
 		 */
 		cache = {},
 	
 	    /**
-	     * æ˜¯å¦ä¸ºæ ‡ç­¾ã€‚
+	     * ÊÇ·ñÎª±êÇ©¡£
 	     * @type RegExp
 	     */
 	    rXhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/ig,
 		
 		/**
-		 * æ— æ³•å¤åˆ¶çš„æ ‡ç­¾ã€‚
+		 * ÎŞ·¨¸´ÖÆµÄ±êÇ©¡£
 		 * @type RegExp
 		 */
 		rNoClone = /<(?:script|object|embed|option|style)|\schecked/i,
 	
 	    /**
-	     * æ˜¯å¦ä¸ºæ ‡ç­¾åã€‚
+	     * ÊÇ·ñÎª±êÇ©Ãû¡£
 	     * @type RegExp
 	     */
 	    rTagName = /<([\w:]+)/,
 		
 		/**
-		 * åŒ…è£…ã€‚
+		 * °ü×°¡£
 	     * @type Object
 	     */
 		wrapMap = {
@@ -111,7 +111,7 @@
 	if (navigator.isQuirks) {
 	
 	
-		// é¿å… getElementById å‡½æ•°è¿”å›é”™è¯¯çš„å‡½æ•°ã€‚
+		// ±ÜÃâ getElementById º¯Êı·µ»Ø´íÎóµÄº¯Êı¡£
 		ep.domVersion = 1;
 		
 	}
@@ -125,9 +125,9 @@
 		/// #ifdef SupportIE6
 
 		/**
-	     * æ ¹æ®ä¸€ä¸ª id æˆ– å¯¹è±¡è·å–èŠ‚ç‚¹ã€‚
+	     * ¸ù¾İÒ»¸ö id »ò ¶ÔÏó»ñÈ¡½Úµã¡£
 		 * @method
-	     * @param {String/Element} id å¯¹è±¡çš„ id æˆ–å¯¹è±¡ã€‚
+	     * @param {String/Element} id ¶ÔÏóµÄ id »ò¶ÔÏó¡£
 	     */
 		$: navigator.isQuirks ? function(id){
 			var dom = getElementById(id);
@@ -148,15 +148,15 @@
 		/// #endif
 		
 	    /**
-	     * å°†çª—å£å¯¹è±¡æœ¬åœ°åŒ–ã€‚
-	     * @param {Window} w çª—å£ã€‚
+	     * ½«´°¿Ú¶ÔÏó±¾µØ»¯¡£
+	     * @param {Window} w ´°¿Ú¡£
 	     */
 	    bindWindow: function(w) {
 				
-			assert(w.setInterval, 'Py.setupWindow(w): å‚æ•° {w} å¿…é¡»æ˜¯ä¸€ä¸ª Window å¯¹è±¡ã€‚', w);
+			assert(w.setInterval, 'Py.setupWindow(w): ²ÎÊı {w} ±ØĞëÊÇÒ»¸ö Window ¶ÔÏó¡£', w);
 	    
 	        /**
-	         * æœ¬åœ°åŒ– Element ã€‚
+	         * ±¾µØ»¯ Element ¡£
 	         * @class Element
 	         */
 			
@@ -166,7 +166,7 @@
 			
 			/// #endif
 	        
-	        // å¯¹é     IE6/7 ,æ‰‹åŠ¨å¤åˆ¶ Element.prototype
+	        // ¶Ô·Ç     IE6/7 ,ÊÖ¶¯¸´ÖÆ Element.prototype
 	        if (w.Element !== e) {
 				
 				copyIf(Element.prototype, w.Element.prototype);
@@ -174,7 +174,7 @@
 	            o.extendIf(w.Element, e);
 	        }
 			
-	        // å¤åˆ¶ document å˜é‡ã€‚
+	        // ¸´ÖÆ document ±äÁ¿¡£
 	    	var wd = apply(w.document, p.IEvent);
 			
 			if(!wd.id)
@@ -182,7 +182,7 @@
 				
 			/// #ifndef SupportIE8
 	        
-	        // ä¿®æ­£ IE ä¸æ”¯æŒ     defaultView
+	        // ĞŞÕı IE ²»Ö§³Ö     defaultView
 	        if (!('defaultView' in wd)) wd.defaultView = wd.parentWindow;
 	        
 			/// #endif
@@ -203,7 +203,7 @@
 	///   #region ElementList
 
     /**
-     * èŠ‚ç‚¹é›†åˆã€‚
+     * ½Úµã¼¯ºÏ¡£
      * @class ElementList
      */
     p.namespace(".ElementList", p.Class({
@@ -211,13 +211,13 @@
 		xType: "elementlist",
 
         /**
-         * åˆå§‹åŒ– ElementList  å®ä¾‹ã€‚
-         * @param {Array/ElementList} doms èŠ‚ç‚¹é›†åˆã€‚
+         * ³õÊ¼»¯ ElementList  ÊµÀı¡£
+         * @param {Array/ElementList} doms ½Úµã¼¯ºÏ¡£
          * @constructor ElementList
          */
         constructor: function(doms) {
 			
-			assert(doms && doms.length !== undefined, 'ElementList.prototype.constructor(doms): å‚æ•° {doms} å¿…é¡»æ˜¯ä¸€ä¸ª NodeList æˆ– Array ç±»å‹çš„å˜é‡ã€‚', doms);
+			assert(doms && doms.length !== undefined, 'ElementList.prototype.constructor(doms): ²ÎÊı {doms} ±ØĞëÊÇÒ»¸ö NodeList »ò Array ÀàĞÍµÄ±äÁ¿¡£', doms);
 			
             this.doms = doms;
 			
@@ -228,15 +228,15 @@
         },
 		
 		/**
-         * å¯¹é›†åˆæ¯ä¸ªå…ƒç´ æ‰§è¡Œä¸€æ¬¡å‡½æ•°ã€‚
+         * ¶Ô¼¯ºÏÃ¿¸öÔªËØÖ´ĞĞÒ»´Îº¯Êı¡£
 		 * @method each
-         * @param {Function} fn å‚æ•°ã€‚
-		 * @param {Array} args/... å‚æ•°ã€‚
-		 * @return {Array} ç»“æœé›†ã€‚
+         * @param {Function} fn ²ÎÊı¡£
+		 * @param {Array} args/... ²ÎÊı¡£
+		 * @return {Array} ½á¹û¼¯¡£
          */
 		each: function(fn, args) {
 		
-			// é˜²æ­¢ doms ä¸º ElementList
+			// ·ÀÖ¹ doms Îª ElementList
 			return ap.invoke.call(this.doms, fn, args);
 		}
 		
@@ -250,26 +250,26 @@
 	apply(e,  {
 		 
 	    /**
-	     * è½¬æ¢ä¸€ä¸ªHTMLå­—ç¬¦ä¸²åˆ°èŠ‚ç‚¹ã€‚
-	     * @param {String/Element} html å­—ç¬¦ã€‚
-	     * @param {Document} context å†…å®¹ã€‚
-	     * @param {Boolean} cachable=true æ˜¯å¦ç¼“å­˜ã€‚
-	     * @return {Element} å…ƒç´ ã€‚
+	     * ×ª»»Ò»¸öHTML×Ö·û´®µ½½Úµã¡£
+	     * @param {String/Element} html ×Ö·û¡£
+	     * @param {Document} context ÄÚÈİ¡£
+	     * @param {Boolean} cachable=true ÊÇ·ñ»º´æ¡£
+	     * @return {Element} ÔªËØ¡£
 	     * @static
 	     */
 	    parse: function(html, context, cachable) {
 			
-			assert.isString(html, 'Element.parse(html, context, cachable): å‚æ•° {html} ~ã€‚');
+			assert.isString(html, 'Element.parse(html, context, cachable): ²ÎÊı {html} ~¡£');
 			
-			assert(!context || context.createElement, 'Element.parse(html, context, cachable): å‚æ•° {context} å¿…é¡»æ˜¯ä¸€ä¸ª Document å¯¹è±¡ã€‚', context);
-			
+			assert(!context || context.createElement, 'Element.parse(html, context, cachable): ²ÎÊı {context} ±ØĞëÊÇÒ»¸ö Document ¶ÔÏó¡£', context);
+				
 			var div = cache[html];
 	
 	        if (!div) {
 			
 				context = context || document;
 				
-				// è¿‡æ»¤ç©ºæ ¼  // ä¿®æ­£   XHTML
+				// ¹ıÂË¿Õ¸ñ  // ĞŞÕı   XHTML
 				var h = html.trim().replace(rXhtmlTag, "<$1></$2>"),
 					tag = rTagName.exec(h),
 					notSaveInCache = cachable !== false && rNoClone.test(html);
@@ -285,57 +285,50 @@
 						var depth = wrap[0];
 						div.innerHTML = wrap[1] + h + wrap[2];
 						
-						// è½¬åˆ°æ­£ç¡®çš„æ·±åº¦
+						// ×ªµ½ÕıÈ·µÄÉî¶È
 						while (depth--) 
 							div = div.lastChild;
 						
 					} else div.innerHTML = h;
 					
-					// ä¸€èˆ¬ä½¿ç”¨æœ€å¥½çš„èŠ‚ç‚¹ï¼Œ å¦‚æœå­˜åœ¨æœ€åçš„èŠ‚ç‚¹ï¼Œä½¿ç”¨çˆ¶èŠ‚ç‚¹ã€‚
+					// Ò»°ãÊ¹ÓÃ×îºÃµÄ½Úµã£¬ Èç¹û´æÔÚ×îºóµÄ½Úµã£¬Ê¹ÓÃ¸¸½Úµã¡£
 					div = div.firstChild;
 					
-					// å¦‚æœæœ‰å¤šèŠ‚ç‚¹ï¼Œåˆ™å¤åˆ¶åˆ°ç‰‡æ®µå¯¹è±¡ã€‚
 					if(div.nextSibling){
 						var fragment = context.createDocumentFragment();
 						
-						var newS = div.nextSibling;
-						while(newS){
-							fragment.appendChild(div);
-							div = newS;
-							newS = newS.nextSibling;
-						}
+						fragment.appendChild(div.parentNode);
 						
-						
-						fragment.appendChild(div);
-						
-						div = fragment;
-					} else {
-					
-						/// #ifdef SupportIE6
-						
-						p.$(div);
-						
-						/// #endif
-					
+						var newS = html.nextSibling, ns;
+							while(ns = ls){
+								ls = ns.nextSibling;
+								elem.insertBefore(ns, newS);
+							}
 					}
+					
+					/// #ifdef SupportIE6
+					
+					p.$(div);
+					
+					/// #endif
 					
 				} else {
 				
-					// åˆ›å»ºæ–‡æœ¬èŠ‚ç‚¹ã€‚
+					// ´´½¨ÎÄ±¾½Úµã¡£
 					div = context.createTextNode(html);
 				}
 				
 			}
 			
 			if(!notSaveInCache)
-				cache[html] = div.clone ? div.clone(false, true) : div.cloneNode(true);
+				cache[html] = div.clone ? div.clone(false, true) : div.cloneNode(false);
 	
 	        return div;
 	
 	    },
 		
 		/**
-		 * å®ç°äº† Element å®ç°çš„å¤„ç†å‡½æ•°ã€‚
+		 * ÊµÏÖÁË Element ÊµÏÖµÄ´¦Àíº¯Êı¡£
 		 * @private
 		 */
 		implementListeners: [function(obj, listType, copyIf){
@@ -344,11 +337,11 @@
 				
 				var value = obj[key];
 					
-				//  å¤åˆ¶åˆ°  Element.prototype
+				//  ¸´ÖÆµ½  Element.prototype
 				if(!copyIf || !(key in ep))
 					ep[key] = value;
 					
-				//  å¤åˆ¶åˆ° Document
+				//  ¸´ÖÆµ½ Document
 				if (!(key in document))
 					document[key] = value;
 				
@@ -357,7 +350,7 @@
 				
 				var fn;
 						
-				// å¤åˆ¶åˆ°  ElementList
+				// ¸´ÖÆµ½  ElementList
 				switch (listType) {
 					case 2:
 						fn = function() {
@@ -407,43 +400,43 @@
 		}],
 	
 		/**
-		 * å°†ä¸€ä¸ªæˆå‘˜é™„åŠ åˆ° Element å¯¹è±¡å’Œç›¸å…³ç±»ã€‚
-		 * @param {Object} obj è¦é™„åŠ çš„å¯¹è±¡ã€‚
-		 * @param {Number} listType = 1 è¯´æ˜å¦‚ä½•å¤åˆ¶åˆ° ElementList å®ä¾‹ã€‚ 
+		 * ½«Ò»¸ö³ÉÔ±¸½¼Óµ½ Element ¶ÔÏóºÍÏà¹ØÀà¡£
+		 * @param {Object} obj Òª¸½¼ÓµÄ¶ÔÏó¡£
+		 * @param {Number} listType = 1 ËµÃ÷ÈçºÎ¸´ÖÆµ½ ElementList ÊµÀı¡£ 
 		 * @return {Element} this
 	     * @static
-		 * å¯¹ Element æ‰©å±•ï¼Œå†…éƒ¨å¯¹ Element ElementList document Control çš†æ‰©å±•ã€‚
-		 * è¿™æ˜¯ç”±äºä¸åŒçš„å‡½æ•°éœ€ç”¨ä¸åŒçš„æ–¹æ³•æ‰©å±•ï¼Œå¿…é¡»æŒ‡æ˜æ‰©å±•ç±»å‹ã€‚
-		 * æ‰€è°“çš„æ‰©å±•ï¼Œå³ä¸€ä¸ªç±»å«éœ€è¦çš„å‡½æ•°ã€‚
+		 * ¶Ô Element À©Õ¹£¬ÄÚ²¿¶Ô Element ElementList document Control ½ÔÀ©Õ¹¡£
+		 * ÕâÊÇÓÉÓÚ²»Í¬µÄº¯ÊıĞèÓÃ²»Í¬µÄ·½·¨À©Õ¹£¬±ØĞëÖ¸Ã÷À©Õ¹ÀàĞÍ¡£
+		 * ËùÎ½µÄÀ©Õ¹£¬¼´Ò»¸öÀàº¬ĞèÒªµÄº¯Êı¡£
 		 * 
 		 * 
-		 * DOM æ–¹æ³• æœ‰ ä»¥ä¸‹ç§
+		 * DOM ·½·¨ ÓĞ ÒÔÏÂÖÖ
 		 *  
-		 *  1  getText - è¿”å›ç»“æœ  
-		 *  2  setText - è¿”å› this
-		 *  3  getElementById - è¿”å› DOM
-		 *  4  getElementsByTagName - è¿”å›  DOM æ•°ç»„
-		 *  5  appendChild  - å‚æ•° DOM
+		 *  1  getText - ·µ»Ø½á¹û  
+		 *  2  setText - ·µ»Ø this
+		 *  3  getElementById - ·µ»Ø DOM
+		 *  4  getElementsByTagName - ·µ»Ø  DOM Êı×é
+		 *  5  appendChild  - ²ÎÊı DOM
 		 *  
-		 *  å¯¹ Element ï¼Œ
-		 *     å¦‚æœ copyIf æ˜¯ false æˆ–ä¸å­˜åœ¨å¤åˆ¶ã€‚
+		 *  ¶Ô Element £¬
+		 *     Èç¹û copyIf ÊÇ false »ò²»´æÔÚ¸´ÖÆ¡£
 		 *
-		 *  å¯¹ ElementList ï¼ŒæŒ‰ listTypeï¼Œ
-		 *      1, å…¶å®ƒ - æ‰§è¡Œç»“æœæ˜¯æ•°æ®ï¼Œè¿”å›ç»“æœæ•°ç»„ã€‚ (é»˜è®¤)
-		 *  	2 - æ‰§è¡Œç»“æœè¿”å› thisï¼Œ è¿”å› this ã€‚
-		 * 		3 - æ‰§è¡Œç»“æœæ˜¯DOMï¼Œè¿”å› ElementList åŒ…è£…ã€‚
-		 * 		4 - æ‰§è¡Œç»“æœæ˜¯DOMæ•°ç»„ï¼Œè¿”å› ElementList åŒ…è£…ã€‚ 
-		 * 		5 - å¦‚æœæ¯ä¸ªè¿”å›å€¼éƒ½æ˜¯ trueï¼Œ åˆ™è¿”å› trueï¼Œ å¦åˆ™è¿”å› falseã€‚
+		 *  ¶Ô ElementList £¬°´ listType£¬
+		 *      1, ÆäËü - Ö´ĞĞ½á¹ûÊÇÊı¾İ£¬·µ»Ø½á¹ûÊı×é¡£ (Ä¬ÈÏ)
+		 *  	2 - Ö´ĞĞ½á¹û·µ»Ø this£¬ ·µ»Ø this ¡£
+		 * 		3 - Ö´ĞĞ½á¹ûÊÇDOM£¬·µ»Ø ElementList °ü×°¡£
+		 * 		4 - Ö´ĞĞ½á¹ûÊÇDOMÊı×é£¬·µ»Ø ElementList °ü×°¡£ 
+		 * 		5 - Èç¹ûÃ¿¸ö·µ»ØÖµ¶¼ÊÇ true£¬ Ôò·µ»Ø true£¬ ·ñÔò·µ»Ø false¡£
 		 * 
-		 *  å¯¹ document ï¼Œ 
-		 *  	å¦‚æœä¸å­˜åœ¨åˆ™å¤åˆ¶ã€‚
+		 *  ¶Ô document £¬ 
+		 *  	Èç¹û²»´æÔÚÔò¸´ÖÆ¡£
 		 *  
 		 *  
-		 *  å‚æ•° copyIf ä»…å†…éƒ¨ä½¿ç”¨ã€‚
+		 *  ²ÎÊı copyIf ½öÄÚ²¿Ê¹ÓÃ¡£
 		 */
 		implement: function (obj, listType, copyIf) {
 			
-			assert.notNull(obj, "Element.implement(obj, listType): å‚æ•° {obj} ~ã€‚");
+			assert.notNull(obj, "Element.implement(obj, listType): ²ÎÊı {obj} ~¡£");
 		
 			this.implementListeners.forEach(function(fn){
 				fn(obj, listType, copyIf);
@@ -461,11 +454,11 @@
 		},
 		
 		/**
-		 * è‹¥ä¸å­˜åœ¨ï¼Œåˆ™å°†ä¸€ä¸ªå¯¹è±¡é™„åŠ åˆ° Element å¯¹è±¡ã€‚
+		 * Èô²»´æÔÚ£¬Ôò½«Ò»¸ö¶ÔÏó¸½¼Óµ½ Element ¶ÔÏó¡£
 	     * @static
-		 * @param {Object} obj è¦é™„åŠ çš„å¯¹è±¡ã€‚
-		 * @param {Number} listType è¯´æ˜å¦‚ä½•å¤åˆ¶åˆ° ElementList å®ä¾‹ã€‚
-		 * @param {Number} docType è¯´æ˜å¦‚ä½•å¤åˆ¶åˆ° Document å®ä¾‹ã€‚
+		 * @param {Object} obj Òª¸½¼ÓµÄ¶ÔÏó¡£
+		 * @param {Number} listType ËµÃ÷ÈçºÎ¸´ÖÆµ½ ElementList ÊµÀı¡£
+		 * @param {Number} docType ËµÃ÷ÈçºÎ¸´ÖÆµ½ Document ÊµÀı¡£
 		 * @return {Element} this
 		 */
 		implementIf: function (obj, listType) {
@@ -473,10 +466,10 @@
 		},
 		
 		/**
-		 * è·å–ä¸€ä¸ªå…ƒç´ çš„æ–‡æ¡£ã€‚
+		 * »ñÈ¡Ò»¸öÔªËØµÄÎÄµµ¡£
 	     * @static
-		 * @param {Element/Document/Window} elem å…ƒç´ ã€‚
-		 * @return {Document} å½“å‰èŠ‚ç‚¹æ‰€åœ¨æ–‡æ¡£ã€‚
+		 * @param {Element/Document/Window} elem ÔªËØ¡£
+		 * @return {Document} µ±Ç°½ÚµãËùÔÚÎÄµµ¡£
 		 */
 		getDocument: getDoc
 		
@@ -488,9 +481,9 @@
 	apply(document, {
 	   
 		/**
-		* ç”Ÿæˆä¸€ä¸ªå±‚ã€‚
-		* @param {String} className ç±»ã€‚
-		* @return {Element} èŠ‚ç‚¹ã€‚
+		* Éú³ÉÒ»¸ö²ã¡£
+		* @param {String} className Àà¡£
+		* @return {Element} ½Úµã¡£
 		*/
 		createDiv: function(className){
 			
@@ -498,7 +491,7 @@
 		},
 		
 		/**
-		 * åˆ›å»ºä¸€ä¸ªèŠ‚ç‚¹ã€‚
+		 * ´´½¨Ò»¸ö½Úµã¡£
 		 * @param {Object} tagName
 		 * @param {Object} className
 		 */
@@ -520,8 +513,8 @@
 		},
 
 	    /**
-	     * æ ¹æ®å…ƒç´ è¿”å›èŠ‚ç‚¹ã€‚
-	     * @param {String/Element} ... å¯¹è±¡çš„ id æˆ–å¯¹è±¡ã€‚
+	     * ¸ù¾İÔªËØ·µ»Ø½Úµã¡£
+	     * @param {String/Element} ... ¶ÔÏóµÄ id »ò¶ÔÏó¡£
 	     */
 	    id: function() {
 			return arguments.length < 2 ? p.$(arguments[1]) : new p.ElementList(o.update(arguments, p.$));
@@ -536,16 +529,16 @@
 		/// #ifdef SupportIE6
 		
 		/**
-		 * è·å–èŠ‚ç‚¹æœ¬èº«ã€‚
+		 * »ñÈ¡½Úµã±¾Éí¡£
 		 * @return {Element}
 		 */
 		getDom: navigator.isQuirks ? function(){
 				
-			// è¿™é‡Œç›´æ¥ä½¿ç”¨ documentElement ï¼Œæ•…ä¸æ”¯æŒ QUIRKS ï¼Œå¦‚æœ html = wd.body åˆ™ä¸º QUIRKS æ¨¡å¼ã€‚
+			// ÕâÀïÖ±½ÓÊ¹ÓÃ documentElement £¬¹Ê²»Ö§³Ö QUIRKS £¬Èç¹û html = wd.body ÔòÎª QUIRKS Ä£Ê½¡£
 			return p.$(this.documentElement);
 		} : function(){
 			
-			// è¿™é‡Œç›´æ¥ä½¿ç”¨ documentElement ï¼Œæ•…ä¸æ”¯æŒ QUIRKS ï¼Œå¦‚æœ html = wd.body åˆ™ä¸º QUIRKS æ¨¡å¼ã€‚
+			// ÕâÀïÖ±½ÓÊ¹ÓÃ documentElement £¬¹Ê²»Ö§³Ö QUIRKS £¬Èç¹û html = wd.body ÔòÎª QUIRKS Ä£Ê½¡£
 			return this.documentElement;
 		}
 		
@@ -565,7 +558,7 @@
 	e.implementIf({
 	
 		/**
-		 * è·å–èŠ‚ç‚¹æœ¬èº«ã€‚
+		 * »ñÈ¡½Úµã±¾Éí¡£
 		 * @return {Element}
 		 */
 		getDom: function(){
@@ -575,16 +568,16 @@
 		/// #ifndef SupportIE8
 		
 		/**
-		 * ç»‘å®šä¸€ä¸ªç›‘å¬å™¨ã€‚
-		 * @param {String} type ç±»å‹ã€‚
-		 * @param {Function} fn å‡½æ•°ã€‚
+		 * °ó¶¨Ò»¸ö¼àÌıÆ÷¡£
+		 * @param {String} type ÀàĞÍ¡£
+		 * @param {Function} fn º¯Êı¡£
 		 */
 		addEventListener: p.addEventListener,
 		
 		/**
-		 * ç§»é™¤ä¸€ä¸ªç›‘å¬ç€ã€‚
-		 * @param {String} type ç±»å‹ã€‚
-		 * @param {Function} fn å‡½æ•°ã€‚
+		 * ÒÆ³ıÒ»¸ö¼àÌı×Å¡£
+		 * @param {String} type ÀàĞÍ¡£
+		 * @param {Function} fn º¯Êı¡£
 		 */
 		removeEventListener: p.removeEventListener,
 		
@@ -600,18 +593,18 @@
 	p.bindWindow(w);
 	
 	/**
-	 * è·å–å…ƒç´ çš„æ–‡æ¡£ã€‚
-	 * @param {Element} elem å…ƒç´ ã€‚
-	 * @return {Document} æ–‡æ¡£ã€‚
+	 * »ñÈ¡ÔªËØµÄÎÄµµ¡£
+	 * @param {Element} elem ÔªËØ¡£
+	 * @return {Document} ÎÄµµ¡£
 	 */
 	function getDoc(elem) {
 		return elem.ownerDocument || elem.document || elem;
 	}
 
 	/**
-     * æ ¹æ®ä¸€ä¸ª id æˆ– å¯¹è±¡è·å–èŠ‚ç‚¹ã€‚
-     * @param {String/Element} id å¯¹è±¡çš„ id æˆ–å¯¹è±¡ã€‚
-     * @return {Element} å…ƒç´ ã€‚
+     * ¸ù¾İÒ»¸ö id »ò ¶ÔÏó»ñÈ¡½Úµã¡£
+     * @param {String/Element} id ¶ÔÏóµÄ id »ò¶ÔÏó¡£
+     * @return {Element} ÔªËØ¡£
      */
 	function getElementById(id) {  
 		return typeof id == "string" ? document.getElementById(id) : id;
@@ -622,32 +615,32 @@
 	/// #region IEvent
 	
 	/**
-	 * é»˜è®¤äº‹ä»¶ã€‚
+	 * Ä¬ÈÏÊÂ¼ş¡£
  	 * @type Object
 	 */
 	p.namespace(".Events.element.$default", {
 			
 		/**
-		 * äº‹ä»¶åˆå§‹åŒ–ã€‚
-		 * @return {Function} å¯ç”¨å½“å‰äº‹ä»¶çš„å‡½æ•°ã€‚
+		 * ÊÂ¼ş³õÊ¼»¯¡£
+		 * @return {Function} ÆôÓÃµ±Ç°ÊÂ¼şµÄº¯Êı¡£
 		 */
 		setup: function() {
 			return function(e) {
 			
-				// æ­¤å‡½æ•°ï¼Œå­˜å‚¨äº‹ä»¶ç›¸å…³æ•°æ®ã€‚
-				var fn = arguments.callee, i = -1,  // å­˜åœ¨ç±»å‹è¯´æ˜æœ‰ one äº‹ä»¶ï¼Œéœ€ç”Ÿæˆå‡½æ•°å‰¯æœ¬ï¼Œé˜²æ­¢è¢«åˆ åå¾ªç¯é”™è¯¯ã€‚
+				// ´Ëº¯Êı£¬´æ´¢ÊÂ¼şÏà¹ØÊı¾İ¡£
+				var fn = arguments.callee, i = -1,  // ´æÔÚÀàĞÍËµÃ÷ÓĞ one ÊÂ¼ş£¬ĞèÉú³Éº¯Êı¸±±¾£¬·ÀÖ¹±»É¾ºóÑ­»·´íÎó¡£
 				handlers = fn.handlers.slice(0), len = handlers.length, target = fn.target, F = false;
 				
-				// åˆ›å»ºå‚æ•°
+				// ´´½¨²ÎÊı
 				fn.event.trigger.call(target, e);
 				
-				// è‡ªèº«çš„å¥æŸ„
+				// ×ÔÉíµÄ¾ä±ú
 				while (++i < len) {
 				
 					if (e.returnValue === F) 									
 						return F;
 					
-					// å¦‚æœè¿”å› false ï¼Œ è¿è¡Œ   stopPropagation/preventDefault
+					// Èç¹û·µ»Ø false £¬ ÔËĞĞ   stopPropagation/preventDefault
 					if (handlers[i].call(target, e) === F) {
 						e.stopPropagation();
 						e.preventDefault();
@@ -660,37 +653,37 @@
 		},
 	
 		/**
-		 * åˆ›å»ºå½“å‰äº‹ä»¶å¯ç”¨çš„å‚æ•°ã€‚
-		 * @param {Event} e äº‹ä»¶å‚æ•°ã€‚
-		 * @param {Object} target äº‹ä»¶ç›®æ ‡ã€‚
-		 * @return {Event} e äº‹ä»¶å‚æ•°ã€‚
+		 * ´´½¨µ±Ç°ÊÂ¼ş¿ÉÓÃµÄ²ÎÊı¡£
+		 * @param {Event} e ÊÂ¼ş²ÎÊı¡£
+		 * @param {Object} target ÊÂ¼şÄ¿±ê¡£
+		 * @return {Event} e ÊÂ¼ş²ÎÊı¡£
 		 */
 		createEvent: function(e, target){
-			assert(!e || ( e.stopPropagation && e.preventDefault), "IEvent.trigger(e): å‚æ•° e å¿…é¡»æœ‰æˆå‘˜ stopPropagation å’Œ preventDefault ï¼Œå¯ä½¿ç”¨ç±»å‹ Py.Event ä»£æ›¿ã€‚");
+			assert(!e || ( e.stopPropagation && e.preventDefault), "IEvent.trigger(e): ²ÎÊı e ±ØĞëÓĞ³ÉÔ± stopPropagation ºÍ preventDefault £¬¿ÉÊ¹ÓÃÀàĞÍ Py.Event ´úÌæ¡£");
 			return e || new p.Event(target);
 		},
 		
 		/**
-		 * äº‹ä»¶è§¦å‘åå¯¹å‚æ•°è¿›è¡Œå¤„ç†ã€‚
-		 * @param {Event} e äº‹ä»¶å‚æ•°ã€‚
+		 * ÊÂ¼ş´¥·¢ºó¶Ô²ÎÊı½øĞĞ´¦Àí¡£
+		 * @param {Event} e ÊÂ¼ş²ÎÊı¡£
 		 */
 		trigger: emptyFn,
 	
 		/**
-		 * æ·»åŠ ç»‘å®šäº‹ä»¶ã€‚
-		 * @param {Object} obj å¯¹è±¡ã€‚
-		 * @param {String} type ç±»å‹ã€‚
-		 * @param {Function} fn å‡½æ•°ã€‚
+		 * Ìí¼Ó°ó¶¨ÊÂ¼ş¡£
+		 * @param {Object} obj ¶ÔÏó¡£
+		 * @param {String} type ÀàĞÍ¡£
+		 * @param {Function} fn º¯Êı¡£
 		 */
 		add: function(obj, type, fn) {
 			obj.addEventListener(type, fn, false);
 		},
 		
 		/**
-		 * åˆ é™¤äº‹ä»¶ã€‚
-		 *@param {Object} obj å¯¹è±¡ã€‚
-		 * @param {String} type ç±»å‹ã€‚
-		 * @param {Function} fn å‡½æ•°ã€‚
+		 * É¾³ıÊÂ¼ş¡£
+		 *@param {Object} obj ¶ÔÏó¡£
+		 * @param {String} type ÀàĞÍ¡£
+		 * @param {Function} fn º¯Êı¡£
 		 */
 		remove: function(obj, type, fn) {
 			obj.removeEventListener(type, fn, false);
@@ -698,19 +691,19 @@
 	});
 	
 	/**
-	 * å®šä¹‰äº‹ä»¶ã€‚ 
-	 * @param {String} äº‹ä»¶åã€‚
-	 * @param {Function} trigger è§¦å‘å™¨ã€‚
+	 * ¶¨ÒåÊÂ¼ş¡£ 
+	 * @param {String} ÊÂ¼şÃû¡£
+	 * @param {Function} trigger ´¥·¢Æ÷¡£
 	 * @return {Function} Py.defineDomEvents
 	 */
 	e.defineEvents = function(events, baseEvent, trigger, add, remove, createEvent) {
 			
 		var ee = p.Events.element;
 		
-		// åˆ é™¤å·²ç»åˆ›å»ºçš„äº‹ä»¶ã€‚
+		// É¾³ıÒÑ¾­´´½¨µÄÊÂ¼ş¡£
 		delete ee[events];
 		
-		// å¯¹æ¯ä¸ªäº‹ä»¶æ‰§è¡Œå®šä¹‰ã€‚
+		// ¶ÔÃ¿¸öÊÂ¼şÖ´ĞĞ¶¨Òå¡£
 		String.map(events, Function.from(o.extendIf({
 			
 			trigger: baseEvent && trigger ? function(e){
@@ -718,7 +711,7 @@
 					trigger.call(this, e);
 			} : trigger || (ee[events] || ee.$default).trigger,
 			
-			//  DOM ä½¿ç”¨åŒæ–¹æ³•æ¥å®‰è£…ã€‚
+			//  DOM Ê¹ÓÃÍ¬·½·¨À´°²×°¡£
 			add: add === true ? function(elem, type, fn) {
 				elem.addEventListener(baseEvent, this.delegate, false);
 			} : add || baseEvent && function(elem, type, fn) {
@@ -735,18 +728,18 @@
 			
 		}, ee.$default)), ee);
 		
-		// æ–¹ä¾¿ç»§ç»­ä½¿ç”¨æœ¬å‡½æ•°ï¼Œå¦‚æœé‡å‘½åï¼Œè¿”å›äº‹ä»¶å¯¹è±¡ï¼Œå¦åˆ™è¿”å›æ­¤å‡½æ•°ã€‚
+		// ·½±ã¼ÌĞøÊ¹ÓÃ±¾º¯Êı£¬Èç¹ûÖØÃüÃû£¬·µ»ØÊÂ¼ş¶ÔÏó£¬·ñÔò·µ»Ø´Ëº¯Êı¡£
 		return baseEvent ? ee[events] : arguments.callee;
 	};
 	
 	/**
-	 * è¡¨ç¤ºäº‹ä»¶çš„å‚æ•°ã€‚
+	 * ±íÊ¾ÊÂ¼şµÄ²ÎÊı¡£
 	 * @class Event
 	 */
 	var pep = p.namespace(".Event", Class({
 			
 		/**
-		 * æ„é€ å‡½æ•°ã€‚
+		 * ¹¹Ôìº¯Êı¡£
 		 * @param {Object} target
 		 * @constructor Event
 		 */
@@ -755,7 +748,7 @@
 		},
 
 		/**
-		 * é˜»æ­¢å†’æ³¡ã€‚
+		 * ×èÖ¹Ã°Åİ¡£
 		 * @method stopPropagation
 		 */
 		stopPropagation : function() {
@@ -763,7 +756,7 @@
 		},
 		
 		/**
-		 * åœæ­¢é»˜è®¤ã€‚
+		 * Í£Ö¹Ä¬ÈÏ¡£
 		 * @method preventDefault
 		 */
 		preventDefault : function() {
@@ -779,13 +772,13 @@
 		c,
 	
 	    /**
-	     * mouseEvntArgsã€‚
+	     * mouseEvntArgs¡£
 	     * @type Function
 	     */
 	    mc,
 		
 		/**
-	     * keyEvntArgsã€‚
+	     * keyEvntArgs¡£
 	     * @type Function
 	     */
 		kc;
@@ -801,7 +794,7 @@
 			if(!e.srcElement)
 				e.srcElement = e.target.nodeType === 3 ? e.target.parentNode : e.target;
 
-            //é‡å†™  preventDefault
+            //ÖØĞ´  preventDefault
             Object.addCallback(e, 'preventDefault', pep.preventDefault);
 
         };
@@ -825,7 +818,7 @@
 			e.pageY = e.clientY + dom.scrollTop;
 			e.layerX = e.x;
 			e.layerY = e.y;
-			//  1 ï¼š å•å‡»  2 ï¼š  ä¸­é”®ç‚¹å‡» 3 ï¼š å³å‡»
+			//  1 £º µ¥»÷  2 £º  ÖĞ¼üµã»÷ 3 £º ÓÒ»÷
 			e.which = (e.button & 1 ? 1 : (e.button & 2 ? 3 : (e.button & 4 ? 2 : 0)));
 
 		};
@@ -870,47 +863,47 @@
 	/// #region Attributons
 	
 	/**
-	 * é€æ˜åº¦çš„æ­£åˆ™è¡¨è¾¾å¼ã€‚
+	 * Í¸Ã÷¶ÈµÄÕıÔò±í´ïÊ½¡£
 	 * @type RegExp
 	 * @private
 	 */
 	var rOpacity = /opacity=([^)]*)/,
 	
 	    /**
-	     * æ˜¯å¦ä¸ºåƒç´ çš„æ­£åˆ™è¡¨è¾¾å¼ã€‚
+	     * ÊÇ·ñÎªÏñËØµÄÕıÔò±í´ïÊ½¡£
 	     * @type RegExp
 	     * @private
 	     */
 	    rNumPx = /^-?\document+(?:px)?$/i,
 	
 	    /**
-	     * æ˜¯å¦ä¸ºæ•°å­—çš„æ­£åˆ™è¡¨è¾¾å¼ã€‚
+	     * ÊÇ·ñÎªÊı×ÖµÄÕıÔò±í´ïÊ½¡£
 	     * @type RegExp
 	     * @private
 	     */
 	    rNum = /^-?\document/,
 		
 		/**
-		 * äº‹ä»¶åã€‚
+		 * ÊÂ¼şÃû¡£
 		 * @type RegExp
 		 */
 		rEventName = /^on([a-z0-9$_]+)/,
 		
 		/**
-		 * æ˜¯å¦å±æ€§çš„æ­£åˆ™è¡¨è¾¾å¼ã€‚
+		 * ÊÇ·ñÊôĞÔµÄÕıÔò±í´ïÊ½¡£
 		 * @type RegExp
 	     * @private
 		 */
 		rStyle = /\-|float/,
 		
 		/**
-		 * borderTopWidth ç®€å†™ã€‚
+		 * borderTopWidth ¼òĞ´¡£
 		 * @type String
 		 */
 		borderTopWidth = 'borderTopWidth',
 		
 		/**
-		 * borderLeftWidth ç®€å†™ã€‚
+		 * borderLeftWidth ¼òĞ´¡£
 		 * @type String
 		 */
 		borderLeftWidth = 'borderLeftWidth',
@@ -933,7 +926,7 @@
 		/// #ifdef SupportIE6
 		
 		/**
-		 * ç‰¹æ®Šå±æ€§çš„æ­£åˆ™è¡¨è¾¾å¼ã€‚
+		 * ÌØÊâÊôĞÔµÄÕıÔò±í´ïÊ½¡£
 		 * @type RegExp
 	     * @private
 		 */
@@ -945,33 +938,33 @@
 		/// #ifdef SupportIE8
 		
 		/**
-		 * æ˜¯å¦ä½¿ç”¨æ–¹æ³• getComputedStyleã€‚
+		 * ÊÇ·ñÊ¹ÓÃ·½·¨ getComputedStyle¡£
 		 * @type Boolean
 		 * @private
 		 */
 		defaultView = document.defaultView.getComputedStyle,
 	
 		/**
-		 * è·å–å…ƒç´ çš„è®¡ç®—æ ·å¼ã€‚
-		 * @param {Element} dom èŠ‚ç‚¹ã€‚
-		 * @param {String} name åå­—ã€‚
-		 * @return {String} æ ·å¼ã€‚
+		 * »ñÈ¡ÔªËØµÄ¼ÆËãÑùÊ½¡£
+		 * @param {Element} dom ½Úµã¡£
+		 * @param {String} name Ãû×Ö¡£
+		 * @return {String} ÑùÊ½¡£
 		 * @private
 		 */
 		getStyle = defaultView ? function(elem, name) {
 			
-			assert.isElement(elem , "Element.getStyle(elem, name): å‚æ•° {elem} ~ã€‚");
+			assert.isElement(elem , "Element.getStyle(elem, name): ²ÎÊı {elem} ~¡£");
 
-			// è·å–æ ·å¼
+			// »ñÈ¡ÑùÊ½
 			var computedStyle = elem.ownerDocument.defaultView.getComputedStyle(elem, null); 
 			
-			// è¿”å› , åœ¨ ç«ç‹å¦‚æœå­˜åœ¨ IFrameï¼Œ åˆ™  computedStyle == null
+			// ·µ»Ø , ÔÚ »ğºüÈç¹û´æÔÚ IFrame£¬ Ôò  computedStyle == null
 			//    http://drupal.org/node/182569
 			return computedStyle ? computedStyle[ name ] : null;
 
 		} : function(elem, name) {
 			
-			assert.isElement(elem , "Element.getStyle(elem, name): å‚æ•° {elem} ~ã€‚");
+			assert.isElement(elem , "Element.getStyle(elem, name): ²ÎÊı {elem} ~¡£");
 
 			if(name in attributes) {
 				switch(name) {
@@ -987,20 +980,20 @@
 
 			var r = elem.currentStyle[ name ];
 
-			// æ¥è‡ª jQuery
+			// À´×Ô jQuery
 
-			// å¦‚æœè¿”å›å€¼ä¸æ˜¯ä¸€ä¸ªå¸¦pxçš„ æ•°å­—ã€‚ è½¬æ¢ä¸ºåƒç´ å•ä½
+			// Èç¹û·µ»ØÖµ²»ÊÇÒ»¸ö´øpxµÄ Êı×Ö¡£ ×ª»»ÎªÏñËØµ¥Î»
 			if (!rNumPx.test(r) && rNum.test(r)) {
 
-				// ä¿å­˜åˆå§‹å€¼
+				// ±£´æ³õÊ¼Öµ
 				var style = elem.style,  left = style.left, rsLeft = elem.runtimeStyle.left;
 
-				// æ”¾å…¥å€¼æ¥è®¡ç®—
+				// ·ÅÈëÖµÀ´¼ÆËã
 				elem.runtimeStyle.left = elem.currentStyle.left;
 				style.left = name === "fontSize" ? "1em" : (r || 0);
 				r = style.pixelLeft + "px";
 
-				// å›åˆ°åˆå§‹å€¼
+				// »Øµ½³õÊ¼Öµ
 				style.left = left;
 				elem.runtimeStyle.left = rsLeft;
 
@@ -1013,10 +1006,10 @@
 		
 		/// getStyle = function(elem, name) {
 		/// 
-		/// 	// è·å–æ ·å¼
+		/// 	// »ñÈ¡ÑùÊ½
 		/// 	var computedStyle = elem.ownerDocument.defaultView.getComputedStyle(elem, null);
 		///	
-		/// 	// è¿”å›
+		/// 	// ·µ»Ø
 		/// 	return computedStyle ? computedStyle[ name ] : null;
 		/// 
 		/// },
@@ -1024,7 +1017,7 @@
 		/// #endif
 		
 		/**
-		 * ç‰¹æ®Šå±æ€§é›†åˆã€‚
+		 * ÌØÊâÊôĞÔ¼¯ºÏ¡£
 		 * @type Object
 		 */
 		attributes = {
@@ -1040,47 +1033,47 @@
 	apply(e, {
 		
 		/**
-		 * è·å–å…ƒç´ çš„è®¡ç®—æ ·å¼ã€‚
+		 * »ñÈ¡ÔªËØµÄ¼ÆËãÑùÊ½¡£
 		 * @method getStyle
-		 * @param {Element} dom èŠ‚ç‚¹ã€‚
-		 * @param {String} name åå­—ã€‚
-		 * @return {String} æ ·å¼ã€‚
+		 * @param {Element} dom ½Úµã¡£
+		 * @param {String} name Ãû×Ö¡£
+		 * @return {String} ÑùÊ½¡£
 		 * @static
 		 * @private
 		 */
 		getStyle: getStyle,
 		
 		/**
-	     * è¯»å–æ ·å¼å­—ç¬¦ä¸²ã€‚
-	     * @param {Element} elem å…ƒç´ ã€‚
-	     * @param {String} name å±æ€§åã€‚
-	     * @return {String} å­—ç¬¦ä¸²ã€‚
+	     * ¶ÁÈ¡ÑùÊ½×Ö·û´®¡£
+	     * @param {Element} elem ÔªËØ¡£
+	     * @param {String} name ÊôĞÔÃû¡£
+	     * @return {String} ×Ö·û´®¡£
 		 * @static
 	     */
 		styleString:  styleString,
 		
 		/**
-	     * è¯»å–æ ·å¼æ•°å­—ã€‚
-	     * @param {Element} elem å…ƒç´ ã€‚
-	     * @param {String} name å±æ€§åã€‚
-	     * @return {String} å­—ç¬¦ä¸²ã€‚
+	     * ¶ÁÈ¡ÑùÊ½Êı×Ö¡£
+	     * @param {Element} elem ÔªËØ¡£
+	     * @param {String} name ÊôĞÔÃû¡£
+	     * @return {String} ×Ö·û´®¡£
 		 * @static
 	     */
 		styleNumber: styleNumber,
 		
 		/**
-		 * å°† offsetWidth è½¬ä¸º style.widthã€‚
+		 * ½« offsetWidth ×ªÎª style.width¡£
 		 * @private
-		 * @param {Element} elem å…ƒç´ ã€‚
-	     * @param {Number} width è¾“å…¥ã€‚
-	     * @return {Number} è½¬æ¢åçš„å¤§å°ã€‚
+		 * @param {Element} elem ÔªËØ¡£
+	     * @param {Number} width ÊäÈë¡£
+	     * @return {Number} ×ª»»ºóµÄ´óĞ¡¡£
 		 * @static
 		 */
 		getSize: defaultView ? function (elem, type, names) {
 			
-			assert.isElement(elem, "Element.getSize(elem, type, names): å‚æ•° {elem} ~ã€‚");
-			assert(type in styleMaps, "Element.getSize(elem, type, names): å‚æ•° {type} å¿…é¡»æ˜¯ \"width\" æˆ– \"height\"ã€‚", type);
-			assert.isString(names, "Element.getSize(elem, type, names): å‚æ•° {names} ~ã€‚");
+			assert.isElement(elem, "Element.getSize(elem, type, names): ²ÎÊı {elem} ~¡£");
+			assert(type in styleMaps, "Element.getSize(elem, type, names): ²ÎÊı {type} ±ØĞëÊÇ \"width\" »ò \"height\"¡£", type);
+			assert.isString(names, "Element.getSize(elem, type, names): ²ÎÊı {names} ~¡£");
 			
 			
 			var value = 0, map = styleMaps[type], i = names.length, val, currentStyle = elem.ownerDocument.defaultView.getComputedStyle(elem, null);
@@ -1093,9 +1086,9 @@
 		} : function (elem, type, names) {
 			
 			
-			assert.isElement(elem, "Element.getSize(elem, type, names): å‚æ•° {elem} ~ã€‚");
-			assert(type in styleMaps, "Element.getSize(elem, type, names): å‚æ•° {type} å¿…é¡»æ˜¯ \"width\" æˆ– \"height\"ã€‚", type);
-			assert.isString(names, "Element.getSize(elem, type, names): å‚æ•° {names} ~ã€‚");
+			assert.isElement(elem, "Element.getSize(elem, type, names): ²ÎÊı {elem} ~¡£");
+			assert(type in styleMaps, "Element.getSize(elem, type, names): ²ÎÊı {type} ±ØĞëÊÇ \"width\" »ò \"height\"¡£", type);
+			assert.isString(names, "Element.getSize(elem, type, names): ²ÎÊı {names} ~¡£");
 			
 			var value = 0, map = styleMaps[type], i = names.length, val;
 			while(i--) {
@@ -1107,7 +1100,7 @@
 		},
 		
 		/**
-		 * ç‰¹æ®Šå±æ€§é›†åˆã€‚
+		 * ÌØÊâÊôĞÔ¼¯ºÏ¡£
 		 * @property
 		 * @type Object
 		 * @static
@@ -1116,13 +1109,13 @@
 		attributes: attributes,
 		
 		/**
-		 * æ ·å¼è¡¨ã€‚
+		 * ÑùÊ½±í¡£
 		 * @static
 		 */
 		styleMaps: styleMaps,
 		
 		/**
-		 * ç‰¹æ®Šå±æ€§ã€‚
+		 * ÌØÊâÊôĞÔ¡£
 		 * @property
 		 * @type Object
 		 * @private
@@ -1131,7 +1124,7 @@
 		specialAttr: {},
 		
 		/**
-		 * é»˜è®¤æœ€å¤§çš„ z-index ã€‚
+		 * Ä¬ÈÏ×î´óµÄ z-index ¡£
 		 * @property
 		 * @type Number
 		 * @private
@@ -1140,57 +1133,57 @@
 		zIndex: 10000,
 		
 		/**
-		 * åˆ¤æ–­ä¸€ä¸ªèŠ‚ç‚¹æ˜¯å¦éšè—ã€‚
-		 * @param {Element} elem å…ƒç´ ã€‚
-		 * @return {Boolean} éšè—è¿”å› true ã€‚
+		 * ÅĞ¶ÏÒ»¸ö½ÚµãÊÇ·ñÒş²Ø¡£
+		 * @param {Element} elem ÔªËØ¡£
+		 * @return {Boolean} Òş²Ø·µ»Ø true ¡£
 		 * @static
 		 */
 		isHidden: function(elem) {
 			
-			assert.isElement(elem, "Element.isHidden(elem): å‚æ•° {elem} ~ã€‚");
+			assert.isElement(elem, "Element.isHidden(elem): ²ÎÊı {elem} ~¡£");
 			
 			return elem.style.display === 'none';
 		},
 
 		/**
-         * è·å–ä¸€ä¸ªèŠ‚ç‚¹å±æ€§ã€‚
+         * »ñÈ¡Ò»¸ö½ÚµãÊôĞÔ¡£
 		 * @method getAttr
-         * @param {String} name åå­—ã€‚
-         * @return {String} å±æ€§ã€‚
+         * @param {String} name Ãû×Ö¡£
+         * @return {String} ÊôĞÔ¡£
          */
 		getAttr: function(elem, name){
 			
-		   assert.isNode(elem, "Element.getAttr(elem, name): å‚æ•° {elem} ~ã€‚");
+		   assert.isNode(elem, "Element.getAttr(elem, name): ²ÎÊı {elem} ~¡£");
 				
-			/// #ifdef SupportIE6
+			/// #ifndef Std
 	
-	        //ç®€å†™
+	        //¼òĞ´
 	        var special = navigator.isQuirks && rSpecilAttr.test(name);
 	
-	        //å±æ€§
+	        //ÊôĞÔ
 	        name = attributes[name] || name;
 	
-	        // å¦‚æœæ˜¯èŠ‚ç‚¹å…·æœ‰çš„å±æ€§
+	        // Èç¹ûÊÇ½Úµã¾ßÓĞµÄÊôĞÔ
 	        if (name in elem && !special) {
 	
-	            // è¡¨å•ä¸Šçš„å…ƒç´ ï¼Œè¿”å›èŠ‚ç‚¹å±æ€§å€¼
+	            // ±íµ¥ÉÏµÄÔªËØ£¬·µ»Ø½ÚµãÊôĞÔÖµ
 	            if (elem.nodeName === "FORM" && (special = elem.getAttributeNode(name)))
 	                return special.nodeValue;
 	
 	            return elem[name];
 	        }
 	
-	        return special ? elem.getAttribute(name, 2) : elem.getAttribute(name); // æœ‰äº›å±æ€§åœ¨ IE éœ€è¦å‚æ•°è·å–
+	        return special ? elem.getAttribute(name, 2) : elem.getAttribute(name); // ÓĞĞ©ÊôĞÔÔÚ IE ĞèÒª²ÎÊı»ñÈ¡
 			
 			/// #else
 			/// 
-			/// //å±æ€§
+			/// //ÊôĞÔ
 			/// name = attributes[name] || name;
 			/// 
-			/// // å¦‚æœæ˜¯èŠ‚ç‚¹å…·æœ‰çš„å±æ€§
+			/// // Èç¹ûÊÇ½Úµã¾ßÓĞµÄÊôĞÔ
 			/// if (name in elem) {
 			/// 
-			/// 	// è¡¨å•ä¸Šçš„å…ƒç´ ï¼Œè¿”å›èŠ‚ç‚¹å±æ€§å€¼
+			/// 	// ±íµ¥ÉÏµÄÔªËØ£¬·µ»Ø½ÚµãÊôĞÔÖµ
 			/// 	if (elem.nodeName == "FORM" && e.getAttributeNode(name))
 			/// 		return e.getAttributeNode(name).nodeValue;
 			/// 
@@ -1212,19 +1205,19 @@
 	apply(e, {
 		
 		/**
-         * æ£€æŸ¥æ˜¯å¦å«æŒ‡å®šç±»åã€‚
+         * ¼ì²éÊÇ·ñº¬Ö¸¶¨ÀàÃû¡£
 		 * @method hasClass
          * @param {String} className
-         * @return {Boolean} å¦‚æœå­˜åœ¨è¿”å› trueã€‚
+         * @return {Boolean} Èç¹û´æÔÚ·µ»Ø true¡£
          */
 		hasClass: function(elem, className){
-			assert.isNode(elem, "Element.hasClass(elem, className): å‚æ•° {elem} ~ã€‚");
+			assert.isNode(elem, "Element.hasClass(elem, className): ²ÎÊı {elem} ~¡£");
 			return (" " + elem.className + " ").indexOf(" " + className + " ") >= 0;
 		},
 		
 		/**
-		 * åˆ é™¤ä¸€ä¸ªèŠ‚ç‚¹çš„æ‰€æœ‰å­èŠ‚ç‚¹ã€‚
-		 * @param {Element} elem èŠ‚ç‚¹ã€‚
+		 * É¾³ıÒ»¸ö½ÚµãµÄËùÓĞ×Ó½Úµã¡£
+		 * @param {Element} elem ½Úµã¡£
 		 * @private
 		 */
 		empty: function (elem) {
@@ -1233,13 +1226,13 @@
 		},
 		
 		/**
-		 * é‡Šæ”¾èŠ‚ç‚¹æ‰€æœ‰èµ„æºã€‚
-		 * @param {Element} elem èŠ‚ç‚¹ã€‚
+		 * ÊÍ·Å½ÚµãËùÓĞ×ÊÔ´¡£
+		 * @param {Element} elem ½Úµã¡£
 		 * @private
 		 */
 		dispose: function (elem) {
 			
-			//åˆ é™¤äº‹ä»¶
+			//É¾³ıÊÂ¼ş
 			if (navigator.isIE) {
 				if (elem.clearAttributes) {
 					elem.clearAttributes();
@@ -1269,10 +1262,10 @@
 	updateToObj("Size Position Opacity Offset Scroll Offsets Style Text", e.specialAttr);
 
 	/**
-     * è¯»å–æ ·å¼å­—ç¬¦ä¸²ã€‚
-     * @param {Element} elem å…ƒç´ ã€‚
-     * @param {String} name å±æ€§åã€‚
-     * @return {String} å­—ç¬¦ä¸²ã€‚
+     * ¶ÁÈ¡ÑùÊ½×Ö·û´®¡£
+     * @param {Element} elem ÔªËØ¡£
+     * @param {String} name ÊôĞÔÃû¡£
+     * @return {String} ×Ö·û´®¡£
      * @ignore
      */
 	function styleString(elem, name) {
@@ -1281,10 +1274,10 @@
     }
 	
 	/**
-     * è¯»å–æ ·å¼æ•°å­—ã€‚
-     * @param {Object} elem å…ƒç´ ã€‚
-     * @param {Object} name å±æ€§åã€‚
-     * @return {Number} æ•°å­—ã€‚
+     * ¶ÁÈ¡ÑùÊ½Êı×Ö¡£
+     * @param {Object} elem ÔªËØ¡£
+     * @param {Object} name ÊôĞÔÃû¡£
+     * @return {Number} Êı×Ö¡£
      * @ignore
      */
     function styleNumber(elem, name) {
@@ -1292,9 +1285,9 @@
     }
     
 	/**
-	 * å°†å±æ€§æ‹·è´åˆ°ç›®æ ‡ã€‚
-	 * @param {String} props å±æ€§å­—ç¬¦ä¸²ã€‚
-	 * @param {Object} target ç›®æ ‡ã€‚
+	 * ½«ÊôĞÔ¿½±´µ½Ä¿±ê¡£
+	 * @param {String} props ÊôĞÔ×Ö·û´®¡£
+	 * @param {Object} target Ä¿±ê¡£
      * @ignore
 	 */
 	function updateToObj(props, target) {
@@ -1320,49 +1313,49 @@
 	e.implement( {
 	
         /**
-         * è·å–èŠ‚ç‚¹æ ·å¼ã€‚
-         * @param {String} key é”®ã€‚
-         * @param {String} value å€¼ã€‚
-         * @return {String} æ ·å¼ã€‚
+         * »ñÈ¡½ÚµãÑùÊ½¡£
+         * @param {String} key ¼ü¡£
+         * @param {String} value Öµ¡£
+         * @return {String} ÑùÊ½¡£
          */
         getStyle: function(name) {
 			
-			assert.isString(name, "Element.prototype.getStyle(name): å‚æ•° {name} ~ã€‚");
+			assert.isString(name, "Element.prototype.getStyle(name): ²ÎÊı {name} ~¡£");
 
             var me = this.getDom(), css = name.toCamelCase();
 			
-		   	assert.isElement(me, "Element.prototype.getStyle(name): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isElement(me, "Element.prototype.getStyle(name): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 
             return me.style[css] || getStyle(me, css);
 
         },
 		
 		/**
-         * è·å–ä¸€ä¸ªèŠ‚ç‚¹å±æ€§ã€‚
-         * @param {String} name åå­—ã€‚
-         * @return {String} å±æ€§ã€‚
+         * »ñÈ¡Ò»¸ö½ÚµãÊôĞÔ¡£
+         * @param {String} name Ãû×Ö¡£
+         * @return {String} ÊôĞÔ¡£
          */
         getAttr: function(name) {
 			return e.getAttr(this.getDom(), name);
         },
 		
         /**
-         * æ£€æŸ¥æ˜¯å¦å«æŒ‡å®šç±»åã€‚
+         * ¼ì²éÊÇ·ñº¬Ö¸¶¨ÀàÃû¡£
          * @param {String} className
-         * @return {Boolean} å¦‚æœå­˜åœ¨è¿”å› trueã€‚
+         * @return {Boolean} Èç¹û´æÔÚ·µ»Ø true¡£
          */
         hasClass: function(className) {
 			return e.hasClass(this.getDom(), className);
 		},
 		
         /**
-         * è·å–å€¼ã€‚
-         * @return {Object/String} å€¼ã€‚å¯¹æ™®é€šèŠ‚ç‚¹è¿”å› text å±æ€§ã€‚
+         * »ñÈ¡Öµ¡£
+         * @return {Object/String} Öµ¡£¶ÔÆÕÍ¨½Úµã·µ»Ø text ÊôĞÔ¡£
          */
         getText: function() {
             var me = this.getDom();
 			
-		   	assert.isNode(me, "Element.prototype.getText(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isNode(me, "Element.prototype.getText(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 		   
             switch(me.tagName) {
                 case "INPUT":
@@ -1384,22 +1377,22 @@
         },
 		
 		/**
-         * è·å–å€¼ã€‚
-         * @return {String} å€¼ã€‚
+         * »ñÈ¡Öµ¡£
+         * @return {String} Öµ¡£
          */
 		getHtml: function(){
 			
-		   	assert.isNode(this.getDom(), "Element.prototype.getHtml(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isNode(this.getDom(), "Element.prototype.getHtml(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			
 			return this.getDom().innerHTML;
 		},
 		
-		/// #ifdef SupportIE8
+		/// #ifndef Html
 		
         /**
-         * è·å–é€æ˜åº¦ã€‚
+         * »ñÈ¡Í¸Ã÷¶È¡£
 		 * @method getOpacity
-         * @return {Number} é€æ˜åº¦ã€‚ 0 - 1 èŒƒå›´ã€‚
+         * @return {Number} Í¸Ã÷¶È¡£ 0 - 1 ·¶Î§¡£
          */
         getOpacity: !('opacity' in div.style) ? function() {
 			
@@ -1426,21 +1419,21 @@
 	.implement( {
 		
         /**
-         * è®¾ç½®å†…å®¹æ ·å¼ã€‚
-         * @param {String} name é”®ã€‚
-         * @param {String/Number} value å€¼ã€‚
+         * ÉèÖÃÄÚÈİÑùÊ½¡£
+         * @param {String} name ¼ü¡£
+         * @param {String/Number} value Öµ¡£
          * @return {Element} this
          */
         setStyle: function(name, value) {
 			
-		   	assert.isString(name, "Element.prototype.setStyle(name, value): å‚æ•° {name} ~ã€‚");
+		   	assert.isString(name, "Element.prototype.setStyle(name, value): ²ÎÊı {name} ~¡£");
 			
-			// è·å–æ ·å¼
+			// »ñÈ¡ÑùÊ½
             var me = this, style = me.getDom().style;
 			
-		   	assert.isElement(me.getDom(), "Element.prototype.setStyle(name, value): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isElement(me.getDom(), "Element.prototype.setStyle(name, value): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 
-			//æ²¡æœ‰é”®  è¿”å›  cssText
+			//Ã»ÓĞ¼ü  ·µ»Ø  cssText
 			if (arguments.length == 1) {
 				style.cssText = name;
 			} else {
@@ -1448,7 +1441,7 @@
 				if(name in attributes) {
 					name = attributes[name];
 					
-					/// #ifdef SupportIE8
+					/// #ifndef Html
 					
 					if(name == 'opacity') {
 						return me.setOpacity( value);
@@ -1458,11 +1451,11 @@
 				}else
 					name = name.toCamelCase();
 
-				//å¦‚æœå€¼æ˜¯å‡½æ•°ï¼Œè¿è¡Œã€‚
+				//Èç¹ûÖµÊÇº¯Êı£¬ÔËĞĞ¡£
 				if (typeof value === "number")
 					value += "px";
 
-				// æŒ‡å®šå€¼
+				// Ö¸¶¨Öµ
 				style[name] = value;
 			}
 
@@ -1470,28 +1463,28 @@
         },
 		
         /**
-         * è®¾ç½®èŠ‚ç‚¹å±æ€§ã€‚
-         * @param {String} name åå­—ã€‚
-         * @param {String} value å€¼ã€‚
+         * ÉèÖÃ½ÚµãÊôĞÔ¡£
+         * @param {String} name Ãû×Ö¡£
+         * @param {String} value Öµ¡£
          * @return {Element} this
          */
         setAttr: function(name, value) {
 
-            //ç®€å†™
+            //¼òĞ´
             var me = this.getDom();
 			
-		   	assert.isNode(me, "Element.prototype.setAttr(name, value): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isNode(me, "Element.prototype.setAttr(name, value): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 
-            //å±æ€§
+            //ÊôĞÔ
             name = attributes[name] || name;
 
-            // å¦‚æœæ˜¯èŠ‚ç‚¹å…·æœ‰çš„å±æ€§
+            // Èç¹ûÊÇ½Úµã¾ßÓĞµÄÊôĞÔ
             if (name in me) {
 				
 				
-				/// #ifdef SupportIE6
+				/// #ifndef Std
 				
-                assert(name != 'type' || me.nodeName != "INPUT" || !me.parentNode, "æ­¤å…ƒç´  type å±æ€§ä¸èƒ½ä¿®æ”¹");
+                assert(name != 'type' || me.nodeName != "INPUT" || !me.parentNode, "´ËÔªËØ type ÊôĞÔ²»ÄÜĞŞ¸Ä");
                 
 				/// #endif
 				
@@ -1500,7 +1493,7 @@
 				if (value === null)
 					me.removeAttribute(name);
 				else
-					// ä½¿ç”¨DOMè®¾ç½®å±æ€§
+					// Ê¹ÓÃDOMÉèÖÃÊôĞÔ
 					me.setAttribute(name, value);
 			}
 
@@ -1509,9 +1502,9 @@
         },
 	
 		/**
-		 * å¿«é€Ÿè®¾ç½®èŠ‚ç‚¹å…¨éƒ¨å±æ€§å’Œæ ·å¼ã€‚
-		 * @param {String/Object} name åå­—ã€‚
-         * @param {Object} [value] å€¼ã€‚
+		 * ¿ìËÙÉèÖÃ½ÚµãÈ«²¿ÊôĞÔºÍÑùÊ½¡£
+		 * @param {String/Object} name Ãû×Ö¡£
+         * @param {Object} [value] Öµ¡£
          * @return {Element} this
 		 */
 		set: function(name, value) {
@@ -1520,28 +1513,28 @@
 			
 			if (typeof name === "string") {
 				
-				// å…è®¸ this ä¸º Element æˆ– Control
+				// ÔÊĞí this Îª Element »ò Control
 				var dom = me.getDom();
 			
-		   		assert.isNode(dom, "Element.prototype.set(name, value): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   		assert.isNode(dom, "Element.prototype.set(name, value): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 				
-				// ç‰¹æ®Šå±æ€§ã€‚
+				// ÌØÊâÊôĞÔ¡£
 				if(name in e.specialAttr)
 					me['set' + e.specialAttr[name]](value);
 					
-				// event ã€‚
+				// event ¡£
 				else if(name.match(rEventName))
 					me.on(RegExp.$1, value);
 					
-				// css ã€‚
+				// css ¡£
 				else if(dom.style && (name in dom.style || rStyle.test(name)))
 					me.setStyle(name, value);
 					
-				// attr ã€‚
+				// attr ¡£
 				else if(name in dom)
 					dom[name] = value;
 					
-				// Object ã€‚
+				// Object ¡£
 				else
 					me[name] = value;
 					
@@ -1558,14 +1551,14 @@
 		},
 				
 	    /**
-         * å¢åŠ ç±»åã€‚
-         * @param {String} className ç±»åã€‚
+         * Ôö¼ÓÀàÃû¡£
+         * @param {String} className ÀàÃû¡£
          * @return {Element} this
          */
         addClass: function(className) {
             var me = this.getDom();
 			
-		   	assert.isNode(me, "Element.prototype.addClass(className): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isNode(me, "Element.prototype.addClass(className): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 				
             if(!me.className)
                 me.className = className;
@@ -1575,21 +1568,21 @@
         },
 		
         /**
-         * åˆ é™¤ç±»åã€‚
-         * @param {String} className ç±»åã€‚
+         * É¾³ıÀàÃû¡£
+         * @param {String} className ÀàÃû¡£
          * @return {Element} this
          */
         removeClass: function(className) {
 			
-		   	assert.isNode(this.getDom(), "Element.prototype.removeClass(className): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isNode(this.getDom(), "Element.prototype.removeClass(className): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			
             this.getDom().className = className ? this.getDom().className.replace(new RegExp('\\b' + className + '\\b\\s*', "g"), '') : '';
             return this;
         },
 		
 		 /**
-         * åˆ‡æ¢ç±»åã€‚
-         * @param {String} className ç±»åã€‚
+         * ÇĞ»»ÀàÃû¡£
+         * @param {String} className ÀàÃû¡£
          * @return {Element} this
          */
         toggleClass: function(className, toggle) {
@@ -1597,14 +1590,14 @@
         },
 		
         /**
-         * è®¾ç½®å€¼ã€‚
-         * @param {String/Boolean} å€¼ã€‚
+         * ÉèÖÃÖµ¡£
+         * @param {String/Boolean} Öµ¡£
          * @return {Element} this
          */
         setText: function(value) {
             var me = this.getDom();
 			
-		   	assert.isNode(me, "Element.prototype.setText(value): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isNode(me, "Element.prototype.setText(value): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			
             switch(me.tagName) {
                 case "INPUT":
@@ -1626,49 +1619,49 @@
         },
 		
 		/**
-         * è®¾ç½® HTML ã€‚
-         * @param {String} value å€¼ã€‚
+         * ÉèÖÃ HTML ¡£
+         * @param {String} value Öµ¡£
          * @return {Element} this
          */
 		setHtml: function(value){
 			
-		   	assert.isNode(this.getDom(), "Element.prototype.setHtml(value): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isNode(this.getDom(), "Element.prototype.setHtml(value): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			
 			this.getDom().innerHTML = value;
 			return this;
 		},
 		
-		/// #ifdef SupportIE8
+		/// #ifndef Html
 		
         /**
-         * è®¾ç½®è¿æ¥çš„é€æ˜åº¦ã€‚
-         * @param {Number} value é€æ˜åº¦ï¼Œ 0 - 1 ã€‚
+         * ÉèÖÃÁ¬½ÓµÄÍ¸Ã÷¶È¡£
+         * @param {Number} value Í¸Ã÷¶È£¬ 0 - 1 ¡£
          * @return {Element} this
          */
         setOpacity: !('opacity' in div.style) ? function(value) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.setOpacity(value): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isElement(this.getDom(), "Element.prototype.setOpacity(value): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 
             var style = this.getDom().style;
 			
-			assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): å‚æ•° {value} å¿…é¡»åœ¨ 0~1 é—´ã€‚', value);
+			assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): ²ÎÊı {value} ±ØĞëÔÚ 0~1 ¼ä¡£', value);
 
-            // å½“å…ƒç´ æœªå¸ƒå±€ï¼ŒIEä¼šè®¾ç½®å¤±è´¥ï¼Œå¼ºåˆ¶ä½¿ç”Ÿæ•ˆ
+            // µ±ÔªËØÎ´²¼¾Ö£¬IE»áÉèÖÃÊ§°Ü£¬Ç¿ÖÆÊ¹ÉúĞ§
             style.zoom = 1;
 
-            // è®¾ç½®å€¼
+            // ÉèÖÃÖµ
             style.filter = (style.filter || 'alpha(opacity=?)').replace(rOpacity, "opacity=" + value * 100);
 
-            //è¿”å›å€¼ï¼Œ ä¿è¯æ˜¯å­—ç¬¦ä¸²  å€¼ä¸º  0 - 100
+            //·µ»ØÖµ£¬ ±£Ö¤ÊÇ×Ö·û´®  ÖµÎª  0 - 100
             return this;
 
         } : function(value) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.setOpacity(value): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isElement(this.getDom(), "Element.prototype.setOpacity(value): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 
-			assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): å‚æ•° {value} å¿…é¡»åœ¨ 0~1 é—´ã€‚', value);
+			assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): ²ÎÊı {value} ±ØĞëÔÚ 0~1 ¼ä¡£', value);
 
-            //  æ ‡å‡†æµè§ˆå™¨ä½¿ç”¨   opacity   
+            //  ±ê×¼ä¯ÀÀÆ÷Ê¹ÓÃ   opacity   
             this.getDom().style.opacity = value;
             return this;
 
@@ -1678,7 +1671,7 @@
 		
 		/// function(value) {
 
-		///     //  æ ‡å‡†æµè§ˆå™¨ä½¿ç”¨   opacity   
+		///     //  ±ê×¼ä¯ÀÀÆ÷Ê¹ÓÃ   opacity   
 		///     this.getDom().style.opacity = value;
 		///     return this;
 		/// 
@@ -1687,15 +1680,15 @@
 		/// #endif
 		
 		/**
-		 * æ˜¾ç¤ºå½“å‰å…ƒç´ ã€‚
-		 * @param {Number} duration=500 æ—¶é—´ã€‚
-		 * @param {Function} [callBack] å›è°ƒã€‚
-		 * @param {String} [type] æ–¹å¼ã€‚
+		 * ÏÔÊ¾µ±Ç°ÔªËØ¡£
+		 * @param {Number} duration=500 Ê±¼ä¡£
+		 * @param {Function} [callBack] »Øµ÷¡£
+		 * @param {String} [type] ·½Ê½¡£
 		 * @return {Element} this
 		 */
 		show: function(duration, callBack) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.show(duration, callBack, type): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isElement(this.getDom(), "Element.prototype.show(duration, callBack, type): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			
 			this.getDom().style.display = '';
 			if(callBack)
@@ -1704,15 +1697,15 @@
 		},
 		
 		/**
-		 * éšè—å½“å‰å…ƒç´ ã€‚
-		 * @param {Number} duration=500 æ—¶é—´ã€‚
-		 * @param {Function} [callBack] å›è°ƒã€‚
-		 * @param {String} [type] æ–¹å¼ã€‚
+		 * Òş²Øµ±Ç°ÔªËØ¡£
+		 * @param {Number} duration=500 Ê±¼ä¡£
+		 * @param {Function} [callBack] »Øµ÷¡£
+		 * @param {String} [type] ·½Ê½¡£
 		 * @return {Element} this
 		 */
 		hide: function(duration, callBack) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.hide(duration, callBack, type): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isElement(this.getDom(), "Element.prototype.hide(duration, callBack, type): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			
 			this.getDom().style.display = 'none';
 			if(callBack)
@@ -1721,48 +1714,48 @@
 		},
 		
 		/**
-		 * è®¾ç½®å…ƒç´ ä¸å¯é€‰ã€‚
-		 * @param {Boolean} value æ˜¯å¦å¯é€‰ã€‚
+		 * ÉèÖÃÔªËØ²»¿ÉÑ¡¡£
+		 * @param {Boolean} value ÊÇ·ñ¿ÉÑ¡¡£
 		 * @return this
 		 */
 		setUnselectable: 'unselectable' in div ? function(value) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			
 			this.getDom().unselectable = value !== false ? 'on' : '';
 			return this;
 		} : 'onselectstart' in div ? function(value) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			
 			this.getDom().onselectstart = value !== false ? Function.returnFalse : null;
 			return this;
 		} : function(value) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isElement(this.getDom(), "Element.prototype.setUnselectable(value): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			
 			this.getDom().style.MozUserSelect = value !== false ? 'none' : '';
 			return this;
 		},
 		
 		/**
-		 * å°†å…ƒç´ å¼•åˆ°æœ€å‰ã€‚
-		 * @param {Element} [elem] å‚è€ƒå…ƒç´ ã€‚
+		 * ½«ÔªËØÒıµ½×îÇ°¡£
+		 * @param {Element} [elem] ²Î¿¼ÔªËØ¡£
 		 * @return this
 		 */
 		bringToFront: function(elem) {
 			
-		   	assert.isElement(this.getDom(), "Element.prototype.bringToFront(elem): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		   	assert.isElement(this.getDom(), "Element.prototype.bringToFront(elem): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			
 			this.getDom().style.zIndex = Math.max(parseInt(styleString(this.getDom(), 'zIndex')) || 0, elem && elem.nodeType && (parseInt(styleString(elem, 'zIndex')) + 1) || e.zIndex++);
 			return this;
 		},
 		
 		/**
-		 * åˆ‡æ¢æ˜¾ç¤ºå½“å‰å…ƒç´ ã€‚
-		 * @param {Number} duration=500 æ—¶é—´ã€‚
-		 * @param {Function} [callBack] å›è°ƒã€‚
-		 * @param {String} [type] æ–¹å¼ã€‚
+		 * ÇĞ»»ÏÔÊ¾µ±Ç°ÔªËØ¡£
+		 * @param {Number} duration=500 Ê±¼ä¡£
+		 * @param {Function} [callBack] »Øµ÷¡£
+		 * @param {String} [type] ·½Ê½¡£
 		 * @return {Element} this
 		 */
 		toggle: function(duration, callBack, type, flag) {
@@ -1770,11 +1763,11 @@
 		},
 		
 		/**
-		 * å˜åŒ–åˆ°æŸå€¼ã€‚
-		 * @param {String} value å˜åŒ–çš„å€¼ã€‚å¯ä»¥ä¸º height opacity width all size position left top right bottomã€‚
-		 * @param {Function} [callBack] å›è°ƒã€‚
-		 * @param {Number} duration=500 æ—¶é—´ã€‚
-		 * @param {String} [type] ç±»å‹ã€‚
+		 * ±ä»¯µ½Ä³Öµ¡£
+		 * @param {String} value ±ä»¯µÄÖµ¡£¿ÉÒÔÎª height opacity width all size position left top right bottom¡£
+		 * @param {Function} [callBack] »Øµ÷¡£
+		 * @param {Number} duration=500 Ê±¼ä¡£
+		 * @param {String} [type] ÀàĞÍ¡£
 		 * @return this
 		 */
 		animate: function (){
@@ -1798,21 +1791,21 @@
 	
 	/// #endif
 	
-	/// #region ä½ç½®
+	/// #region Î»ÖÃ
 	
 	var rBody = /^(?:body|html)$/i,
 		
 		/**
-		 * è¡¨ç¤ºä¸€ä¸ªç‚¹ã€‚
+		 * ±íÊ¾Ò»¸öµã¡£
 		 * @class Point
 		 * @memberOf Py.Drawing
 		 */
 		Point = p.namespace(".Point", p.Class({
 			
 			/**
-			 * åˆå§‹åŒ– Point çš„å®ä¾‹ã€‚
-			 * @param {Number} x X åæ ‡ã€‚
-			 * @param {Number} y Y åæ ‡ã€‚
+			 * ³õÊ¼»¯ Point µÄÊµÀı¡£
+			 * @param {Number} x X ×ø±ê¡£
+			 * @param {Number} y Y ×ø±ê¡£
 			 * @constructor Point
 			 */
 			constructor: function(x, y) {
@@ -1820,10 +1813,10 @@
 			},
 			
 			/**
-			 * è®¾ç½®å½“å‰ç‚¹ä½ç½®ã€‚
+			 * ÉèÖÃµ±Ç°µãÎ»ÖÃ¡£
 			 * @method set
-			 * @param {Number} x X åæ ‡ã€‚
-			 * @param {Number} y Y åæ ‡ã€‚
+			 * @param {Number} x X ×ø±ê¡£
+			 * @param {Number} y Y ×ø±ê¡£
 			 * @return {Point} this
 			 */
 			set: function(x, y) {
@@ -1834,37 +1827,37 @@
 			},
 			
 			/**
-			 * å°† (x, y) å¢å€¼ã€‚
+			 * ½« (x, y) ÔöÖµ¡£
 			 * @method add
-			 * @param {Number} value å€¼ã€‚
+			 * @param {Number} value Öµ¡£
 			 * @return {Point} this
 			 */
 			add: function(x, y) {
 			
-		   		assert(typeof x == 'number' && typeof y == 'number', "Point.prototype.add(x, y): å‚æ•° x å’Œ å‚æ•° y å¿…é¡»æ˜¯æ•°å­—ã€‚");
+		   		assert(typeof x == 'number' && typeof y == 'number', "Point.prototype.add(x, y): ²ÎÊı x ºÍ ²ÎÊı y ±ØĞëÊÇÊı×Ö¡£");
 				this.x += x;
 				this.y += y;
 				return this;
 			},
 			
 			/**
-			 * å¤åˆ¶å½“å‰å¯¹è±¡ã€‚
+			 * ¸´ÖÆµ±Ç°¶ÔÏó¡£
 		 	 * @method clone
-			 * @return {Point} åæ ‡ã€‚
+			 * @return {Point} ×ø±ê¡£
 			 */
 			clone: function() {
 				return new Point(this.x, this.y);
 			},
 			
 			/**
-			 * å°†ä¸€ä¸ªç‚¹åæ ‡å‡åˆ°å½“å‰å€¼ã€‚
+			 * ½«Ò»¸öµã×ø±ê¼õµ½µ±Ç°Öµ¡£
 			 * @method minus
-			 * @param {Point} p å€¼ã€‚
+			 * @param {Point} p Öµ¡£
 			 * @return {Point} this
 			 */
 			minus: function(p) {
 			
-		   		assert(p && 'x' in p && 'y' in p, "Point.prototype.minus(p): å‚æ•° {p} å¿…é¡»æœ‰ 'x' å’Œ 'y' å±æ€§ã€‚", p);
+		   		assert(p && 'x' in p && 'y' in p, "Point.prototype.minus(p): ²ÎÊı {p} ±ØĞëÓĞ 'x' ºÍ 'y' ÊôĞÔ¡£", p);
 				this.x -= p.x;
 				this.y -= p.y;
 				return this;
@@ -1873,8 +1866,8 @@
 		})),
 				
 		/**
-         * è·å–æ»šåŠ¨æ¡å·²æ»šåŠ¨çš„å¤§å°ã€‚
-         * @return {Point} ä½ç½®ã€‚
+         * »ñÈ¡¹ö¶¯ÌõÒÑ¹ö¶¯µÄ´óĞ¡¡£
+         * @return {Point} Î»ÖÃ¡£
          */
 		getWindowScroll = 'pageXOffset' in w ? function() {
 			var win = getWindow(this);
@@ -1882,7 +1875,9 @@
 		} : getScroll;
 	
 	
-	//   æ¥è‡ª  Mootools (MIT license)
+	//   À´×Ô  Mootools (MIT license)
+	
+	
 	
 	/**
 	 * @class Document
@@ -1890,9 +1885,9 @@
 	apply(document, {
 		
 		/**
-		 * è·å–å…ƒç´ å¯è§†åŒºåŸŸå¤§å°ã€‚
+		 * »ñÈ¡ÔªËØ¿ÉÊÓÇøÓò´óĞ¡¡£
 		 * @method getWindowSize
-		 * @return {Point} ä½ç½®ã€‚
+		 * @return {Point} Î»ÖÃ¡£
 		 */
 		getWindowSize:function() {
 			var dom = this.getDom(),
@@ -1901,11 +1896,11 @@
         },
 		
 		/**
-		 * è®¾ç½®å…ƒç´ å¯è§†åŒºåŸŸå¤§å°ã€‚
+		 * ÉèÖÃÔªËØ¿ÉÊÓÇøÓò´óĞ¡¡£
 		 * @method setWindowSize
-		 * @param {Number} x å¤§å°ã€‚
-		 * @param {Number} y å¤§å°ã€‚
-		 * @return {Document} this ã€‚
+		 * @param {Number} x ´óĞ¡¡£
+		 * @param {Number} y ´óĞ¡¡£
+		 * @return {Document} this ¡£
 		 */
 		setWindowSize: function(x, y) {
             var p = adaptXY(x,y, this.getDom(), 'getWindowSize');
@@ -1914,35 +1909,35 @@
         },
 		
 		/**
-		 * è·å–å…ƒç´ å¯è§†åŒºåŸŸå¤§å°ã€‚åŒ…æ‹¬ margin å’Œ border å¤§å°ã€‚
+		 * »ñÈ¡ÔªËØ¿ÉÊÓÇøÓò´óĞ¡¡£°üÀ¨ margin ºÍ border ´óĞ¡¡£
 		 * @method getSize
-		 * @return {Point} ä½ç½®ã€‚
+		 * @return {Point} Î»ÖÃ¡£
 		 */
 		getSize: function() {
 			var doc = this.getDom();
 			
-			assert.isNode(doc, "document.getSize(): document.getDom() å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isNode(doc, "document.getSize(): document.getDom() ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			return new Point(doc.clientWidth, doc.clientHeight);
 		},
 		
 		/**
-         * è·å–æ»šåŠ¨æ¡å·²æ»šåŠ¨çš„å¤§å°ã€‚
+         * »ñÈ¡¹ö¶¯ÌõÒÑ¹ö¶¯µÄ´óĞ¡¡£
 		 * @method getScroll
-         * @return {Point} ä½ç½®ã€‚
+         * @return {Point} Î»ÖÃ¡£
          */
 		getScroll: getWindowScroll,
 		
 		/**
-         * è·å–è·çˆ¶å…ƒç´ çš„åå·®ã€‚
+         * »ñÈ¡¾à¸¸ÔªËØµÄÆ«²î¡£
 		 * @method getOffsets
-         * @return {Point} ä½ç½®ã€‚
+         * @return {Point} Î»ÖÃ¡£
          */
 		getPosition: getWindowScroll,
 
 		/**
-		 * è·å–æ»šåŠ¨åŒºåŸŸå¤§å°ã€‚
+		 * »ñÈ¡¹ö¶¯ÇøÓò´óĞ¡¡£
 		 * @method getScrollSize
-		 * @return {Point} ä½ç½®ã€‚
+		 * @return {Point} Î»ÖÃ¡£
 		 */
 		getScrollSize: function() {
 			var html = this.getDom(),
@@ -1955,11 +1950,11 @@
 		},
 		
 		/**
-         * æ»šåˆ°ã€‚
+         * ¹öµ½¡£
 		 * @method setScroll
-         * @param {Number} x åæ ‡ã€‚
-         * @param {Number} y åæ ‡ã€‚
-         * @return {Document} this ã€‚
+         * @param {Number} x ×ø±ê¡£
+         * @param {Number} y ×ø±ê¡£
+         * @return {Document} this ¡£
          */
         setScroll: function(x, y) {
 			var p = adaptXY(x,y, this, 'getScroll');
@@ -1974,33 +1969,33 @@
 	e.implement( {
 		
 		/**
-		 * è·å–æ»šåŠ¨åŒºåŸŸå¤§å°ã€‚
+		 * »ñÈ¡¹ö¶¯ÇøÓò´óĞ¡¡£
 		 * @method getScrollSize
-		 * @return {Point} ä½ç½®ã€‚
+		 * @return {Point} Î»ÖÃ¡£
 		 */
         getScrollSize: function() {
 			var me = this.getDom();
 			
-			assert.isNode(me, "Element.prototype.getScrollSize(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isNode(me, "Element.prototype.getScrollSize(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			return new Point(me.scrollWidth, me.scrollHeight);
         },
 		
 		/**
-		 * è·å–å…ƒç´ å¯è§†åŒºåŸŸå¤§å°ã€‚åŒ…æ‹¬ border å¤§å°ã€‚
+		 * »ñÈ¡ÔªËØ¿ÉÊÓÇøÓò´óĞ¡¡£°üÀ¨ border ´óĞ¡¡£
 		 * @method getSize
-		 * @return {Point} ä½ç½®ã€‚
+		 * @return {Point} Î»ÖÃ¡£
 		 */
 		getSize: function() {
 			var me = this.getDom();
 			
-			assert.isNode(me, "Element.prototype.getSize(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isNode(me, "Element.prototype.getSize(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			return new Point(me.offsetWidth, me.offsetHeight);
 		},
 		
 		/**
-		 * è·å–å…ƒç´ å¯è§†åŒºåŸŸå¤§å°ã€‚åŒ…æ‹¬ margin å¤§å°ã€‚
+		 * »ñÈ¡ÔªËØ¿ÉÊÓÇøÓò´óĞ¡¡£°üÀ¨ margin ´óĞ¡¡£
 		 * @method getSize
-		 * @return {Point} ä½ç½®ã€‚
+		 * @return {Point} Î»ÖÃ¡£
 		 */
 		getOuterSize: function(){
 			var me = this.getDom();
@@ -2009,70 +2004,70 @@
 		},
 		
 		/**
-		 * è·å–å…ƒç´ çš„ç›¸å¯¹ä½ç½®ã€‚
+		 * »ñÈ¡ÔªËØµÄÏà¶ÔÎ»ÖÃ¡£
 		 * @method getOffset
-		 * @return {Point} ä½ç½®ã€‚
+		 * @return {Point} Î»ÖÃ¡£
 		 */
 		getOffset: function() {
 			
-			assert.isElement(this.getDom(), "Element.prototype.getOffset(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isElement(this.getDom(), "Element.prototype.getOffset(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			
-			// å¦‚æœè®¾ç½®è¿‡ left top ï¼Œè¿™æ˜¯éå¸¸è½»æ¾çš„äº‹ã€‚
+			// Èç¹ûÉèÖÃ¹ı left top £¬ÕâÊÇ·Ç³£ÇáËÉµÄÊÂ¡£
 			var me = this.getDom(),
 				left = me.style.left,
 				top = me.style.top;
 				
-			// å¦‚æœæœªè®¾ç½®è¿‡ã€‚
+			// Èç¹ûÎ´ÉèÖÃ¹ı¡£
 			if (!left || !top) {
 				
-				// ç»å¯¹å®šä½éœ€è¦è¿”å›ç»å¯¹ä½ç½®ã€‚
+				// ¾ø¶Ô¶¨Î»ĞèÒª·µ»Ø¾ø¶ÔÎ»ÖÃ¡£
 				if(checkPosition(me, 'absolute'))
 					return this.getOffsets(this.getOffsetParent());
 				
-				// éç»å¯¹çš„åªéœ€æ£€æŸ¥ css çš„styleã€‚
+				// ·Ç¾ø¶ÔµÄÖ»Ğè¼ì²é css µÄstyle¡£
 				left = getStyle(me, 'left');
 				top = getStyle(me, 'top');
 			}
 			
-			// ç¢°åˆ° auto ï¼Œ ç©º å˜ä¸º 0 ã€‚
+			// Åöµ½ auto £¬ ¿Õ ±äÎª 0 ¡£
 			return new Point(parseFloat(left) || 0, parseFloat(top) || 0);
 		},
 	
         /**
-		 * è·å–å…ƒç´ è‡ªèº«å¤§å°ï¼ˆä¸å¸¦æ»šåŠ¨æ¡ï¼‰ã€‚
+		 * »ñÈ¡ÔªËØ×ÔÉí´óĞ¡£¨²»´ø¹ö¶¯Ìõ£©¡£
 		 * @method getWidth
-		 * @return {Point} ä½ç½®ã€‚
+		 * @return {Point} Î»ÖÃ¡£
 		 */
 		getWidth: function(){
 			
-			assert.isElement(this.getDom(), "Element.prototype.getWidth(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isElement(this.getDom(), "Element.prototype.getWidth(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			var me = this.getDom(), width = parseFloat(me.style.width);
 			return isNaN(width) ? styleNumber(me, 'width') : width;
 		},
 	
         /**
-		 * è·å–å…ƒç´ è‡ªèº«å¤§å°ï¼ˆä¸å¸¦æ»šåŠ¨æ¡ï¼‰ã€‚
+		 * »ñÈ¡ÔªËØ×ÔÉí´óĞ¡£¨²»´ø¹ö¶¯Ìõ£©¡£
 		 * @method getWidth
-		 * @return {Point} ä½ç½®ã€‚
+		 * @return {Point} Î»ÖÃ¡£
 		 */
 		getHeight: function(){
 			
-			assert.isElement(this.getDom(), "Element.prototype.getWidth(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isElement(this.getDom(), "Element.prototype.getWidth(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			var me = this.getDom(), height = parseFloat(me.style.height);
 			return isNaN(height) ? styleNumber(me, 'height') : height;
 		},
 		
 		/**
-         * è·å–æ»šåŠ¨æ¡å·²æ»šåŠ¨çš„å¤§å°ã€‚
+         * »ñÈ¡¹ö¶¯ÌõÒÑ¹ö¶¯µÄ´óĞ¡¡£
 		 * @method getScroll
-         * @return {Point} ä½ç½®ã€‚
+         * @return {Point} Î»ÖÃ¡£
          */
         getScroll: getScroll,
 		
 		/**
-		 * è·å–å…ƒç´ çš„ä¸Šä¸‹å·¦å³å¤§å°ã€‚
+		 * »ñÈ¡ÔªËØµÄÉÏÏÂ×óÓÒ´óĞ¡¡£
 		 * @method getBound
-		 * @return {Rectange} å¤§å°ã€‚
+		 * @return {Rectange} ´óĞ¡¡£
 		 */
 		getBound: function() {
 			var p = this.getPosition(), s = this.getSize();
@@ -2087,13 +2082,13 @@
 		},
 		
         /**
-         * è·å–è·çˆ¶å…ƒç´ çš„åå·®ã€‚
+         * »ñÈ¡¾à¸¸ÔªËØµÄÆ«²î¡£
 		 * @method getPosition
-         * @return {Point} ä½ç½®ã€‚
+         * @return {Point} Î»ÖÃ¡£
          */
         getPosition: div.getBoundingClientRect   ? function() {
 			
-			assert.isNode(this.getDom(), "Element.prototype.getPosition(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isNode(this.getDom(), "Element.prototype.getPosition(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 
             var me = this.getDom(),
 				bound = me.getBoundingClientRect(),
@@ -2134,17 +2129,17 @@
         },
 		
 		/**
-         * è·å–åŒ…æ‹¬æ»šåŠ¨ä½ç½®çš„ä½ç½®ã€‚
+         * »ñÈ¡°üÀ¨¹ö¶¯Î»ÖÃµÄÎ»ÖÃ¡£
 		 * @method getOffsets
-         * @param {Element/String/Boolean} relative ç›¸å¯¹çš„èŠ‚ç‚¹ã€‚
-         * @return {Point} ä½ç½®ã€‚
+         * @param {Element/String/Boolean} relative Ïà¶ÔµÄ½Úµã¡£
+         * @return {Point} Î»ÖÃ¡£
          */
         getOffsets: function( relative) {
 			if (isBody(this.getDom())) return new Point(0, 0);
             var me = this.getDom(), pos = this.getPosition().minus(getScrolls(me));
 			if(relative) {
 				
-				assert.isElement(relative, "Element.prototype.getOffsets(relative): å‚æ•° {relative} ~ã€‚");
+				assert.isElement(relative, "Element.prototype.getOffsets(relative): ²ÎÊı {relative} ~¡£");
 				
 				pos.minus(p.$(relative).getOffsets()).add( -styleNumber(me, 'marginLeft') - styleNumber(relative, borderLeftWidth) ,-styleNumber(me, 'marginTop') - styleNumber(relative,  borderTopWidth) );
             }
@@ -2152,13 +2147,13 @@
         },
 		
         /**
-         * è·å–ç”¨äºä½œä¸ºçˆ¶å…ƒç´ çš„èŠ‚ç‚¹ã€‚
+         * »ñÈ¡ÓÃÓÚ×÷Îª¸¸ÔªËØµÄ½Úµã¡£
 		 * @method getOffsetParent
-         * @return {Element} å…ƒç´ ã€‚
+         * @return {Element} ÔªËØ¡£
          */
         getOffsetParent: function() {
 			
-			assert.isNode(this.getDom(), "Element.prototype.getOffsetParent(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isNode(this.getDom(), "Element.prototype.getOffsetParent(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			var elem = this.getDom().offsetParent || getDoc(this.getDom()).body;
 			while ( elem && !isBody(elem) && checkPosition(elem, "static") ) {
 				elem = elem.offsetParent;
@@ -2171,9 +2166,9 @@
 	.implement( {
 		
         /**
-         * æ”¹å˜å¤§å°ã€‚
-         * @param {Number} x åæ ‡ã€‚
-         * @param {Number} y åæ ‡ã€‚
+         * ¸Ä±ä´óĞ¡¡£
+         * @param {Number} x ×ø±ê¡£
+         * @param {Number} y ×ø±ê¡£
          * @return {Element} this
          */
         setSize: function(x, y) {
@@ -2181,9 +2176,9 @@
         },
 	
 		/**
-         * æ”¹å˜å¤§å°ã€‚
-         * @param {Number} x åæ ‡ã€‚
-         * @param {Number} y åæ ‡ã€‚
+         * ¸Ä±ä´óĞ¡¡£
+         * @param {Number} x ×ø±ê¡£
+         * @param {Number} y ×ø±ê¡£
          * @return {Element} this
          */
 		setOuterSize: function(x, y){
@@ -2191,38 +2186,38 @@
 		},
 		
         /**
-		 * è·å–å…ƒç´ è‡ªèº«å¤§å°ï¼ˆä¸å¸¦æ»šåŠ¨æ¡ï¼‰ã€‚
+		 * »ñÈ¡ÔªËØ×ÔÉí´óĞ¡£¨²»´ø¹ö¶¯Ìõ£©¡£
 		 * @return {Element} this
 		 */
 		setWidth: function(value){
 			
-			assert.isElement(this.getDom(), "Element.prototype.setWidth(value): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isElement(this.getDom(), "Element.prototype.setWidth(value): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			this.getDom().style.width = (value > 0 ? value : 0) + 'px';
 			return this;
 		},
 	
         /**
-		 * è·å–å…ƒç´ è‡ªèº«å¤§å°ï¼ˆä¸å¸¦æ»šåŠ¨æ¡ï¼‰ã€‚
+		 * »ñÈ¡ÔªËØ×ÔÉí´óĞ¡£¨²»´ø¹ö¶¯Ìõ£©¡£
 		 * @return {Element} this
 		 */
 		setHeight: function(value){
 			
-			assert.isElement(this.getDom(), "Element.prototype.setWidth(value): this.getDom(){this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isElement(this.getDom(), "Element.prototype.setWidth(value): this.getDom(){this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			this.getDom().style.height = (value > 0 ? value : 0) + 'px';
 			return this;
 		},
 		
 		/**
-         * æ»šåˆ°ã€‚
+         * ¹öµ½¡£
          * @param {Element} dom
-         * @param {Number} x åæ ‡ã€‚
-         * @param {Number} y åæ ‡ã€‚
+         * @param {Number} x ×ø±ê¡£
+         * @param {Number} y ×ø±ê¡£
          * @return {Element} this
          */
         setScroll: function(x, y) {
             var me = this.getDom(), p = getXY(x,y);
 			
-			assert.isNode(me, "Element.prototype.setScro{this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isNode(me, "Element.prototype.setScro{this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£·µ»Ø DOM ½Úµã¡£");
 	        if(p.x != null)
 	            me.scrollLeft = p.x;
 	        if(p.y != null)
@@ -2232,14 +2227,14 @@
         },
 		
 		/**
-		 * è®¾ç½®å…ƒç´ çš„ç›¸å¯¹ä½ç½®ã€‚
+		 * ÉèÖÃÔªËØµÄÏà¶ÔÎ»ÖÃ¡£
 		 * @param {Point} p
 		 * @return {Element} this
 		 */
 		setOffset: function(p) {
 			
-			assert.isElement(this.getDom(), "Element.prototype.setOffset(p): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
-			assert(p && 'x' in p && 'y' in p, "Element.prototype.setOffset(p): å‚æ•° {p} å¿…é¡»æœ‰ 'x' å’Œ 'y' å±æ€§ã€‚", p);
+			assert.isElement(this.getDom(), "Element.prototype.setOffset(p): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
+			assert(p && 'x' in p && 'y' in p, "Element.prototype.setOffset(p): ²ÎÊı {p} ±ØĞëÓĞ 'x' ºÍ 'y' ÊôĞÔ¡£", p);
 			var s = this.getDom().style;
 			s.top = p.y + 'px';
 			s.left = p.x + 'px';
@@ -2247,9 +2242,9 @@
 		},
 
 		/**
-         * è®¾ç½®å…ƒç´ çš„å›ºå®šä½ç½®ã€‚
-         * @param {Number} x åæ ‡ã€‚
-         * @param {Number} y åæ ‡ã€‚
+         * ÉèÖÃÔªËØµÄ¹Ì¶¨Î»ÖÃ¡£
+         * @param {Number} x ×ø±ê¡£
+         * @param {Number} y ×ø±ê¡£
          * @return {Element} this
          */
 		setPosition: function(x, y) {
@@ -2271,28 +2266,28 @@
 	apply(e, {
 		
 		/**
-		 * è®¾ç½®ä¸€ä¸ªå…ƒç´ å¯æ‹–åŠ¨ã€‚
+		 * ÉèÖÃÒ»¸öÔªËØ¿ÉÍÏ¶¯¡£
 		 * @method setMovable
-		 * @param {Element} elem è¦è®¾ç½®çš„èŠ‚ç‚¹ã€‚
+		 * @param {Element} elem ÒªÉèÖÃµÄ½Úµã¡£
 		 * @static
 		 */
 		setMovable: function(elem) {
-		   assert.isElement(elem, "Element.setMovable(elem): å‚æ•° elem ~ã€‚");
+		   assert.isElement(elem, "Element.setMovable(elem): ²ÎÊı elem ~¡£");
 		   if(!checkPosition(elem, "absolute"))
 			   elem.style.position = "relative";
 		},
 		
 		/**
-		 * æ£€æŸ¥å…ƒç´ çš„ position æ˜¯å¦å’ŒæŒ‡å®šçš„ä¸€è‡´ã€‚
-		 * @param {Element} elem å…ƒç´ ã€‚
-		 * @param {String} position æ–¹å¼ã€‚
-		 * @return {Boolean} ä¸€è‡´ï¼Œè¿”å› true ã€‚
+		 * ¼ì²éÔªËØµÄ position ÊÇ·ñºÍÖ¸¶¨µÄÒ»ÖÂ¡£
+		 * @param {Element} elem ÔªËØ¡£
+		 * @param {String} position ·½Ê½¡£
+		 * @return {Boolean} Ò»ÖÂ£¬·µ»Ø true ¡£
 		 * @static
 		 */
 		checkPosition: checkPosition,
 		
 		/**
-		 * æ ¹æ® x, y è·å– {x: x y: y} å¯¹è±¡
+		 * ¸ù¾İ x, y »ñÈ¡ {x: x y: y} ¶ÔÏó
 		 * @param {Number/Point} x 
 		 * @param {Number} y
 		 * @static
@@ -2307,17 +2302,17 @@
 	 */
 	
 	/**
-	 * æ£€æŸ¥å…ƒç´ çš„ position æ˜¯å¦å’ŒæŒ‡å®šçš„ä¸€è‡´ã€‚
-	 * @param {Element} elem å…ƒç´ ã€‚
-	 * @param {String} position æ–¹å¼ã€‚
-	 * @return {Boolean} ä¸€è‡´ï¼Œè¿”å› true ã€‚
+	 * ¼ì²éÔªËØµÄ position ÊÇ·ñºÍÖ¸¶¨µÄÒ»ÖÂ¡£
+	 * @param {Element} elem ÔªËØ¡£
+	 * @param {String} position ·½Ê½¡£
+	 * @return {Boolean} Ò»ÖÂ£¬·µ»Ø true ¡£
 	 */
 	function checkPosition(elem, position) {
 		return styleString(elem, "position") === position;
 	}
 	
 	/**
-	 * è·å–ä¸€ä¸ªèŠ‚ç‚¹çš„æ‰€åœ¨çš„çª—å£ã€‚
+	 * »ñÈ¡Ò»¸ö½ÚµãµÄËùÔÚµÄ´°¿Ú¡£
 	 * @param {Object} elem
 	 */
 	function getWindow(elem) {
@@ -2325,35 +2320,35 @@
 	}
 	
 	/**
-	 * è·å–ä¸€ä¸ªå…ƒç´ æ»šåŠ¨ã€‚
-	 * @return {Point} å¤§å°ã€‚
+	 * »ñÈ¡Ò»¸öÔªËØ¹ö¶¯¡£
+	 * @return {Point} ´óĞ¡¡£
 	 */
 	function getScroll() {
 		var doc = this.getDom();
-		assert.isNode(doc, "Element.prototype.getScroll(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚è¿”å› DOM èŠ‚ç‚¹ã€‚");
+		assert.isNode(doc, "Element.prototype.getScroll(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£·µ»Ø DOM ½Úµã¡£");
 		return new Point(doc.scrollLeft, doc.scrollTop);
 	}
 
     /**
-     * æ£€æŸ¥æ˜¯å¦ä¸º body ã€‚
-     * @param {Element} elem å†…å®¹ã€‚
-     * @return {Boolean} æ˜¯å¦ä¸ºæ–‡æ¡£æˆ–æ–‡æ¡£è·ŸèŠ‚ç‚¹ã€‚
+     * ¼ì²éÊÇ·ñÎª body ¡£
+     * @param {Element} elem ÄÚÈİ¡£
+     * @return {Boolean} ÊÇ·ñÎªÎÄµµ»òÎÄµµ¸ú½Úµã¡£
      */
     function isBody(elem) {
         return rBody.test(elem.nodeName);
     }
 	
 	/**
-	 * æœªä½¿ç”¨ç›’å­è¾¹æ¡†
-	 * @param {Element} elem å…ƒç´ ã€‚
-	 * @return {Boolean} æ˜¯å¦ä½¿ç”¨ã€‚
+	 * Î´Ê¹ÓÃºĞ×Ó±ß¿ò
+	 * @param {Element} elem ÔªËØ¡£
+	 * @return {Boolean} ÊÇ·ñÊ¹ÓÃ¡£
 	 */
 	function nborderBox(elem) {
 		return getStyle(elem, 'MozBoxSizing') != 'border-box';
 	}
 	
 	/**
-	 * è½¬æ¢å‚æ•°ä¸ºæ ‡å‡†ç‚¹ã€‚
+	 * ×ª»»²ÎÊıÎª±ê×¼µã¡£
 	 * @param {Number} x X
 	 * @param {Number} y Y
 	 */
@@ -2362,7 +2357,7 @@
 	}
 	
 	/**
-	 * è·å–é»˜è®¤çš„ä½ç½®ã€‚
+	 * »ñÈ¡Ä¬ÈÏµÄÎ»ÖÃ¡£
 	 * @param {Object} x
 	 * @param {Object} y
 	 * @param {Object} obj
@@ -2372,14 +2367,14 @@
 		var p = getXY(x, y);
 		if(p.x == null) p.x = obj[method]().x;
 		if(p.y == null) p.x = obj[method]().y;
-		assert(!isNaN(p.x) && !isNaN(p.y), "adaptXY(x, y, obj, method): å‚æ•° {x}æˆ–{y} ä¸æ˜¯åˆæ³•çš„æ•°å­—ã€‚(method = {method})", x, y, method);
+		assert(!isNaN(p.x) && !isNaN(p.y), "adaptXY(x, y, obj, method): ²ÎÊı {x}»ò{y} ²»ÊÇºÏ·¨µÄÊı×Ö¡£(method = {method})", x, y, method);
 		return p;
 	}
 	
 	/**
-	 * è·å–ä¸€ä¸ªå…ƒç´ çš„æ‰€æœ‰æ»šåŠ¨å¤§å°ã€‚
-	 * @param {Element} elem å…ƒç´ ã€‚
-	 * @return {Point} åå·®ã€‚
+	 * »ñÈ¡Ò»¸öÔªËØµÄËùÓĞ¹ö¶¯´óĞ¡¡£
+	 * @param {Element} elem ÔªËØ¡£
+	 * @return {Point} Æ«²î¡£
 	 */
 	function getScrolls(elem) {
 		var p = new Point(0, 0);
@@ -2393,22 +2388,22 @@
 	
 	/// #endif
 
-	/// #ifdef èŠ‚ç‚¹
+	/// #ifdef ½Úµã
 	
 	/**
-	 * å±æ€§ã€‚
+	 * ÊôĞÔ¡£
 	 * @type RegExp
 	 */
 	var rAttr = /\[([^=]*)(=(.*))?\]/,
 		
 		/**
-		 * ç‚¹ã€‚
+		 * µã¡£
 		 * @type RegExp
 		 */
 		rPoint = /\./g,
 	
 		/**
-		 * ç‰¹æ®Šå±æ€§é›†åˆã€‚
+		 * ÌØÊâÊôĞÔ¼¯ºÏ¡£
 		 * @type Object
 		 */
 		properties = {
@@ -2425,51 +2420,51 @@
 			[walk, 'nextSibling', 'firstChild', 'parentNode', 'previousSibling', 'lastChild'],
 		
 		/**
-		 * ç”¨äº get çš„åè¯å¯¹è±¡ã€‚
+		 * ÓÃÓÚ get µÄÃû´Ê¶ÔÏó¡£
 		 * @type String
 		 */
 		nodeMaps = e.nodeMaps = {
 			
-			// å…¨éƒ¨ä¸Šçº§èŠ‚ç‚¹ã€‚
+			// È«²¿ÉÏ¼¶½Úµã¡£
 			parents: [dir, childMap[3]],
 			
-			// å‰é¢çš„èŠ‚ç‚¹ã€‚
+			// Ç°ÃæµÄ½Úµã¡£
 			previouses: [dir, childMap[4]],
 			
-			// åé¢çš„èŠ‚ç‚¹ã€‚
+			// ºóÃæµÄ½Úµã¡£
 			nexts: [dir, childMap[1]],
 			
-			// åé¢çš„èŠ‚ç‚¹ã€‚
+			// ºóÃæµÄ½Úµã¡£
 			next: [walk, childMap[1], childMap[1]],
 			
-			// ç¬¬ä¸€ä¸ªèŠ‚ç‚¹ã€‚
+			// µÚÒ»¸ö½Úµã¡£
 			first: childMap,
 			
-			// æœ€åçš„èŠ‚ç‚¹ã€‚
+			// ×îºóµÄ½Úµã¡£
 			last: [walk, childMap[4], childMap[5]],
 			
-			// å‰é¢çš„èŠ‚ç‚¹ã€‚
+			// Ç°ÃæµÄ½Úµã¡£
 			previous: [walk, childMap[4], childMap[4]],
 			
-			// ä¸Šçº§èŠ‚ç‚¹ã€‚
+			// ÉÏ¼¶½Úµã¡£
 			parent: [walk, childMap[3], childMap[3]],
 			
-			// ç›´æ¥çš„å­èŠ‚ç‚¹ã€‚
+			// Ö±½ÓµÄ×Ó½Úµã¡£
 			child: [dir, childMap[1], childMap[2]],
 			
-			// å¥‡æ•°æˆ–å¶æ•°ä¸ªã€‚
+			// ÆæÊı»òÅ¼Êı¸ö¡£
 			odd: [function(elem, fn) {
 				return dir(elem, function() {
 					return fn = fn === false;
 				}, childMap[1], childMap[2]);
 			}],
 			
-			// å…¨éƒ¨å­èŠ‚ç‚¹ã€‚
+			// È«²¿×Ó½Úµã¡£
 			children: [ function(elem, fn) {
 				return new ElementList(find(elem,  fn));
 			}],
 			
-			// å…„å¼ŸèŠ‚ç‚¹ã€‚
+			// ĞÖµÜ½Úµã¡£
 			siblings: [ function(elem, fn) {
 				return dir(elem, function(node){
 					return node != elem && fn(el);
@@ -2478,17 +2473,17 @@
 		},
 		
 		/**
-		 * æŸ¥æ‰¾ä¸€ä¸ªèŠ‚ç‚¹ã€‚
-		 * @param {Element} elem çˆ¶èŠ‚ç‚¹ã€‚
-		 * @param {undefined/String/Function} fn æŸ¥æ‰¾å‡½æ•°ã€‚
-		 * @param {Boolean} childOnly æ˜¯å¦åªæœç´¢ç›¸é‚»çš„èŠ‚ç‚¹ã€‚
-		 * @return {Array/Element} èŠ‚ç‚¹ã€‚
+		 * ²éÕÒÒ»¸ö½Úµã¡£
+		 * @param {Element} elem ¸¸½Úµã¡£
+		 * @param {undefined/String/Function} fn ²éÕÒº¯Êı¡£
+		 * @param {Boolean} childOnly ÊÇ·ñÖ»ËÑË÷ÏàÁÚµÄ½Úµã¡£
+		 * @return {Array/Element} ½Úµã¡£
 		 */
-		find = 'all' in document ? function(elem, fn) { // è¿”å›æ•°ç»„
-			assert.isFunction(fn, "Element.prototype.find(elem, fn): å‚æ•° {fn} ~ã€‚");
+		find = 'all' in document ? function(elem, fn) { // ·µ»ØÊı×é
+			assert.isFunction(fn, "Element.prototype.find(elem, fn): ²ÎÊı {fn} ~¡£");
 			return  Array.prototype.filter.call(elem.all, fn);
         } : function(elem, fn) {
-			assert.isFunction(fn, "Element.prototype.find(elem, fn): å‚æ•° {fn} ~ã€‚");
+			assert.isFunction(fn, "Element.prototype.find(elem, fn): ²ÎÊı {fn} ~¡£");
             var ds = [], document = [elem], p, nx;
             while (document.length) {
                 p = document.pop();
@@ -2519,17 +2514,17 @@
 	e.implementIf( {
 		
 		/**
-		 * æ ¹æ®å±æ€§è·å¾—å…ƒç´ å†…å®¹ã€‚
+		 * ¸ù¾İÊôĞÔ»ñµÃÔªËØÄÚÈİ¡£
 		 * @method getElementsByAttribute
-		 * @param {Strung} name å±æ€§åã€‚
-		 * @param {Strung} value å±æ€§å€¼ã€‚
-		 * @return {Array} èŠ‚ç‚¹é›†åˆã€‚
+		 * @param {Strung} name ÊôĞÔÃû¡£
+		 * @param {Strung} value ÊôĞÔÖµ¡£
+		 * @return {Array} ½Úµã¼¯ºÏ¡£
 		 */
 		getElementsByAttribute: function(name, value) {
 			return find(this.getDom(), function(elem) {
 				
-				// æˆ–è€…å±æ€§å€¼ == value ä¸” value éç©º
-				// æˆ–è€… valueç©ºï¼Œ å±æ€§å€¼éç©º
+				// »òÕßÊôĞÔÖµ == value ÇÒ value ·Ç¿Õ
+				// »òÕß value¿Õ£¬ ÊôĞÔÖµ·Ç¿Õ
 				return (value === undefined) !== (e.getAttr(elem, name) == value);
 			});
 		},
@@ -2537,13 +2532,13 @@
 		/// #ifdef SupportIE6
 
         /**
-         * æ ¹æ®ç±»åè¿”å›å­èŠ‚ç‚¹ã€‚
+         * ¸ù¾İÀàÃû·µ»Ø×Ó½Úµã¡£
 		 * @method getElementsByClassName
-         * @param {Strung} classname ç±»åã€‚
-         * @return {Array} èŠ‚ç‚¹é›†åˆã€‚
+         * @param {Strung} classname ÀàÃû¡£
+         * @return {Array} ½Úµã¼¯ºÏ¡£
          */
         getElementsByClassName: function(classname) {
-			assert.isString(classname, "Element.prototype.getElementsByClassName(classname): å‚æ•° {classname} ~ã€‚");
+			assert.isString(classname, "Element.prototype.getElementsByClassName(classname): ²ÎÊı {classname} ~¡£");
 			classname = classname.split(/\s/);
             return find(this.getDom(), function(elem) {
 				var i = classname.length;
@@ -2559,7 +2554,7 @@
 		
 		/// #endif
 		
-		// ä½¿     ElementList æ”¯æŒæ­¤å‡½æ•°
+		// Ê¹     ElementList Ö§³Ö´Ëº¯Êı
 		getElementsByTagName: function(name) {
 			return this.getElementsByTagName(name);
 		},
@@ -2571,16 +2566,16 @@
 		/// #ifdef SupportIE6
 		
 		/**
-		 * æ‰§è¡Œä¸€ä¸ªç®€å•çš„é€‰æ‹©å™¨ã€‚
+		 * Ö´ĞĞÒ»¸ö¼òµ¥µÄÑ¡ÔñÆ÷¡£
 		 * @method find
-		 * @param {String} selecter é€‰æ‹©å™¨ã€‚ å¦‚ h2 .cls attr=value ã€‚
-		 * @return {Element/undefined} èŠ‚ç‚¹ã€‚
+		 * @param {String} selecter Ñ¡ÔñÆ÷¡£ Èç h2 .cls attr=value ¡£
+		 * @return {Element/undefined} ½Úµã¡£
 		 */
 		findAll: div.querySelectorAll ? function(selecter) {
-			assert.isString(selecter, "Element.prototype.findAll(selecter): å‚æ•° {selecter} ~ã€‚");
+			assert.isString(selecter, "Element.prototype.findAll(selecter): ²ÎÊı {selecter} ~¡£");
 			return new p.ElementList(this.getDom().querySelectorAll(selecter));
 		} : function(selecter){
-			assert.isString(selecter, "Element.prototype.findAll(selecter): å‚æ•° {selecter} ~ã€‚");
+			assert.isString(selecter, "Element.prototype.findAll(selecter): ²ÎÊı {selecter} ~¡£");
 			var current = new p.ElementList([this.getDom()]);
 			selecter.split(' ').forEach(function(v) {
 				current = findBy(current, v);
@@ -2594,15 +2589,15 @@
 		/// #endif
 		
 		/**
-		 * è·å¾—ç›¸åŒ¹é…çš„èŠ‚ç‚¹ã€‚
+		 * »ñµÃÏàÆ¥ÅäµÄ½Úµã¡£
 		 * @method get
-		 * @param {String} type ç±»å‹ã€‚
-		 * @param {Function/Number} fn è¿‡æ»¤å‡½æ•°æˆ–ç´¢å¼•æˆ–æ ‡ç­¾ã€‚
-		 * @return {Element} å…ƒç´ ã€‚
+		 * @param {String} type ÀàĞÍ¡£
+		 * @param {Function/Number} fn ¹ıÂËº¯Êı»òË÷Òı»ò±êÇ©¡£
+		 * @return {Element} ÔªËØ¡£
 		 */
 		get: function(type, fn) {
 			
-			// å¦‚æœ type ä¸ºå‡½æ•°ï¼Œ è¡¨ç¤º é»˜è®¤æ‰€æœ‰å­èŠ‚ç‚¹ã€‚
+			// Èç¹û type Îªº¯Êı£¬ ±íÊ¾ Ä¬ÈÏËùÓĞ×Ó½Úµã¡£
 			switch (typeof type) {
 				case 'string':
 					fn = getFilter(fn);
@@ -2618,7 +2613,7 @@
 			}
 			
 			var n = nodeMaps[type];
-			assert(n, 'Element.prototype.get(type, fn): å‡½æ•°ä¸æ”¯æŒ {0}ç±»å‹ çš„èŠ‚ç‚¹å…³è”ã€‚', type);
+			assert(n, 'Element.prototype.get(type, fn): º¯Êı²»Ö§³Ö {0}ÀàĞÍ µÄ½Úµã¹ØÁª¡£', type);
 			return n[0](this.getDom(), fn, n[1], n[2]);
 		}
 		
@@ -2627,22 +2622,22 @@
 	.implement( {
 		
 		/**
-		 * åˆ¤æ–­ä¸€ä¸ªèŠ‚ç‚¹æ˜¯å¦åŒ…å«ä¸€ä¸ªèŠ‚ç‚¹ã€‚ ä¸€ä¸ªèŠ‚ç‚¹åŒ…å«è‡ªèº«ã€‚
+		 * ÅĞ¶ÏÒ»¸ö½ÚµãÊÇ·ñ°üº¬Ò»¸ö½Úµã¡£ Ò»¸ö½Úµã°üº¬×ÔÉí¡£
 		 * @method contains
-		 * @param {Element} child å­èŠ‚ç‚¹ã€‚
-		 * @return {Boolean} æœ‰è¿”å›true ã€‚
+		 * @param {Element} child ×Ó½Úµã¡£
+		 * @return {Boolean} ÓĞ·µ»Øtrue ¡£
 		 */
 		contains: function(child){
 			var me = this.getDom();
-			assert.isNode(me, "Element.prototype.contains(child): this.getDom() è¿”å›çš„å¿…é¡»æ˜¯ DOM èŠ‚ç‚¹ã€‚");
+			assert.isNode(me, "Element.prototype.contains(child): this.getDom() ·µ»ØµÄ±ØĞëÊÇ DOM ½Úµã¡£");
 			return child == me || hasChild(me, child);
 		},
 			
 		/**
-		 * åˆ¤æ–­ä¸€ä¸ªèŠ‚ç‚¹æ˜¯å¦æœ‰å­èŠ‚ç‚¹ã€‚
+		 * ÅĞ¶ÏÒ»¸ö½ÚµãÊÇ·ñÓĞ×Ó½Úµã¡£
 		 * @method contains
-		 * @param {Element} child å­èŠ‚ç‚¹ã€‚
-		 * @return {Boolean} æœ‰è¿”å›true ã€‚
+		 * @param {Element} child ×Ó½Úµã¡£
+		 * @return {Boolean} ÓĞ·µ»Øtrue ¡£
 		 */
 		hasChild: function(child) {
 			var me = this.getDom();
@@ -2652,19 +2647,19 @@
 	
 	.implement( {
 		
-		/// #ifdef SupportIE6
+		/// #ifndef Std
 		
 		/**
-		 * æ‰§è¡Œä¸€ä¸ªç®€å•çš„é€‰æ‹©å™¨ã€‚
-		 * @param {String} selecter é€‰æ‹©å™¨ã€‚ å¦‚ h2 .cls attr=value ã€‚
-		 * @return {Element/undefined} èŠ‚ç‚¹ã€‚
+		 * Ö´ĞĞÒ»¸ö¼òµ¥µÄÑ¡ÔñÆ÷¡£
+		 * @param {String} selecter Ñ¡ÔñÆ÷¡£ Èç h2 .cls attr=value ¡£
+		 * @return {Element/undefined} ½Úµã¡£
 		 */
 		find: div.querySelector ? function(selecter){
-			assert.isString(selecter, "Element.prototype.find(selecter): å‚æ•° {selecter} ~ã€‚");
+			assert.isString(selecter, "Element.prototype.find(selecter): ²ÎÊı {selecter} ~¡£");
 			return this.getDom().querySelector(selecter);
 		} : function(selecter) {
 			var current = this.getDom();
-			assert.isString(selecter, "Element.prototype.find(selecter): å‚æ•° {selecter} ~ã€‚");
+			assert.isString(selecter, "Element.prototype.find(selecter): ²ÎÊı {selecter} ~¡£");
 			if(selecter.split(' ').each(function(v) {
 				return !!(current = findBy(current, v)[0]);
 			}))
@@ -2677,30 +2672,60 @@
 		/// #endif
 		
 		/**
-         * å¤åˆ¶èŠ‚ç‚¹ã€‚
-         * @param {Boolean} copyDataAndEvent=false æ˜¯å¦å¤åˆ¶äº‹ä»¶ã€‚
-         * @param {Boolean} contents=true æ˜¯å¦å¤åˆ¶å­å…ƒç´ ã€‚
-         * @param {Boolean} keepid=false æ˜¯å¦å¤åˆ¶ id ã€‚
-         * @return {Element} å…ƒç´ ã€‚copyListener, contents, keepid
+         * ¸´ÖÆ½Úµã¡£
+         * @param {Boolean} copyListener=false ÊÇ·ñ¸´ÖÆÊÂ¼ş¡£
+         * @param {Boolean} contents=true ÊÇ·ñ¸´ÖÆ×ÓÔªËØ¡£
+         * @param {Boolean} keepid=false ÊÇ·ñ¸´ÖÆ id ¡£
+         * @return {Element} ÔªËØ¡£
          */
-        clone: function(copyDataAndEvent, contents, keepid) {	
+        clone: function(copyListener, contents, keepid) {	
 		
-			assert.isNode(this.getDom(), "Element.prototype.clone(copyDataAndEvent, contents, keepid): this.getDom() è¿”å›çš„å¿…é¡»æ˜¯ DOM èŠ‚ç‚¹ã€‚");
+			assert.isNode(this.getDom(), "Element.prototype.clone(copyListener, contents, keepid): this.getDom() ·µ»ØµÄ±ØĞëÊÇ DOM ½Úµã¡£");
+			// from Mootools
+            var me = this.getDom(),
+				clone = me.cloneNode(contents = contents !== false),
+				clean = function(node, element) {
+					if (!keepid)
+						node.removeAttribute('id');
+						
+					/// #ifdef SupportIE8
+						
+					if(node.mergeAttributes) {
+						
+						node.clearAttributes();
+						node.mergeAttributes(element);
 
-			var elem = this.getDom(),
-				clone = elem.cloneNode(contents = contents !== false);
-			
+						// ÔÚ IE delete element.data  ³öÏÖÒì³£¡£
+						if(element.data)
+							node.data = null;   // IE  ½«¸´ÖÆ node.data
+							
+					}
+						
+					/// #endif
+					
+					if (copyListener) {
+						p.cloneData(element, node);
+					}
+					if (node.options) {
+						o.update(element.options, 'selected', node.options, true);
+					}
+					
+					var prop = properties[element.tagName];
+					if (prop)
+						node[prop] = element[prop];
+					
+				};
             if (contents) {
-                for (var ce = clone.getElementsByTagName('*'), te = elem.getElementsByTagName('*'), i = ce.length; i--;)
-                   clean(ce[i], te[i], copyDataAndEvent, keepid);
+                for (var ce = clone.getElementsByTagName('*'), te = me.getElementsByTagName('*'), i = ce.length; i--;)
+                    clean(ce[i], te[i]);
             }
 
-            clean(elem, clone, copyDataAndEvent, keepid);
-			
-			/// #ifdef SupportIE6
+            clean(clone, me);
+					
+			/// #ifdef Std
 			
 			if (navigator.isQuirks) {
-				o.update(elem.getElementsByTagName('object'), 'outerHTML', clone.getElementsByTagName('object'), true);
+				o.update(me.getElementsByTagName('object'), 'outerHTML', clone.getElementsByTagName('object'), true);
 			}
 						
 			/// #endif
@@ -2709,15 +2734,15 @@
         },
 		
 		/**
-		 * åœ¨æŸä¸ªä½ç½®æ’å…¥ä¸€ä¸ªHTML ã€‚
-		 * @param {String/Element} html å†…å®¹ã€‚
-		 * @param {String} [swhere] æ’å…¥åœ°ç‚¹ã€‚ beforeBegin   èŠ‚ç‚¹å¤–    beforeEnd   èŠ‚ç‚¹é‡Œ    afterBegin    èŠ‚ç‚¹å¤–  afterEnd     èŠ‚ç‚¹é‡Œ
-		 * @return {Element} æ’å…¥çš„èŠ‚ç‚¹ã€‚
+		 * ÔÚÄ³¸öÎ»ÖÃ²åÈëÒ»¸öHTML ¡£
+		 * @param {String/Element} html ÄÚÈİ¡£
+		 * @param {String} [swhere] ²åÈëµØµã¡£ beforeBegin   ½ÚµãÍâ    beforeEnd   ½ÚµãÀï    afterBegin    ½ÚµãÍâ  afterEnd     ½ÚµãÀï
+		 * @return {Element} ²åÈëµÄ½Úµã¡£
 		 */
 		insert: 'insertAdjacentElement' in div ? function(html, swhere) {
 			var me = this.getDom();
-			assert.isNode(me, "Element.prototype.insert(html, swhere): this.getDom() è¿”å›çš„å¿…é¡»æ˜¯ DOM èŠ‚ç‚¹ã€‚");
-			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): å‚æ•° swhere å¿…é¡»æ˜¯ beforeBeginã€beforeEndã€afterBegin æˆ– afterEnd ã€‚");
+			assert.isNode(me, "Element.prototype.insert(html, swhere): this.getDom() ·µ»ØµÄ±ØĞëÊÇ DOM ½Úµã¡£");
+			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): ²ÎÊı swhere ±ØĞëÊÇ beforeBegin¡¢beforeEnd¡¢afterBegin »ò afterEnd ¡£");
 			me[typeof html === 'string' ? 'insertAdjacentHTML' : 'insertAdjacentElement'](swhere, html);
 			switch (swhere) {
 				case "afterEnd":
@@ -2739,18 +2764,17 @@
 			
 			var me = this.getDom();
 			
-			assert.notNull(html, "Element.prototype.insert(html, swhere): å‚æ•° {html} ~ã€‚");
-			assert.isNode(me, "Element.prototype.insert(html, swhere): this.getDom() è¿”å›çš„å¿…é¡»æ˜¯ DOM èŠ‚ç‚¹ã€‚");
-			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): å‚æ•° {swhere} å¿…é¡»æ˜¯ beforeBeginã€beforeEndã€afterBegin æˆ– afterEnd ã€‚", swhere);
-			if (!html.nodeType) {
-				html = e.parse(html);
+			assert.isNode(me, "Element.prototype.insert(html, swhere): this.getDom() ·µ»ØµÄ±ØĞëÊÇ DOM ½Úµã¡£");
+			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): ²ÎÊı {swhere} ±ØĞëÊÇ beforeBegin¡¢beforeEnd¡¢afterBegin »ò afterEnd ¡£", swhere);
+			if (typeof html === 'string') {
+				return manip(this, 'insert', html, swhere);
 			}
 
 			switch (swhere) {
 				case "afterEnd":
 					if(!me.nextSibling) {
 						
-						assert(me.parentNode != null, "Element.prototype.insert(html, swhere): èŠ‚ç‚¹æ— çˆ¶èŠ‚ç‚¹æ—¶æ— æ³•æ’å…¥ {this}", me);
+						assert(me.parentNode != null, "Element.prototype.insert(html, swhere): ½ÚµãÎŞ¸¸½ÚµãÊ±ÎŞ·¨²åÈë {this}", me);
 						
 						me.parentNode.appendChild(html);
 						break;
@@ -2758,7 +2782,7 @@
 					
 					me = me.nextSibling;
 				case "beforeBegin":
-						assert(me.parentNode != null, "Element.prototype.insert(html, swhere): èŠ‚ç‚¹æ— çˆ¶èŠ‚ç‚¹æ—¶æ— æ³•æ’å…¥ {this}", me);
+						assert(me.parentNode != null, "Element.prototype.insert(html, swhere): ½ÚµãÎŞ¸¸½ÚµãÊ±ÎŞ·¨²åÈë {this}", me);
 					me.parentNode.insertBefore(html, me);
 					break;
 				case "afterBegin":
@@ -2767,7 +2791,7 @@
 						break;
 					}
 				default:
-					assert(arguments.length == 1 || !swhere || swhere == 'beforeEnd', 'Element.prototype.insert(html, swhere): å‚æ•° {swhere} å¿…é¡»æ˜¯ beforeBeginã€beforeEndã€afterBegin æˆ– afterEnd ã€‚', swhere);
+					assert(arguments.length == 1 || !swhere || swhere == 'beforeEnd', 'Element.prototype.insert(html, swhere): ²ÎÊı {swhere} ±ØĞëÊÇ beforeBegin¡¢beforeEnd¡¢afterBegin »ò afterEnd ¡£', swhere);
 					me.appendChild(html);
 					break;
 			 }
@@ -2776,29 +2800,29 @@
 		},
 
 		/**
-		 * æ’å…¥ä¸€ä¸ªHTML ã€‚
-		 * @param {String/Element} html å†…å®¹ã€‚
-		 * @param {Boolean} escape æ˜¯å¦è½¬ä¹‰ HTML ä»£ç ï¼Œè¿™æ ·æ’å…¥çš„ä¸ºæ–‡æœ¬ã€‚
-		 * @return {Element} å…ƒç´ ã€‚
+		 * ²åÈëÒ»¸öHTML ¡£
+		 * @param {String/Element} html ÄÚÈİ¡£
+		 * @param {Boolean} escape ÊÇ·ñ×ªÒå HTML ´úÂë£¬ÕâÑù²åÈëµÄÎªÎÄ±¾¡£
+		 * @return {Element} ÔªËØ¡£
 		 */
 		append: function(html, escape) {
 			var me = this;
 			
-			
-			assert.notNull(html, "Element.prototype.append(html, escape): å‚æ•° {html} ~ã€‚");
-			
-			if(!html.nodeType){
-				html = escape ? getDoc(me.getDom()).createTextNode(html) : e.parse(html);
+			if(typeof html === 'string'){
+				if(escape)
+					html = getDoc(me.getDom()).createTextNode(html);
+				else
+					return manip(me, 'append', html);
 			}
 			
-			assert.isNode(html, "Element.prototype.append(html, escape): å‚æ•° {html} ä¸æ˜¯åˆæ³•çš„ èŠ‚ç‚¹æˆ– HTML ç‰‡æ®µã€‚");
+			assert.isNode(html, "Element.prototype.append(html, escape): ²ÎÊı {html} ²»ÊÇºÏ·¨µÄ ½Úµã»ò HTML Æ¬¶Î¡£");
 			return me.appendChild(html);
 		},
 		
 		/**
-		 * å°†ä¸€ä¸ªèŠ‚ç‚¹ç”¨htmlåŒ…å›´ã€‚
-		 * @param {String} html å†…å®¹ã€‚
-		 * @return {Element} å…ƒç´ ã€‚
+		 * ½«Ò»¸ö½ÚµãÓÃhtml°üÎ§¡£
+		 * @param {String} html ÄÚÈİ¡£
+		 * @return {Element} ÔªËØ¡£
 		 */
 		wrapWith: function(html) {
 			var node = html = this.replaceWith(html);
@@ -2808,22 +2832,21 @@
 		},
 		
 		/**
-		 * å°†ä¸€ä¸ªèŠ‚ç‚¹ç”¨å¦ä¸€ä¸ªèŠ‚ç‚¹æ›¿æ¢ã€‚ 
-		 * @param {String} html å†…å®¹ã€‚
-		 * @return {Element} å…ƒç´ ã€‚
+		 * ½«Ò»¸ö½ÚµãÓÃÁíÒ»¸ö½ÚµãÌæ»»¡£ 
+		 * @param {String} html ÄÚÈİ¡£
+		 * @return {Element} ÔªËØ¡£
 		 */
 		replaceWith: function(html) {
 		
-			var me = this.getDom();
+			var me = this;
 			
-			assert.notNull(html, "Element.prototype.replaceWith(html): å‚æ•° {html} ~ã€‚");
-			assert(me.parentNode, 'Element.prototype.replaceWith(html): å½“å‰èŠ‚ç‚¹æ— çˆ¶èŠ‚ç‚¹ï¼Œä¸èƒ½æ‰§è¡Œæ­¤æ–¹æ³• {this}', me);
-			if (!html.nodeType) {
-				html = e.parse(html);
+			assert(me.parentNode, 'Element.prototype.replaceWith(html): µ±Ç°½ÚµãÎŞ¸¸½Úµã£¬²»ÄÜÖ´ĞĞ´Ë·½·¨ {this}', me);
+			if (typeof html === 'string') {
+				return manip(me, 'replaceWith', html);
 			}
 			
-			
-			assert.isNode(html, "Element.prototype.replaceWith(html, escape): å‚æ•° {html} ~æˆ– HTM ç‰‡æ®µã€‚");
+			me = me.getDom();
+			assert.isNode(html, "Element.prototype.replaceWith(html, escape): ²ÎÊı {html} ~»ò HTM Æ¬¶Î¡£");
 			return me.parentNode.replaceChild(html, me);
 		}
 	}, 3)
@@ -2831,68 +2854,68 @@
 	.implement( {
 			
 		/**
-		 * è®¾ç½®èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹ã€‚
+		 * ÉèÖÃ½ÚµãµÄ¸¸½Úµã¡£
 		 * @method renderTo
-		 * @param {Element} elem èŠ‚ç‚¹ã€‚
+		 * @param {Element} elem ½Úµã¡£
 		 * @return {Element} this
 		 */
 		renderTo: function(elem) {
 			
 			elem = elem && elem !== true ? p.$(elem) : document.body;
 			
-			assert.isNode(elem, 'Element.prototype.renderTo(elem): å‚æ•° {elem} ~ã€‚');
-			assert.isNode(this.getDom(), "Element.prototype.render{this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isNode(elem, 'Element.prototype.renderTo(elem): ²ÎÊı {elem} ~¡£');
+			assert.isNode(this.getDom(), "Element.prototype.render{this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£·µ»Ø DOM ½Úµã¡£");
 			
 			if (this.getDom().parentNode !== elem) {
 				
-				// æ’å…¥èŠ‚ç‚¹
+				// ²åÈë½Úµã
 				elem.appendChild(this.getDom());
 			}
 			
-			// è¿”å›
+			// ·µ»Ø
 			return this;
 		},
 		
 		/**
-         * åˆ é™¤å…ƒç´ å­èŠ‚ç‚¹æˆ–æœ¬èº«ã€‚
-         * @param {Object/undefined} child å­èŠ‚ç‚¹ã€‚
+         * É¾³ıÔªËØ×Ó½Úµã»ò±¾Éí¡£
+         * @param {Object/undefined} child ×Ó½Úµã¡£
          * @return {Element} this
          */
         remove: function(child) {
 			var me = this.getDom();
-			assert(child && this.hasChild(child), 'Element.prototype.remove(child): å‚æ•° {child} ä¸æ˜¯å½“å‰èŠ‚ç‚¹çš„å­èŠ‚ç‚¹', child);
+			assert(child && this.hasChild(child), 'Element.prototype.remove(child): ²ÎÊı {child} ²»ÊÇµ±Ç°½ÚµãµÄ×Ó½Úµã', child);
             child ? this.removeChild(child) : ( me.parentNode && me.parentNode.removeChild(me) );
             return this;
         },
 		
         /**
-         * åˆ é™¤ä¸€ä¸ªèŠ‚ç‚¹çš„æ‰€æœ‰å­èŠ‚ç‚¹ã€‚
+         * É¾³ıÒ»¸ö½ÚµãµÄËùÓĞ×Ó½Úµã¡£
          * @return {Element} this
          */
         empty: function() {
-			assert.isNode(this.getDom(), "Element.prototype.empty(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isNode(this.getDom(), "Element.prototype.empty(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			empty(this.getDom());
             return this;
         },
 		
         /**
-         * é‡Šæ”¾èŠ‚ç‚¹æ‰€æœ‰èµ„æºã€‚
+         * ÊÍ·Å½ÚµãËùÓĞ×ÊÔ´¡£
 		 * @method dispose
          */
         dispose: function() {
-			assert.isNode(this.getDom(), "Element.prototype.dispose(): {this.getDom()} å¿…é¡»è¿”å› DOM èŠ‚ç‚¹ã€‚");
+			assert.isNode(this.getDom(), "Element.prototype.dispose(): {this.getDom()} ±ØĞë·µ»Ø DOM ½Úµã¡£");
 			dispose(this.getDom());
         }
 		
 	}, 2);
 	
 	/**
-     * è¿”å›å…ƒç´ æŒ‡å®šèŠ‚ç‚¹ã€‚
-     * @param {Element} elem èŠ‚ç‚¹ã€‚
-     * @param {Number/Function/undefined/undefined} fn è¿‡æ»¤å‡½æ•°ã€‚
-     * @param {String} walk è·¯å¾„ã€‚
-     * @param {String} first ç¬¬ä¸€ä¸ªèŠ‚ç‚¹ã€‚
-     * @return {Element} èŠ‚ç‚¹ã€‚
+     * ·µ»ØÔªËØÖ¸¶¨½Úµã¡£
+     * @param {Element} elem ½Úµã¡£
+     * @param {Number/Function/undefined/undefined} fn ¹ıÂËº¯Êı¡£
+     * @param {String} walk Â·¾¶¡£
+     * @param {String} first µÚÒ»¸ö½Úµã¡£
+     * @return {Element} ½Úµã¡£
      * @ignore
      */
 	function walk(elem, fn, walk, first) {
@@ -2907,12 +2930,12 @@
     }
 	
 	/**
-     * è¿”å›å…ƒç´ æ»¡è¶³æ¡ä»¶çš„èŠ‚ç‚¹çš„åˆ—è¡¨ã€‚
-     * @param {Element} elem èŠ‚ç‚¹ã€‚
-     * @param {Number/Function/undefined} fn è¿‡æ»¤å‡½æ•°ã€‚
-     * @param {String} walk è·¯å¾„ã€‚
-     * @param {String} first ç¬¬ä¸€ä¸ªèŠ‚ç‚¹ã€‚
-	 * @return {ElementList} é›†åˆã€‚
+     * ·µ»ØÔªËØÂú×ãÌõ¼şµÄ½ÚµãµÄÁĞ±í¡£
+     * @param {Element} elem ½Úµã¡£
+     * @param {Number/Function/undefined} fn ¹ıÂËº¯Êı¡£
+     * @param {String} walk Â·¾¶¡£
+     * @param {String} first µÚÒ»¸ö½Úµã¡£
+	 * @return {ElementList} ¼¯ºÏ¡£
 	 * @ignore
      */
 	function dir(elem, fn, walk, first) {
@@ -2927,47 +2950,26 @@
         return new ElementList(es);
 	}
 	
-	/**
-	 * åˆ é™¤ç”±äºæ‹·è´å¯¼è‡´çš„æ‚é¡¹ã€‚
-	 */
-	function clean(srcElem, destElem, copyDataAndEvent, keepid){
-		if (!keepid)
-			 destElem.removeAttribute('id');
-				
-		/// #ifdef SupportIE8
-			
-		if( destElem.mergeAttributes) {
-			
-			 destElem.clearAttributes();
-			 destElem.mergeAttributes(srcElem);
-
-			// åœ¨ IE delete destElem.data  å‡ºç°å¼‚å¸¸ã€‚
-			if(srcElem.data)
-				destElem.data = null;   // IE  å°†å¤åˆ¶ node.data
-				
-		}
-			
-		/// #endif
+	function manip(elem, method, html, args){
+		html = e.parse(html);
+		var ls = html.nextSibling;
+		elem[method](html, args);
 		
-		if (copyDataAndEvent) {
-			p.cloneData(srcElem,  destElem);
+		elem = html.parentNode;
+		var newS = html.nextSibling, ns;
+		while(ns = ls){
+			ls = ns.nextSibling;
+			elem.insertBefore(ns, newS);
 		}
 		
-		
-		if (srcElem.options) {
-			o.update(srcElem.options, 'selected', destElem.options, true);
-		}
-		
-		var prop = properties[srcElem.tagName];
-		if (prop)
-			destElem[prop] = srcElem[prop];
+		return html;
 	}
 	
 	/**
-	 * æ‰§è¡Œç®€å•çš„é€‰æ‹©å™¨ã€‚
-	 * @param {Element} elem å…ƒç´ ã€‚
-	 * @param {String} selector é€‰æ‹©å™¨ã€‚
-	 * @return {ElementList} å…ƒç´ é›†åˆã€‚
+	 * Ö´ĞĞ¼òµ¥µÄÑ¡ÔñÆ÷¡£
+	 * @param {Element} elem ÔªËØ¡£
+	 * @param {String} selector Ñ¡ÔñÆ÷¡£
+	 * @return {ElementList} ÔªËØ¼¯ºÏ¡£
 	 * @ignore
 	 */
 	function findBy(elem, selector){
@@ -2988,9 +2990,9 @@
 	}
 	
 	/**
-	 * è·å–ä¸€ä¸ªé€‰æ‹©å™¨ã€‚
+	 * »ñÈ¡Ò»¸öÑ¡ÔñÆ÷¡£
 	 * @param {Number/Function/undefined} fn
-	 * @return {Funtion} å‡½æ•°ã€‚
+	 * @return {Funtion} º¯Êı¡£
 	 * @ignore
 	 */
 	function getFilter(fn) {
@@ -3008,7 +3010,7 @@
 				break;
 		}
 		
-		assert.isFunction(fn, "getFilter(fn): {fn} å¿…é¡»æ˜¯ä¸€ä¸ªå‡½æ•°ã€‚", fn);
+		assert.isFunction(fn, "getFilter(fn): {fn} ±ØĞëÊÇÒ»¸öº¯Êı¡£", fn);
 		return fn;
 	}
 	
@@ -3018,7 +3020,7 @@
 	
 	try{
 		
-		//  ä¿®å¤IE6 å›  css æ”¹å˜èƒŒæ™¯å›¾å‡ºç°çš„é—ªçƒã€‚
+		//  ĞŞ¸´IE6 Òò css ¸Ä±ä±³¾°Í¼³öÏÖµÄÉÁË¸¡£
 		document.execCommand("BackgroundImageCache", false, true);
 	} catch(e) {
 		
