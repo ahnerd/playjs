@@ -50,7 +50,9 @@ var Py = {
 	 * @config {String}
 	 * @ignore
 	 */
-	defaultNamespace: 'Py',
+	defaultNamespace: this,
+	
+	/// #ifndef Framework
 	
 	/**
 	 * 如果使用了 UI 库，则 theme 表示默认皮肤。
@@ -58,6 +60,8 @@ var Py = {
 	 * @ignore
 	 */
 	theme: 'default',
+	
+	/// #endif
 	
 	/**
 	 * 启用控制台调试。
@@ -106,7 +110,6 @@ var Py = {
 	/// #endif
 	
 	/// #ifndef Compact
-	/// #define SupportUsing
 	/// #define SupportUsing
 	/// #endif
 	
@@ -192,32 +195,6 @@ var Py = {
 		 */
 		makeArray = arp.slice,
 		
-		/// #ifdef SupportIE6
-		/**
-		 * 浏览器是否为标准事件。就目前浏览器状况， IE6，7 中 isQuirks = true  其它皆 false 。
-		 * @type Boolean
-		 * 此处认为 IE6,7 是怪癖的。
-		 */
-		isQuirks = typeof w.Element !== 'function' && String(w.Element) !== "[object Element]",
-
-		/**
-		 * 元素。
-		 * @class Element
-		 */
-		Element = w.Element || function() {},
-		
-		/**
-		 * @class
-		 */
-		
-		/// #else
-		
-		/// isQuirks = false,
-		
-		/// Element: w.Element,
-		
-		/// #endif
-		
 		/**
 		 * 管理所有事件类型的工具。
 		 * @type Object
@@ -232,90 +209,6 @@ var Py = {
 				add: emptyFn,
 				trigger: emptyFn,
 				remove: emptyFn
-			},
-			
-			/**
-			 * 管理元素的事件。
-			 * @type Object
-			 */
-			element: {
-				
-				/**
-				 * 默认事件。
-			 	 * @type Object
-				 */
-				$default: {
-					
-					/**
-					 * 事件初始化。
-					 * @return {Function} 启用当前事件的函数。
-					 */
-					setup: function() {
-						return function(e) {
-						
-							// 此函数，存储事件相关数据。
-							var fn = arguments.callee, i = -1,  // 存在类型说明有 one 事件，需生成函数副本，防止被删后循环错误。
-							handlers = fn.handlers.slice(0), len = handlers.length, target = fn.target, F = false;
-							
-							// 创建参数
-							fn.event.trigger.call(target, e);
-							
-							// 自身的句柄
-							while (++i < len) {
-							
-								if (e.returnValue === F) 									
-									return F;
-								
-								// 如果返回 false ， 运行   stopPropagation/preventDefault
-								if (handlers[i].call(target, e) === F) {
-									e.stopPropagation();
-									e.preventDefault();
-								}
-								
-							}
-							
-							return e.returnValue !== F;
-						}  ;
-					},
-				
-					/**
-					 * 创建当前事件可用的参数。
-					 * @param {EventArgs} e 事件参数。
-					 * @param {Object} target 事件目标。
-					 * @return {EventArgs} e 事件参数。
-					 */
-					createEventArgs: function(e, target){
-						assert(!e || ( e.stopPropagation && e.preventDefault), "IEvent.trigger(e): 参数 e 必须有成员 stopPropagation 和 preventDefault ，可使用类型 Py.EventArgs 代替。");
-						return e || new p.EventArgs(target);
-					},
-					
-					/**
-					 * 事件触发后对参数进行处理。
-					 * @param {EventArgs} e 事件参数。
-					 */
-					trigger: emptyFn,
-				
-					/**
-					 * 添加绑定事件。
-					 * @param {Object} obj 对象。
-					 * @param {String} type 类型。
-					 * @param {Function} fn 函数。
-					 */
-					add: function(obj, type, fn) {
-						obj.addEventListener(type, fn, false);
-					},
-					
-					/**
-					 * 删除事件。
-					 *@param {Object} obj 对象。
-					 * @param {String} type 类型。
-					 * @param {Function} fn 函数。
-					 */
-					remove: function(obj, type, fn) {
-						obj.removeEventListener(type, fn, false);
-					}
-				}
-			
 			}
 			
 		},
@@ -364,7 +257,7 @@ var Py = {
 				Py.enumerables = ["toString", "hasOwnProperty", "valueOf", "constructor", "isPrototypeOf"];
 				// IE6  需要复制
 				return function(dest, src){
-					for(var i = members.length, value; i--;)
+					for(var i = Py.enumerables.length, value; i--;)
 						if(hasOwnProperty.call(src, value = Py.enumerables[i]))
 							dest[value] = src[value];
 					return apply(dest, src);
@@ -453,17 +346,19 @@ var Py = {
 					// 如果存在这个值。即源有 fn 内容。
 					if(value != undefined) {
 						
+						value = value[fn];
+						
 						// 如果此属性已为函数，则执行函数，并得到结果数组。
-						if (o.isFunction(value[fn]))
-							dest[key] = value[fn](args);
+						if (o.isFunction(value))
+							dest[key] = value(args);
 						
 						// 如果属性是非函数，则说明更新。 a.value -> b.value
 						else if(args)
-							dest[key][fn] = value[fn];
+							dest[key][fn] = value;
 							
 						// 类似函数的更新。 a.value -> value
 						else
-							dest[key] = value[fn];
+							dest[key] = value;
 					}
 	                    
 				});
@@ -576,39 +471,37 @@ var Py = {
 			 */
 			set: function(obj, config) {
 				
-				if(!config)
-					return;
+				if(config) 
+					for(var key in config){
+						
+						// 检查 setValue 。
+						var setter = 'set' + key.capitalize(),
+							val = config[key];
 				
-				for(var key in config){
-					
-					// 检查 setValue 。
-					var setter = 'set' + key.capitalize(),
-						val = config[key];
-			
-			
-					if (o.isFunction(obj[setter])) {
-						obj[setter](val);
-					} 
-					
-					// 是否存在函数。
-					else if(o.isFunction(obj[key])) {
-						obj[key](val);
+				
+						if (o.isFunction(obj[setter])) {
+							obj[setter](val);
+						} 
+						
+						// 是否存在函数。
+						else if(o.isFunction(obj[key])) {
+							obj[key](val);
+						}
+						
+						// 检查 value.set 。
+						else if (obj[key] && obj[key].set) {
+							obj[key].set(val);
+						} 
+						
+						// 检查 set 。
+						else if(obj.set)
+							obj.set(key, val);
+						else
+						
+							// 最后，就直接赋予。
+							obj[key] = val;
+				
 					}
-					
-					// 检查 value.set 。
-					else if (obj[key] && obj[key].set) {
-						obj[key].set(val);
-					} 
-					
-					// 检查 set 。
-					else if(obj.set)
-						obj.set(key, val);
-					else
-					
-						// 最后，就直接赋予。
-						obj[key] = val;
-			
-				}
 				
 			},
 			
@@ -674,7 +567,7 @@ var Py = {
 			 */
 			implement: function (obj) {
 	
-				assert(obj && this.prototype, "Py.Native.prototype.implement(obj): 无法扩展类，因为 {obj} 或 this.prototype 为空。", obj);
+				assert(obj && this.prototype, "Native.prototype.implement(obj): 无法扩展类，因为 {obj} 或 this.prototype 为空。", obj);
 				// 复制到原型
 				o.extend(this.prototype, obj);
 		        
@@ -690,7 +583,7 @@ var Py = {
 			 */
 			implementIf: function(obj) {
 			
-				assert(obj && this.prototype, "Py.Native.prototype.implementIf(obj): 无法扩展类，因为 {obj} 或 this.prototype 为空。", obj);
+				assert(obj && this.prototype, "Native.prototype.implementIf(obj): 无法扩展类，因为 {obj} 或 this.prototype 为空。", obj);
 		
 				applyIf(this.prototype, obj);
 				
@@ -768,10 +661,10 @@ var Py = {
 					constructor = constructorDefined ? members.constructor : baseClass.prototype.constructor;
 				
 				// 代理类
-				defaultConstructor.prototype = baseClass.prototype;
+				emptyFn.prototype = baseClass.prototype;
 				
 				// 指定成员
-				Native(subClass).prototype = apply(new defaultConstructor, members);
+				Native(subClass).prototype = apply(new emptyFn, members);
 				
 				/// #ifdef SupportIE6
 				
@@ -829,38 +722,7 @@ var Py = {
 			 * @property Events
 			 * @type Object
 			 */
-			Events: eventMgr,  
-			
-			/**
-			 * 元素。
-			 * @class Element
-			 */
-			Element: Element,
-			
-			/// #ifdef SupportIE6
-	
-			/**
-		     * 根据一个 id 或 对象获取节点。
-			 * @method
-		     * @param {String/Element} id 对象的 id 或对象。
-		     */
-			$: isQuirks ? function(id){
-				var dom = getElementById(id);
-				
-				if(dom && dom.domVersion !== Element.prototype.domVersion) {
-					applyIf(dom, Element.prototype);
-				}
-				
-				return dom;
-				
-				
-			} : getElementById,
-			
-			/// #else
-			
-			/// $: getElementById,
-			
-			/// #endif
+			Events: eventMgr, 
 			
 			/**
 			 * 获取属于一个元素的数据。
@@ -1157,9 +1019,8 @@ var Py = {
 					
 					// 获取本对象     本对象的数据内容   本事件值
 					var me = this, evt = p.dataIf(me, 'event');
-					   
-					   // LOG  ? applyIf(e, p.EventArgs.prototype) : 
-					return (!evt || !(evt = evt[type]) || evt(evt.event.createEventArgs ? ( e = evt.event.createEventArgs(e, me)) : e)) && (!me[type = 'on' + type] || me[type](e) !== false);
+					    
+					return (!evt || !(evt = evt[type]) || evt(evt.event.createEvent ? ( e = evt.event.createEvent(e, me)) : e)) && (!me[type = 'on' + type] || me[type](e) !== false);
 					
 				}
 			},
@@ -1327,48 +1188,6 @@ var Py = {
 			},
 			
 			/// #endif
-			
-			/**
-			 * 定义事件。 
-			 * @param {String} 事件名。
-			 * @param {Function} trigger 触发器。
-			 * @return {Function} Py.defineDomEvents
-			 */
-			defineDomEvents: function(events, baseEvent, trigger, add, remove, createEventArgs) {
-				
-				var ee = eventMgr.element;
-				
-				// 删除已经创建的事件。
-				delete ee[events];
-				
-				// 对每个事件执行定义。
-				String.map(events, Object(applyIf({
-					
-					trigger: baseEvent && trigger ? function(e){
-							eventMgr.element[baseEvent].trigger.call(this, e);
-							trigger.call(this, e);
-					} : trigger || (ee[events] || ee.$default).trigger,
-					
-					//  DOM 使用同方法来安装。
-					add: add === true ? function(elem, type, fn) {
-		                elem.addEventListener(baseEvent, this.delegate, false);
-		            } : add || baseEvent && function(elem, type, fn) {
-		                elem.addEventListener(baseEvent, fn, false);
-		            },
-					
-					createEventArgs: createEventArgs,
-					
-					remove: remove === true ?  function(elem, type, fn) {
-		                elem.addEventListener(baseEvent, this.delegate, false);
-		            } : remove || baseEvent && function(elem, type, fn) {
-		                elem.removeEventListener(baseEvent, fn, false);
-		            }
-					
-				}, ee.$default)), ee);
-				
-				// 方便继续使用本函数，如果重命名，返回事件对象，否则返回此函数。
-				return baseEvent ? ee[events] : arguments.callee;
-			},
 	
 			/**
 			 * 由存在的类修改创建类。即为类添加一个 implement 和 implementIf 成员。
@@ -1388,13 +1207,8 @@ var Py = {
 			 * </code>
 			 */
 			Native: Native,
-	
-			/**
-			 * 默认的全局名字空间。
-			 */
-			defaultNamespace: 'Py',
 			
-			/// #ifdef Framework
+			/// #ifndef Framework
 			
 			/**
 			 * 主题。
@@ -1403,64 +1217,11 @@ var Py = {
 			theme: 'default',
 			
 			/// #endif
-			
-		    /**
-		     * 将窗口对象本地化。
-		     * @param {Window} w 窗口。
-		     */
-		    setupWindow: function(w) {
-					
-				assert(w.setInterval, 'Py.setupWindow(w): 参数 {w} 必须是一个 Window 对象。', w);
-		    
-		        /**
-		         * 本地化 Element 。
-		         * @class Element
-		         */
-				
-				/// #ifndef SupportIE6
-				
-		        if (!w.Element) w.Element = Element;
-				
-				/// #endif
-		        
-		        // 对非     IE6/7 ,手动复制 Element.prototype
-		        if (w.Element !== Element) {
-					
-					copyIf(Element.prototype, w.Element.prototype);
-					
-		            applyIf(w.Element, Element);
-		        }
-				
-		        // 复制 document 变量。
-		    	var wd = apply(w.document, p.IEvent);
-				
-				if(!wd.id)
-					copyIf(document, wd);
-				/// #ifndef SupportIE8
-		        
-		        // 修正 IE 不支持     defaultView
-		        if (!('defaultView' in wd)) wd.defaultView = wd.parentWindow;
-		        
-				/// #endif
-				
-				/// #ifdef SupportGlobalObject
 	
-				// 将以下成员赋予 window ，这些成员是全局成员。
-				String.map('$ Class addEventListener removeEventListener using imports namespace', p, w, true);
-				
-				/// #endif
-				
-				
-				w.undefined = w.undefined;
-				
-				
-				function copyIf(from, to){
-					for (var item in from) {
-						if(!(item in to) && (item in from))
-							to[item] = from[item];
-					}
-				}
-		    }
+			/**
+			 * 默认的全局名字空间。
+			 */
+			defaultNamespace: w
 			
 		});
 	
@@ -1497,6 +1258,17 @@ var Py = {
 			// 调用 slice 实现。
 			return makeArray.call(iterable, start);
 		},
+		
+		/**
+		 * 如果目标数组不存在值，则拷贝，否则忽略。
+		 * @param {Array} src 来源数组。
+		 * @param {Array} dest 目标数组。
+		 */
+		copyIf: function(src, dest){
+			
+			for(var i = 0; i < src.length; i++)
+				dest.include(src[i]);
+		},
 
 		/**
 		 * 把传入的值连接为新的数组。如果元素本身是数组，则合并。此函数会过滤以存在的值。
@@ -1513,7 +1285,7 @@ var Py = {
 				
 				
 				// 如果数组，把内部元素压入r。
-				if (o.isArray(d) || d.item) forEach.call(d, r.include, r);
+				if (d && typeof d.length === 'number') Array.copyIf(d, r);
 				
 				// 不是数组，直接压入 r 。
 				else r.include(d);
@@ -1696,70 +1468,6 @@ var Py = {
 	
 	/// #endregion
 	
-	/**
-	 * @namespace document
-	 */
-	applyIf(document, {
-				
-		/**
-		 * 页面加载时执行。
-		 * @param {Functon/undefined} fn 执行的函数。
-		 */
-		ready: function(fn) {
-				
-			// 已经完成则执行函数，否则 on 。
-			document.isReady ? fn.call(document) : document.on('ready', fn);
-			
-		},
-		
-		/// #ifdef SupportIE8
-		
-		/**
-		 * 绑定一个监听器。
-		 * @param {String} type 类型。
-		 * @param {Function} fn 函数。
-		 */
-		addEventListener: p.addEventListener,
-		
-		/**
-		 * 移除一个监听器。
-		 * @param {String} type 类型。
-		 * @param {Function} fn 函数。
-		 */
-		removeEventListener: p.removeEventListener,
-
-		/// #endif
-		
-		/// #ifdef SupportIE6
-		
-		/**
-		 * 获取节点本身。
-		 * @return {Element}
-		 */
-		getDom: isQuirks ? function(){
-				
-			// 这里直接使用 documentElement ，故不支持 QUIRKS ，如果 html = wd.body 则为 QUIRKS 模式。
-			return p.$(this.documentElement);
-		} : function(){
-				
-			// 这里直接使用 documentElement ，故不支持 QUIRKS ，如果 html = wd.body 则为 QUIRKS 模式。
-			return this.documentElement;
-		}
-		
-		/// #else
-		
-		/// id: getElementById,
-		
-		/// getDom: function(){
-		///				
-		///		// 这里直接使用 documentElement ，故不支持 QUIRKS ，如果 html = wd.body 则为 QUIRKS 模式。
-		///		return this.documentElement;
-		/// }
-		
-		///#endif
-		
-	});
-	
 	/// #region 浏览器
 
 	/**
@@ -1826,23 +1534,32 @@ var Py = {
 			 */
 			version: match[2],
 			
-			/**
-			 * 浏览器详细信息。
-			 * @type String
-			 */
-			fullBrowser: fullBrowser,
+			/// #ifdef SupportIE6
 			
 			/**
-			 * 是否为标准浏览器模式。IE6,7不被认为是标准的。
+			 * 浏览器是否为标准事件。就目前浏览器状况， IE6，7 中 isQuirks = true  其它皆 false 。
 			 * @type Boolean
+			 * 此处认为 IE6,7 是怪癖的。
 			 */
-			isQuirks: isQuirks,
+			isQuirks: typeof w.Element !== 'function' && String(w.Element) !== "[object Element]",
+			
+			/// #endif
+			
+			/// #ifdef SupportIE8
 			
 			/**
 			 * 是否为标准浏览器事件。
 			 * @type Boolean
 			 */
-			isStd: !!-[1,]
+			isStd: !!-[1,],
+			
+			/// #endif
+			
+			/**
+			 * 浏览器详细信息。
+			 * @type String
+			 */
+			fullBrowser: fullBrowser
 			
 		};
 
@@ -1866,7 +1583,7 @@ var Py = {
 	
 	
 	// 把所有内建对象本地化
-	forEach.call([String, Array, Function, Date, Element, Number], Native);
+	forEach.call([String, Array, Function, Date, Number], Native);
 	
 	/**
 	 * @class String 
@@ -2045,6 +1762,7 @@ var Py = {
 		 * @return {Array} 结果。
 		 */
 		invoke: function(fn, args){
+			assert(args && typeof args.length === 'number', "Array.prototype.invoke(fn, args): 参数 {args} 必须是数组, 无法省略。")
 			var r = [];
 			forEach.call(this, o.isFunction(fn) ? function(value, index){
 				r.push(fn.call(args, value, index));
@@ -2060,9 +1778,9 @@ var Py = {
 		 * 删除数组中重复元素。
 		 * @return {Array} 结果。
 		 */
-		unique : function() {
+		unique: function() {
 			var r = [];
-			forEach.call(this, r.include, r);
+			Array.copyIf(this, r);
 		    return r; 
 		},
 		
@@ -2086,59 +1804,12 @@ var Py = {
 
 	});
 	
-	/**
-	 * @class Element
-	 */
-	Element.implementIf({
-		
-		/**
-		 * xType
-		 */
-		xType: document.xType = "element",
-		
-		/**
-		 * 获取节点本身。
-		 * @return {Element}
-		 */
-		getDom: function(){
-			return this;
-		},
-		
-		/// #ifndef SupportIE8
-		
-		/**
-		 * 绑定一个监听器。
-		 * @param {String} type 类型。
-		 * @param {Function} fn 函数。
-		 */
-		addEventListener: p.addEventListener,
-		
-		/**
-		 * 移除一个监听着。
-		 * @param {String} type 类型。
-		 * @param {Function} fn 函数。
-		 */
-		removeEventListener: p.removeEventListener
-		
-		/// #endif
-		
-	});
-	
-	
 	/// #endregion
 	
 	/// #region 远程请求
 	
 	
 	/// #ifdef SupportIE6
-		
-	if (isQuirks) {
-		
-		
-		// 避免 getElementById 函数返回错误的函数。
-		Element.prototype.domVersion = 1;
-		
-	}
 	
 	/**
 	 * 生成一个请求。
@@ -2146,7 +1817,7 @@ var Py = {
 	 * @return {XMLHttpRequest} 请求的对象。
 	 */
 	
-	if(!w.XMLHttpRequest || isQuirks) {
+	if(!w.XMLHttpRequest || nv.isQuirks) {
 		
 		try{
 			(w.XMLHttpRequest = function() {
@@ -2200,106 +1871,6 @@ var Py = {
 	/// #region 页面
 	
 	/**
-	 * @class Element
-	 */
-	Element.addEvents({
-		
-		/**
-		 * 文档初始化事件。
-		 * @event ready
-		 */
-		ready: {
-			add: function(elem, type, fn) {
-				
-				assert(elem.nodeType === 9, 'Elememt.prototype.on(type, fn) 只有文档对象才能添加 "ready" 事件 。 {elem} 不是合法的文档对象', elem);
-				
-				// 使用系统文档完成事件。
-				elem.addEventListener(this.eventName, fn, false);
-				
-				// 使用 window.onload。确保函数被成功运行。
-				var w = elem.defaultView;
-				
-				p.addEventListener.call(w, 'load', fn);
-				
-				
-				// 如果readyState 不是  complete, 说明文档正在加载。
-				if (elem.readyState !== "complete") { 
-					
-					/// #ifdef SupportIE8
-					
-					// 只对 IE 检查。
-					if (!navigator.isStd) {
-					
-						// 来自 jQuery
-			
-						//   如果是 IE 且不是框架
-						var toplevel = false;
-			
-						try {
-							toplevel = w.frameElement == null;
-						} catch(e) {}
-			
-						if ( toplevel && elem.documentElement.doScroll) {
-							
-							/**
-							 * 为 IE 检查状态。
-							 * @private
-							 */
-							(function () {
-								if (elem.isReady) {
-									return;
-								}
-							
-								try {
-									//  http:// javascript.nwbox.com/IEContentLoaded/
-									elem.documentElement.doScroll("left");
-								} catch(e) {
-									setTimeout( arguments.callee, 1 );
-									return;
-								}
-							
-								elem.trigger('ready');
-							})();
-						}
-					}
-					
-					/// #endif
-					
-				} else {
-					
-					elem.trigger('ready');
-				}
-			},
-			
-			remove: function(elem, type, fn) {
-				
-				// 删除系统自带事件。
-				elem.removeEventListener(this.eventName, fn, false);
-				p.removeEventListener.call(elem.defaultView, 'load', fn);
-			},
-			
-			trigger: function(e) {
-				this.isReady = true;
-				this.un('ready');
-			},
-			
-			/// #ifdef SupportIE8
-			
-			eventName: nv.isStd ? 'DOMContentLoaded' : 'readystatechange'
-			
-			
-			/// #else
-			
-			/// eventName: 'DOMContentLoaded'   
-			
-			/// #endif
-		}
-	
-	});
-	
-	p.setupWindow(w);
-	
-	/**
 	 * @namespace Py
 	 */
 	apply(p, {
@@ -2325,45 +1896,143 @@ var Py = {
 				b = b[b.length - 1];
 						
 				// IE6/7 使用  getAttribute
-				b = isQuirks ? b.getAttribute('src', 5) : b.src;
+				b = nv.isQuirks ? b.getAttribute('src', 5) : b.src;
 				return (b.match(/[\S\s]*\//) || [""])[0];
 				
 		}) (document),
-			
+		
 		/**
-		 * 表示事件的参数。
-		 * @class EventArgs
+		 * 初始化 window 对象。
+		 * @param {Document} doc
 		 */
-		EventArgs: Class({
+		setupWindow: function(w){
+				
+			assert(w.setInterval, 'Py.setupWindow(w): 参数 {w} 必须是一个 Window 对象。', w);
 			
+			/// #region 变量
+			
+			/// #ifdef SupportGlobalObject
+		
+			// 将以下成员赋予 window ，这些成员是全局成员。
+			String.map('Class using imports namespace', p, w, true);
+			
+			/// #endif
+			
+			
+			w.undefined = w.undefined;
+			
+			/// #endregion
+			
+			/// #region bindReady
+			
+			var document = w.document,
+			
+				doReady = function(){
+					
+					if(document.isReady)
+						return;
+						
+					document.isReady = true;
+					
+					// 调用所有函数。
+					for(var list = doReady.list, i = 0, len = list.length; i < len; i++)
+						list[i].call(document, p);
+					
+					
+					// 使用 document 删除事件。
+					p.removeEventListener.call(document, eventName, doReady, false);
+					
+					p.removeEventListener.call(w, 'load', doReady, false);
+					
+					doReady = null;
+					
+				},
+				
+				/// #ifdef SupportIE8
+			
+				eventName = nv.isStd ? 'DOMContentLoaded' : 'readystatechange';
+			
+				/// #else
+				
+				/// eventName = 'DOMContentLoaded';  
+				
+				/// #endif
+		
 			/**
-			 * 构造函数。
-			 * @param {Object} target
-			 * @constructor EventArgs
+			 * 页面加载时执行。
+			 * @param {Functon/undefined} fn 执行的函数。
+			 * @memberOf document
 			 */
-			constructor: function(target){
-				 this.target = target;
-			},
+			document.ready = function(fn) {
+				
+				if(document.isReady)
+					fn.call(document);
+				else
+					// 已经完成则执行函数，否则 on 。
+					doReady.list.push(fn);
+				
+			};
+				
+			doReady.list = [];
+				
+			// 如果readyState 不是  complete, 说明文档正在加载。
+			if (document.readyState !== "complete") { 
 	
-			/**
-			 * 阻止冒泡。
-			 * @method stopPropagation
-			 */
-			stopPropagation : function() {
-				this.cancelBubble = true;
-			},
-			
-			/**
-			 * 停止默认。
-			 * @method preventDefault
-			 */
-			preventDefault : function() {
-				this.returnValue = false;
+				// 使用系统文档完成事件。
+				p.addEventListener.call(document, eventName, doReady, false);
+				
+				p.addEventListener.call(w, 'load', doReady, false);
+				
+				/// #ifdef SupportIE8
+				
+				// 只对 IE 检查。
+				if (!navigator.isStd) {
+				
+					// 来自 jQuery
+		
+					//   如果是 IE 且不是框架
+					var toplevel = false;
+		
+					try {
+						toplevel = w.frameElement == null;
+					} catch(e) {}
+		
+					if ( toplevel && document.documentElement.doScroll) {
+						
+						/**
+						 * 为 IE 检查状态。
+						 * @private
+						 */
+						(function () {
+							if (document.isReady) {
+								return;
+							}
+						
+							try {
+								//  http:// javascript.nwbox.com/IEContentLoaded/
+								document.documentElement.doScroll("left");
+							} catch(e) {
+								setTimeout( arguments.callee, 1 );
+								return;
+							}
+						
+							doReady();
+						})();
+					}
+				}
+				
+				/// #endif
+				
+			} else {
+				setTimeout(doReady, 1);
 			}
 			
-		})
+			/// #endregion
+		}
 		
 	});
+	
+	p.setupWindow(w);
 
 	/// #endregion
 	
@@ -2401,14 +2070,6 @@ var Py = {
 			if (dest[b] === undefined)
 				dest[b] = src[b];
 		return dest;
-	}
-
-	/**
-     * 根据一个 id 或 对象获取节点。
-     * @param {String/Element} id 对象的 id 或对象。
-     */
-	function getElementById(id) {  
-		return typeof id == "string" ? document.getElementById(id) : id;
 	}
 	
 	/**
@@ -2491,13 +2152,6 @@ var Py = {
 	/**
 	 * 空函数。
 	 */
-	function defaultConstructor(){
-		
-	}
-	
-	/**
-	 * 空函数。
-	 */
 	function emptyFn(){
 		
 	}
@@ -2553,7 +2207,7 @@ var Py = {
 		
 		var current = w, i = -1, len = name.length - 1;
 		
-		if(!name[0].length) name[0] = Py.defaultNamespace;
+		name[0] = name[0] || 'Py';
 		
 		while(++i < len)
 			current = current[name[i]] || (current[name[i]] = {});
@@ -2569,10 +2223,10 @@ var Py = {
 		/// #ifdef SupportGlobalObject
 		
 		// 指明的是对象。
-		if (!(i in w)) {
+		if (!(i in Py.defaultNamespace)) {
 			
 			// 复制到全局对象和名字空间。
-			w[i] = obj;
+			Py.defaultNamespace[i] = obj;
 			
 		}
 		
@@ -2596,15 +2250,15 @@ var Py = {
 		
 		assert(name && name.indexOf, "using(namespace): 参数 {namespace} 不是合法的名字空间。", name);
 		
+		// 已经载入。
+		if(p.namespaces.include(name))
+			return;
+			
 		if(name.indexOf('*') > -1){
 		 	return (theme || (isStyle ?['share', p.theme] : [])).forEach(function(value){
 				include(name.replace('*', value), null, isStyle);
 			});
 		 }
-		
-		// 已经载入。
-		if(p.namespaces.include(name))
-			return;
 		
 		if(name.indexOf('/') == -1){
 			name = name.toLowerCase().replace(rPoint, '/') + (isStyle ? '.css' : '.js');
@@ -2624,7 +2278,7 @@ var Py = {
 		 	doms = document.getElementsByTagName("SCRIPT");
 			src = 'src';
 
-			/* this donot work in IE7/6
+			/* this does not work in IE7/6
 			e = function(text){
 				var style = document.createElement('script');
 				style.innerHTML = text;
