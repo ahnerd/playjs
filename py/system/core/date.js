@@ -1,6 +1,5 @@
 //===========================================
-//  日期   Date.js
-//  Copyright(c) 2009-2011 xuld
+//  日期扩展   date.js C
 //===========================================
 
 
@@ -131,7 +130,7 @@ Object.extendIf(Date,{
 	 * @param {Number} month 指定的月。
 	 * @return {Number} 返回指定年的指定月的天数。
 	 */
-	dayInMonth : function(year, month) {
+	getDayInMonth : function(year, month) {
 	    if(month == 2)
 			return Date.isLeapYear(year) ? 29 : 28;
 		return _dayInMonth[month] ;

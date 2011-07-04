@@ -435,8 +435,28 @@ Object.extend(Object, {
 		}
 		return false;
 	},
+	//获取第一个不为undefined的值
+	pick : function(){ 
+		for (var i = 0, l = arguments.length; i < l; i++){
+			if (arguments[i] != undefined) return arguments[i];
+		}
+		return null;
+	},
 	
+	include: function(key, value){
+		var found = false;
+		this.each(function(value){
+			if (value == object) {
+				found = true;
+				throw $break;
+			}
+		});
+		return found;
+	},
 	
+	removeAt: function(index){
+		
+	},
 
 	contains: function(object, value){
 		return Object.keyOf(object, value) != null;
