@@ -4,6 +4,14 @@
 
 
 Number.implementIf({
+	
+	toString: (function(){
+		var toString = Number.prototype.toString;
+		return function(format){
+			
+		};
+		
+	})(),
 
 	limit: function(min, max){
 		return Math.min(max, Math.max(min, this));

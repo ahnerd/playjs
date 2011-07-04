@@ -1,6 +1,5 @@
 //===========================================
-//  使类有存储数据功能   idatastore.js
-//  Copyright(c) 2009-2011 xuld
+//  使类有存储数据功能   idatastore.js   A
 //===========================================
 
 
@@ -45,7 +44,7 @@ Py.namespace('.IDataStore', {
 	 * 删除属于一个元素的数据。
 	 * @param {String} [type] 类型。
 	 */
-	clearData: function(type) {
+	removeData: function(type) {
 		if(this.data) {
 			if(type)
 				delete this.data[type];

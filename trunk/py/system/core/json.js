@@ -5,6 +5,24 @@
 
 
 
+	
+	/**
+	 * 判断是否是合法的json字符串。
+	 * @param {json}。
+	 * @return {Boolean} 。
+	 */
+	isJSONText:function(json){  
+        return /^[\],:{}\s]*$/.test(json.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, "@")  
+
+        .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, "]")  
+
+        .replace(/(?:^|:|,)(?:\s*\[)+/g, ""));  
+
+    }, 
+	
+	toObject:function(){
+		return this.isJSONText?eval('('+this+')'):null;
+	},
 
 /*
     json.js
