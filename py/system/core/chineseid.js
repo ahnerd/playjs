@@ -1,5 +1,5 @@
 //===========================================
-//  中国身份证合法性建议   chineseid.js
+//  中国身份证合法性建议   chineseid.js   A
 //  来自 互联网
 //===========================================
 
@@ -51,7 +51,7 @@ Py.namespace('.Check.', {
 		'91': '国外'
 	},
 	
-	isChineseId:  function(id){
+	checkId:  function(id){
 		
 		var city = Check._data[parseInt(id.substring(0, 2))], valid = !!city;
 		

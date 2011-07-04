@@ -1,33 +1,29 @@
+//===========================================
+//  模拟多线程的任务   taskrunner.js  A
+//===========================================
+
+Py.using("Py.Fx.Base");
 
 
-
-Ext.util.TaskRunner = function(interval){
-    interval = interval || 10;
-    var tasks = [], removeQueue = [];
-    var id = 0;
-    var running = false;
-
-    var stopThread = function(){
-        running = false;
-        clearInterval(id);
-        id = 0;
-    };
-
-    var startThread = function(){
-        if(!running){
-            running = true;
-            id = setInterval(runTasks, interval);
-        }
-    };
-
-    var removeTask = function(task){
+Py.namespace(".TaskRunner", Py.Fx.Base.extend({
+	
+	tasks: null,
+	
+	removeQueue: null,
+	
+	constructor:  function(fps){
+	    if(fps)
+			this.fps = fps;
+	},
+	
+	removeTask: function(task){
         removeQueue.push(task);
         if(task.onStop){
             task.onStop();
         }
-    };
-
-    var runTasks = function(){
+    },
+	
+	step: function(){
         if(removeQueue.length > 0){
             for(var i = 0, len = removeQueue.length; i < len; i++){
                 tasks.remove(removeQueue[i]);
@@ -54,24 +50,23 @@ Ext.util.TaskRunner = function(interval){
                 removeTask(t);
             }
         }
-    };
-
-    
-    this.start = function(task){
+    },
+	
+	start: function(task){
         tasks.push(task);
         task.taskStartTime = new Date().getTime();
         task.taskRunTime = 0;
         task.taskRunCount = 0;
         startThread();
         return task;
-    };
-
-    this.stop = function(task){
+    },
+	
+	stop: function(task){
         removeTask(task);
         return task;
-    };
-
-    this.stopAll = function(){
+    },
+	
+	stopAll: function(){
         stopThread();
         for(var i = 0, len = tasks.length; i < len; i++){
             if(tasks[i].onStop){
@@ -80,8 +75,9 @@ Ext.util.TaskRunner = function(interval){
         }
         tasks = [];
         removeQueue = [];
-    };
-};
+    }
+		
+}));
 
 
 
