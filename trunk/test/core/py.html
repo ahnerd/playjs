@@ -19,8 +19,8 @@
 				["Py.dataIf", function(){ return Py.dataIf({},"s"); }, undefined],
 				["Py.setData", function(){ return Py.setData({},"s", 1); }, 1],
 				["Py.rootPath", function(){ return Py.rootPath; }],
-				["Py.addEventListener", function(){document.addEventListener('dblclick', log, false);}],
-				["Py.removeEventListener", function(){document.removeEventListener('dblclick', log, false);}]
+				["Py.addEventListener", function(){Py.addEventListener.call(document, 'dblclick', log, false);}],
+				["Py.removeEventListener", function(){Py.removeEventListener.call(document, 'dblclick', log, false);}]
 			];
 		
 		</script>

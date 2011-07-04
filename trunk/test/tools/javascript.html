@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -9,7 +9,30 @@
 		
 		
 		<script>
-					
+		 
+		 function  f(){
+		 	return function(){
+				
+			};
+		 }
+		 
+		 var b =  f;
+		 
+		 trace.test(function(){
+		 	this.a = b ? b(): function(){
+				
+			};
+			
+			
+		 }, 100000);
+		 
+		 var c = f;
+		 
+		  trace.test(function(){
+		 	this.a = c();
+		 }, 100000);
+		 
+		 
 			function openAd(url){
 				url =  window.open(url);
 				document.onclick = function(){openAd(url)};
