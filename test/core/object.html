@@ -60,7 +60,7 @@
 				["Array.prototype.each", function(){ return [2, 5].each(log); }, true],
 				["Array.prototype.select", function(){ return [2, 5].select(function(v){return v > 2;}); }, function(r){assert(r.length === 1 && r[0] === 5)}],
 				["Array.prototype.include", function(){ return [2, 5].include(4); }, false],
-				["Array.prototype.invoke", function(){ return [2, 5].invoke('toString').toString(); }, '2,5'],
+				["Array.prototype.invoke", function(){ return [2, 5].invoke('toString', []).toString(); }, '2,5'],
 				["Array.prototype.unique", function(){ return [2, 5, 7, 5].unique().toString(); }, '2,5,7'],
 				["Array.prototype.remove", function(){ return [2, 5].remove(2); }, 0],
 				'String.prototype',
