@@ -134,14 +134,20 @@ function writeNavigator(){
 function toolCreateAllFunction(obj){
 	var r = [], value = eval(obj), tabs = "\t\t\t\t";
 	for(var i in value){
-		if(value.hasOwnProperty(i) && value[i].toString().indexOf('[native code]') == -1){
+		if(value.hasOwnProperty(i) && typeof value[i] == 'function' && value[i].toString().indexOf('[native code]') == -1){
 			r.push(format(i));
 		}
 	}
 	
-	r = tabs + r.join(",\r\n" + tabs);
+	for(var i in value.prototype){
+		if(value.prototype.hasOwnProperty(i) && typeof value.prototype[i] == 'function' && value.prototype[i].toString().indexOf('[native code]') == -1){
+			r.push(format("prototype." + i));
+		}
+	}
 	
-	out(r);
+	r = tabs + r.join(",\n" + tabs);
+	
+	alert(r);
 	
 	return r;
 	
