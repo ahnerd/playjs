@@ -1,28 +1,9 @@
 //===========================================
-//  正则   RegExp.js
-//  Copyright(c) 2009-2010
+//  正则   RegExp.js    A
 //===========================================
 Object.extendIf(RegExp,{
 	
 	
-	
-	
-	
-	
-	
-})
-
-
-
-
-
-	escapeRegExp: function(){
-		return this.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1');
-	},
-	
-		
-		
-
 	/**
 	 * 从字符串创建正则式。
 	 * @param {Object} regexp 字符串。
@@ -30,11 +11,16 @@ Object.extendIf(RegExp,{
 	 * @return {RegExp/String}  正则表达式。
 	 * @memberOf RegExp
 	 */
-	RegExp.create = function(regexp, flag) {
+	create: function(regexp, flag) {
 		
 		// 正则替换。
-		var str = regexp.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\p1');
+		var str = regexp.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1');
 		
 		// 返回。
 		return flag === false ? str: new RegExp(str, flag);
 	} 
+	
+	
+	
+	
+});
