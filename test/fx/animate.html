@@ -3,7 +3,6 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>System.Fx  测试</title>
-		<link href="../assets/styles/default.css" rel="stylesheet"><link>
 		<script src="../../py/system.js" type="text/javascript"></script>
 		<script src="../../py/system/dom/element.js" type="text/javascript"></script>
 		<script src="../../py/system/fx/base.js" type="text/javascript"></script>
@@ -41,50 +40,40 @@
 						.start(4,3);
 				}, null, 8],
 				["Fx->height", function(){
-					new Animate(a).start(null, {height: 500});
+					a.animate({height: 500});
 				}, null, 8],
 				["Fx->size", function(){
-					new Animate(a).start(null, {size: {x: 400, y: 500}});
+					a.animate({size: {x: 400, y: 500}});
 				}, null, 8],
 				["Fx->opacity", function(){
-					new Animate(a).start(null, {opacity: 0});
+					a.animate({opacity: 0});
 				}, null, 8],
 				["Fx->offsets", function(){
-					new Animate(a).start(null, {offsets: {x: 400, y: 500}});
+					a.animate({offsets: {x: 400, y: 500}});
 				}, null, 8],
 				["Fx->position", function(){
-					new Animate(a).start(null, {position: {x: 400, y: 500}});
+					a.animate({position: {x: 400, y: 500}});
 				}, null, 8],
 				["Fx->scroll", function(){
-					new Animate(a).start(null, {scroll: {x: 400, y: 500}});
+					a.animate({scroll: {x: 400, y: 500}});
 				}, null, 8],
 				["Fx->background-color", function(){
-					new Animate(a).start(null, {'background-color': '#efefef'});
+					a.animate({'background-color': '#efefef'});
 				}, null, 8],
 				["Fx.Fx", function(){ 
-					fx = new Py.Fx.Animate(a);
-					fx.start({
-						"font-size": 40,
-						"height": 60
-					}).start({
-						"width": 10
-					});
-					
-				 }],
-				 ["animate", function(){ 
 					a.animate({
 						height: 10,
 						'font-size': 70,
-						'opacity': 30
+						'opacity': 0.3
 					}).animate({
 						height: 10,
 						'font-size': 20,
-						'opacity': 60
+						'opacity': 0.6
 					}).animate({
 						height: 10,
 						'font-size': 30,
-						'opacity': 70
-					})
+						'opacity': 0.7
+					});
 					
 				 }],
 				 ["toggle", function(){

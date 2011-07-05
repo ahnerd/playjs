@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -11,8 +11,9 @@
 	</head>
 	<body>
 		<script>
-			onload = function(){log('完成 -> load')};
-			document.ready(function(){    log("完成 -> ready");   });
+			document.onReady(function(){    log("完成 -> ready");   });
+			document.onLoad(function(){    log("完成 -> load");   });
+			onload = function(){log('完成 -> load -> fn')};
 		</script>
 		<img src="http://404.com">
 	</body>
