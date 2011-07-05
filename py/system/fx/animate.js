@@ -1,4 +1,6 @@
-﻿
+﻿//===========================================
+//  变换   animate.js      C
+//===========================================
 
 
 
@@ -160,8 +162,16 @@ Py.using("System.Fx.Base");
 		pfe = p.namespace(".Fx.Animate", p.Fx.Base.extend({
 			
 			/**
+			 * 当前绑定的节点。
+			 * @type Element
+			 * @protected
+			 */
+			dom: null,
+			
+			/**
 			 * 当前的状态存储。
-			 * @type {Object}
+			 * @type Object
+			 * @protected
 			 */
 			current: null,
 			
@@ -192,8 +202,8 @@ Py.using("System.Fx.Base");
 					else
 						Object.extend(this, options);
 				}
-					
-				this._competeHandlerList = [];
+				 
+				this._competeListeners = [];
 			},
 			
 			/**
@@ -218,80 +228,66 @@ Py.using("System.Fx.Base");
 			 * @param {Object} to 结束。
 			 */
 			compile: function(from, to){
+				assert.notNull(from, "Fx.Animate.prototype.start(from, to, duration, callback, link): 参数 {from} ~。");
+				assert.notNull(to, "Fx.Animate.prototype.start(from, to, duration, callback, link): 参数 {to} ~。");
+					
 				// 对每个设置属性
 				var me = this;
 				
 				// 对于每个键, 转换目前属性。
-				parseStyle(me.current = {}, me.dom, from || {}, to);
+				parseStyle(me.current = {}, me.dom, from, to);
 				
 				return me;
 			}
 		
 		}));
+	
+	pfe.specialAttr = specialAttr;
+	
+	pfe.parsers = {
 		
-		Fx.Animate.specialAttr = specialAttr;
-	
-		pfe.parsers = {
-			
-			/**
-			 * 数字。
-			 */
-			number: {
-				set: !navigator.isStd ?  function(target, name, from, to, delta){
-					try {
-						
-						// ie 对某些负属性内容报错
-						target.style[name] = c(from, to, delta);
-					}catch(e){}
-				} : function(target, name, from, to, delta){
+		/**
+		 * 数字。
+		 */
+		number: {
+			set: !navigator.isStd ?  function(target, name, from, to, delta){
+				try {
 					
-					target.style[name] = c(from, to, delta) + 'px';
-				},
-				parse: function(value){
-					return typeof value == "number" ? value : parseFloat(value);
-				},
-				get: e.styleNumber
+					// ie 对某些负属性内容报错
+					target.style[name] = c(from, to, delta);
+				}catch(e){}
+			} : function(target, name, from, to, delta){
 				
+				target.style[name] = c(from, to, delta) + 'px';
 			},
+			parse: function(value){
+				return typeof value == "number" ? value : parseFloat(value);
+			},
+			get: e.styleNumber
 			
-			/**
-			 * 颜色。
-			 */
-			color: {
-				set: function set(target, name, from, to, delta){
-					target.style[name] = String.arrayToHex([
-						Math.round(c(from[0], to[0], delta)),
-						Math.round(c(from[1], to[1], delta)),
-						Math.round(c(from[2], to[2], delta))
-					]);
-				},
-				parse: function(value){
-					return String.hexToArray(value) ||
-						String.rgbToArray(value);
-				},
-				get: e.getStyle
-				
-			}
+		},
+		
+		/**
+		 * 颜色。
+		 */
+		color: {
+			set: function set(target, name, from, to, delta){
+				target.style[name] = String.arrayToHex([
+					Math.round(c(from[0], to[0], delta)),
+					Math.round(c(from[1], to[1], delta)),
+					Math.round(c(from[2], to[2], delta))
+				]);
+			},
+			parse: function(value){
+				return String.hexToArray(value) ||
+					String.rgbToArray(value);
+			},
+			get: e.getStyle
 			
-		//	,
-			
-			/**
-			 * 文字。
-			 */
-		/*
-	string: {
-				parse: function(value){
-					return typeof value == 'string' && value;
-				},
-				get: getStyle,
-				set: function set(target, from, to, delta){
-					target.style[this.name] = from.substr(0, c(from[0], to[0], delta));
-				}
-			} 
-*/
-			
-		};
-	
+		}
+		
+	};
+
 	function parseStyle(current, elem, from, to){
 		
 		for (var key in to) {
@@ -424,16 +420,16 @@ Py.using("System.Fx.Base");
 		 * @param {Object} value 变化的值或变化的末值。
 		 * @param {Number} duration=-1 变化的时间。
 		 * @param {Function} [callBack] 回调。
-		 * @param {String} [link] 变化串联的方法。 可以为 wait, 等待当前队列完成。 restart 柔和转换为目前渐变。 cancel 强制关掉已有渐变。 ignore 忽视当前的效果。
+		 * @param {String} link='wait' 变化串联的方法。 可以为 wait, 等待当前队列完成。 restart 柔和转换为目前渐变。 cancel 强制关掉已有渐变。 ignore 忽视当前的效果。
 		 * @return this
 		 */
 		animate: function(){
 			var args = arguments, name = args[0], value = args[1];
 			if(typeof name === 'string'){
 				(args[1] = {})[name] = value;
-				args[0] = null;
+				args[0] = {};
 			} else if(typeof value !== 'object'){
-				Array.prototype.unshift.call(args, null);
+				Array.prototype.unshift.call(args, {});
 			}
 			
 			if (args[2] !== 0) {

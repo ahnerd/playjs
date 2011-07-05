@@ -1318,9 +1318,6 @@
 		   	assert.isNode(me, "Element.prototype.getText(): {this.getDom()} 必须返回 DOM 节点。");
 		   
             switch(me.tagName) {
-                case "INPUT":
-                case "TEXTAREA":
-                    return me.value;
                 case "SELECT":
                     if(me.type != 'select-one') {
                         var r = [];
@@ -1330,6 +1327,10 @@
                         });
                         return r.join(',');
                     }
+					
+					//  继续执行
+                case "INPUT":
+                case "TEXTAREA":
                     return me.value;
                 default:
                     return me[attributes.innerText];
@@ -1557,20 +1558,22 @@
         setText: function(value) {
             var me = this.getDom();
 			
+			assert(!value || typeof value === 'string', "Element.prototype.setText(value): {value} 必须是字符串。", value );
 		   	assert.isNode(me, "Element.prototype.setText(value): {this.getDom()} 必须返回 DOM 节点。");
 			
             switch(me.tagName) {
-                case "INPUT":
-                case "TEXTAREA":
                 case "SELECT":
                     if(me.type === 'select-multiple') {
-                        if(!o.isArray(value))
-                            value = value.split(',');
+                        value = value.split(',');
                         o.each(me.options, function(e) {
                             e.selected = value.contains(e.value);
                         });
-                    } else
-                        me.value = value;
+                    } 
+					
+					//  继续执行
+                case "INPUT":
+                case "TEXTAREA":
+                    me.value = value;
                     break;
                 default:
                     me[attributes.innerText] = value;

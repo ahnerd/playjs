@@ -1,4 +1,6 @@
-
+//===========================================
+//  ÔªËØ±ä»»º¯Êý   transitions.js      A
+//===========================================
 
 Py.namespace(".Fx.Transitions", {
 	
@@ -7,7 +9,7 @@ Py.namespace(".Fx.Transitions", {
 	},
 	
 	pow: function(p, x){
-		return Math.pow(p, x && x[0] || 6);
+		return Math.pow(p, x || 6);
 	},
 
 	expo: function(p){
@@ -23,7 +25,7 @@ Py.namespace(".Fx.Transitions", {
 	},
 
 	back: function(p, x){
-		x = x && x[0] || 1.618;
+		x = x || 1.618;
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
@@ -39,20 +41,24 @@ Py.namespace(".Fx.Transitions", {
 	},
 
 	elastic: function(p, x){
-		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x && x[0] || 1) / 3);
+		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x || 1) / 3);
 	},
 	
-	easeIn: Function.from,
-	
-	easeOut: function(transition){
+	easeIn: function(transition, x){
 		return function(p){
-			return 1 - transition(1 - p);
+			return transition(p, x);
 		};
 	},
 	
-	easeInOut:  function(transition){
+	easeOut: function(transition, x){
 		return function(p){
-			return (p <= 0.5) ? transition(2 * p) / 2 : (2 - transition(2 * (1 - p))) / 2;
+			return 1 - transition(1 - p, x);
+		};
+	},
+	
+	easeInOut:  function(transition, x){
+		return function(p){
+			return (p <= 0.5) ? transition(2 * p, x) / 2 : (2 - transition(2 * (1 - p), x)) / 2;
 		};
 	}
 	
