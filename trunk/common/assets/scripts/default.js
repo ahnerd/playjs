@@ -49,7 +49,20 @@ function main(){
 			return assertTrue;
 		
 		return function(r){
-			return assert(r === value, "assert失败。应该返回 " + value + "。现在返回 " + r);
+			var b = r === value;
+			
+			if(!b && typeof r.length == 'number' && r.length === value.length){
+				
+				b = true;
+				for(var i = 0; 	i < r.length; i++){
+					if(r[i] !== value[i]){
+						b = false;
+						break;
+					}
+				}
+			}
+			
+			return assert(b, "assert失败。应该返回 " + value + "。现在返回 " + r);
 		};
 	}
 }
