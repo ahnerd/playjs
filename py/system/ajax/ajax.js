@@ -35,11 +35,11 @@ Py.namespace(".Ajax", Py.Class({
 	},
 
 	onStateChange: function(isTimeout){
-		
 		var me = this, xhr = me.xhr, status;
 			
 		if(xhr && (xhr.readyState === 4 || isTimeout)) {
 			
+		
 			// 删除 readystatechange
 			xhr.onreadystatechange = Function.empty;
 			
@@ -51,9 +51,10 @@ Py.namespace(".Ajax", Py.Class({
 				status = 'error';
 			} else {
 				isTimeout = true;
+			
 				status = !XMLHttpRequest.isOk(xhr) && (xhr.statusText || 'error');
 			}
-			
+		
 			me.xhr = null;
 			
 			if (!status) {
