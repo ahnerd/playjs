@@ -1845,7 +1845,7 @@ var Py = {
 	 */
 	w.XMLHttpRequest.isOk = function(xmlHttp) {
 		
-		assert(xmlHttp && xmlHttp.open, 'XMLHttpRequest.isOk(xmlHttp): 参数 {xmlHttp} 不是合法的 XMLHttpRequest 对象', xmlHttp);
+		assert.isObject(xmlHttp, 'XMLHttpRequest.isOk(xmlHttp): 参数 {xmlHttp} 不是合法的 XMLHttpRequest 对象');
 		
 		// 获取状态。
 		var status = xmlHttp.status;
