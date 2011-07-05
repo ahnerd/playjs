@@ -261,13 +261,13 @@
 			
 			assert.isString(html, 'Element.parse(html, context, cachable): 参数 {html} ~。');
 			
-			assert(!context || context.createElement, 'Element.parse(html, context, cachable): 参数 {context} 必须是一个 Document 对象。', context);
+			context = context || document;
+			
+			assert(context.createElement, 'Element.parse(html, context, cachable): 参数 {context} 必须是一个 Document 对象。', context);
 			
 			var div = cache[html];
 	
-	        if (!div) {
-			
-				context = context || document;
+	        if (!div || div.ownerDocument !== context) {
 				
 				// 过滤空格  // 修正   XHTML
 				var h = html.trim().replace(rXhtmlTag, "<$1></$2>"),
@@ -282,11 +282,11 @@
 					var wrap = wrapMap[tag[1].toLowerCase()];
 					
 					if (wrap) {
-						var depth = wrap[0];
 						div.innerHTML = wrap[1] + h + wrap[2];
+						wrap = wrap[0];
 						
 						// 转到正确的深度
-						while (depth--) 
+						while (wrap--) 
 							div = div.lastChild;
 						
 					} else div.innerHTML = h;
@@ -524,7 +524,7 @@
 	     * @param {String/Element} ... 对象的 id 或对象。
 	     */
 	    id: function() {
-			return arguments.length < 2 ? p.$(arguments[1]) : new p.ElementList(o.update(arguments, p.$));
+			return arguments.length === 1 ? p.$(arguments[0]) : new p.ElementList(o.update(arguments, p.$, []));
 			
 	        /*
 			return new p.ElementList(o.update(arguments, function(id){
@@ -1201,15 +1201,7 @@
 			
 			/// #endif
 			
-		}
-		
-	});
-	
-	
-	/**
-	 * @class Element
-	 */
-	apply(e, {
+		},
 		
 		/**
          * 检查是否含指定类名。
@@ -1220,48 +1212,9 @@
 		hasClass: function(elem, className){
 			assert.isNode(elem, "Element.hasClass(elem, className): 参数 {elem} ~。");
 			return (" " + elem.className + " ").indexOf(" " + className + " ") >= 0;
-		},
-		
-		/**
-		 * 删除一个节点的所有子节点。
-		 * @param {Element} elem 节点。
-		 * @private
-		 */
-		empty: function (elem) {
-			while(elem.lastChild)
-				dispose(elem.lastChild);
-		},
-		
-		/**
-		 * 释放节点所有资源。
-		 * @param {Element} elem 节点。
-		 * @private
-		 */
-		dispose: function (elem) {
-			
-			//删除事件
-			if (navigator.isIE) {
-				if (elem.clearAttributes) {
-					elem.clearAttributes();
-				}
-
-				p.IEvent.un.call(elem);
-
-				if (elem.nodeName === "OBJECT") {
-					for (var p in elem) {
-						if (typeof elem[p] === 'function')
-							elem[p] = emptyFn;
-					}
-				}
-			}
-
-			empty(elem);
-
-			elem.parentNode && elem.parentNode.removeChild(elem);
-			
 		}
 		
-	}) ;
+	});
 	
 	
     updateToObj("opacity height width defaultValue accessKey cellPadding cellSpacing colSpan frameBorder maxLength readOnly rowSpan tabIndex useMap", attributes); 
@@ -2504,9 +2457,15 @@
             }
 
             return ds;
-        },
+        };
 		
-		hasChild = !div.compareDocumentPosition ? function(elem, child){
+		
+	/**
+	 * @class Element
+	 */
+	apply(e, {
+		
+		hasChild: !div.compareDocumentPosition ? function(elem, child){
 			while(child = child.parentNode){
 				if(elem === child)
 					return true;
@@ -2514,7 +2473,48 @@
 			return false;
 		} : function(elem, child) {
 			return !!(elem.compareDocumentPosition(child) & 16);
-		};
+		},
+		
+		/**
+		 * 删除一个节点的所有子节点。
+		 * @param {Element} elem 节点。
+		 * @private
+		 */
+		empty: function (elem) {
+			while(elem.lastChild)
+				e.dispose(elem.lastChild);
+		},
+		
+		/**
+		 * 释放节点所有资源。
+		 * @param {Element} elem 节点。
+		 * @private
+		 */
+		dispose: function (elem) {
+			
+			//删除事件
+			if (navigator.isIE) {
+				if (elem.clearAttributes) {
+					elem.clearAttributes();
+				}
+
+				p.IEvent.un.call(elem);
+
+				if (elem.nodeName === "OBJECT") {
+					for (var p in elem) {
+						if (typeof elem[p] === 'function')
+							elem[p] = emptyFn;
+					}
+				}
+			}
+
+			e.empty(elem);
+
+			elem.parentNode && elem.parentNode.removeChild(elem);
+			
+		}
+		
+	}) ;
 	
 	e.implementIf( {
 		
@@ -2635,7 +2635,7 @@
 		contains: function(child){
 			var me = this.getDom();
 			assert.isNode(me, "Element.prototype.contains(child): this.getDom() 返回的必须是 DOM 节点。");
-			return child == me || hasChild(me, child);
+			return child == me || e.hasChild(me, child);
 		},
 			
 		/**
@@ -2646,7 +2646,7 @@
 		 */
 		hasChild: function(child) {
 			var me = this.getDom();
-			return arguments.length ? hasChild(me, child) : me.firstChild !== null;
+			return arguments.length ? e.hasChild(me, child) : me.firstChild !== null;
 		}
 	}, 5)
 	
@@ -2717,7 +2717,7 @@
 		insert: 'insertAdjacentElement' in div ? function(html, swhere) {
 			var me = this.getDom();
 			assert.isNode(me, "Element.prototype.insert(html, swhere): this.getDom() 返回的必须是 DOM 节点。");
-			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数 swhere 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。");
+			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd '.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数 swhere 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。");
 			me[typeof html === 'string' ? 'insertAdjacentHTML' : 'insertAdjacentElement'](swhere, html);
 			switch (swhere) {
 				case "afterEnd":
@@ -2741,7 +2741,7 @@
 			
 			assert.notNull(html, "Element.prototype.insert(html, swhere): 参数 {html} ~。");
 			assert.isNode(me, "Element.prototype.insert(html, swhere): this.getDom() 返回的必须是 DOM 节点。");
-			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd'.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数 {swhere} 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。", swhere);
+			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd '.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数 {swhere} 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。", swhere);
 			if (!html.nodeType) {
 				html = e.parse(html);
 			}
@@ -2801,9 +2801,9 @@
 		 * @return {Element} 元素。
 		 */
 		wrapWith: function(html) {
-			var node = html = this.replaceWith(html);
-			while(node.firstChild) node = node.firstChild;
-			node.appendChild(this.getDom());
+			html = this.replaceWith(html);
+			while(html.lastChild) html = html.lastChild;
+			html.appendChild(this.getDom());
 			return html;
 		},
 		
@@ -2814,17 +2814,18 @@
 		 */
 		replaceWith: function(html) {
 		
-			var me = this.getDom();
 			
 			assert.notNull(html, "Element.prototype.replaceWith(html): 参数 {html} ~。");
-			assert(me.parentNode, 'Element.prototype.replaceWith(html): 当前节点无父节点，不能执行此方法 {this}', me);
 			if (!html.nodeType) {
 				html = e.parse(html);
 			}
 			
+			var me = this.getDom();
 			
+			assert(me.parentNode, 'Element.prototype.replaceWith(html): 当前节点无父节点，不能执行此方法 {this}', me);
 			assert.isNode(html, "Element.prototype.replaceWith(html, escape): 参数 {html} ~或 HTM 片段。");
-			return me.parentNode.replaceChild(html, me);
+			me.parentNode.replaceChild(html, me);
+			return html;
 		}
 	}, 3)
 	
@@ -2871,7 +2872,7 @@
          */
         empty: function() {
 			assert.isNode(this.getDom(), "Element.prototype.empty(): {this.getDom()} 必须返回 DOM 节点。");
-			empty(this.getDom());
+			e.empty(this.getDom());
             return this;
         },
 		
@@ -2881,7 +2882,7 @@
          */
         dispose: function() {
 			assert.isNode(this.getDom(), "Element.prototype.dispose(): {this.getDom()} 必须返回 DOM 节点。");
-			dispose(this.getDom());
+			e.dispose(this.getDom());
         }
 		
 	}, 2);
@@ -2938,13 +2939,17 @@
 			
 		if( destElem.mergeAttributes) {
 			
-			 destElem.clearAttributes();
-			 destElem.mergeAttributes(srcElem);
-
+			destElem.clearAttributes();
+			destElem.mergeAttributes(srcElem);
+			destElem.removeAttribute("data");
 			// 在 IE delete destElem.data  出现异常。
-			if(srcElem.data)
-				destElem.data = null;   // IE  将复制 node.data
-				
+			//if(srcElem.data)
+			//	destElem.data = null;   // IE  将复制 node.data
+			
+			
+			if (srcElem.options) {
+				o.update(srcElem.options, 'selected', destElem.options, true);
+			}
 		}
 			
 		/// #endif
@@ -2954,9 +2959,6 @@
 		}
 		
 		
-		if (srcElem.options) {
-			o.update(srcElem.options, 'selected', destElem.options, true);
-		}
 		
 		var prop = properties[srcElem.tagName];
 		if (prop)
@@ -3014,6 +3016,8 @@
 	
 	/// #endif
 	
+	/// #region 核心
+	
 	/// #ifdef SupportIE6
 	
 	try{
@@ -3025,8 +3029,6 @@
 	}
 	
 	/// #endif
-	
-	/// #region Core
 	
 	div = null;
 	
