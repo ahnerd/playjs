@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+   		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>全部控件一页</title>
+		
+		<!-- css -->
+		<link href="../../py/resources/share/control/core.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/core.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/default/control/icons.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/share/control/shadow.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/shadow.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/share/control/resizing.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/resizing.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/share/control/splitter.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/splitter.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/share/control/mask.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/share/container/panel.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/container/panel.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/share/container/window.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/container/window.css" rel="stylesheet" type="text/css" />
+		
+		
+		<script src="../../py/system.js" type="text/javascript"></script>
+		<script src="../../py/system/dom/element.js" type="text/javascript"></script>
+		<script src="../../py/system/fx/base.js" type="text/javascript"></script>
+		<script src="../../py/system/fx/animate.js" type="text/javascript"></script>
+		<script src="../../py/system/dom/drag.js" type="text/javascript"></script>
+		<script src="../../py/system/data/collectionbase.js" type="text/javascript"></script>
+		
+		<script src="../../py/system/controls/control.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/contentcontrol.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/scrollablecontrol.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/containercontrol.js" type="text/javascript"></script>
+		
+		<script src="../../py/system/controls/panel.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/panelex.js" type="text/javascript"></script>
+		
+		<script src="../../py/system/controls/mask.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/maskex.js" type="text/javascript"></script>
+		
+		<script src="../../py/system/controls/iparentcontrol.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/surround.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/shadow.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/resizing.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/dialog.js" type="text/javascript"></script>
+		
+		<script src="../../common/project/project.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/default.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/debug.js" type="text/javascript"></script>
+		
+		<!--style type="text/css">
+			@import url(../../py/resources/share/control/core.css);
+			@import url(../../py/resources/share/control/shadow.css);
+			@import url(../../py/resources/share/control/resizing.css);
+			@import url(../../py/resources/share/control/splitter.css);
+			@import url(../../py/resources/share/control/mask.css);
+			@import url(../../py/resources/share/control/tooltip.css);
+			
+			@import url(../../py/resources/share/container/window.css);
+			@import url(../../py/resources/share/container/balloontip.css);
+			@import url(../../py/resources/share/container/panel.css);
+			@import url(../../py/resources/share/container/accordion.css);
+			
+			@import url(../../py/resources/share/layout/anchor.css);
+			@import url(../../py/resources/share/layout/box.css);
+			@import url(../../py/resources/share/layout/column.css);
+			@import url(../../py/resources/share/layout/default.css);
+			@import url(../../py/resources/share/layout/flow.css);
+			@import url(../../py/resources/share/layout/table.css);
+			
+			@import url(../../py/resources/share/dataview/treeview.css);
+			
+			@import url(../../py/resources/share/button/button.css);
+			@import url(../../py/resources/share/button/menu.css);
+			@import url(../../py/resources/share/button/splitbutton.css);
+			@import url(../../py/resources/share/button/toolbar.css);
+			@import url(../../py/resources/share/button/ribbon.css);
+			
+			
+			@import url(../../py/resources/default/control/core.css);
+			@import url(../../py/resources/default/control/shadow.css);
+			@import url(../../py/resources/default/control/resizing.css);
+			@import url(../../py/resources/default/control/splitter.css);
+			@import url(../../py/resources/default/control/icons.css);
+			@import url(../../py/resources/default/control/mask.css);
+			@import url(../../py/resources/default/control/tooltip.css);
+			
+			@import url(../../py/resources/default/container/window.css);
+			@import url(../../py/resources/default/container/balloontip.css);
+			@import url(../../py/resources/default/container/panel.css);
+			@import url(../../py/resources/default/container/region.css);
+			@import url(../../py/resources/default/container/accordion.css);
+			
+			@import url(../../py/resources/default/dataview/treeview.css);
+			
+			@import url(../../py/resources/default/button/button.css);
+			@import url(../../py/resources/default/button/menu.css);
+			@import url(../../py/resources/default/button/splitbutton.css);
+			@import url(../../py/resources/default/button/toolbar.css);
+			@import url(../../py/resources/default/button/ribbon.css);
+		</style -->
+	</head>
+
+<body>
+	<div style="width: 1000px; margin: 0 auto;">
+		
+		
+		<!-- left -->
+		<div style="width: 300px; float: left;" id="ct_l">
+		
+			<script>
+				var c1 = new Panel({
+					text: 'Panel - 标题 标题 标题 标题 标题 标题 标题 标题 标题 标题 标题 标题 标题',
+					html: 'content',
+					height: 200,
+					collapsable: true
+				}).renderTo('ct_l');
+				
+				var c2 = new Mask().renderTo(c1.content).setText('载入');
+			</script>
+			
+			<script>
+				var c3 = new Dialog({
+	  				title: 'Dialog 内容',
+	                html: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容'
+	           }) .show().setPosition(0, 200).setSize(300, 300);
+				
+			</script>
+		</div>
+		
+		<!--  right  -->
+		<div style="margin-left: 310px;">
+		h
+		</div>
+		
+	</div>
+</body>
+</html>
