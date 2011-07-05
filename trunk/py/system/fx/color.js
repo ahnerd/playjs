@@ -1,4 +1,6 @@
-
+//===========================================
+//  ɫ�ʵı任   color.js      A
+//===========================================
 
 
 
@@ -6,14 +8,13 @@
 Py.using("System.Fx.Animate");
 
 
-
-(function(){
+Object.extend(Py.Fx.Animate.parsers.color, {
 	
 	// Some named colors to work with
 	// From Interface by Stefan Petre
 	// http://interface.eyecon.ro/
-	
-	var colors = {
+
+	color: {
 		aqua:[0,255,255],
 		azure:[240,255,255],
 		beige:[245,245,220],
@@ -58,11 +59,11 @@ Py.using("System.Fx.Animate");
 		white:[255,255,255],
 		yellow:[255,255,0],
 		transparent: [255,255,255]
-	};
+	},
 	
-	Py.Fx.Fx.parsers.color.parse = function(value){
-		return colors[value] || String.hexToArray(value) ||
+	parse: function(value){
+		return this.color[value] || String.hexToArray(value) ||
 			String.rgbToArray(value);
 	}
-	
-})();
+
+});

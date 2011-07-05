@@ -1,6 +1,5 @@
 //===========================================
-//  变换   Base.js
-//  Copyright(c) 2009-2010 xuld
+//  效果   base.js      C
 //===========================================
 
 
@@ -9,7 +8,7 @@
 	
 	/// #region interval
 	
-	var cache = {};
+	var cache = {}, emptyFn = Function.empty;
 	
 	/**
 	 * 定时执行的函数。
@@ -33,11 +32,6 @@
 	 	 * @abstract
 		 */
 		Base: p.Class({
-			
-			/**
-			 * 当前作用域。
-			 */
-			dom: null,
 		
 			/**
 			 * 每秒的运行帧次。
@@ -67,19 +61,19 @@
 			 * 在效果开始时执行
 			 * @protected
 			 */
-			onStart: Function.empty,
+			onStart: emptyFn,
 			
 			/**
 			 * 在效果完成后执行
 			 * @protected
 			 */
-			onComplete: Function.empty,
+			onComplete: emptyFn,
 			
 			/**
 			 * 在效果停止后执行
 			 * @protected
 			 */
-			onStop: Function.empty,
+			onStop: emptyFn,
 			
 			/**
 			 * 初始化当前特效。
@@ -89,7 +83,7 @@
 				if(options)
 					Object.extend(this, options);
 					
-				this._competeHandlerList = [];
+				this._competeListeners = [];
 			},
 			
 			/**
@@ -139,8 +133,8 @@
 			 * @param {Function} fn 回调函数。
 			 */
 			addOnComplete: function(fn){
-				assert.isFunction(fn, "Py.Fx.Base.prototype.addOnComplete(fn): 参数 {fn} ~。");
-				this._competeHandlerList.unshift(fn);	
+				assert.isFunction(fn, "Fx.Base.prototype.addOnComplete(fn): 参数 {fn} ~。");
+				this._competeListeners.unshift(fn);	
 				return this;
 			},
 			
@@ -148,7 +142,8 @@
 			 * 检查当前的运行状态。
 			 * @param {Object} from 开始位置。
 			 * @param {Object} to 结束位置。
-			 * @param {String} link 链接方式。 wait, 等待当前队列完成。 restart 柔和转换为目前渐变。 cancel 强制关掉已有渐变。 ignore 忽视当前的效果。
+			 * @param {Function} callback 回调。
+			 * @param {String} link='ignore' 链接方式。 wait, 等待当前队列完成。 restart 柔和转换为目前渐变。 cancel 强制关掉已有渐变。 ignore 忽视当前的效果。
 			 * @return {Boolean} 是否可发。
 			 */
 			check: function(from, to, duration, callback, link) {
@@ -160,13 +155,13 @@
 						
 						// 链式。
 						case 'wait':
-							this._competeHandlerList.push(function() {
+							this._competeListeners.push(function() {
 								
 								this.start(from, to, duration, callback, true);
 								return false;
 							});
 							
-							//  如当前fx完成， 会执行 _competeHandlerList 。
+							//  如当前fx完成， 会执行 _competeListeners 。
 							
 							//  [新任务开始2, 新任务开始1]
 							
@@ -180,7 +175,7 @@
 							
 						case 'restart':
 							me.pause();
-							while(me._competeHandlerList.pop());
+							while(me._competeListeners.pop());
 							break;
 							
 						// 停掉目前项。
@@ -194,6 +189,7 @@
 							
 						// 忽视新项。
 						default:
+							assert(!link || link == 'ignore', "Fx.Base.prototype.start(from, to, duration, callback, link): 参数 {link} 必须是 wait、restart、cancel、replace、ignore 之一。", link);
 							return false;
 					}
 				}
@@ -204,8 +200,8 @@
 				
 				// 如果有回调， 加入回调。
 				if (callback) {
-					assert.isFunction(callback, "Py.Fx.Base.prototype.check(from, to, duration, callback, link): 参数 {callback} ~。");
-					this._competeHandlerList.unshift(callback);
+					assert.isFunction(callback, "Fx.Base.prototype.start(from, to, duration, callback, link): 参数 {callback} ~。");
+					this._competeListeners.unshift(callback);
 				}
 				
 				return true;
@@ -234,15 +230,16 @@
 			 * 完成当前效果。
 			 */
 			complete: function() {
-				this.pause();
-				var handlers = this._competeHandlerList;
+				var me = this;
+				me.pause();
+				var handlers = me._competeListeners;
 				while(handlers.length)  {
-					if(handlers.pop().call(this) === false)
-						return this;
+					if(handlers.pop().call(me) === false)
+						return me;
 				}
 				
-				this.onComplete();
-				return this;
+				me.onComplete();
+				return me;
 			},
 			
 			/**

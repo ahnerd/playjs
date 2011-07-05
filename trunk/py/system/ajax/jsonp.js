@@ -1,5 +1,30 @@
+//===========================================
+//  请求处理JSON-P数据   jsonp.js    
+//===========================================
 
 
+
+
+Py.using("System.Ajax.Ajax");
+
+
+
+Py.execRemoteScript = function(url, data, callbackName){
+
+
+}
+
+
+
+
+
+Py.Ajax.JSONP = Py.Class({
+	
+	send: function(callback){
+		this.trigger("success", this.parseJSON(response));
+	}
+
+});
 
 
 		send : function(data){

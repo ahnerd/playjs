@@ -18,6 +18,8 @@
 
 
 
+
+ 
 // 配置。可省略。
 
 /**
@@ -1905,9 +1907,7 @@ var Py = {
 		 * 初始化 window 对象。
 		 * @param {Document} doc
 		 */
-		setupWindow: function(w){
-				
-			assert(w.setInterval, 'Py.setupWindow(w): 参数 {w} 必须是一个 Window 对象。', w);
+		setupWindow: function(){
 			
 			/// #region 变量
 			
@@ -1963,7 +1963,9 @@ var Py = {
 			 * @param {Functon/undefined} fn 执行的函数。
 			 * @memberOf document
 			 */
-			document.ready = function(fn) {
+			document.onReady = function(fn) {
+
+				assert.isFunction(fn, "document.ready(fn): 参数 {fn} ~。");
 				
 				if(document.isReady)
 					fn.call(document);
@@ -1972,6 +1974,22 @@ var Py = {
 					doReady.list.push(fn);
 				
 			};
+			
+			document.onLoad = function(fn) {
+
+				assert(o.isFunction(fn), "document.ready(fn): 参数 {fn} 必须是可执行的函数。", fn);
+				
+				if(document.isLoaded)
+					fn.call(w);
+				else
+					// 已经完成则执行函数，否则 on 。
+					p.addEventListener.call(w, 'load', fn, false);
+				
+			};
+			
+			document.onLoad(function(){
+				document.isLoaded = true;
+			});
 				
 			doReady.list = [];
 				
@@ -2032,7 +2050,7 @@ var Py = {
 		
 	});
 	
-	p.setupWindow(w);
+	p.setupWindow();
 
 	/// #endregion
 	
@@ -2268,9 +2286,9 @@ var Py = {
 		 
 		 if(isStyle){
 		 	callback = p.loadStyle;
-			//e = function (text){
+			//  e = function (text){
 				//     Py.addCss(text.replace(/url\s*\(\s*"?([^)]+)"?\s*\)/gi, "url(" + name + "../$1)"));
-			//};
+			//   };
 		 	doms = document.styleSheets;
 			src = 'href';
 		 } else {
@@ -2330,8 +2348,7 @@ var Py = {
 
 
 // ===========================================
-//   调试   debug.js
-//   Copyright(c) 2009-2011 xuld
+//   调试   debug.js C
 // ===========================================
 
 ///  #ifdef Debug

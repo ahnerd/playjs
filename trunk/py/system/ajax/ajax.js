@@ -1,5 +1,5 @@
 //===========================================
-//  请求   Ajax.js
+//  请求   ajax.js    C
 //===========================================
 
 
@@ -15,18 +15,18 @@ Py.namespace(".Ajax", Py.Class({
 	},
 	
 	onStart: function(data){
-		this.trigger("success", data);
+		this.trigger("start", data);
 	},
 	
-	onSuccess: function(response){
+	onSuccess: function(response, xhr){
 		this.trigger("success", response);
 	},
 	
-	onError: function(e){
+	onError: function(e, xhr){
 		this.trigger("error", e);
 	},
 	
-	onTimeout: function(){
+	onTimeout: function(xhr){
 		this.trigger("timeout");
 	},
 	
@@ -40,8 +40,11 @@ Py.namespace(".Ajax", Py.Class({
 		if(xhr && (xhr.readyState === 4 || isTimeout)) {
 			
 		
-			// 删除 readystatechange
+			// 删除 readystatechange  。
 			xhr.onreadystatechange = Function.empty;
+			
+			// 删除目前的活动对象。
+			me.xhr = null;
 			
 			if(isTimeout === true){
 				xhr.abort();
@@ -54,21 +57,23 @@ Py.namespace(".Ajax", Py.Class({
 			
 				status = !XMLHttpRequest.isOk(xhr) && (xhr.statusText || 'error');
 			}
-		
-			me.xhr = null;
+			
+			
 			
 			if (!status) {
-				me.onSuccess(xhr[/xml/.test(xhr.getResponseHeader('content-type')) ? 'responseXML' : 'responseText']);
+				// xhr[/xml/.test(xhr.getResponseHeader('content-type')) ? 'responseXML' : 'responseText']
+				me.onSuccess(xhr.responseText, xhr);
 			} else {
 				if(isTimeout === true) {
 					isTimeout = new Error(status);
 				}
 				
 				isTimeout.xhr = xhr;
-				me.onError(isTimeout);
+				me.onError(isTimeout, xhr);
 			}
 			
 			me.onComplete(xhr, status);
+		
 			xhr = null;
 		}
 	},
@@ -106,9 +111,9 @@ Py.namespace(".Ajax", Py.Class({
 	},
 	
 	/**
-	 * 获取或设置是否允许缓存。
+	 * 获取或设置是否忽略缓存。
 	 */
-	enableCache: true,
+	disableCache: false,
 	
 	/**
 	 * 发送请求前检查。
@@ -134,7 +139,8 @@ Py.namespace(".Ajax", Py.Class({
 				// 中止请求。
 				me.abort();
 				return true;
-			case 'ignore':
+			default:
+				assert(!link || link == 'ignore', "Ajax.prototype.send(data): 成员 {link} 必须是 wait、cancel、ignore 之一。", me.link);
 				return false;
 		}
 		return true;
@@ -145,6 +151,12 @@ Py.namespace(".Ajax", Py.Class({
 	 * @property timeouts
 	 * @type Number
 	 */
+	 
+	 /**
+	  * 是否允许缓存。
+	  * @property enableCache
+	  * @type Boolean
+	  */
 	
 	/**
 	 * 发送请求。
@@ -165,24 +177,20 @@ Py.namespace(".Ajax", Py.Class({
 			/**
 			 * 类型。
 			 * @type String
-		  	 * @ignore
 			 */
 			type = me.type,  
 			
 			/**
 			 * 当前请求。
 			 * @type String
-			 * @ignore
 			 */
 			url = me.url,  
 			
 			/**
 			 * 是否异步请求。
-			 * @ignore
+			 * @type Boolean
 			 */
-			async = me.async,
-			
-			param = /\?/.test(url) ? '&' : '?';
+			async = me.async;
 		
 		if (!me.check(data)) {
 			return me;
@@ -197,15 +205,14 @@ Py.namespace(".Ajax", Py.Class({
 			data = String.param(data);
 		
 		// get  请求
-		if (data.length && type == 'GET') {
-			url += param + data;
-			param = '&';
+		if (data && type == 'GET') {
+			url += (url.indexOf('?') >= 0 ? '&' : '?') + data;
 			data = null;
 		}
 		
 		// 禁止缓存，为地址加上随机数。
-		if(!me.enableCache){
-			url += param + Py.id++;
+		if(me.disableCache){
+			url += (url.indexOf('?') >= 0 ? '&' : '?') + Py.id++;
 		}
 		
 		/// #endregion
@@ -230,10 +237,21 @@ Py.namespace(".Ajax", Py.Class({
 			me.xhr = null;
 			e.xhr = xhr;
 			//  出现错误地址时  ie 在此产生异常
-			me.onError(e);
+			me.onError(e, xhr);
 			me.onComplete(xhr, "error");
 			return me;
 		}
+		
+		/// #endregion
+		
+		/// #region 设置文件头
+		
+		for(var key in me.headers)
+			try {
+				xhr.setRequestHeader(key, me.headers[key]);
+			} catch (e){
+				trace.error(e);
+			}
 		
 		/// #endregion
 		
@@ -323,23 +341,28 @@ String.map("get post", function(k) {
 
 	/**
 	 * 快速请求一个地址。
-	 * @param {Object} url 地址。
-	 * @param {Object} data 数据。
-	 * @param {Object} callback 成功回调函数。
-	 * @param {Object} type 类型。
+	 * @param {String} url 地址。
+	 * @param {String/Object} data 数据。
+	 * @param {Function} [onsuccess] 成功回调函数。
+	 * @param {Function} [onerror] 错误回调函数。
+	 * @param {Object} timeouts=-1 超时时间， -1 表示不限。
+	 * @param {Function} [ontimeout] 超时回调函数。
 	 * @method Ajax.get
 	 */
 	
 	/**
 	 * 快速请求一个地址。
-	 * @param {Object} url 地址。
-	 * @param {Object} data 数据。
-	 * @param {Object} callback 成功回调函数。
-	 * @param {Object} type 类型。
+	 * @param {String} url 地址。
+	 * @param {String/Object} data 数据。
+	 * @param {Function} [onsuccess] 成功回调函数。
+	 * @param {Function} [onerror] 错误回调函数。
+	 * @param {Object} timeouts=-1 超时时间， -1 表示不限。
+	 * @param {Function} [ontimeout] 超时回调函数。
 	 * @method Ajax.post
 	 */
 	
 	return function(url, data, onsuccess, onerror, timeouts, ontimeout) {
+		assert.isString(url, "Ajax." + k + "(url, data, onsuccess, onerror, timeouts, ontimeout): 参数{url} 必须是一个地址。如果需要提交至本页，使用 location.href。");
 		new Ajax({
 			url: url,
 			onSuccess: onsuccess || emptyFn,
