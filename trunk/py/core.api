@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="gb2312"?>
+<doc language="Javascript" create="2011/7/6 12:49:08">
+  <summary>Py.Core for Javascript</summary>
+  <sources default="1">
+    <source id="0" path="F:\window\fun\PyDoc\bin\Debug\define.js" />
+    <source id="1" path="F:\wz\py\pyjs\py\system.js" author="xuld" license="MIT license" copyright="2009-2011 xuld" />
+  </sources>
+  <members>
+    <class name="Object" source="-1">
+      <method name="extendIf" attribute="static">
+        <summary>如果目标成员不存在就复制对象的所有属性到其它对象。</summary>
+        <remarks>&lt;code&gt;
+var a = {v: 3, g: 5}, b = {g: 2};
+Object.extendIf(a, b);
+trace(a); // {v: 3, g: 5}  b 未覆盖 a 任何成员。
+&lt;/code&gt;</remarks>
+        <seealso cref="Object.extend" />
+        <returns type="Object">复制后的对象 (dest)。</returns>
+        <param name="dest" type="Object">复制目标。</param>
+        <param name="obj" type="Object">要复制的内容。</param>
+      </method>
+      <method name="extend" attribute="static">
+        <summary>复制对象的所有属性到其它对象。</summary>
+        <seealso cref="Object.extendIf" />
+        <example>&lt;code&gt;
+var a = {v: 3}, b = {g: 2};
+Object.extend(a, b);
+trace(a); // {v: 3, g: 2}
+&lt;/code&gt;</example>
+        <returns type="Object">复制后的对象 (dest)。</returns>
+        <param name="dest" type="Function">复制目标。</param>
+        <param name="obj" type="Object">要复制的内容。</param>
+      </method>
+      <method name="each" attribute="static">
+        <summary>在一个可迭代对象上遍历。</summary>
+        <example>&lt;code&gt; 
+Object.each({a: '1', c: '3'}, function(value, key) {
+trace(key + ' : ' + value);
+});
+// 输出 'a : 1' 'c : 3'
+&lt;/code&gt;</example>
+        <returns type="Boolean">如果已经遍历完所传的所有值， 返回 true， 如果遍历被中断过，返回 false。</returns>
+        <param name="iterable" type="Array/Object">对象，不支持函数。</param>
+        <param name="fn" type="Function">对每个变量调用的函数。 &lt;param type="Object" name="value"&gt;当前变量的值&lt;/param&gt; &lt;param type="Number" name="key"&gt;当前变量的索引&lt;/param&gt; &lt;param type="Array" name="array"&gt;数组本身&lt;/param&gt; &lt;return type="Boolean"&gt;如果中止循环， 返回 false。&lt;/return&gt;</param>
+        <param name="bind" type="Object">函数执行时的作用域。</param>
+      </method>
+      <method name="update" attribute="static">
+        <summary>更新一个可迭代对象。</summary>
+        <example>该函数支持多个功能。主要功能是将一个对象根据一个关系变成新的对象。
+&lt;code&gt;
+Object.update(["aa","aa23"], "length", []); // =&gt; [2, 4];
+Object.update([{a: 1},{a: 4}], "a", [{},{}], true); // =&gt; [{a: 1},{a: 4}];
+Object.update(["aa","aa23"], function(value, key, array) {return value.charAt(0);}, []); // =&gt; ["a", "a"];
+&lt;/code&gt;</example>
+        <returns type="Object">返回的对象。</returns>
+        <param name="iterable" type="Object">对象，不支持函数。</param>
+        <param name="fn" type="Function">对每个变量调用的函数。 &lt;param type="Object" name="value"&gt;当前变量的值&lt;/param&gt; &lt;param type="Number" name="key"&gt;当前变量的索引&lt;/param&gt; &lt;param type="Array" name="array"&gt;数组本身&lt;/param&gt; &lt;return type="Boolean"&gt;如果中止循环， 返回 false。&lt;/return&gt;</param>
+        <param name="bind" type="Array" defaultvalue="iterable">函数执行时的作用域。</param>
+        <param name="args" type="Object/Boolean" defaultvalue="">参数/是否间接传递。</param>
+        <param name="dest" type="" />
+      </method>
+      <method name="isObject" attribute="static">
+        <summary>判断一个变量是否是引用变量。</summary>
+        <example>&lt;code&gt;
+Object.isObject({}); // true
+Object.isObject(null); // false
+&lt;/code&gt;</example>
+        <returns type="Boolean">所有对象变量返回 true, null 返回 false 。</returns>
+        <param name="object" type="Object">变量。</param>
+        <param name="obj" type="Object" />
+      </method>
+      <method name="isArray" attribute="static">
+        <summary>判断一个变量是否是数组。</summary>
+        <example>&lt;code&gt; 
+Object.isArray([]); // true
+Object.isArray(document.getElementsByTagName("div")); // false
+Object.isArray(new Array); // true
+&lt;/code&gt;</example>
+        <returns type="Boolean">如果是数组，返回 true， 否则返回 false。</returns>
+        <param name="object" type="String/Array">变量。</param>
+        <param name="obj" type="Object" />
+      </method>
+      <method name="isFunction" attribute="static">
+        <summary>判断一个变量是否是函数。</summary>
+        <example>&lt;code&gt;
+Object.isFunction(function(){}); // true
+Object.isFunction(null); // false
+Object.isFunction(new Function); // true
+&lt;/code&gt;</example>
+        <returns type="Boolean">如果是函数，返回 true， 否则返回 false。</returns>
+        <param name="object" type="Object">变量。</param>
+        <param name="obj" type="Object" />
+      </method>
+      <method name="type" attribute="static">
+        <summary>返回一个变量的类型的字符串形式。</summary>
+        <example>&lt;code&gt; 
+Object.type(null); // "null"
+Object.type(); // "undefined"
+Object.type(new Function); // "function"
+Object.type(+'a'); // "number"
+Object.type(/a/); // "regexp"
+Object.type([]); // "array"
+&lt;/code&gt;</example>
+        <returns type="String">所有可以返回的字符串：  string  number   boolean   undefined	null	array	function   element  class   date   regexp object。</returns>
+        <param name="obj" type="Object">变量。</param>
+      </method>
+      <method name="clone" attribute="static">
+        <summary>深拷贝一个对象本身, 不深复制函数。</summary>
+        <example>&lt;code&gt;
+var obj1 = {a: 0, b: 1};
+var obj2 = Object.clone(obj1);
+obj1.a = 3;
+trace(obj1.a);  // trace 3
+trace(obj2.a);  // trace 0
+&lt;/code&gt;</example>
+        <returns type="Object">返回复制后的对象。</returns>
+        <param name="obj" type="Object">要拷贝的对象。</param>
+      </method>
+      <method name="set" attribute="static">
+        <summary>将一个对象解析成一个类的属性。</summary>
+        <remarks>这个函数会分析对象，并试图找到一个 属性设置函数。
+当设置对象 obj 的 属性 key 为 value:
+发生了这些事:
+检查，如果存在就调用: obj.setKey(value)
+否则， 检查，如果存在就调用: obj.key(value)
+否则， 检查，如果存在就调用: obj.key.set(value)
+否则，检查，如果存在就调用: obj.set(value)
+否则，执行 obj.key = value;</remarks>
+        <example>&lt;code&gt;
+document.setA = function(value){
+this._a = value;
+};
+Object.set(document, 'a', 3); 
+// 这样会调用     document.setA(3);
+&lt;/code&gt;</example>
+        <returns type="void" />
+        <param name="obj" type="Object">类实例。</param>
+        <param name="config" type="Object">参数。</param>
+      </method>
+      <method name="addCallback" attribute="static">
+        <summary>添加一个对象的成员函数调用结束后的回调函数。</summary>
+        <example>下面的代码方便地添加 onload 事件。 
+&lt;code&gt;
+Object.addCallback(window, "onload",trace.empty);
+&lt;/code&gt;</example>
+        <returns type="Object">obj。</returns>
+        <param name="obj" type="Object">对象。</param>
+        <param name="name" type="String">成员函数名。</param>
+        <param name="fn" type="Function">对象。</param>
+      </method>
+    </class>
+    <class name="Function" source="-1">
+      <property type="Function" name="empty" attribute="static">
+        <summary>空函数。</summary>
+        <remarks>Function.empty返回空函数的引用。</remarks>
+      </property>
+      <property type="Function" name="returnTrue" attribute="static">
+        <summary>一个返回 true 的函数。</summary>
+      </property>
+      <property type="Function" name="returnFalse" attribute="static">
+        <summary>一个返回 false 的函数。</summary>
+      </property>
+      <method name="bind" attribute="static">
+        <summary>绑定函数作用域。</summary>
+        <returns type="Function" />
+        <param name="fn" type="Function">函数。</param>
+        <param name="bind" type="Object">位置。</param>
+      </method>
+      <method name="from" attribute="static">
+        <summary>返回自身的函数。</summary>
+        <returns type="void" />
+      </method>
+    </class>
+    <class name="RegExp" source="-1">
+      <field type="String" name="xType">
+        <summary>xType。</summary>
+      </field>
+    </class>
+    <class name="Array" source="-1">
+      <method name="create" attribute="static">
+        <summary>在原有可迭代对象生成一个数组。</summary>
+        <returns type="Array">复制得到的数组。</returns>
+        <param name="iterable" type="Object">可迭代的实例。</param>
+        <param name="start" type="Number" defaultvalue="0">开始的位置。</param>
+      </method>
+      <method name="plain" attribute="static">
+        <summary>把传入的值连接为新的数组。如果元素本身是数组，则合并。此函数会过滤以存在的值。</summary>
+        <returns type="Array">新数组。</returns>
+        <param name="..." type="Object">数据成员。</param>
+      </method>
+      <method name="forEach">
+        <summary>对数组内的所有变量执行函数，并可选设置作用域。</summary>
+        <returns type="void" />
+        <param name="fn" type="Function">对每个变量调用的函数。 &lt;param type="Object" name="value"&gt;当前变量的值&lt;/param&gt; &lt;param type="Number" name="key"&gt;当前变量的索引&lt;/param&gt; &lt;param type="Array" name="array"&gt;数组本身&lt;/param&gt;</param>
+        <param name="bind" type="mixed">函数执行时的作用域。</param>
+      </method>
+      <method name="copyIf">
+        <summary>如果目标数组不存在值，则拷贝，否则忽略。</summary>
+        <returns type="void" />
+        <param name="src" type="Array">来源数组。</param>
+        <param name="dest" type="Array">目标数组。</param>
+      </method>
+      <method name="indexOf">
+        <summary>返回数组某个值的第一个位置。值没有,则为-1 。</summary>
+        <remarks>现在大多数浏览器已含此函数.除了 IE8-  。</remarks>
+        <returns type="">Number 位置，找不到返回 -1 。</returns>
+        <param name="item" type="Object">成员。</param>
+        <param name="start" type="Number">开始查找的位置。</param>
+      </method>
+      <method name="contains">
+        <summary>返回数组是否包含一个值。</summary>
+        <returns type="Boolean">存在返回 true 。</returns>
+        <param name="item" type="Object">成员。</param>
+      </method>
+      <method name="each">
+        <summary>对数组运行一个函数。</summary>
+        <returns type="Boolean">有无执行完。</returns>
+        <param name="fn" type="Function">函数.参数 value, index</param>
+        <param name="bind" type="Object">对象。</param>
+      </method>
+      <method name="filter">
+        <summary>对数组每个元素通过一个函数过滤。返回所有符合要求的元素的数组。</summary>
+        <returns type="Array">this</returns>
+        <param name="fn" type="Function">函数。参数 value, index, this。</param>
+        <param name="bind" type="Object">绑定的对象。</param>
+      </method>
+      <method name="select">
+        <summary>对数组每个元素查找一个函数返回true的项。 或按属性返回数组一个元素。</summary>
+        <remarks>&lt;code&gt;
+var a = ["", "aaa", "zzz", "qqq"];
+a.select("length", 0); //  返回"";
+a = [{q: "1"}, {q: "3"}];
+a.select("q", "3");	//  返回{q: "3"};
+&lt;/code&gt;</remarks>
+        <returns type="Array">新数组。</returns>
+        <param name="name" type="Function/String">函数。参数 value, index。 /数组成员的字段。</param>
+        <param name="value" type="Object">值。</param>
+      </method>
+      <method name="include">
+        <summary>包含一个元素。元素存在直接返回。</summary>
+        <returns type="Boolean">是否包含元素。</returns>
+        <param name="value" type="Object">值。</param>
+      </method>
+      <method name="insert">
+        <summary>在指定位置插入项。</summary>
+        <returns type="Object" />
+        <param name="index" type="Number">插入的位置。</param>
+        <param name="value" type="Object">插入的内容。</param>
+      </method>
+      <method name="invoke">
+        <summary>对数组成员遍历执行。</summary>
+        <returns type="Array">结果。</returns>
+        <param name="fn" type="String/Function" />
+        <param name="args" type="Array" />
+      </method>
+      <method name="unique">
+        <summary>删除数组中重复元素。</summary>
+        <returns type="Array">结果。</returns>
+      </method>
+      <method name="remove">
+        <summary>删除元素, 参数为元素的内容。</summary>
+        <returns type="Number">删除的值的位置。</returns>
+        <param name="value" type="Object">值。</param>
+      </method>
+      <field type="String" name="xType">
+        <summary>xType。</summary>
+      </field>
+    </class>
+    <class name="Date" source="-1">
+      <method name="now" attribute="static">
+        <summary>获取当前时间。</summary>
+        <returns type="Number">当前的时间点。</returns>
+      </method>
+      <field type="String" name="xType">
+        <summary>xType。</summary>
+      </field>
+    </class>
+    <dynatic name="document">
+      <field type="Object" name="document" source="-1" />
+      <members>
+        <method name="onReady">
+          <summary>页面加载时执行。</summary>
+          <returns type="void" />
+          <param name="fn" type="Functon/undefined">执行的函数。</param>
+        </method>
+      </members>
+    </dynatic>
+    <dynatic name="trace">
+      <method name="trace">
+        <summary>调试输出。</summary>
+        <returns type="void" />
+        <param name="obj" type="String">值。</param>
+        <param name="args" type="Object">格式化的字符串。</param>
+      </method>
+      <members>
+        <method name="error">
+          <summary>输出一个错误信息。</summary>
+          <returns type="void" />
+          <param name="msg" type="String">内容。</param>
+        </method>
+        <method name="inspect">
+          <summary>获取对象的所有成员的字符串形式。</summary>
+          <returns type="">String 成员。</returns>
+          <param name="obj" type="Undefined">要输出的内容。</param>
+          <param name="deep" type="Number/undefined">递归的层数。</param>
+        </method>
+        <method name="alert">
+          <summary>输出方式。</summary>
+          <returns type="void" />
+          <param name="message" type="String">信息。</param>
+        </method>
+        <method name="dir">
+          <summary>遍历对象每个元素。</summary>
+          <returns type="void" />
+          <param name="obj" type="Object">对象。</param>
+        </method>
+        <method name="api">
+          <summary>输出类的信息。</summary>
+          <returns type="void" />
+          <param name="成员" type="Object">。</param>
+          <param name="obj" type="Object" />
+        </method>
+        <method name="from">
+          <summary>得到输出指定内容的函数。</summary>
+          <returns type="Function" />
+          <param name="msg" type="" />
+        </method>
+        <method name="log">
+          <summary>输出信息。</summary>
+          <returns type="void" />
+          <param name="..." type="Object">内容。</param>
+        </method>
+        <method name="warn">
+          <summary>输出一个警告信息。</summary>
+          <returns type="void" />
+          <param name="msg" type="Object">内容。</param>
+        </method>
+        <method name="info">
+          <summary>输出一个信息。</summary>
+          <returns type="void" />
+          <param name="msg" type="Object">内容。</param>
+        </method>
+        <method name="ifDebug">
+          <summary>如果是调试模式就运行。</summary>
+          <returns type="">String 返回运行的错误。如无错, 返回空字符。</returns>
+          <param name="f" type="Function">函数。</param>
+        </method>
+        <method name="clear">
+          <summary>清除调试信息。  (没有控制台时，不起任何作用)</summary>
+          <returns type="void" />
+        </method>
+        <method name="empty">
+          <summary>空函数，用于证明函数已经执行过。</summary>
+          <returns type="void" />
+          <param name="msg" type="" />
+        </method>
+        <method name="ifNot">
+          <summary>如果false则输出。</summary>
+          <returns type="String">msg  输出的内容。</returns>
+          <param name="condition" type="Boolean">字段。</param>
+          <param name="msg" type="" />
+        </method>
+        <method name="runTime">
+          <summary>测试某个函数运行一定次数的时间。</summary>
+          <returns type="Number">运行的时间 。</returns>
+          <param name="fn" type="Function">函数。</param>
+          <param name="args" type="Array">函数参数。</param>
+          <param name="times" type="Number" defaultvalue="1000">运行次数。</param>
+        </method>
+        <method name="test">
+          <summary>输出一个函数执行指定次使用的时间。</summary>
+          <returns type="void" />
+          <param name="fn" type="Function">函数。</param>
+          <param name="times" type="Number" defaultvalue="1000">运行次数。</param>
+        </method>
+      </members>
+    </dynatic>
+    <dynatic name="assert">
+      <method name="assert">
+        <summary>确认一个值正确。</summary>
+        <example>&lt;code&gt;
+assert(true, "{value} 错误。", value
+&lt;/code&gt;</example>
+        <returns type="Boolean">返回 bValue 。</returns>
+        <param name="bValue" type="Object">值。</param>
+        <param name="msg" type="Undefined" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
+        <param name="" type="Object" />
+      </method>
+      <members>
+        <method name="notNull">
+          <summary>确认一个值非空。</summary>
+          <returns type="Boolean">返回 assert 是否成功 。</returns>
+          <param name="value" type="Object">值。</param>
+          <param name="argsName" type="String">变量的名字字符串。</param>
+          <param name="msg" type="" />
+        </method>
+        <method name="isFunction">
+          <summary>确认一个值为函数变量。</summary>
+          <example>&lt;code&gt;
+assert.isFunction(a, "a ~");
+&lt;/code&gt;</example>
+          <returns type="Boolean">返回 bValue 。</returns>
+          <param name="bValue" type="Object">值。</param>
+          <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
+        </method>
+        <method name="isObject">
+          <summary>确认一个值为函数变量。</summary>
+          <returns type="Boolean">返回 bValue 。</returns>
+          <param name="bValue" type="Object">值。</param>
+          <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
+          <param name="value" type="" />
+        </method>
+        <method name="isString">
+          <summary>确认一个值是字符串。</summary>
+          <returns type="Boolean">返回 bValue 。</returns>
+          <param name="bValue" type="Object">值。</param>
+          <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
+          <param name="value" type="" />
+        </method>
+        <method name="isNumber">
+          <summary>确认一个值为数字。</summary>
+          <returns type="Boolean">返回 bValue 。</returns>
+          <param name="bValue" type="Object">值。</param>
+          <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
+          <param name="value" type="" />
+        </method>
+        <method name="isArray">
+          <summary>确认一个值为数组。</summary>
+          <returns type="Boolean">返回 bValue 。</returns>
+          <param name="bValue" type="Object">值。</param>
+          <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
+        </method>
+        <method name="isNode">
+          <summary>确认一个值为节点。</summary>
+          <returns type="Boolean">返回 bValue 。</returns>
+          <param name="bValue" type="Object">值。</param>
+          <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
+          <param name="value" type="" />
+        </method>
+        <method name="isElement">
+          <summary>确认一个值为节点。</summary>
+          <returns type="Boolean">返回 bValue 。</returns>
+          <param name="bValue" type="Object">值。</param>
+          <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
+          <param name="value" type="" />
+        </method>
+        <method name="isDate">
+          <summary>确认一个值是日期。</summary>
+          <returns type="Boolean">返回 bValue 。</returns>
+          <param name="bValue" type="Object">值。</param>
+          <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
+          <param name="value" type="" />
+        </method>
+        <method name="isRegExp">
+          <summary>确认一个值是正则表达式。</summary>
+          <returns type="Boolean">返回 bValue 。</returns>
+          <param name="bValue" type="Object">值。</param>
+          <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
+          <param name="value" type="" />
+        </method>
+        <method name="between">
+          <summary>确认一个值在 min ， max 间。</summary>
+          <returns type="Boolean">返回 assert 是否成功 。</returns>
+          <param name="value" type="Number">判断的值。</param>
+          <param name="min" type="Number">最小值。</param>
+          <param name="max" type="Number">最大值。</param>
+          <param name="argsName" type="String">变量的米各庄。</param>
+          <param name="msg" type="" />
+        </method>
+        <method name="instanceOf">
+          <summary>确认一个值属于一个类型。</summary>
+          <returns type="Boolean">返回 assert 是否成功 。</returns>
+          <param name="v" type="Object">值。</param>
+          <param name="types" type="String/Array">类型/表示类型的参数数组。</param>
+          <param name="message" type="String">错误的提示信息。</param>
+          <param name="msg" type="" />
+        </method>
+        <method name="notEmpty">
+          <summary>确认一个值非空。</summary>
+          <returns type="Boolean">返回 assert 是否成功 。</returns>
+          <param name="value" type="Object">值。</param>
+          <param name="argsName" type="String">变量的参数名。</param>
+          <param name="msg" type="" />
+        </method>
+      </members>
+    </dynatic>
+    <namespace name="Py">
+      <config type="Boolean" name="debug">
+        <summary>是否打开调试。</summary>
+      </config>
+      <field type="String" name="rootPath">
+        <summary>PyJs 安装的根目录, 可以为相对目录。</summary>
+        <remarks>程序会自动搜索当前脚本的位置为跟目录。</remarks>
+      </field>
+      <config type="Boolean" defaultvalue="false" name="stackTrace">
+        <summary>是否输出 assert 来源。</summary>
+        <remarks>如果此项是 true， 将会输出 assert 失败时的来源函数。</remarks>
+      </config>
+      <field type="Object" defaultvalue="window" name="defaultNamespace">
+        <summary>默认的全局名字空间。</summary>
+      </field>
+      <field type="String" defaultvalue="'default'" name="theme">
+        <summary>主题。</summary>
+      </field>
+      <config type="Boolean" name="trace">
+        <summary>启用控制台调试。</summary>
+        <remarks>如果不存在控制台，将自动调整为 false 。</remarks>
+      </config>
+      <class name="Native">
+        <summary>由存在的类修改创建类。即为类添加一个 implement 和 implementIf 成员。</summary>
+        <remarks>如果引入 System.Core.Native
+Native和Class一样，生成一个类，但Native是在原有对象或类（包括JavaScript内置对象）上转成类。见示例。
+&lt;code&gt;
+Py.Native(Array); //同样， new 可省略，将Array本地类化。
+var myArray = Array.extend({	//既然是类，拥有继承方法。这时  myArray 是一个继承自原生  Array  的类，拥有 Array 类的原有动态成员。
+size : function() {return this.length;}
+});
+var arr = new myArray();
+trace(arr.length);   // 输出 0。
+&lt;/code&gt;</remarks>
+        <seealso cref="Py.Class" />
+        <method name="implement">
+          <summary>扩展当前类的动态方法。</summary>
+          <seealso cref="Py.Native.prototype.implementIf" />
+          <example>&lt;code&gt;
+Number.implement({
+sin: function(){
+return Math.sin(this);
+}
+});
+(1).sin();  //  Math.sin(1);
+&lt;/code&gt;</example>
+          <returns type="">this</returns>
+          <param name="obj" type="Object">成员。</param>
+        </method>
+        <method name="implementIf">
+          <summary>如果不存在成员, 扩展当前类的动态方法。</summary>
+          <seealso cref="Py.Native.prototype.implement" />
+          <returns type="">this</returns>
+          <param name="obj" type="Object">成员。</param>
+        </method>
+        <method name="addEvents">
+          <summary>为当前类添加事件。</summary>
+          <remarks>&lt;p&gt;
+由于一个类的事件是按照 xType 属性存放的，拥有相同  xType 的类将有相同的事件，为了避免没有 xType 属性的类出现事件冲突， 这个方法会自动补全  xType 属性。
+&lt;/p&gt;
+&lt;p&gt;
+这个函数是实现自定义事件的关键。
+&lt;/p&gt;
+&lt;p&gt;
+addEvents 函数的参数是一个事件信息，格式如:  {click: { add: ..., remove: ..., trigger: ..., createEvent: ..., setup: ... } 。
+其中 click 表示事件名。一般建议事件名是小写的。
+&lt;/p&gt;
+&lt;/p&gt;
+一个事件有多个相应，分别是: 绑定(add), 删除(remove), 触发(setup)， 创建事件参数(createEvent), 初始化事件参数(trigger)
+&lt;/p&gt;
+&lt;/p&gt;
+当用户使用   o.on('事件名', 函数)  时， 系统会判断这个事件是否已经绑定过，
+如果之前未绑定事件，则会使用 setup() 返回新的函数 evtTrigger，
+evtTrigger.handlers 表示 当前这个事件的所有实际调用的函数的数组。 
+evtTrigger 本身将遍历并执行 evtTrigger.handlers 里的成员。
+然后系统会调用 add(o, '事件名', evtTrigger)
+然后把 evtTrigger 保存在 o.data.event['事件名'] 中。
+如果 之前已经绑定了这个事件，则 evtTrigger 已存在，无需创建。
+这时系统只需把 函数 放到 evtTrigger.handlers 即可。
+&lt;/p&gt;
+&lt;/p&gt;
+也就是说，真正的事件触发函数是 evtTrigger， evtTrigger去执行用户定义的一个事件全部函数。
+evtTrigger 是 setup() 返回的， 如果没有 setup， 系统自己生成一个，这个生成的 evtTrigger会触发所有的 evtTrigger.handlers, 如果其中一个函数执行后返回 false， 则中止执行，并返回 false， 否则返回 true。
+&lt;p&gt;
+&lt;p&gt;
+当用户使用  o.un('事件名', 函数)  时， 系统会找到相应 evtTrigger， 并从
+evtTrigger.handlers 删除 函数。
+如果  evtTrigger.handlers 是空数组， 则使用
+remove(o, '事件名', evtTrigger)  移除事件。
+&lt;/p&gt;
+&lt;p&gt;
+当用户使用  o.trigger(参数)  时， 系统会找到相应 evtTrigger， 
+如果事件有 createEvent， 则参数更新成 createEvent(参数, this) 的值。
+使用这个函数执行 evtTrigger(参数)， 并返回  evtTrigger(参数) 的返回内容。
+默认的 evtTrigger 内部会调用 trigger(参数) 对参数初始化。 默认的 trigger 是空函数。
+&lt;/p&gt;
+&lt;p&gt;
+下面分别介绍各函数的具体内容。
+&lt;/p&gt;
+&lt;p&gt;
+add 表示 事件被绑定时的操作。  原型为: 
+&lt;code&gt;
+function add(elem, type, fn){
+// 对于标准的 DOM 事件， 它会调用 elem.addEventListener(type, fn, false);
+}
+&lt;/code&gt;
+其中， elem表示绑定事件的对象，即类实例。 type 是事件类型， 它就是事件名，因为多个事件的 add 函数肯能一样的， 因此 type 是区分事件类型的关键。fn 则是绑定事件的函数。
+&lt;/p&gt;
+&lt;p&gt;
+remove 同理。
+&lt;/p&gt;
+&lt;p&gt;
+trigger 的参数是一个事件参数，它只能有1个参数。
+&lt;/p&gt;
+&lt;p&gt;
+createEvent 和 setup 是高级的事件。参考上面的说明。 
+&lt;/p&gt;</remarks>
+          <example>下面代码演示了如何给一个类自定义事件，并创建类的实例，然后绑定触发这个事件。
+&lt;code&gt;
+// 创建一个新的类。
+var MyCls = new Class();
+MyCls.addEvents({
+click: {
+add:  function(elem, type, fn){
+alert("为  elem 绑定 事件 " + type );
+},
+trigger: function(e){
+alert("初始化 事件参数  " + e );
+},
+}
+});
+var m = new MyCls;
+m.on('click', function(){
+alert(' 事件 触发 ');
+});
+m.trigger('click', 2);
+&lt;/code&gt;</example>
+          <returns type="">this</returns>
+          <param name="evens" type="Object" defaultvalue="">所有事件。 具体见下。</param>
+          <param name="events" type="" />
+        </method>
+        <method name="extend">
+          <summary>完成动态类的自身继承。</summary>
+          <returns type="Class">继承的子类。</returns>
+          <param name="methods" type="Object">成员。</param>
+          <param name="quick" type="Boolean" defaultvalue="true">如果 true 那么这个类只能有1个实例，且不能复制 。</param>
+          <param name="members" type="" />
+        </method>
+      </class>
+      <dynatic name="Events">
+        <property type="Object" name="Events">
+          <summary>管理所有事件类型的工具。</summary>
+        </property>
+        <members>
+          <field type="Object" name="$default">
+            <summary>管理默认的类事件。</summary>
+          </field>
+        </members>
+      </dynatic>
+      <method name="data" attribute="static">
+        <summary>获取属于一个元素的数据。</summary>
+        <returns type="Object">值。</returns>
+        <param name="obj" type="Object">元素。</param>
+        <param name="type" type="String">类型。</param>
+      </method>
+      <method name="dataIf" attribute="static">
+        <summary>如果存在，获取属于一个元素的数据。</summary>
+        <returns type="Object">值。</returns>
+        <param name="obj" type="Object">元素。</param>
+        <param name="type" type="String">类型。</param>
+      </method>
+      <method name="setData">
+        <summary>设置属于一个元素的数据。</summary>
+        <returns type="void" />
+        <param name="obj" type="Object">元素。</param>
+        <param name="type" type="String">类型。</param>
+        <param name="data" type="mixed">内容。</param>
+      </method>
+      <method name="cloneData">
+        <summary>复制一个对象的数据到另一个对象。</summary>
+        <returns type="void" />
+        <param name="src" type="Object" />
+        <param name="dest" type="Object" />
+      </method>
+      <field type="Array" name="namespaces">
+        <summary>全部已载入的名字空间。</summary>
+      </field>
+      <method name="loadStyle">
+        <summary>异步载入样式。</summary>
+        <returns type="void" />
+        <param name="uri" type="String">地址。</param>
+        <param name="url" type="" />
+      </method>
+      <method name="loadText">
+        <summary>同步载入文本。</summary>
+        <see cref="Py.loadJs, Py.using" />
+        <returns type="String">载入的值。</returns>
+        <param name="uri" type="String">地址。</param>
+        <param name="callback" type="Function">对返回值的处理函数。</param>
+      </method>
+      <method name="eval">
+        <summary>全局运行一个函数。</summary>
+        <returns type="Object">执行返回值。</returns>
+        <param name="statement" type="String">语句。</param>
+      </method>
+      <method name="Class">
+        <summary>创建一个类。</summary>
+        <returns type="Class">生成的类。</returns>
+        <param name="methods" type="Object/Function">用于创建类的对象。/ 用于创建类的构造函数。</param>
+        <param name="quick" type="Boolean" defaultvalue="true">如果 true 那么这个类只能有1个实例，且不能复制，这会明显地提高创建类实例效率。</param>
+      </method>
+      <interface name="IEvent">
+        <summary>表示一个事件接口。</summary>
+        <method name="on" attribute="static">
+          <summary>增加一个监听者。</summary>
+          <returns type="">Object this</returns>
+          <param name="type" type="String">监听名字。</param>
+          <param name="fn" type="Function">调用函数。</param>
+        </method>
+        <method name="one" attribute="static">
+          <summary>增加一个只执行一次的监听者。</summary>
+          <returns type="">Object this</returns>
+          <param name="type" type="String">监听名字。</param>
+          <param name="fn" type="Function">调用函数。</param>
+        </method>
+        <method name="un" attribute="static">
+          <summary>删除一个监听器。</summary>
+          <returns type="">Object this</returns>
+          <param name="type" type="String" defaultvalue="">监听名字。</param>
+          <param name="fn" type="Function/undefined">回调器。</param>
+        </method>
+        <method name="trigger" attribute="static">
+          <summary>触发一个监听器。</summary>
+          <returns type="">Object this</returns>
+          <param name="type" type="String">监听名字。</param>
+          <param name="e" type="Object/undefined">事件参数。</param>
+        </method>
+      </interface>
+      <class name="Object">
+        <summary>所有类的基类。</summary>
+        <method name="baseCall">
+          <summary>调用父类的成员变量。</summary>
+          <returns type="Object">父类返回。</returns>
+          <param name="me" type="Class">当前类。</param>
+          <param name="args" type="Class">调用的参数数组。</param>
+          <param name="name" type="String">属性名。</param>
+        </method>
+        <method name="base">
+          <summary>调用父类的构造函数。</summary>
+          <returns type="Object">父类返回。</returns>
+        </method>
+        <method name="memberwiseClone">
+          <summary>创建当前 Object 的浅表副本。</summary>
+          <returns type="Object">当前变量的副本。</returns>
+        </method>
+      </class>
+      <method name="using">
+        <summary>使用一个名空间。</summary>
+        <returns type="void" />
+        <param name="name" type="String">名字空间。</param>
+      </method>
+      <method name="namespace">
+        <summary>定义名字空间。</summary>
+        <returns type="void" />
+        <param name="name" type="String">名字空间。</param>
+        <param name="obj" type="Object">值。</param>
+        <param name="value" type="Object">如果 obj 为 true， value 指示复制的成员。</param>
+      </method>
+      <method name="imports">
+        <summary>导入一个名字空间的资源。</summary>
+        <returns type="void" />
+        <param name="resource" type="String">资源地址。</param>
+        <param name="theme" type="Array" defaultvalue="">主题。</param>
+      </method>
+      <method name="addEventListener">
+        <summary>绑定一个监听器。</summary>
+        <seealso cref="Py.removeListener" />
+        <returns type="void" />
+        <param name="elem" type="Element">元素。</param>
+        <param name="type" type="String">类型。</param>
+        <param name="fn" type="Function">函数。</param>
+      </method>
+      <method name="removeEventListener">
+        <summary>移除一个监听器。</summary>
+        <seealso cref="Py.addListener" />
+        <returns type="void" />
+        <param name="elem" type="Element">元素。</param>
+        <param name="type" type="String">类型。</param>
+        <param name="fn" type="Function">函数。</param>
+      </method>
+      <field type="Number" name="id">
+        <summary>id种子 。</summary>
+      </field>
+      <method name="setupWindow">
+        <summary>初始化 window 对象。</summary>
+        <returns type="void" />
+        <param name="doc" type="Document" />
+      </method>
+    </namespace>
+    <namespace name="navigator">
+      <summary>浏览器。</summary>
+      <property propertyaccess="1" type="Boolean" name="isIE">
+        <summary>获取一个值，该值指示是否为 IE 浏览器。</summary>
+      </property>
+      <property propertyaccess="1" type="Boolean" name="isFirefox">
+        <summary>获取一个值，该值指示是否为 Firefox 浏览器。</summary>
+      </property>
+      <property propertyaccess="1" type="Boolean" name="isChrome">
+        <summary>获取一个值，该值指示是否为 Chrome 浏览器。</summary>
+      </property>
+      <property propertyaccess="1" type="Boolean" name="isOpera">
+        <summary>获取一个值，该值指示是否为 Opera 浏览器。</summary>
+      </property>
+      <property propertyaccess="1" type="Boolean" name="isSafari">
+        <summary>获取一个值，该值指示是否为 Safari 浏览器。</summary>
+      </property>
+      <field type="String" name="browser">
+        <summary>浏览器信息。</summary>
+      </field>
+      <field type="String" name="version">
+        <summary>浏览器版本。</summary>
+      </field>
+      <field type="Boolean" name="isQuirks">
+        <summary>浏览器是否为标准事件。就目前浏览器状况， IE6，7 中 isQuirks = true  其它皆 false 。</summary>
+        <remarks>此处认为 IE6,7 是怪癖的。</remarks>
+      </field>
+      <field type="Boolean" name="isStd">
+        <summary>是否为标准浏览器事件。</summary>
+      </field>
+      <field type="String" name="fullBrowser">
+        <summary>浏览器详细信息。</summary>
+      </field>
+    </namespace>
+    <class name="XMLHttpRequest">
+      <summary>生成一个请求。</summary>
+      <method name="isOk" attribute="static">
+        <summary>判断当前请求是否有正常的返回。</summary>
+        <returns type="Boolean">正常返回true 。</returns>
+        <param name="xmlHttp" type="XMLHttpRequest">请求。</param>
+      </method>
+    </class>
+  </members>
+</doc>

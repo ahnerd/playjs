@@ -105,7 +105,10 @@ String.implementIf({
             return this.substr(0, length);
         },
 
-
+	
+	/**
+	 * @param 
+	 */
     right : function(length) {
         ///<summary>获取字符串右边 length 长度的子字符串。语法：right(length)</summary>
         ///<param name="length" type="int">要获取的子字符串长度。</param>

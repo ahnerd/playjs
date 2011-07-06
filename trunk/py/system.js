@@ -30,27 +30,28 @@ var Py = {
 	/**
 	 * 是否打开调试。
 	 * @config {Boolean}
-	 * @ignore
 	 */
 	debug: true,
 
 	/**
-	 * 根目录。
+	 * 根目录。(需要末尾追加 /)
 	 * @config {String}
 	 * 程序会自动搜索当前脚本的位置为跟目录。
-	 * @ignore
 	 */
 	rootPath: undefined,
 	
 	/**
 	 * 是否输出 assert 来源。
+	 * @config {Boolean}
+	 * @value false
+	 * 如果此项是 true， 将会输出 assert 失败时的来源函数。
 	 */
 	stackTrace: false,
 	
 	/**
 	 * 默认的全局名字空间。
-	 * @config {String}
-	 * @ignore
+	 * @config {Object}
+	 * @value window
 	 */
 	defaultNamespace: this,
 	
@@ -59,7 +60,7 @@ var Py = {
 	/**
 	 * 如果使用了 UI 库，则 theme 表示默认皮肤。
 	 * @config {String}
-	 * @ignore
+	 * @value 'default'
 	 */
 	theme: 'default',
 	
@@ -69,7 +70,6 @@ var Py = {
 	 * 启用控制台调试。
 	 * @config {Boolean} 
 	 * 如果不存在控制台，将自动调整为 false 。
-	 * @ignore
 	 */
 	trace: true
 
@@ -227,8 +227,8 @@ var Py = {
 			 * @method
 			 * @param {Object} dest 复制目标。
 			 * @param {Object} obj 要复制的内容。
-			 * @return {Object} 复制后的对象。
-			 * @see Object.extend
+			 * @return {Object} 复制后的对象 (dest)。
+			 * @seeAlso Object.extend
 			 * <code>
 			 * var a = {v: 3, g: 5}, b = {g: 2};
 			 * Object.extendIf(a, b);
@@ -243,8 +243,8 @@ var Py = {
 			 * @method
 			 * @param {Object} dest 复制目标。
 			 * @param {Object} obj 要复制的内容。
-			 * @return {Object} 复制后的对象。
-			 * @see Object.extendIf
+			 * @return {Object} 复制后的对象 (dest)。
+			 * @seeAlso Object.extendIf
 			 * @example
 			 * <code>
 			 * var a = {v: 3}, b = {g: 2};
@@ -267,12 +267,12 @@ var Py = {
 			})(),
 	
 			/**
-			 * 在原有可迭代对象遍历。
+			 * 在一个可迭代对象上遍历。
 			 * @static
 			 * @param {Array/Object} iterable 对象，不支持函数。
-			 * @param {Function} fn 执行的函数。参数 value (值), key|index (键), iterable (对象)。
-			 * @param {Object} bind 迭代函数的环境变量。
-			 * @return {Boolean} 是否遍历完所传的所有值。
+			 * @param {Function} fn 对每个变量调用的函数。 {@param {Object} value 当前变量的值} {@param {Number} key 当前变量的索引} {@param {Array} array 数组本身} {@return {Boolean} 如果中止循环， 返回 false。}
+		 	 * @param {Object} bind 函数执行时的作用域。
+			 * @return {Boolean} 如果已经遍历完所传的所有值， 返回 true， 如果遍历被中断过，返回 false。
 			 * @example
 			 * <code> 
 			 * Object.each({a: '1', c: '3'}, function(value, key) {
@@ -317,18 +317,22 @@ var Py = {
 			},
 	
 			/**
-			 * 更新可迭代对象。
+			 * 更新一个可迭代对象。
 			 * @static
-			 * @param {Array/Object} iterable 对象。
-			 * @param {String/Function} fn 属性/执行的函数。参数 value。如果函数返回 undefined , 则不更新。
-			 * @param {Object} dest=iterable 更新目标。
-			 * @param {mixed} [args] 参数/绑定对象/方式。
+			 * @param {Array/Object} iterable 对象，不支持函数。
+			 * @param {Function} fn 对每个变量调用的函数。 {@param {Object} value 当前变量的值} {@param {Number} key 当前变量的索引} {@param {Array} array 数组本身} {@return {Boolean} 如果中止循环， 返回 false。}
+		 	 * @param {Object} bind=iterable 函数执行时的作用域。
+			 * @param {Object/Boolean} [args] 参数/是否间接传递。
 			 * @return {Object}  返回的对象。
 			 * @example 
+			 * 该函数支持多个功能。主要功能是将一个对象根据一个关系变成新的对象。
+			 * 
+			 * <code>
 			 * Object.update(["aa","aa23"], "length", []); // => [2, 4];
-			 * Object.update(["aa","aa23"], 'charAt', [], 0); // => ["a", "a"];
-			 * Object.update(["aa","aa23"], function(value, key) {return value.charAt(0);}, []); // => ["a", "a"];
-			 */
+			 * Object.update([{a: 1},{a: 4}], "a", [{},{}], true); // => [{a: 1},{a: 4}];
+			 * Object.update(["aa","aa23"], function(value, key, array) {return value.charAt(0);}, []); // => ["a", "a"];
+			 * </code>
+			 * */
 			update: function(iterable, fn, dest, args) {
 				
 				// 如果没有目标，源和目标一致。
@@ -350,12 +354,10 @@ var Py = {
 						
 						value = value[fn];
 						
-						// 如果此属性已为函数，则执行函数，并得到结果数组。
-						if (o.isFunction(value))
-							dest[key] = value(args);
+						assert(dest[key], "Object.update(iterable, fn, dest, args): 试图把iterable[{key}][{fn}] 放到 dest[key][fn], 但  dest[key] 是一个空的成员。");
 						
 						// 如果属性是非函数，则说明更新。 a.value -> b.value
-						else if(args)
+						if(args)
 							dest[key][fn] = value;
 							
 						// 类似函数的更新。 a.value -> value
@@ -373,7 +375,12 @@ var Py = {
 			 * 判断一个变量是否是引用变量。
 			 * @static
 			 * @param {Object} object 变量。
-			 * @return {Boolean} 所有 {} 和 new Object() 对象变量返回 true。
+			 * @return {Boolean} 所有对象变量返回 true, null 返回 false 。
+			 * @example
+			 * <code>
+			 * Object.isObject({}); // true
+			 * Object.isObject(null); // false
+			 * </code>
 			 */
 			isObject: function(obj) {
 				
@@ -385,7 +392,13 @@ var Py = {
 			 * 判断一个变量是否是数组。
 			 * @static
 			 * @param {Object} object 变量。
-			 * @return {Boolean} 判断是否数组。
+			 * @return {Boolean} 如果是数组，返回 true， 否则返回 false。
+			 * @example
+			 * <code> 
+			 * Object.isArray([]); // true
+			 * Object.isArray(document.getElementsByTagName("div")); // false
+			 * Object.isArray(new Array); // true
+			 * </code>
 			 */
 			isArray: function(obj) {
 				
@@ -397,7 +410,13 @@ var Py = {
 			 * 判断一个变量是否是函数。
 			 * @static
 			 * @param {Object} object 变量。
-			 * @return {Boolean} 判断是否是函数。
+			 * @return {Boolean} 如果是函数，返回 true， 否则返回 false。
+			 * @example
+			 * <code>
+			 * Object.isFunction(function(){}); // true
+			 * Object.isFunction(null); // false
+			 * Object.isFunction(new Function); // true
+			 * </code>
 			 */
 			isFunction: function(obj) {
 				
@@ -410,7 +429,16 @@ var Py = {
 			 * @static
 			 * @param {Object} obj 变量。
 			 * @return {String} 所有可以返回的字符串：  string  number   boolean   undefined	null	array	function   element  class   date   regexp object。
-			 */
+			 * @example
+			 * <code> 
+			 * Object.type(null); // "null"
+			 * Object.type(); // "undefined"
+			 * Object.type(new Function); // "function"
+			 * Object.type(+'a'); // "number"
+			 * Object.type(/a/); // "regexp"
+			 * Object.type([]); // "array"
+			 * </code>
+			 * */
 			type: function(obj) {
 				
 				//获得类型
@@ -432,8 +460,8 @@ var Py = {
 			/**
 			 * 深拷贝一个对象本身, 不深复制函数。
 			 * @static
-			 * @param {Object} obj 对象。
-			 * @return {Object} 复制的对象。
+			 * @param {Object} obj 要拷贝的对象。
+			 * @return {Object} 返回复制后的对象。
 			 * @example
 			 * <code>
 			 * var obj1 = {a: 0, b: 1};
@@ -470,6 +498,26 @@ var Py = {
 			 * @static
 			 * @param {Object} obj 类实例。
 			 * @param {Object} config 参数。
+			 * 这个函数会分析对象，并试图找到一个 属性设置函数。
+			 * 当设置对象 obj 的 属性 key 为 value:
+			 * 发生了这些事:
+			 *      检查，如果存在就调用: obj.setKey(value)
+			 * 否则， 检查，如果存在就调用: obj.key(value)
+			 * 否则， 检查，如果存在就调用: obj.key.set(value)
+			 * 否则，检查，如果存在就调用: obj.set(value)
+			 * 否则，执行 obj.key = value;
+			 * 
+			 * @example
+			 * <code>
+			 * document.setA = function(value){
+			 * 	  this._a = value;
+			 * };
+			 * 
+			 * Object.set(document, 'a', 3); 
+			 * 
+			 * // 这样会调用     document.setA(3);
+			 * 
+			 * </code>
 			 */
 			set: function(obj, config) {
 				
@@ -513,8 +561,13 @@ var Py = {
 			 * @param {Object} obj 对象。
 			 * @param {String} name 成员函数名。
 			 * @param {Function} fn 对象。
-			 * @return {Object} 对象。
-			 * @example  Object.addCallback(window, "onload",trace.empty);
+			 * @return {Object} obj。
+			 * @example
+			 * 
+			 * 下面的代码方便地添加 onload 事件。 
+			 * <code>
+			 * Object.addCallback(window, "onload",trace.empty);
+			 * </code>
 			 */
 			addCallback: function(obj, name, fn) {
 				
@@ -556,16 +609,25 @@ var Py = {
 		hasOwnProperty = o.prototype.hasOwnProperty,
 		
 		/**
-		 * @class Py.Class
+		 * @class Py.Native
 		 */
 		np = Native.prototype = {
 		
 			/**
 			 * 扩展当前类的动态方法。
-			 * @method implement
 			 * @param {Object} obj 成员。
-			 * @return {Class} 继承的子类。
-			 * @see Class.implement
+			 * @return this
+			 * @seeAlso Py.Native.prototype.implementIf
+			 * @example
+			 * <code>
+			 * Number.implement({
+			 *   sin: function(){
+			 * 	    return Math.sin(this);
+			 *  }
+			 * });
+			 * 
+			 * (1).sin();  //  Math.sin(1);
+			 * </code>
 			 */
 			implement: function (obj) {
 	
@@ -578,10 +640,9 @@ var Py = {
 			
 			/**
 			 * 如果不存在成员, 扩展当前类的动态方法。
-			 * @method implementIf
 			 * @param {Object} obj 成员。
-			 * @return {Class} 继承的子类。
-			 * @see Class.implement
+			 * @return this
+			 * @seeAlso Py.Native.prototype.implement
 			 */
 			implementIf: function(obj) {
 			
@@ -594,15 +655,122 @@ var Py = {
 			
 			/**
 			 * 为当前类添加事件。
-			 * @method addEvents
-			 * @param {String} evens 所有事件。 如字符串用“,”分开的事件。 事件对象，包含 {add, trigger, remove} 方法。
+			 * @param {Object} [evens] 所有事件。 具体见下。
 			 * @return this
+			 * <p>
+			 * 由于一个类的事件是按照 xType 属性存放的，拥有相同  xType 的类将有相同的事件，为了避免没有 xType 属性的类出现事件冲突， 这个方法会自动补全  xType 属性。
+			 * </p>
+			 * 
+			 * <p>
+			 * 这个函数是实现自定义事件的关键。
+			 * </p>
+			 * 
+			 * <p>
+			 * addEvents 函数的参数是一个事件信息，格式如:  {click: { add: ..., remove: ..., trigger: ..., createEvent: ..., setup: ... } 。
+			 * 其中 click 表示事件名。一般建议事件名是小写的。
+			 * </p>
+			 * 
+			 * <p>
+			 * 一个事件有多个相应，分别是: 绑定(add), 删除(remove), 触发(setup)， 创建事件参数(createEvent), 初始化事件参数(trigger)
+			 * </p>
+			 * 
+			 * </p>
+			 * 当用户使用   o.on('事件名', 函数)  时， 系统会判断这个事件是否已经绑定过，
+			 * 如果之前未绑定事件，则会使用 setup() 返回新的函数 evtTrigger，
+			 * evtTrigger.handlers 表示 当前这个事件的所有实际调用的函数的数组。 
+			 * evtTrigger 本身将遍历并执行 evtTrigger.handlers 里的成员。
+			 * 然后系统会调用 add(o, '事件名', evtTrigger)
+			 * 然后把 evtTrigger 保存在 o.data.event['事件名'] 中。
+			 * 如果 之前已经绑定了这个事件，则 evtTrigger 已存在，无需创建。
+			 * 这时系统只需把 函数 放到 evtTrigger.handlers 即可。
+			 * </p>
+			 * 
+			 * <p>
+			 * 也就是说，真正的事件触发函数是 evtTrigger， evtTrigger去执行用户定义的一个事件全部函数。
+			 * evtTrigger 是 setup() 返回的， 如果没有 setup， 系统自己生成一个，这个生成的 evtTrigger会触发所有的 evtTrigger.handlers, 如果其中一个函数执行后返回 false， 则中止执行，并返回 false， 否则返回 true。
+			 * </p>
+			 * 
+			 * <p>
+			 * 当用户使用  o.un('事件名', 函数)  时， 系统会找到相应 evtTrigger， 并从
+			 * evtTrigger.handlers 删除 函数。
+			 * 如果  evtTrigger.handlers 是空数组， 则使用
+			 * remove(o, '事件名', evtTrigger)  移除事件。
+			 * </p>
+			 * 
+			 * <p>
+			 * 当用户使用  o.trigger(参数)  时， 系统会找到相应 evtTrigger， 
+			 * 如果事件有 createEvent， 则参数更新成 createEvent(参数, this) 的值。
+			 * 使用这个函数执行 evtTrigger(参数)， 并返回  evtTrigger(参数) 的返回内容。
+			 * 默认的 evtTrigger 内部会调用 trigger(参数) 对参数初始化。 默认的 trigger 是空函数。
+			 * </p>
+			 * 
+			 * <p>
+			 * 下面分别介绍各函数的具体内容。
+			 * </p>
+			 * 
+			 * <p>
+			 * add 表示 事件被绑定时的操作。  原型为: 
+			 * </p>
+			 * 
+			 * <code>
+			 * function add(elem, type, fn){
+			 * 	   // 对于标准的 DOM 事件， 它会调用 elem.addEventListener(type, fn, false);
+			 * }
+			 * </code>
+			 * 
+			 * <p>
+			 *  elem表示绑定事件的对象，即类实例。 type 是事件类型， 它就是事件名，因为多个事件的 add 函数肯能一样的， 因此 type 是区分事件类型的关键。fn 则是绑定事件的函数。
+			 * </p>
+			 * 
+			 * <p>
+			 * remove 同理。
+			 * </p>
+			 * 
+			 * <p>
+			 * trigger 的参数是一个事件参数，它只能有1个参数。
+			 * </p>
+			 * 
+			 * <p>
+			 * createEvent 和 setup 是高级的事件。参考上面的说明。 
+			 * </p>
+			 * 
+			 * @example
+			 * 下面代码演示了如何给一个类自定义事件，并创建类的实例，然后绑定触发这个事件。
+			 * <code>
+			 * 
+			 * // 创建一个新的类。
+			 * var MyCls = new Class();
+			 * 
+			 * MyCls.addEvents({
+			 * 
+			 *     click: {
+			 * 			
+			 * 			add:  function(elem, type, fn){
+			 * 	   			alert("为  elem 绑定 事件 " + type );
+			 * 			},
+			 * 
+			 * 			trigger: function(e){
+			 * 	   			alert("初始化 事件参数  " + e );
+			 * 			}
+			 * 
+			 * 		}
+			 * 
+			 * });
+			 * 
+			 * var m = new MyCls;
+			 * m.on('click', function(){
+			 * 	  alert(' 事件 触发 ');
+			 * });
+			 * 
+			 * m.trigger('click', 2);
+			 * 
+			 * </code>
 			 */
 			addEvents: function (events) {
 				
 				var ep = this.prototype;
 				
-				assert(!events || o.isObject(events), "Py.Native.prototype.addEvents(events): 参数 {event} 必须是一个包含事件的对象。 如 {click: { add: ..., remove: ..., trigger: ..., setup: ... } ", events);
+				assert(!events || o.isObject(events), "Py.Native.prototype.addEvents(events): 参数 {event} 必须是一个包含事件的对象。 如 {click: { add: ..., remove: ..., trigger: ..., createEvent: ..., setup: ... } ", events);
 				
 				applyIf(ep, p.IEvent);
 				
@@ -1688,11 +1856,11 @@ var Py = {
 		},
 
 		/**
-		 * 对数组运行一个函数。
-		 * @param {Function} fn 函数.参数 value, index
-		 * @param {Object} bind 对象。
+		 * 对数组内的所有变量执行函数，并可选设置作用域。
 		 * @method
-		 */
+		 * @param {Function} fn 对每个变量调用的函数。 {@param {Object} value 当前变量的值} {@param {Number} key 当前变量的索引} {@param {Array} array 数组本身}
+		 * @param {mixed} bind 函数执行时的作用域。
+		 * */
 		forEach: each,
 		
 		/// #endif
@@ -1934,18 +2102,25 @@ var Py = {
 						
 					document.isReady = true;
 					
-					// 调用所有函数。
-					for(var list = doReady.list, i = 0, len = list.length; i < len; i++)
-						list[i].call(document, p);
-					
-					
 					// 使用 document 删除事件。
 					p.removeEventListener.call(document, eventName, doReady, false);
 					
-					p.removeEventListener.call(w, 'load', doReady, false);
+					// 调用所有函数。
+					doReady.list.invoke('call', [document, p]);
+					
+					
 					
 					doReady = null;
 					
+				},
+				
+				doLoad = function(){
+					document.isLoaded = true;
+					p.removeEventListener.call(w, 'load', doLoad, false);
+					
+					doLoad.list.invoke('call', [w, p]);
+					
+					doLoad = null;
 				},
 				
 				/// #ifdef SupportIE8
@@ -1977,21 +2152,19 @@ var Py = {
 			
 			document.onLoad = function(fn) {
 
-				assert(o.isFunction(fn), "document.ready(fn): 参数 {fn} 必须是可执行的函数。", fn);
+				assert.isFunction(fn, "document.ready(fn): 参数 {fn} ~。");
 				
 				if(document.isLoaded)
 					fn.call(w);
 				else
 					// 已经完成则执行函数，否则 on 。
-					p.addEventListener.call(w, 'load', fn, false);
+					doLoad.list.push(fn);
 				
 			};
-			
-			document.onLoad(function(){
-				document.isLoaded = true;
-			});
 				
 			doReady.list = [];
+			
+			doLoad.list = [doReady];
 				
 			// 如果readyState 不是  complete, 说明文档正在加载。
 			if (document.readyState !== "complete") { 
@@ -1999,7 +2172,7 @@ var Py = {
 				// 使用系统文档完成事件。
 				p.addEventListener.call(document, eventName, doReady, false);
 				
-				p.addEventListener.call(w, 'load', doReady, false);
+				p.addEventListener.call(w, 'load', doLoad, false);
 				
 				/// #ifdef SupportIE8
 				
@@ -2042,7 +2215,7 @@ var Py = {
 				/// #endif
 				
 			} else {
-				setTimeout(doReady, 1);
+				setTimeout(doLoad, 1);
 			}
 			
 			/// #endregion
