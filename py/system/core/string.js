@@ -7,7 +7,7 @@
 /**
  * @class String
  */
-String.implement({
+String.implementIf({
 	
 	/**
 	 * 字符串正则测试。
@@ -27,7 +27,7 @@ String.implement({
 	 * @param none。
 	 * @return {String} 格式化后的字符串。
 	 */
-	trimStart:function(){
+	trimLeft:function(){
 		return this.replace(/^\s+/,'');
 	},
 	
@@ -36,7 +36,7 @@ String.implement({
 	 * @param none。
 	 * @return {String} 格式化后的字符串。
 	 */
-	trimEnd:function(){
+	trimRight:function(){
 		return this.replace(/\s+$/,'')
 	},
 
