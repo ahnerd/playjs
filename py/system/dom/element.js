@@ -118,15 +118,22 @@
 	
 	/// #endif
 	
+	/**
+	 * @namespace Py
+	 */
 	apply(p, {
 		
+		/**
+		 * 元素。
+		 * @class Element
+		 * @ignore
+		 */
 		Element: e,
 			
 		/// #ifdef SupportIE6
 
 		/**
 	     * 根据一个 id 或 对象获取节点。
-		 * @method
 	     * @param {String/Element} id 对象的 id 或对象。
 	     */
 		$: navigator.isQuirks ? function(id){
@@ -201,10 +208,16 @@
 	});
 		
 	///   #region ElementList
-
+	
+	/**
+	 * @class Element
+	 * @implements Py.IEvent
+	 */
+	
     /**
      * 节点集合。
      * @class ElementList
+     * @extends Element
      */
     p.namespace(".ElementList", p.Class({
 	
@@ -246,6 +259,7 @@
 	
 	/**
 	 * @class Element
+	 * @implements Py.IEvent
 	 */
 	apply(e,  {
 		 
@@ -483,7 +497,7 @@
 	});
 	
 	/**
-	 * @namespace Document
+	 * @namespace document
 	 */
 	apply(document, {
 	   
@@ -739,16 +753,18 @@
 		return baseEvent ? ee[events] : arguments.callee;
 	};
 	
+	
 	/**
 	 * 表示事件的参数。
 	 * @class Event
-	 */
+	 */	
+	
 	var pep = p.namespace(".Event", Class({
 			
 		/**
 		 * 构造函数。
 		 * @param {Object} target
-		 * @constructor Event
+		 * @constructor
 		 */
 		constructor: function(target){
 			 this.target = target;
@@ -756,7 +772,6 @@
 
 		/**
 		 * 阻止冒泡。
-		 * @method stopPropagation
 		 */
 		stopPropagation : function() {
 			this.cancelBubble = true;
@@ -764,13 +779,16 @@
 		
 		/**
 		 * 停止默认。
-		 * @method preventDefault
 		 */
 		preventDefault : function() {
 			this.returnValue = false;
 		}
 		
 	})).prototype,
+	
+	/**
+	 * @class
+	 */
 		
 		/**
 		 * Event
@@ -1761,7 +1779,6 @@
 		/**
 		 * 表示一个点。
 		 * @class Point
-		 * @memberOf Py.Drawing
 		 */
 		Point = p.namespace(".Point", p.Class({
 			
@@ -1841,7 +1858,7 @@
 	//   来自  Mootools (MIT license)
 	
 	/**
-	 * @class Document
+	 * @namespace document
 	 */
 	apply(document, {
 		
