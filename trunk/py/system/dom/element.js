@@ -1566,7 +1566,7 @@
                     if(me.type === 'select-multiple') {
                         value = value.split(',');
                         o.each(me.options, function(e) {
-                            e.selected = value.contains(e.value);
+                            e.selected = value.indexOf(e.value) > -1;
                         });
                     } 
 					
