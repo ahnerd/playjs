@@ -1,6 +1,5 @@
 //===========================================
-//  元素   Dom.js
-//  Copyright(c) 2009-2010 xuld
+//  框架               iframe.js       A
 //===========================================
 Py.using("System.Controls.Control");
 
@@ -14,11 +13,14 @@ Py.namespace(".IFrame", Py.Control.extend({
 	
 	tpl: '<iframe src="about:blank"></iframe>',
 	
-	onReady: function(){
+	doReady: function(fn){
 		var me = this;
 		me.update();
 		me.isReady = true;
-		me.trigger('ready');
+	},
+	
+	onReady: function (fn) {
+		
 	},
 	
 	init: function(){
@@ -50,23 +52,8 @@ Py.namespace(".IFrame", Py.Control.extend({
 			};
 		}
 		return me;
-	},
-	
-	ready: function(fn){
-		this.on('ready', fn);
 	}
 
-}).addEvents({
-	
-	ready: {
-		
-		add: function(elem, type, fn){
-			if(elem.isReady) fn.call(elem);
-		},
-		
-		trigger: Py.Events.element.ready.trigger
-	}
-	
 }));
 	
 	
