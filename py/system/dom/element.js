@@ -1720,19 +1720,6 @@
 		},
 		
 		/**
-		 * 将元素引到最前。
-		 * @param {Element} [elem] 参考元素。
-		 * @return this
-		 */
-		bringToFront: function(elem) {
-			
-		   	assert.isElement(this.getDom(), "Element.prototype.bringToFront(elem): {this.getDom()} 必须返回 DOM 节点。");
-			
-			this.getDom().style.zIndex = Math.max(parseInt(styleString(this.getDom(), 'zIndex')) || 0, elem && elem.nodeType && (parseInt(styleString(elem, 'zIndex')) + 1) || e.zIndex++);
-			return this;
-		},
-		
-		/**
 		 * 切换显示当前元素。
 		 * @param {Number} duration=500 时间。
 		 * @param {Function} [callBack] 回调。
@@ -1742,6 +1729,8 @@
 		toggle: function(duration, callBack, type, flag) {
 			return this[(flag === undefined ? e.isHidden(this.getDom()) : flag) ? 'show' : 'hide']  (duration, callBack, type);
 		},
+		
+		/// #ifdef Compact
 		
 		/**
 		 * 变化到某值。
@@ -1765,6 +1754,22 @@
 				setTimeout(args[3], 0);
 					
 			return  this;
+		},
+		
+		
+		/// #endif
+		
+		/**
+		 * 将元素引到最前。
+		 * @param {Element} [elem] 参考元素。
+		 * @return this
+		 */
+		bringToFront: function(elem) {
+			
+		   	assert.isElement(this.getDom(), "Element.prototype.bringToFront(elem): {this.getDom()} 必须返回 DOM 节点。");
+			
+			this.getDom().style.zIndex = Math.max(parseInt(styleString(this.getDom(), 'zIndex')) || 0, elem && elem.nodeType && (parseInt(styleString(elem, 'zIndex')) + 1) || e.zIndex++);
+			return this;
 		}
 		
 	}, 2);
