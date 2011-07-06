@@ -734,6 +734,10 @@ var Py = {
 			 * createEvent 和 setup 是高级的事件。参考上面的说明。 
 			 * </p>
 			 * 
+			 * <p>
+			 * 如果你不知道其中的几个参数功能，特别是 setup 和 createEvent ，请不要自定义。
+			 * </p>
+			 * 
 			 * @example
 			 * 下面代码演示了如何给一个类自定义事件，并创建类的实例，然后绑定触发这个事件。
 			 * <code>
@@ -793,11 +797,47 @@ var Py = {
 			},
 		
 			/**
-			 * 完成动态类的自身继承。
-			 * @method extend
-			 * @param {Object} methods 成员。
-			 * @param {Boolean} quick=true 如果 true 那么这个类只能有1个实例，且不能复制 。
+			 * 继承当前类并返回子类。
+			 * @param {Object/Function} [methods] 成员或构造函数。
+			 * @param {Boolean} quick=true 如果 true 那么这个类不解除成员对象的引用 。
 			 * @return {Class} 继承的子类。
+			 * <p>
+			 * 这个函数是实现继承的核心。
+			 * </p>
+			 * 
+			 * <p>
+			 * 在 Javascript 中，继承是依靠原型链实现的， 这个函数仅仅是对它的包装，而没有做额外的动作。
+			 * </p>
+			 * 
+			 * <p>
+			 * 这个函数实现的是 单继承。如果子类有定义构造函数，则仅调用子类的构造函数，否则调用父类的构造函数。
+			 * </p>
+			 * 
+			 * <p>
+			 * 要想在子类的构造函数调用父类的构造函数，可以使用  {@link Py.Object.prototype.base} 。
+			 * </p>
+			 * 
+			 * <p>
+			 * 这个函数返回的类实际是一个函数，但它被使用 Py.Native 修饰过。
+			 * </p>
+			 * 
+			 * <p>
+			 * 由于原型链的关系， 肯能存在共享的引用。
+			 * 
+			 * 如: 类 A ，  A.prototype.c = [];
+			 * 
+			 * 那么，A的实例 b , d 都有 c 成员， 但它们共享一个   A.prototype.c 成员。
+			 * 
+			 * 这显然是不正确的。所以你应该把 参数 quick 置为 false ， 这样， A创建实例的时候，会自动解除共享的引用成员。
+			 * 
+			 * 当然，这是一个比较费时的操作，因此，默认  quick 是 true 。
+			 * </p>
+			 * 
+			 * <p>
+			 * 你也可以把动态成员的定义放到 构造函数， 如: this.c = [];
+			 * 
+			 * 这是最好的解决方案。
+			 * </p>
 			 */
 		 	extend: function(members, quick) {
 		
