@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="gb2312"?>
-<doc language="Javascript" create="2011/7/6 6:28:56">
+<doc language="Javascript" create="2011/7/8 10:52:27">
   <summary>Py.Core for Javascript</summary>
   <sources default="1">
     <source id="0" path="../../../window/fun/PyDoc/bin/Debug/define.js" />
@@ -11,6 +11,9 @@
   </sources>
   <members>
     <class name="Object" source="-1">
+      <summary>表示一个事件接口。</summary>
+      <remarks>Py.IEvent 提供了事件机制的基本接口，凡实行这个接口的类店都有事件的处理能力。
+在调用  &lt;link&gt;Py.Native.prototype.addEvents&lt;/link&gt; 的时候，将自动实现这个接口。</remarks>
       <method name="extendIf" attribute="static">
         <summary>如果目标成员不存在就复制对象的所有属性到其它对象。</summary>
         <remarks>&lt;code&gt;
@@ -148,9 +151,9 @@ Object.set(document, 'a', 3);
 Object.addCallback(window, "onload",trace.empty);
 &lt;/code&gt;</example>
         <returns type="Object">obj。</returns>
-        <param name="obj" type="Function">对象。</param>
+        <param name="obj" type="Object">对象。</param>
         <param name="name" type="String">成员函数名。</param>
-        <param name="fn" type="Object">对象。</param>
+        <param name="fn" type="Function">对象。</param>
       </method>
     </class>
     <class name="Function" source="-1">
@@ -198,6 +201,15 @@ Array.create([4,6], 1); // [6]
         <param name="iterable" type="Object">可迭代的实例。</param>
         <param name="start" type="Number" defaultvalue="0">开始的位置。</param>
       </method>
+      <method name="copyIf" attribute="static">
+        <summary>如果目标数组不存在值，则拷贝，否则忽略。</summary>
+        <example>&lt;code&gt;
+Array.copyIf([4,6], [4, 7]); // [4, 7, 6]
+&lt;/code&gt;</example>
+        <returns type="void" />
+        <param name="src" type="Object">来源数组。</param>
+        <param name="dest" type="Array">目标数组。</param>
+      </method>
       <method name="plain" attribute="static">
         <summary>把传入的值连接为新的数组。如果元素本身是数组，则合并。此函数会过滤存在的值。</summary>
         <example>&lt;code&gt;
@@ -219,15 +231,6 @@ trace(value);
         <returns type="void" />
         <param name="fn" type="Function">对每个变量调用的函数。 &lt;param type="Object" name="value"&gt;当前变量的值&lt;/param&gt; &lt;param type="Number" name="key"&gt;当前变量的索引&lt;/param&gt; &lt;param type="Number" name="index"&gt;当前变量的索引&lt;/param&gt; &lt;param type="Array" name="array"&gt;数组本身&lt;/param&gt;</param>
         <param name="bind" type="Object">函数执行时的作用域。</param>
-      </method>
-      <method name="copyIf">
-        <summary>如果目标数组不存在值，则拷贝，否则忽略。</summary>
-        <example>&lt;code&gt;
-Array.copyIf([4,6], [4, 7]); // [4, 7, 6]
-&lt;/code&gt;</example>
-        <returns type="void" />
-        <param name="src" type="Array">来源数组。</param>
-        <param name="dest" type="Array">目标数组。</param>
       </method>
       <method name="indexOf">
         <summary>返回数组某个值的第一个位置。值没有,则为-1 。</summary>
@@ -299,8 +302,8 @@ return v.["q"] == "3";
 ["vhd"].invoke('charAt, [0]); //    ['v']
 &lt;/code&gt;</example>
         <returns type="Array">结果。</returns>
-        <param name="fn" type="Array/ElementList" />
-        <param name="args" type="Function" />
+        <param name="fn" type="String" />
+        <param name="args" type="Array" />
         <param name="" type="Array" />
       </method>
       <method name="unique">
@@ -335,7 +338,11 @@ Date.now(); //   相当于 new Date().getTime()
       </field>
     </class>
     <dynatic name="document" source="5">
-      <field type="Object" name="document" source="-1" />
+      <field type="Object" name="document" source="-1">
+        <summary>表示一个事件接口。</summary>
+        <remarks>Py.IEvent 提供了事件机制的基本接口，凡实行这个接口的类店都有事件的处理能力。
+在调用  &lt;link&gt;Py.Native.prototype.addEvents&lt;/link&gt; 的时候，将自动实现这个接口。</remarks>
+      </field>
       <members>
         <method name="onReady">
           <summary>页面加载时执行。</summary>
@@ -388,7 +395,6 @@ Date.now(); //   相当于 new Date().getTime()
         <method name="getOffsets" source="2">
           <summary>获取距父元素的偏差。</summary>
           <returns type="Point">位置。</returns>
-          <param name="" type="Undefined" />
         </method>
         <method name="getScrollSize" source="2">
           <summary>获取滚动区域大小。</summary>
@@ -632,6 +638,8 @@ config {String}</summary>
       </config>
       <class name="Native" access="private" attribute="static">
         <summary>由存在的类修改创建类。即为类添加一个 implement 和 implementIf 成员。</summary>
+        <remarks>Py.IEvent 提供了事件机制的基本接口，凡实行这个接口的类店都有事件的处理能力。
+在调用  &lt;link&gt;Py.Native.prototype.addEvents&lt;/link&gt; 的时候，将自动实现这个接口。</remarks>
         <seealso cref="Py.Class" />
         <method name="implement">
           <summary>扩展当前类的动态方法。</summary>
@@ -662,17 +670,17 @@ return Math.sin(this);
 这个函数是实现自定义事件的关键。
 &lt;/p&gt;
 &lt;p&gt;
-addEvents 函数的参数是一个事件信息，格式如:  {click: { add: ..., remove: ..., trigger: ..., createEvent: ..., setup: ... } 。
+addEvents 函数的参数是一个事件信息，格式如:  {click: { add: ..., remove: ..., initEvent: ..., trigger: ...} 。
 其中 click 表示事件名。一般建议事件名是小写的。
 &lt;/p&gt;
 &lt;p&gt;
-一个事件有多个相应，分别是: 绑定(add), 删除(remove), 触发(setup)， 创建事件参数(createEvent), 初始化事件参数(trigger)
+一个事件有多个相应，分别是: 绑定(add), 删除(remove), 触发(trigger), 初始化事件参数(initEvent)
 &lt;/p&gt;
 &lt;/p&gt;
 当用户使用   o.on('事件名', 函数)  时， 系统会判断这个事件是否已经绑定过，
-如果之前未绑定事件，则会使用 setup() 返回新的函数 evtTrigger，
-evtTrigger.handlers 表示 当前这个事件的所有实际调用的函数的数组。 
-evtTrigger 本身将遍历并执行 evtTrigger.handlers 里的成员。
+如果之前未绑定事件，则会创建新的函数 evtTrigger，
+evtTrigger 函数将遍历并执行 evtTrigger.handlers 里的成员, 如果其中一个函数执行后返回 false， 则中止执行，并返回 false， 否则返回 true。
+evtTrigger.handlers 表示 当前这个事件的所有实际调用的函数的数组。 evtTrigger.handlers[0] 是事件的 initEvent 函数。
 然后系统会调用 add(o, '事件名', evtTrigger)
 然后把 evtTrigger 保存在 o.data.event['事件名'] 中。
 如果 之前已经绑定了这个事件，则 evtTrigger 已存在，无需创建。
@@ -680,7 +688,6 @@ evtTrigger 本身将遍历并执行 evtTrigger.handlers 里的成员。
 &lt;/p&gt;
 &lt;p&gt;
 也就是说，真正的事件触发函数是 evtTrigger， evtTrigger去执行用户定义的一个事件全部函数。
-evtTrigger 是 setup() 返回的， 如果没有 setup， 系统自己生成一个，这个生成的 evtTrigger会触发所有的 evtTrigger.handlers, 如果其中一个函数执行后返回 false， 则中止执行，并返回 false， 否则返回 true。
 &lt;/p&gt;
 &lt;p&gt;
 当用户使用  o.un('事件名', 函数)  时， 系统会找到相应 evtTrigger， 并从
@@ -690,9 +697,8 @@ remove(o, '事件名', evtTrigger)  移除事件。
 &lt;/p&gt;
 &lt;p&gt;
 当用户使用  o.trigger(参数)  时， 系统会找到相应 evtTrigger， 
-如果事件有 createEvent， 则参数更新成 createEvent(参数, this) 的值。
-使用这个函数执行 evtTrigger(参数)， 并返回  evtTrigger(参数) 的返回内容。
-默认的 evtTrigger 内部会调用 trigger(参数) 对参数初始化。 默认的 trigger 是空函数。
+如果事件有trigger， 则使用 trigger(对象, '事件名', evtTrigger, 参数) 触发事件。
+如果没有， 则直接调用 evtTrigger(参数)。
 &lt;/p&gt;
 &lt;p&gt;
 下面分别介绍各函数的具体内容。
@@ -712,13 +718,13 @@ elem表示绑定事件的对象，即类实例。 type 是事件类型， 它就是事件名，因为多个事件�
 remove 同理。
 &lt;/p&gt;
 &lt;p&gt;
-trigger 的参数是一个事件参数，它只能有1个参数。
+initEvent 的参数是一个事件参数，它只能有1个参数。
 &lt;/p&gt;
 &lt;p&gt;
-createEvent 和 setup 是高级的事件。参考上面的说明。 
+trigger 是高级的事件。参考上面的说明。 
 &lt;/p&gt;
 &lt;p&gt;
-如果你不知道其中的几个参数功能，特别是 setup 和 createEvent ，请不要自定义。
+如果你不知道其中的几个参数功能，特别是  trigger ，请不要自定义。
 &lt;/p&gt;</remarks>
           <example>下面代码演示了如何给一个类自定义事件，并创建类的实例，然后绑定触发这个事件。
 &lt;code&gt;
@@ -729,7 +735,7 @@ click: {
 add:  function(elem, type, fn){
 alert("为  elem 绑定 事件 " + type );
 },
-trigger: function(e){
+initEvent: function(e){
 alert("初始化 事件参数  " + e );
 }
 }
@@ -789,6 +795,8 @@ m.trigger('click', 2);
         <members>
           <field type="Object" name="$default">
             <summary>管理默认的类事件。</summary>
+            <remarks>Py.IEvent 提供了事件机制的基本接口，凡实行这个接口的类店都有事件的处理能力。
+在调用  &lt;link&gt;Py.Native.prototype.addEvents&lt;/link&gt; 的时候，将自动实现这个接口。</remarks>
           </field>
         </members>
       </dynatic>
@@ -1086,11 +1094,6 @@ Py.removeEventListener.call(document, 'click', function(){
         <returns type="void" />
         <param name="doc" type="Document" />
       </method>
-      <method name="$" source="2">
-        <summary>根据一个 id 或 对象获取节点。</summary>
-        <returns type="Object" />
-        <param name="id" type="String/Element">对象的 id 或对象。</param>
-      </method>
       <class name="Element" source="2">
         <summary>本地化 Element 。</summary>
       </class>
@@ -1099,6 +1102,27 @@ Py.removeEventListener.call(document, 'click', function(){
         <returns type="void" />
         <param name="w" type="Window">窗口。</param>
       </method>
+      <class name="Event" source="2">
+        <summary>表示事件的参数。</summary>
+        <field type="Boolean" name="cancelBubble" source="2">
+          <summary>表示当前是否取消冒泡。</summary>
+        </field>
+        <field type="Boolean" name="returnValue" source="2">
+          <summary>表示当前是否阻止默认事件。</summary>
+        </field>
+        <method name="stopPropagation" source="2">
+          <summary>阻止事件的冒泡。</summary>
+          <returns type="void" />
+        </method>
+        <method name="preventDefault" source="2">
+          <summary>取消默认事件发生。</summary>
+          <returns type="void" />
+        </method>
+        <method name="stop" source="2">
+          <summary>停止默认事件和冒泡。</summary>
+          <returns type="void" />
+        </method>
+      </class>
       <namespace name="Fx" source="5">
         <class name="Base" attribute="abstract" source="4">
           <summary>实现特效。</summary>
@@ -1267,9 +1291,9 @@ Py.removeEventListener.call(document, 'click', function(){
       <implement>Py.IEvent</implement>
       <method name="parse" attribute="static" source="2">
         <summary>转换一个HTML字符串到节点。</summary>
-        <returns type="Element">元素。</returns>
+        <returns type="Element/TextNode/DocumentFragment">元素。</returns>
         <param name="html" type="String/Element">字符。</param>
-        <param name="context" type="Document">内容。</param>
+        <param name="context" type="Document" defaultvalue="document">内容。</param>
         <param name="cachable" type="Boolean" defaultvalue="true">是否缓存。</param>
       </method>
       <method name="implement" attribute="static" source="2">
@@ -1278,7 +1302,7 @@ Py.removeEventListener.call(document, 'click', function(){
 这是由于不同的函数需用不同的方法扩展，必须指明扩展类型。
 所谓的扩展，即一个类含需要的函数。
 DOM 方法 有 以下种
-1  getText - 返回结果  
+1  getText - 返回结果
 2  setText - 返回 this
 3  getElementById - 返回 DOM
 4  getElementsByTagName - 返回  DOM 数组
@@ -1289,9 +1313,9 @@ DOM 方法 有 以下种
 1, 其它 - 执行结果是数据，返回结果数组。 (默认)
 2 - 执行结果返回 this， 返回 this 。
 3 - 执行结果是DOM，返回 ElementList 包装。
-4 - 执行结果是DOM数组，返回 ElementList 包装。 
+4 - 执行结果是DOM数组，返回 ElementList 包装。
 5 - 如果每个返回值都是 true， 则返回 true， 否则返回 false。
-对 document ， 
+对 document ，
 如果不存在则复制。
 参数 copyIf 仅内部使用。</remarks>
         <returns type="Element">this</returns>
@@ -1310,47 +1334,6 @@ DOM 方法 有 以下种
         <summary>获取一个元素的文档。</summary>
         <returns type="Document">当前节点所在文档。</returns>
         <param name="elem" type="Element/Document/Window">元素。</param>
-      </method>
-      <method name="getStyle" access="private" attribute="static" source="2">
-        <summary>获取元素的计算样式。</summary>
-        <returns type="String">样式。</returns>
-        <param name="dom" type="Object">节点。</param>
-        <param name="name" type="String">名字。</param>
-      </method>
-      <method name="styleString" attribute="static" source="2">
-        <summary>读取样式字符串。</summary>
-        <returns type="String">字符串。</returns>
-        <param name="elem" type="Element">元素。</param>
-        <param name="name" type="String">属性名。</param>
-      </method>
-      <method name="styleNumber" attribute="static" source="2">
-        <summary>读取样式数字。</summary>
-        <returns type="String">字符串。</returns>
-        <param name="elem" type="Element">元素。</param>
-        <param name="name" type="String">属性名。</param>
-      </method>
-      <method name="getSize" access="private" attribute="static" source="2">
-        <summary>将 offsetWidth 转为 style.width。</summary>
-        <returns type="Number">转换后的大小。</returns>
-        <param name="elem" type="Element">元素。</param>
-        <param name="width" type="Number">输入。</param>
-      </method>
-      <property type="Object" name="attributes" access="private" attribute="static" source="2">
-        <summary>特殊属性集合。</summary>
-      </property>
-      <field type="Object" name="styleMaps" attribute="static" source="2">
-        <summary>样式表。</summary>
-      </field>
-      <property type="Object" name="specialAttr" access="private" attribute="static" source="2">
-        <summary>特殊属性。</summary>
-      </property>
-      <property type="Number" name="zIndex" access="private" attribute="static" source="2">
-        <summary>默认最大的 z-index 。</summary>
-      </property>
-      <method name="isHidden" attribute="static" source="2">
-        <summary>判断一个节点是否隐藏。</summary>
-        <returns type="Boolean">隐藏返回 true 。</returns>
-        <param name="elem" type="Element">元素。</param>
       </method>
       <method name="setMovable" attribute="static" source="2">
         <summary>设置一个元素可拖动。</summary>
@@ -1401,17 +1384,16 @@ DOM 方法 有 以下种
         <returns type="Element">元素。</returns>
         <param name="id" type="String/Element">对象的 id 或对象。</param>
       </method>
-      <method name="setup" source="2">
-        <summary>事件初始化。</summary>
-        <returns type="Function">启用当前事件的函数。</returns>
-      </method>
-      <method name="createEvent" source="2">
+      <method name="trigger" source="2">
         <summary>创建当前事件可用的参数。</summary>
         <returns type="Event">e 事件参数。</returns>
         <param name="e" type="Event">事件参数。</param>
         <param name="target" type="Object">事件目标。</param>
+        <param name="elem" type="Element" />
+        <param name="type" type="" />
+        <param name="fn" type="Function" />
       </method>
-      <method name="trigger" id="0" source="2">
+      <method name="initEvent" source="2">
         <summary>事件触发后对参数进行处理。</summary>
         <returns type="void" />
         <param name="e" type="Event">事件参数。</param>
@@ -1424,51 +1406,47 @@ DOM 方法 有 以下种
         <param name="fn" type="Function">函数。</param>
       </method>
       <method name="remove" source="2">
-        <summary>删除事件。</summary>
-        <returns type="void" />
-        <param name="obj" type="Object">对象。</param>
-        <param name="type" type="String">类型。</param>
-        <param name="fn" type="Function">函数。</param>
+        <summary>删除元素子节点或本身。</summary>
+        <returns type="Element">this</returns>
+        <param name="child" type="Object/undefined">子节点。</param>
       </method>
       <method name="defineEvents" source="2">
         <summary>定义事件。</summary>
-        <returns type="Function">Py.defineDomEvents</returns>
+        <remarks>原则 Element.addEvents 可以解决问题。 但由于 DOM 的特殊性，额外提供 defineEvents 方便定义适合 DOM 的事件。
+defineEvents 主要解决 3 个问题:
+&lt;ol&gt;
+&lt;li&gt; 多个事件使用一个事件信息。
+&lt;p&gt;
+所有的 DOM 事件的  add 等 是一样的，因此这个函数提供一键定义: Py.defineEvents('e1 e2 e3')
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt; 事件别名。
+&lt;p&gt;
+一个自定义 DOM 事件是另外一个事件的别名。
+这个函数提供一键定义依赖: Py.defineEvents('mousewheel', 'DOMMouseScroll')
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt; 事件委托。
+&lt;p&gt;
+一个自定义 DOM 事件经常依赖已有的事件。一个事件由另外一个事件触发， 比如 ctrlenter 是在 keyup 基础上加工的。
+这个函数提供一键定义依赖: Py.defineEvents('ctrlenter', 'keyup', function(e){ (判断事件) })
+&lt;/p&gt;
+&lt;/li&gt;</remarks>
+        <example>&lt;code&gt;
+Element.defineEvents('mousewheel', 'DOMMouseScroll')  //  在 FF 下用   mousewheel
+替换   DOMMouseScroll 。
+Element.defineEvents('mouseenter', 'mouseover', function(e){
+if( !isMouseEnter(e) )   // mouseenter  是基于 mouseover 实现的事件，  因此在 不是
+mouseenter 时候 取消事件。
+e.returnValue = false;
+});
+&lt;/code&gt;</example>
+        <returns type="Function">函数本身</returns>
         <param name="事件名" type="String">。</param>
         <param name="trigger" type="String">触发器。</param>
         <param name="events" type="Function" />
         <param name="baseEvent" type="" />
-        <param name="add" type="" />
-        <param name="remove" type="" />
-        <param name="createEvent" type="" />
-      </method>
-      <method name="getAttr" source="2">
-        <summary>获取一个节点属性。</summary>
-        <returns type="String">属性。</returns>
-        <param name="name" type="String">名字。</param>
-      </method>
-      <method name="hasClass" source="2">
-        <summary>检查是否含指定类名。</summary>
-        <returns type="Boolean">如果存在返回 true。</returns>
-        <param name="className" type="String" />
-      </method>
-      <method name="getStyle" source="2">
-        <summary>获取节点样式。</summary>
-        <returns type="String">样式。</returns>
-        <param name="key" type="String">键。</param>
-        <param name="value" type="String">值。</param>
-        <param name="name" type="" />
-      </method>
-      <method name="getText" source="2">
-        <summary>获取值。</summary>
-        <returns type="Object/String">值。对普通节点返回 text 属性。</returns>
-      </method>
-      <method name="getHtml" source="2">
-        <summary>获取值。</summary>
-        <returns type="String">值。</returns>
-      </method>
-      <method name="getOpacity" source="2">
-        <summary>获取透明度。</summary>
-        <returns type="Number">透明度。 0 - 1 范围。</returns>
+        <param name="initEvent" type="" />
       </method>
       <method name="setOpacity" source="2">
         <summary>设置连接的透明度。</summary>
@@ -1549,8 +1527,9 @@ DOM 方法 有 以下种
       </method>
       <method name="animate" source="2">
         <summary>变化到某值。</summary>
+        <remarks>right bottom。</remarks>
         <returns type="">this</returns>
-        <param name="value" type="String">变化的值。可以为 height opacity width all size position left top right bottom。</param>
+        <param name="value" type="String">变化的值。可以为 height opacity width all size position left top</param>
         <param name="callBack" type="Function" defaultvalue="">回调。</param>
         <param name="duration" type="Number" defaultvalue="500">时间。</param>
         <param name="type" type="String" defaultvalue="">类型。</param>
@@ -1560,10 +1539,6 @@ DOM 方法 有 以下种
         <returns type="">this</returns>
         <param name="elem" type="Element" defaultvalue="">参考元素。</param>
       </method>
-      <method name="getWindowScroll" source="2">
-        <summary>获取滚动条已滚动的大小。</summary>
-        <returns type="Point">位置。</returns>
-      </method>
       <method name="getScrollSize" source="2">
         <summary>获取滚动区域大小。</summary>
         <returns type="Point">位置。</returns>
@@ -1571,6 +1546,15 @@ DOM 方法 有 以下种
       <method name="getSize" source="2">
         <summary>获取元素可视区域大小。包括 margin 大小。</summary>
         <returns type="Point">位置。</returns>
+      </method>
+      <method name="getOffsets" source="2">
+        <summary>获取包括滚动位置的位置。</summary>
+        <returns type="Point">位置。</returns>
+        <param name="relative" type="Element/String/Boolean">相对的节点。</param>
+      </method>
+      <method name="getOffsetParent" source="2">
+        <summary>获取用于作为父元素的节点。</summary>
+        <returns type="Element">元素。</returns>
       </method>
       <method name="getOffset" source="2">
         <summary>获取元素的相对位置。</summary>
@@ -1584,22 +1568,13 @@ DOM 方法 有 以下种
         <summary>获取滚动条已滚动的大小。</summary>
         <returns type="Point">位置。</returns>
       </method>
-      <method name="getBound" source="2">
-        <summary>获取元素的上下左右大小。</summary>
-        <returns type="Rectange">大小。</returns>
-      </method>
       <method name="getPosition" source="2">
         <summary>获取距父元素的偏差。</summary>
         <returns type="Point">位置。</returns>
       </method>
-      <method name="getOffsets" source="2">
-        <summary>获取包括滚动位置的位置。</summary>
-        <returns type="Point">位置。</returns>
-        <param name="relative" type="Element/String/Boolean">相对的节点。</param>
-      </method>
-      <method name="getOffsetParent" source="2">
-        <summary>获取用于作为父元素的节点。</summary>
-        <returns type="Element">元素。</returns>
+      <method name="getBound" source="2">
+        <summary>获取元素的上下左右大小。</summary>
+        <returns type="Rectange">大小。</returns>
       </method>
       <method name="setSize" source="2">
         <summary>改变大小。</summary>
@@ -1633,7 +1608,7 @@ DOM 方法 有 以下种
       <method name="setOffset" source="2">
         <summary>设置元素的相对位置。</summary>
         <returns type="Element">this</returns>
-        <param name="p" type="Point" />
+        <param name="p" type="Object" />
       </method>
       <method name="setPosition" source="2">
         <summary>设置元素的固定位置。</summary>
@@ -1641,42 +1616,31 @@ DOM 方法 有 以下种
         <param name="x" type="Number">坐标。</param>
         <param name="y" type="Number">坐标。</param>
       </method>
-      <method name="empty" access="private" source="2">
-        <summary>删除一个节点的所有子节点。</summary>
-        <returns type="void" />
+      <method name="renderTo" source="2">
+        <summary>设置节点的父节点。</summary>
+        <returns type="Element">this</returns>
         <param name="elem" type="Element">节点。</param>
       </method>
-      <method name="dispose" access="private" source="2">
+      <method name="empty" source="2">
+        <summary>删除一个节点的所有子节点。</summary>
+        <returns type="Element">this</returns>
+      </method>
+      <method name="dispose" source="2">
         <summary>释放节点所有资源。</summary>
         <returns type="void" />
-        <param name="elem" type="Element">节点。</param>
       </method>
     </class>
     <class name="ElementList" source="2">
       <summary>节点集合。</summary>
       <extend>Element</extend>
-      <constructor name="constructor" source="2">
-        <summary>初始化 ElementList  实例。</summary>
-        <returns type="void" />
-        <param name="doms" type="Array/ElementList">节点集合。</param>
-        <param name="doms" type="Array/ElementList">节点集合。</param>
-      </constructor>
+      <field type="String" name="xType" source="2">
+        <summary>xType</summary>
+      </field>
       <method name="each" source="2">
         <summary>对集合每个元素执行一次函数。</summary>
         <returns type="Array">结果集。</returns>
         <param name="fn" type="Function">参数。</param>
         <param name="args" type="Array">/... 参数。</param>
-      </method>
-    </class>
-    <class name="Event" source="2">
-      <summary>表示事件的参数。</summary>
-      <method name="stopPropagation" source="2">
-        <summary>阻止冒泡。</summary>
-        <returns type="void" />
-      </method>
-      <method name="preventDefault" source="2">
-        <summary>停止默认。</summary>
-        <returns type="void" />
       </method>
     </class>
     <class name="Point" source="2">
@@ -1709,19 +1673,11 @@ DOM 方法 有 以下种
       <method name="minus" source="2">
         <summary>将一个点坐标减到当前值。</summary>
         <returns type="Point">this</returns>
-        <param name="p" type="Point">值。</param>
+        <param name="p" type="Undefined">值。</param>
       </method>
     </class>
     <class name="Ajax" source="3">
       <summary>处理异步请求的功能。</summary>
-      <dynatic name="xhr" source="5">
-        <field type="XMLHttpRequest" name="xhr" source="3">
-          <summary>请求对象。</summary>
-        </field>
-        <members>
-          <link name="onreadystatechange" source="2" target="0" />
-        </members>
-      </dynatic>
       <constructor name="constructor" source="3">
         <summary>初始化当前请求。</summary>
         <returns type="void" />
