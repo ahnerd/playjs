@@ -260,85 +260,7 @@
 	}));
 
 	/// #endregion
-
-	/**
-	 * @namespace document
-	 */
-	apply(document, {
-
-		/**
-		 * 生成一个层。
-		 * @param {String} className 类。
-		 * @return {Element} 节点。
-		 */
-		createDiv: function(className) {
-
-			return document.create("div", className);
-		},
-
-		/**
-		 * 创建一个节点。
-		 * @param {Object} tagName
-		 * @param {Object} className
-		 */
-		create: function(tagName, className) {
-
-			/// #ifdef SupportIE6
-
-			var div = p.$(document.createElement(tagName));
-
-			/// #else
-
-			/// var div = document.createElement(tagName);
-
-			/// #endif
-
-			div.className = className;
-
-			return div;
-		},
-
-		/**
-		 * 根据元素返回节点。
-		 * @param {String/Element} ... 对象的 id 或对象。
-		 */
-		id: function() {
-			return arguments.length === 1 ? p.$(arguments[0]) : new p.ElementList(o.update(arguments, p.$, []));
-
-			/*
-			 return new p.ElementList(o.update(arguments, function(id){
-			 return typeof id == 'string' ? this.getElementById(id) : id;
-			 }, [], this));
-			 */
-		},
-
-		/// #ifdef SupportIE6
-
-		/**
-		 * 获取节点本身。
-		 * @return {Element}
-		 */
-		getDom: navigator.isQuirks ? function() {
-
-			// 这里直接使用 documentElement ，故不支持 QUIRKS ，如果 html = wd.body 则为 QUIRKS 模式。
-			return p.$(this.documentElement);
-		} : function() {
-
-			// 这里直接使用 documentElement ，故不支持 QUIRKS ，如果 html = wd.body 则为 QUIRKS 模式。
-			return this.documentElement;
-		}
-
-		/// #else
-
-		/// getDom: function(){
-		///
-		///		return this.documentElement;
-		/// }
-
-		///#endif
-	});
-
-
+	
 	/**
 	 * @class Element
 	 * @implements Py.IEvent
@@ -446,7 +368,7 @@
 					ep[key] = value;
 
 				//  复制到 Document
-				if (!(key in document))
+				if (!copyIf || !(key in document))
 					document[key] = value;
 
 				if(copyIf && p.ElementList.prototype[key])
@@ -619,7 +541,82 @@
 
 	}, 2);
 
+	/**
+	 * @namespace document
+	 */
+	apply(document, {
 
+		/**
+		 * 生成一个层。
+		 * @param {String} className 类。
+		 * @return {Element} 节点。
+		 */
+		createDiv: function(className) {
+
+			return document.create("div", className);
+		},
+
+		/**
+		 * 创建一个节点。
+		 * @param {Object} tagName
+		 * @param {Object} className
+		 */
+		create: function(tagName, className) {
+
+			/// #ifdef SupportIE6
+
+			var div = p.$(document.createElement(tagName));
+
+			/// #else
+
+			/// var div = document.createElement(tagName);
+
+			/// #endif
+
+			div.className = className;
+
+			return div;
+		},
+
+		/**
+		 * 根据元素返回节点。
+		 * @param {String/Element} ... 对象的 id 或对象。
+		 */
+		id: function() {
+			return arguments.length === 1 ? p.$(arguments[0]) : new p.ElementList(o.update(arguments, p.$, []));
+
+			/*
+			 return new p.ElementList(o.update(arguments, function(id){
+			 return typeof id == 'string' ? this.getElementById(id) : id;
+			 }, [], this));
+			 */
+		},
+
+		/// #ifdef SupportIE6
+
+		/**
+		 * 获取节点本身。
+		 * @return {Element}
+		 */
+		getDom: navigator.isQuirks ? function() {
+
+			// 这里直接使用 documentElement ，故不支持 QUIRKS ，如果 html = wd.body 则为 QUIRKS 模式。
+			return p.$(this.documentElement);
+		} : function() {
+
+			// 这里直接使用 documentElement ，故不支持 QUIRKS ，如果 html = wd.body 则为 QUIRKS 模式。
+			return this.documentElement;
+		}
+
+		/// #else
+
+		/// getDom: function(){
+		///
+		///		return this.documentElement;
+		/// }
+
+		///#endif
+	});
 
 	p.bindWindow(w);
 
@@ -1906,94 +1903,6 @@
 		} : getScroll;
 
 	//   来自  Mootools (MIT license)
-
-	/**
-	 * @namespace document
-	 */
-	apply(document, {
-
-		/**
-		 * 获取元素可视区域大小。
-		 * @method getWindowSize
-		 * @return {Point} 位置。
-		 */
-		getWindowSize: function() {
-			var dom = this.getDom(),
-			win = getWindow(this);
-			return new Point(win.outerWidth || dom.clientWidth, win.outerHeight || dom.clientHeight);
-		},
-
-		/**
-		 * 设置元素可视区域大小。
-		 * @method setWindowSize
-		 * @param {Number} x 大小。
-		 * @param {Number} y 大小。
-		 * @return {Document} this 。
-		 */
-		setWindowSize: function(x, y) {
-			var p = adaptXY(x,y, this.getDom(), 'getWindowSize');
-			getWindow(this).resizeTo(p.x, p.y);
-			return this;
-		},
-
-		/**
-		 * 获取元素可视区域大小。包括 margin 和 border 大小。
-		 * @method getSize
-		 * @return {Point} 位置。
-		 */
-		getSize: function() {
-			var doc = this.getDom();
-
-			assert.isNode(doc, "document.getSize(): document.getDom() 必须返回 DOM 节点。");
-			return new Point(doc.clientWidth, doc.clientHeight);
-		},
-
-		/**
-		 * 获取滚动条已滚动的大小。
-		 * @method getScroll
-		 * @return {Point} 位置。
-		 */
-		getScroll: getWindowScroll,
-
-		/**
-		 * 获取距父元素的偏差。
-		 * @method getOffsets
-		 * @return {Point} 位置。
-		 */
-		getPosition: getWindowScroll,
-
-		/**
-		 * 获取滚动区域大小。
-		 * @method getScrollSize
-		 * @return {Point} 位置。
-		 */
-		getScrollSize: function() {
-			var html = this.getDom(),
-			min = this.getSize(),
-			max = Math.max,
-			body = html.ownerDocument.body;
-
-
-			return new Point(max(html.scrollWidth, body.scrollWidth, min.x), max(html.scrollHeight, body.scrollHeight, min.y));
-		},
-
-		/**
-		 * 滚到。
-		 * @method setScroll
-		 * @param {Number} x 坐标。
-		 * @param {Number} y 坐标。
-		 * @return {Document} this 。
-		 */
-		setScroll: function(x, y) {
-			var p = adaptXY(x,y, this, 'getScroll');
-
-			getWindow(this).scrollTo(p.x, p.y);
-
-			return this;
-		}
-
-	});
-
 	/**
 	 * @class Element
 	 */
@@ -2334,7 +2243,94 @@
 	} ,2);
 
 	/**
-	 * @class
+	 * @namespace document
+	 */
+	apply(document, {
+
+		/**
+		 * 获取元素可视区域大小。
+		 * @method getWindowSize
+		 * @return {Point} 位置。
+		 */
+		getWindowSize: function() {
+			var dom = this.getDom(),
+			win = getWindow(this);
+			return new Point(win.outerWidth || dom.clientWidth, win.outerHeight || dom.clientHeight);
+		},
+
+		/**
+		 * 设置元素可视区域大小。
+		 * @method setWindowSize
+		 * @param {Number} x 大小。
+		 * @param {Number} y 大小。
+		 * @return {Document} this 。
+		 */
+		setWindowSize: function(x, y) {
+			var p = adaptXY(x,y, this.getDom(), 'getWindowSize');
+			getWindow(this).resizeTo(p.x, p.y);
+			return this;
+		},
+
+		/**
+		 * 获取元素可视区域大小。包括 margin 和 border 大小。
+		 * @method getSize
+		 * @return {Point} 位置。
+		 */
+		getSize: function() {
+			var doc = this.getDom();
+
+			assert.isNode(doc, "document.getSize(): document.getDom() 必须返回 DOM 节点。");
+			return new Point(doc.clientWidth, doc.clientHeight);
+		},
+
+		/**
+		 * 获取滚动条已滚动的大小。
+		 * @method getScroll
+		 * @return {Point} 位置。
+		 */
+		getScroll: getWindowScroll,
+
+		/**
+		 * 获取距父元素的偏差。
+		 * @method getOffsets
+		 * @return {Point} 位置。
+		 */
+		getPosition: getWindowScroll,
+
+		/**
+		 * 获取滚动区域大小。
+		 * @method getScrollSize
+		 * @return {Point} 位置。
+		 */
+		getScrollSize: function() {
+			var html = this.getDom(),
+			min = this.getSize(),
+			max = Math.max,
+			body = html.ownerDocument.body;
+
+
+			return new Point(max(html.scrollWidth, body.scrollWidth, min.x), max(html.scrollHeight, body.scrollHeight, min.y));
+		},
+
+		/**
+		 * 滚到。
+		 * @method setScroll
+		 * @param {Number} x 坐标。
+		 * @param {Number} y 坐标。
+		 * @return {Document} this 。
+		 */
+		setScroll: function(x, y) {
+			var p = adaptXY(x,y, this, 'getScroll');
+
+			getWindow(this).scrollTo(p.x, p.y);
+
+			return this;
+		}
+
+	});
+	
+	/**
+	 * @namespace
 	 */
 
 	/**

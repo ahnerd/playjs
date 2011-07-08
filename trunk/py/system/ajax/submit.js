@@ -17,7 +17,7 @@ Py.using("System.Ajax.Ajax");
  * @param {Object} timeouts=-1 超时时间， -1 表示不限。
  * @param {Function} [ontimeout] 超时回调函数。
  */
-Ajax.submit = function(form, onsuccess, onerror, timeouts, ontimeout) {
+Py.Ajax.submit = function(form, onsuccess, onerror, timeouts, ontimeout) {
 	assert.isNode(form, "Ajax.submit(form, onsuccess, onerror, timeouts, ontimeout): 参数 {form} 必须是一个节点，如果已知节点的 ID， 使用 document.getElementById 函数转换为相应节点。");
 	return Ajax[/^post$/i.test(form.method) ? "post" : "get"](form.action || location.href, HTMLFormElement.param(form), onsuccess, onerror, timeouts, ontimeout);
 };
