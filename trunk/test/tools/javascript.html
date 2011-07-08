@@ -10,47 +10,23 @@
 		
 		<script>
 		 
-		 function  f(){
-		 	return function(){
-				
-			};
-		 }
-		 
-		 var b =  f;
-		 
-		 trace.test(function(){
-		 	this.a = b ? b(): function(){
-				
-			};
-			
-			
-		 }, 100000);
-		 
-		 var c = f;
-		 
-		  trace.test(function(){
-		 	this.a = c();
-		 }, 100000);
-		 
-		 
-			function openAd(url){
-				url =  window.open(url);
-				document.onclick = function(){openAd(url)};
-				if (url) {
-					
-					url.onload = function() {
-						document.onclick = null;
-					};
-					
-				}
-				 
-			}
+		
 			
 		</script>
 		
 	</head>
 	<body>
 		
+
+<div id="a"><div id="aa">vvv</div></div>
+
+
+<script>
+
+
+document.getElementById('aa').addEventListener('click', function(e){  alert('aa'); return false;}, false);document.getElementById('aa').addEventListener('click', function(e){  alert('aa2');}, false);document.getElementById('a').addEventListener('click', function(e){   alert('a');}, false);
+
+</script>
 		
 		<div style="height: 100px; background: yellow; float: left;">
 			a
