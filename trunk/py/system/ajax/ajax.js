@@ -222,6 +222,7 @@ Py.namespace(".Ajax", Py.Class({
 		/**
 		 * 请求对象。
 		 * @type XMLHttpRequest
+		 * @ignore
 		 */
 		var xhr = me.xhr = new XMLHttpRequest();
 		

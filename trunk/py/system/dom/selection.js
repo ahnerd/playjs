@@ -112,6 +112,9 @@
 			return this;
 		},
 
+		deselect: function (argument) {
+			
+		}
 		
 	}, 2)
 	

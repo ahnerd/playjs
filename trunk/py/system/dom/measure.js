@@ -1,5 +1,10 @@
-  
-    beginMeasure : function(){
+//===========================================
+//  测量   measure.js   A
+//===========================================
+
+Py.Element.implement({
+	
+	 beginMeasure : function(){
         var el = this.dom;
         if(el.offsetWidth || el.offsetHeight){
             return this; 
@@ -32,6 +37,7 @@
             this._measureChanged = null;
         }
         return this;
-    },
+    }
     
-    
+	
+})

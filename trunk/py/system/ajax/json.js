@@ -12,7 +12,7 @@ Py.Ajax.JSON = Py.Ajax.extend({
 
 	parseJSON: function(response){
 		return eval("(" + response + ")");
-	}
+	},
 	
 	onSuccess: function(response){
 		this.trigger("success", this.parseJSON(response));
