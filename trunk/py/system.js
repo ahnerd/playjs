@@ -7,17 +7,18 @@
 // HtmlFive - 支持 IE10+ FF5+ Chrome12+ Opera12+ Safari6+ 。
 // SupportIE9 - 支持 IE9+ FF4+ Chrome10+ Opera10+ Safari4+ 。
 // SupportIE8  -   支持 IE8+ FF3+ Chrome10+ Opera10+ Safari4+ 。
-// SupportIE6   -  支持 IE6+ FF3+ Chrome1+ Opera10+ Safari4+ 。
+// SupportIE6   -  支持 IE6+ FF2.5+ Chrome1+ Opera9+ Safari4+ 。
 // Framework -  作为框架而非 UI 库使用。
 // SupportUsing - 支持 namespace 等。
 // Compact - 当前执行了打包操作。
 // Zip - 当前执行了压缩操作。
 // Format - 当前在格式化代码。
-// SupportGlobalObject  -   污染全局对象。
+// SupportGlobalObject  - 允许扩展全局对象。
 // Debug - 启用调试， 启用调试将执行 assert 函数。
 
 
 
+/// #ifndef Compact
 
  
 // 配置。可省略。
@@ -66,7 +67,7 @@ var Py = {
 	
 	/**
 	 * 如果使用了 UI 库，则  resource 表示公共的主题资源。
-	 * config {String}
+	 * @config {String}
 	 * @value 'share'
 	 */
 	resource: 'share',
@@ -82,6 +83,10 @@ var Py = {
 
 };
 
+
+
+
+/// #endif
 
 //===========================================
 //  核心   system.js  C
@@ -1706,6 +1711,7 @@ var Py = {
 		
 		/**
 		 * 如果目标数组不存在值，则拷贝，否则忽略。
+		 * @static
 		 * @param {Array} src 来源数组。
 		 * @param {Array} dest 目标数组。
 		 * @example
