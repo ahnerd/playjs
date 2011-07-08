@@ -1,0 +1,40 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>js  测试</title>
+		<script src="debug.js" type="text/javascript"></script>
+		
+	</head>
+	<body>
+		
+
+<div id="a"><div id="aa">右击这里: return false</div></div>
+
+<div id="b"><div id="bb">右击这里: 调用 preventDefault</div></div>
+		
+
+<div id="c"><div id="cc">右击这里: return false</div></div>
+
+<div id="d"><div id="dd">右击这里: 调用 preventDefault</div></div>
+
+
+<script>
+
+
+document.getElementById('aa').addEventListener('contextmenu', function(e){ trace('aa'); return false;}, false);document.getElementById('aa').addEventListener('contextmenu', function(e){  trace ('aa2');}, false);document.getElementById('a').addEventListener('contextmenu', function(e){  trace('a');}, false);
+
+
+
+document.getElementById('bb').addEventListener('contextmenu', function(e){ trace('bb');e.preventDefault() }, false);document.getElementById('bb').addEventListener('contextmenu', function(e){  trace ('bb2');}, false);document.getElementById('b').addEventListener('contextmenu', function(e){  trace('b');}, false);
+
+
+document.getElementById('aa').oncontextmenu = function(){
+    return false;
+};
+
+</script>
+		
+		
+	</body>
+</html>

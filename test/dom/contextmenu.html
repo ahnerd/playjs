@@ -15,7 +15,7 @@
 			
 			document.on('contextmenu', function(e){
 				trace("({pageX},  {pageY})", e);
-				return false;
+				e.stop();
 			});
 		
 		</script>
