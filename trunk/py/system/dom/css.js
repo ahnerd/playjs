@@ -1,5 +1,10 @@
+//===========================================
+//  动态CSS  css.js      A
+//===========================================
 
-Ext.util.CSS = function(){
+
+
+Py.namespace("CSS.",  function(){
 	var rules = null;
    	var doc = document;
 
@@ -113,4 +118,4 @@ Ext.util.CSS = function(){
    		return false;
    	}
    };	
-}();
+});

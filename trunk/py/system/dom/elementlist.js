@@ -1,5 +1,10 @@
-,
-		
+//===========================================
+//  元素集合   elementlist.js  A
+//===========================================
+
+
+Py.ElementList.implement({
+	
 		/**
 		 * 从当前集合选择满足条件的节点，并作为新集合返回。
 		 * @method filter
@@ -10,3 +15,7 @@
 		filter: function(fn, bind) {
 			return new ElementList(ap.filter.call(this.doms, fn, bind));
 		}
+		
+
+
+});

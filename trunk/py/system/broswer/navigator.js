@@ -1,6 +1,5 @@
 //===========================================
-//  查询   Navigator.js
-//  Copyright(c) 2009-2010 xuld
+//  查询   navigator.js     A
 //===========================================
 
 Object.extendIf(navigator, (function(ua) {

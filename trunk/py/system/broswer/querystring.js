@@ -1,9 +1,8 @@
 //===========================================
-//  查询   querystring.js
-//  Copyright(c) 2009-2010 xuld
+//  查询   querystring.js     A
 //===========================================
 
-// TODO
+
 
 (function(q){
         var search = location.search,
@@ -11,6 +10,13 @@
 		if(!search) return;
 		search.substring(1).split('&').each(function(value){
 		    value = value.split('=');
-		    q[dc(value[0])] = value.length > 1 ? dc(value[1]) : null;
+		    try{
+		    	q[dc(value[0])] = value.length > 1 ? dc(value[1]) : null;
+		    }catch(e){
+		    	
+		    }
+		    
+		    
+		    
 		});
 })(location.queryString = {});
