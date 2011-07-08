@@ -3,7 +3,7 @@ var core = {
 	'core       ': ['core', 'class', 'classbase', 'namespace', 'navigator', 'object', 'py', 'ready', 'trace', 'chineseid', 'date', 'classex', 'delegate', 'enum', '@', 'array', 'string', 'regexp', 'number', 'function', 'check', 'objectex', 'enumerable', 'json', 'taskrunner', 'delayedtask', '~',  'native'],
 	'broswer    ': ['action', '@', 'clipboard', 'cookies', 'png', 'querystring', 'simulateie'],
 	'data       ': ['collectionbase', '@', 'collectionbaseex'],
-	'dom        ': ['attributions', 'clone', 'control', 'dimension', 'event', 'memleak', 'node', 'nodes', 'position', 'dragdrop', 'contextmenu', 'query', 'image', '@','event',  'iframe', 'keys', 'selection', 'submit', 'borderradius', 'css', 'window'],
+	'dom        ': ['attributions', 'clone', 'control', 'dimension', 'event', 'memleak', 'node', 'nodes', 'position', 'dragdrop', 'contextmenu', 'query', 'image', '@','iframe', 'keys', 'selection', 'submit', 'borderradius', 'css', 'window'],
 	'fx         ': ['animate', 'transitions', 'multifade', 'showhide'],
 	'jquery     ': ['attributions', 'core', 'dimension', 'event', 'node', 'position'],
 	'mootools   ': ['attributions', 'core', 'dimension', 'event', 'node', 'position'],
