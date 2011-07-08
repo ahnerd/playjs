@@ -95,7 +95,7 @@ var Py = {
  * @projectDescription Py.Core for Javascript
  */
 
-(function(w) {
+(function (w) {
 	
 	/// #define PyJs
 	
@@ -259,14 +259,14 @@ var Py = {
 			 * trace(a); // {v: 3, g: 2}
 			 * </code>
 			 */
-			extend: (function(){
-				for(var item in {toString: true})
+			extend: (function () {
+				for (var item in {toString: true})
 					return apply;
 				
 				Py.enumerables = ["toString", "hasOwnProperty", "valueOf", "constructor", "isPrototypeOf"];
 				// IE6  需要复制
 				return function(dest, src){
-					for(var i = Py.enumerables.length, value; i--;)
+					for (var i = Py.enumerables.length, value; i--;)
 						if(hasOwnProperty.call(src, value = Py.enumerables[i]))
 							dest[value] = src[value];
 					return apply(dest, src);
@@ -672,19 +672,19 @@ var Py = {
 			 * </p>
 			 * 
 			 * <p>
-			 * addEvents 函数的参数是一个事件信息，格式如:  {click: { add: ..., remove: ..., initEvent: ..., createEvent: ..., setup: ... } 。
+			 * addEvents 函数的参数是一个事件信息，格式如:  {click: { add: ..., remove: ..., initEvent: ..., trigger: ...} 。
 			 * 其中 click 表示事件名。一般建议事件名是小写的。
 			 * </p>
 			 * 
 			 * <p>
-			 * 一个事件有多个相应，分别是: 绑定(add), 删除(remove), 触发(setup)， 创建事件参数(createEvent), 初始化事件参数(initEvent)
+			 * 一个事件有多个相应，分别是: 绑定(add), 删除(remove), 触发(trigger), 初始化事件参数(initEvent)
 			 * </p>
 			 * 
 			 * </p>
 			 * 当用户使用   o.on('事件名', 函数)  时， 系统会判断这个事件是否已经绑定过，
-			 * 如果之前未绑定事件，则会使用 setup() 返回新的函数 evtTrigger，
-			 * evtTrigger.handlers 表示 当前这个事件的所有实际调用的函数的数组。 
-			 * evtTrigger 本身将遍历并执行 evtTrigger.handlers 里的成员。
+			 * 如果之前未绑定事件，则会创建新的函数 evtTrigger，
+			 * evtTrigger 函数将遍历并执行 evtTrigger.handlers 里的成员, 如果其中一个函数执行后返回 false， 则中止执行，并返回 false， 否则返回 true。
+			 * evtTrigger.handlers 表示 当前这个事件的所有实际调用的函数的数组。 evtTrigger.handlers[0] 是事件的 initEvent 函数。
 			 * 然后系统会调用 add(o, '事件名', evtTrigger)
 			 * 然后把 evtTrigger 保存在 o.data.event['事件名'] 中。
 			 * 如果 之前已经绑定了这个事件，则 evtTrigger 已存在，无需创建。
@@ -693,7 +693,6 @@ var Py = {
 			 * 
 			 * <p>
 			 * 也就是说，真正的事件触发函数是 evtTrigger， evtTrigger去执行用户定义的一个事件全部函数。
-			 * evtTrigger 是 setup() 返回的， 如果没有 setup， 系统自己生成一个，这个生成的 evtTrigger会触发所有的 evtTrigger.handlers, 如果其中一个函数执行后返回 false， 则中止执行，并返回 false， 否则返回 true。
 			 * </p>
 			 * 
 			 * <p>
@@ -705,9 +704,8 @@ var Py = {
 			 * 
 			 * <p>
 			 * 当用户使用  o.trigger(参数)  时， 系统会找到相应 evtTrigger， 
-			 * 如果事件有 createEvent， 则参数更新成 createEvent(参数, this) 的值。
-			 * 使用这个函数执行 evtTrigger(参数)， 并返回  evtTrigger(参数) 的返回内容。
-			 * 默认的 evtTrigger 内部会调用 initEvent(参数) 对参数初始化。 默认的 initEvent 是空函数。
+			 * 如果事件有trigger， 则使用 trigger(对象, '事件名', evtTrigger, 参数) 触发事件。
+			 * 如果没有， 则直接调用 evtTrigger(参数)。
 			 * </p>
 			 * 
 			 * <p>
@@ -737,11 +735,11 @@ var Py = {
 			 * </p>
 			 * 
 			 * <p>
-			 * createEvent 和 setup 是高级的事件。参考上面的说明。 
+			 * trigger 是高级的事件。参考上面的说明。 
 			 * </p>
 			 * 
 			 * <p>
-			 * 如果你不知道其中的几个参数功能，特别是 setup 和 createEvent ，请不要自定义。
+			 * 如果你不知道其中的几个参数功能，特别是  trigger ，请不要自定义。
 			 * </p>
 			 * 
 			 * @example
@@ -780,7 +778,7 @@ var Py = {
 				
 				var ep = this.prototype;
 				
-				assert(!events || o.isObject(events), "Py.Native.prototype.addEvents(events): 参数 {event} 必须是一个包含事件的对象。 如 {click: { add: ..., remove: ..., initEvent: ..., createEvent: ..., setup: ... } ", events);
+				assert(!events || o.isObject(events), "Py.Native.prototype.addEvents(events): 参数 {event} 必须是一个包含事件的对象。 如 {click: { add: ..., remove: ..., initEvent: ..., trigger: ... } ", events);
 				
 				applyIf(ep, p.IEvent);
 				

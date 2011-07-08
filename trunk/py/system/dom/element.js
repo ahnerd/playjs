@@ -130,30 +130,6 @@
 		 */
 		Element: e,
 
-		/// #ifdef SupportIE6
-
-		/**
-		 * 根据一个 id 或 对象获取节点。
-		 * @param {String/Element} id 对象的 id 或对象。
-		 */
-		$: navigator.isQuirks ? function(id) {
-			var dom = getElementById(id);
-
-			if(dom && dom.domVersion !== ep.domVersion) {
-				o.extendIf(dom, e.prototype);
-			}
-
-			return dom;
-
-
-		} : getElementById,
-
-		/// #else
-
-		/// $: getElementById,
-
-		/// #endif
-
 		/**
 		 * 将窗口对象本地化。
 		 * @param {Window} w 窗口。
@@ -196,8 +172,6 @@
 
 			/// #endif
 
-			w.$ = p.$;
-
 
 			function copyIf(from, to) {
 				for (var item in from) {
@@ -209,6 +183,31 @@
 		}
 
 	});
+
+	/// #ifdef SupportIE6
+	
+	/**
+	 * 根据一个 id 或 对象获取节点。
+	 * @param {String/Element} id 对象的 id 或对象。
+	 * @memberOf Py
+	 */
+	p.namespace(".$", navigator.isQuirks ? function(id) {
+		var dom = getElementById(id);
+
+		if(dom && dom.domVersion !== ep.domVersion) {
+			o.extendIf(dom, e.prototype);
+		}
+
+		return dom;
+
+
+	} : getElementById);
+
+	/// #else
+
+	/// p.namespace(".$", getElementById);
+
+	/// #endif
 
 	///   #region ElementList
 
@@ -263,6 +262,84 @@
 	/// #endregion
 
 	/**
+	 * @namespace document
+	 */
+	apply(document, {
+
+		/**
+		 * 生成一个层。
+		 * @param {String} className 类。
+		 * @return {Element} 节点。
+		 */
+		createDiv: function(className) {
+
+			return document.create("div", className);
+		},
+
+		/**
+		 * 创建一个节点。
+		 * @param {Object} tagName
+		 * @param {Object} className
+		 */
+		create: function(tagName, className) {
+
+			/// #ifdef SupportIE6
+
+			var div = p.$(document.createElement(tagName));
+
+			/// #else
+
+			/// var div = document.createElement(tagName);
+
+			/// #endif
+
+			div.className = className;
+
+			return div;
+		},
+
+		/**
+		 * 根据元素返回节点。
+		 * @param {String/Element} ... 对象的 id 或对象。
+		 */
+		id: function() {
+			return arguments.length === 1 ? p.$(arguments[0]) : new p.ElementList(o.update(arguments, p.$, []));
+
+			/*
+			 return new p.ElementList(o.update(arguments, function(id){
+			 return typeof id == 'string' ? this.getElementById(id) : id;
+			 }, [], this));
+			 */
+		},
+
+		/// #ifdef SupportIE6
+
+		/**
+		 * 获取节点本身。
+		 * @return {Element}
+		 */
+		getDom: navigator.isQuirks ? function() {
+
+			// 这里直接使用 documentElement ，故不支持 QUIRKS ，如果 html = wd.body 则为 QUIRKS 模式。
+			return p.$(this.documentElement);
+		} : function() {
+
+			// 这里直接使用 documentElement ，故不支持 QUIRKS ，如果 html = wd.body 则为 QUIRKS 模式。
+			return this.documentElement;
+		}
+
+		/// #else
+
+		/// getDom: function(){
+		///
+		///		return this.documentElement;
+		/// }
+
+		///#endif
+	});
+
+
+	/**
 	 * @class Element
 	 * @implements Py.IEvent
 	 */
@@ -271,9 +348,9 @@
 		/**
 		 * 转换一个HTML字符串到节点。
 		 * @param {String/Element} html 字符。
-		 * @param {Document} context 内容。
+		 * @param {Document} context=document 内容。
 		 * @param {Boolean} cachable=true 是否缓存。
-		 * @return {Element} 元素。
+		 * @return {Element/TextNode/DocumentFragment} 元素。
 		 * @static
 		 */
 		parse: function(html, context, cachable) {
@@ -505,89 +582,9 @@
 		 */
 		getDocument: getDoc
 
-	});
-
-	/**
-	 * @namespace document
-	 */
-	apply(document, {
-
-		/**
-		 * 生成一个层。
-		 * @param {String} className 类。
-		 * @return {Element} 节点。
-		 */
-		createDiv: function(className) {
-
-			return document.create("div", className);
-		},
-
-		/**
-		 * 创建一个节点。
-		 * @param {Object} tagName
-		 * @param {Object} className
-		 */
-		create: function(tagName, className) {
-
-			/// #ifdef SupportIE6
-
-			var div = p.$(document.createElement(tagName));
-
-			/// #else
-
-			/// var div = document.createElement(tagName);
-
-			/// #endif
-
-			div.className = className;
-
-			return div;
-		},
-
-		/**
-		 * 根据元素返回节点。
-		 * @param {String/Element} ... 对象的 id 或对象。
-		 */
-		id: function() {
-			return arguments.length === 1 ? p.$(arguments[0]) : new p.ElementList(o.update(arguments, p.$, []));
-
-			/*
-			 return new p.ElementList(o.update(arguments, function(id){
-			 return typeof id == 'string' ? this.getElementById(id) : id;
-			 }, [], this));
-			 */
-		},
-
-		/// #ifdef SupportIE6
-
-		/**
-		 * 获取节点本身。
-		 * @return {Element}
-		 */
-		getDom: navigator.isQuirks ? function() {
-
-			// 这里直接使用 documentElement ，故不支持 QUIRKS ，如果 html = wd.body 则为 QUIRKS 模式。
-			return p.$(this.documentElement);
-		} : function() {
-
-			// 这里直接使用 documentElement ，故不支持 QUIRKS ，如果 html = wd.body 则为 QUIRKS 模式。
-			return this.documentElement;
-		}
-
-		/// #else
-
-		/// getDom: function(){
-		///
-		///		return this.documentElement;
-		/// }
-
-		///#endif
-	});
-
-	/**
-	 * @class Element
-	 */
-	e.implementIf({
+	})
+	
+	.implementIf({
 
 		/**
 		 * 获取节点本身。
@@ -621,6 +618,8 @@
 		xType: "element"
 
 	}, 2);
+
+
 
 	p.bindWindow(w);
 
@@ -973,21 +972,11 @@
 		 * @type String
 		 */
 		borderLeftWidth = 'borderLeftWidth',
-	
-		styleMaps = {
-			width: {
-				b: [borderLeftWidth, 'borderRightWidth'],
-				p: ['paddingLeft', 'paddingRight'],
-				m: ['marginLeft', 'marginRight'],
-				document: ['left', 'right']
-			},
-			height: {
-				b: [borderTopWidth, 'borderBottomWidth'],
-				p: ['paddingTop', 'paddingBottom'],
-				m: ['marginTop', 'marginBottom'],
-				document: ['top', 'bottom']
-			}
-		},
+		
+		/**
+		 * 特殊边框。
+		 */
+		styleMaps = {},
 	
 		/// #ifdef SupportIE6
 	
@@ -1035,9 +1024,9 @@
 			if(name in attributes) {
 				switch(name) {
 					case 'height':
-						return elem.offsetHeight - e.getSize(elem, name, 'pb') + 'px';
+						return elem.offsetHeight - e.getBorders(elem, name, 'pb') + 'px';
 					case 'width':
-						return elem.offsetWidth - e.getSize(elem, name, 'pb') + 'px';
+						return elem.offsetWidth - e.getBorders(elem, name, 'pb') + 'px';
 					case 'opacity':
 						return elem.getOpacity().toString();
 	
@@ -1092,6 +1081,16 @@
 			"class": "className",
 			innerText: 'innerText' in div ? 'innerText' : 'textContent'
 		};
+	
+	String.map('width height', function(c, i){
+		c = styleMaps[c] = {};
+		var tx = i ? ['Top', 'Bottom'] : ['Left', 'Right'];
+		c.d = tx.invoke('toLowerCase', []);
+		String.map('padding~ margin~ border~Width', function(v){
+			c[v.charAt(0)] = [v.replace('~', tx[0]), v.replace('~', tx[1])];
+		});
+	});
+	
 		
 	/**
 	 * @class Element
@@ -1135,11 +1134,11 @@
 		 * @return {Number} 转换后的大小。
 		 * @static
 		 */
-		getSize: defaultView ? function (elem, type, names) {
+		getBorders: defaultView ? function (elem, type, names) {
 
-			assert.isElement(elem, "Element.getSize(elem, type, names): 参数 {elem} ~。");
-			assert(type in styleMaps, "Element.getSize(elem, type, names): 参数 {type} 必须是 \"width\" 或 \"height\"。", type);
-			assert.isString(names, "Element.getSize(elem, type, names): 参数 {names} ~。");
+			assert.isElement(elem, "Element.getBorders(elem, type, names): 参数 {elem} ~。");
+			assert(type in styleMaps, "Element.getBorders(elem, type, names): 参数 {type} 必须是 \"width\" 或 \"height\"。", type);
+			assert.isString(names, "Element.getBorders(elem, type, names): 参数 {names} ~。");
 
 
 			var value = 0, map = styleMaps[type], i = names.length, val, currentStyle = elem.ownerDocument.defaultView.getComputedStyle(elem, null);
@@ -1152,9 +1151,9 @@
 		} : function (elem, type, names) {
 
 
-			assert.isElement(elem, "Element.getSize(elem, type, names): 参数 {elem} ~。");
-			assert(type in styleMaps, "Element.getSize(elem, type, names): 参数 {type} 必须是 \"width\" 或 \"height\"。", type);
-			assert.isString(names, "Element.getSize(elem, type, names): 参数 {names} ~。");
+			assert.isElement(elem, "Element.getBorders(elem, type, names): 参数 {elem} ~。");
+			assert(type in styleMaps, "Element.getBorders(elem, type, names): 参数 {type} 必须是 \"width\" 或 \"height\"。", type);
+			assert.isString(names, "Element.getBorders(elem, type, names): 参数 {names} ~。");
 
 			var value = 0, map = styleMaps[type], i = names.length, val;
 			while(i--) {
@@ -1814,10 +1813,10 @@
 		var p = getXY(x,y);
 
 		if(p.x != null)
-			elem.setWidth(p.x - e.getSize(elem.getDom(), 'width', fix));
+			elem.setWidth(p.x - e.getBorders(elem.getDom(), 'width', fix));
 
 		if (p.y != null)
-			elem.setHeight(p.y - e.getSize(elem.getDom(), 'height', fix));
+			elem.setHeight(p.y - e.getBorders(elem.getDom(), 'height', fix));
 
 		return elem;
 	}
@@ -2067,7 +2066,7 @@
 		getOuterSize: function() {
 			var me = this.getDom();
 
-			return this.getSize().add(e.getSize(me, 'width', 'm'), e.getSize(me, 'height', 'm'));
+			return this.getSize().add(e.getBorders(me, 'width', 'm'), e.getBorders(me, 'height', 'm'));
 		},
 
 		/**
