@@ -3,23 +3,12 @@
 //===========================================
 
 
+Py.using("System.Core.Check");
 
-Element.addEvents({
-
-	validate: {
+Py.namespace("HTMLFormElement.", {
 	
-		add: function(){
+	setValidatable: function (value) {
 		
-		},
-		
-		remove: function(){
-		
-		
-		}
-	
-	
-	
 	}
-
-
-});
+	
+})
