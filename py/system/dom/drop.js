@@ -1,3 +1,9 @@
+//===========================================
+//  拖放         drop.js  A
+//===========================================
+
+
+
 
 
 Py.using("System.Dom.Drag");
@@ -322,7 +328,7 @@ Py.using("System.Dom.Drag");
 		onBeforeDrag: function(e){
 			var c = dm.current;
 			if((c.zones = zones.filter(function(zone){
-					return zone.contains(dm.current.target);
+					return zone.indexOf(dm.current.target) !== -1;
 				})).length){
 				// 初始位置。
 				c.activeZone = c.getActiveZone();
@@ -360,13 +366,18 @@ Py.using("System.Dom.Drag");
 		dm.current.update(e, doc);
 	};
 	
-	p.Control.delegate(dd.Zone, 'target', 'on one un trigger', 2);
+	Object.update(p.IEvent, function (value, key) {
+		return function(type, fn){
+			this.target[key](type, fn);
+			return this;
+		}
+	}, dd.Zone.prototype);
 	
-	p.defineDomEvents ('dragenter dragleave dragover drop', null, !navigator.isStd ? function(e){
+	p.Element.defineEvents ('dragenter dragleave dragover drop', !navigator.isStd ? function(e){
 		
 		// IE8- 需要检查   e.stopPropagation
 		if(!e.stopPropagation)
-			p.Events.element.focus.trigger(e);
+			p.Events.element.focus.initEvent(e);
 	} : Function.empty, function(elem, type, fn){
 		elem.addEventListener(type, fn, false);
 		(p.dataIf(elem, 'zone') || p.setData(elem, 'zone', new dd.Zone(elem, true))).enable();

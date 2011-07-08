@@ -1,5 +1,5 @@
 //===========================================
-//  Cookie辅助   Cookies.js     A
+//  Cookie辅助   cookies.js     A
 //===========================================
 
 
@@ -41,6 +41,8 @@ Py.namespace(".Cookies.", {
 
 		var e = encodeURIComponent,
 		    updatedCookie = e(name) + "=" + e(value);
+		    
+		    assert(updatedCookie.length < 4096, "Cookies.set(name, value, expires, props): 参数  value 内容过长，无法存储。");
 		
 		if(props)
 		    for(var propName in props){

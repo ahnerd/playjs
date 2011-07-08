@@ -1,65 +1,136 @@
 //===========================================
-//  颜色 Color.js  BSD LICENCE
-//  Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+//  颜色         color.js         A
+//  By  Valerio Proietti  ( Mootools-more) MIT License
 //===========================================
 
 
-Py.namesapce("System.Drawing");
 
 
-Py.namespace(".Drawing.Color.", function() {
+Py.namespace(".Color", Class({
+	
+	
+	
+	constructor:  function(color, type) {
 		
-	var PARSE_INT = parseInt,
-	    RE = RegExp,
-		rRGB = /^rgb\(([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)\)$/i,
-		rHex = /^#?([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})$/i,
-		rhex3 = /([0-9A-F])/gi;
+		if (arguments.length >= 3){
+			type = 'rgb'; color = Array.slice(arguments, 0, 3);
+		} else if (typeof color == 'string'){
+			if (color.match(/rgb/)) color = color.rgbToHex().hexToRgb(true);
+			else if (color.match(/hsb/)) color = color.hsbToRgb();
+			else color = color.hexToRgb(true);
+		}
+		type = type || 'rgb';
+		switch (type){
+			case 'hsb':
+				var old = color;
+				color = color.hsbToRgb();
+				color.hsb = old;
+			break;
+			case 'hex': color = color.hexToRgb(true); break;
+		}
+		color.rgb = color.slice(0, 3);
+		color.hsb = color.hsb || color.rgbToHsb();
+		color.hex = color.rgbToHex();
+		return Object.append(color, this);
+		
+	},
 	
-	return {
+	mix: function(){
+		var colors = Array.slice(arguments);
+		var alpha = (typeOf(colors.getLast()) == 'number') ? colors.pop() : 50;
+		var rgb = this.slice();
+		colors.each(function(color){
+			color = new Color(color);
+			for (var i = 0; i < 3; i++) rgb[i] = Math.round((rgb[i] / 100 * (100 - alpha)) + (color[i] / 100 * alpha));
+		});
+		return new Color(rgb, 'rgb');
+	},
+
+	invert: function(){
+		return new Color(this.map(function(value){
+			return 255 - value;
+		}));
+	},
+
+	setHue: function(value){
+		return new Color([value, this.hsb[1], this.hsb[2]], 'hsb');
+	},
+
+	setSaturation: function(percent){
+		return new Color([this.hsb[0], percent, this.hsb[2]], 'hsb');
+	},
+
+	setBrightness: function(percent){
+		return new Color([this.hsb[0], this.hsb[1], percent], 'hsb');
+	}
+		
+}));
+
+
+Object.extend(Array,  {
 	
-	    toRGB: function(val) {
-	        if (!rRGB.test(val)) {
-	            val = this.toHex(val);
-	        }
+	rgbToHsb: function(){
+		var red = this[0],
+				green = this[1],
+				blue = this[2],
+				hue = 0;
+		var max = Math.max(red, green, blue),
+				min = Math.min(red, green, blue);
+		var delta = max - min;
+		var brightness = max / 255,
+				saturation = (max != 0) ? delta / max : 0;
+		if (saturation != 0){
+			var rr = (max - red) / delta;
+			var gr = (max - green) / delta;
+			var br = (max - blue) / delta;
+			if (red == max) hue = br - gr;
+			else if (green == max) hue = 2 + rr - br;
+			else hue = 4 + gr - rr;
+			hue /= 6;
+			if (hue < 0) hue++;
+		}
+		return [Math.round(hue * 360), Math.round(saturation * 100), Math.round(brightness * 100)];
+	},
+
+	hsbToRgb: function(){
+		var br = Math.round(this[2] / 100 * 255);
+		if (this[1] == 0){
+			return [br, br, br];
+		} else {
+			var hue = this[0] % 360;
+			var f = hue % 60;
+			var p = Math.round((this[2] * (100 - this[1])) / 10000 * 255);
+			var q = Math.round((this[2] * (6000 - this[1] * f)) / 600000 * 255);
+			var t = Math.round((this[2] * (6000 - this[1] * (60 - f))) / 600000 * 255);
+			switch (Math.floor(hue / 60)){
+				case 0: return [br, t, p];
+				case 1: return [q, br, p];
+				case 2: return [p, br, t];
+				case 3: return [p, q, br];
+				case 4: return [t, p, br];
+				case 5: return [br, p, q];
+			}
+		}
+		return false;
+	}
 	
-	        if(rHex.exec(val)) {
-	            val = 'rgb(' + [
-	                PARSE_INT(RE.$1, 16),
-	                PARSE_INT(RE.$2, 16),
-	                PARSE_INT(RE.$3, 16)
-	            ].join(', ') + ')';
-	        }
-	        return val;
-	    },
 	
-	    toHex: function(val) {
-	        if (rRGB.exec(val)) {
-	            val = [
-	                Number(RE.$1).toString(16),
-	                Number(RE.$2).toString(16),
-	                Number(RE.$3).toString(16)
-	            ];
+});
+
+
+Object.extend(Py.Color, {
 	
-	            for (var i = 0; i < val.length; i++) {
-	                if (val[i].length < 2) {
-	                    val[i] = val[i].replace(rhex3, '$1$1');
-	                }
-	            }
+	rgb: function(r, g, b){
+		return new Color([r, g, b], 'rgb');
+	},
 	
-	            val = '#' + val.join('');
-	        }
+	hsb:  function(h, s, b){
+		return new Color([h, s, b], 'hsb');
+	},
 	
-	        if (val.length < 6) {
-	            val = val.replace(rhex3, '$1$1');
-	        }
-	
-	        if (val !== 'transparent' && val.indexOf('#') < 0) {
-	            val = '#' + val;
-	        }
-	
-	        return val.toLowerCase();
-	    }
-	};
+	hex: function(hex){
+		return new Color(hex, 'hex');
+	}
 	
 	
-})();
+});
