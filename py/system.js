@@ -216,7 +216,7 @@ var Py = {
 			 */
 			$default: {
 				add: emptyFn,
-				trigger: emptyFn,
+				initEvent: emptyFn,
 				remove: emptyFn
 			}
 			
@@ -672,12 +672,12 @@ var Py = {
 			 * </p>
 			 * 
 			 * <p>
-			 * addEvents 函数的参数是一个事件信息，格式如:  {click: { add: ..., remove: ..., trigger: ..., createEvent: ..., setup: ... } 。
+			 * addEvents 函数的参数是一个事件信息，格式如:  {click: { add: ..., remove: ..., initEvent: ..., createEvent: ..., setup: ... } 。
 			 * 其中 click 表示事件名。一般建议事件名是小写的。
 			 * </p>
 			 * 
 			 * <p>
-			 * 一个事件有多个相应，分别是: 绑定(add), 删除(remove), 触发(setup)， 创建事件参数(createEvent), 初始化事件参数(trigger)
+			 * 一个事件有多个相应，分别是: 绑定(add), 删除(remove), 触发(setup)， 创建事件参数(createEvent), 初始化事件参数(initEvent)
 			 * </p>
 			 * 
 			 * </p>
@@ -707,7 +707,7 @@ var Py = {
 			 * 当用户使用  o.trigger(参数)  时， 系统会找到相应 evtTrigger， 
 			 * 如果事件有 createEvent， 则参数更新成 createEvent(参数, this) 的值。
 			 * 使用这个函数执行 evtTrigger(参数)， 并返回  evtTrigger(参数) 的返回内容。
-			 * 默认的 evtTrigger 内部会调用 trigger(参数) 对参数初始化。 默认的 trigger 是空函数。
+			 * 默认的 evtTrigger 内部会调用 initEvent(参数) 对参数初始化。 默认的 initEvent 是空函数。
 			 * </p>
 			 * 
 			 * <p>
@@ -733,7 +733,7 @@ var Py = {
 			 * </p>
 			 * 
 			 * <p>
-			 * trigger 的参数是一个事件参数，它只能有1个参数。
+			 * initEvent 的参数是一个事件参数，它只能有1个参数。
 			 * </p>
 			 * 
 			 * <p>
@@ -759,7 +759,7 @@ var Py = {
 			 * 	   			alert("为  elem 绑定 事件 " + type );
 			 * 			},
 			 * 
-			 * 			trigger: function(e){
+			 * 			initEvent: function(e){
 			 * 	   			alert("初始化 事件参数  " + e );
 			 * 			}
 			 * 
@@ -780,7 +780,7 @@ var Py = {
 				
 				var ep = this.prototype;
 				
-				assert(!events || o.isObject(events), "Py.Native.prototype.addEvents(events): 参数 {event} 必须是一个包含事件的对象。 如 {click: { add: ..., remove: ..., trigger: ..., createEvent: ..., setup: ... } ", events);
+				assert(!events || o.isObject(events), "Py.Native.prototype.addEvents(events): 参数 {event} 必须是一个包含事件的对象。 如 {click: { add: ..., remove: ..., initEvent: ..., createEvent: ..., setup: ... } ", events);
 				
 				applyIf(ep, p.IEvent);
 				
@@ -1205,27 +1205,32 @@ var Py = {
 					assert.isFunction(fn, 'IEvent.on(type, fn): 参数 {fn} ~。');
 					
 					// 获取本对象     本对象的数据内容   本事件值
-					var me = this, d = p.data(me, 'event'), evt = d[type];
+					var me = this, d = p.data(me, 'event'), evt = d[type], eMgr;
 					
 					// 如果未绑定
 					if (!evt) {
 					
-						// 找到和对象有关的事件。
-						var eMgr = eventMgr[me.xType];
+						eMgr = evt = me;
+						
+						// 遍历父类， 找到适合的 eMgr	
+						while(!(eMgr = eventMgr[eMgr.xType]) || !(eMgr = eMgr[type])){
 							
-						// 目前类型的对象。
-						eMgr = eMgr && eMgr[type] || getMgr(me, type) || eventMgr.$default;
+							if((evt = evt.constructor) && (evt = evt.base)){
+								eMgr = evt.prototype;
+							} else {
+								eMgr = eventMgr.$default;
+								break;
+							}
+						
+						}
 						
 						// 支持自定义安装。
-						evt = eMgr.setup ? eMgr.setup() : function(e) {
+						evt = function(e) {
 							var fn = arguments.callee,
 								target = fn.target,
 								handlers = fn.handlers.slice(0), 
 								i = -1,
 								len = handlers.length;
-							
-							// 默认事件函数。
-							fn.event.trigger.call(target, e);
 							
 							// 循环直到 return false。 
 							while (++i < len) 
@@ -1239,7 +1244,7 @@ var Py = {
 						evt.event = eMgr;
 						
 						//指定当然事件的全部函数。
-						evt.handlers = [fn];
+						evt.handlers = [eMgr.initEvent, fn];
 						
 						// 保存全部内容。
 						d[type] = evt;
@@ -1319,7 +1324,7 @@ var Py = {
 								evt.handlers.remove(fn);
 								
 							// 检查是否存在其它函数或没设置删除的函数。
-							if (!fn || evt.handlers.length == 0) {
+							if (!fn || evt.handlers.length < 2) {
 								
 								evt.handlers = null;
 								delete d[type];
@@ -1350,8 +1355,8 @@ var Py = {
 					
 					// 获取本对象     本对象的数据内容   本事件值
 					var me = this, evt = p.dataIf(me, 'event');
-					    
-					return (!evt || !(evt = evt[type]) || evt(evt.event.createEvent ? ( e = evt.event.createEvent(e, me)) : e)) && (!me[type = 'on' + type] || me[type](e) !== false);
+					   
+					return !evt || !(evt = evt[type]) || ( evt.event.trigger ? evt.event.trigger(me, type, evt, e) : evt(e) );
 					
 				}
 			},
@@ -1956,13 +1961,16 @@ var Py = {
 	applyIf(nv, (function(ua) {
 
 		//检查信息
-		var match = ua.match(/(IE|Firefox|Chrome|Opera|Version).((\d+)\.?[\d.]*)/i) || ["", "Other", 0, 0],
+		var match = ua.match(/(IE|Firefox|Chrome|Safari|Opera|Navigator).((\d+)\.?[\d.]*)/i) || ["", "Other", 0, 0],
+			
+			// 版本信息。
+			version = ua.match(/(Version).((\d+)\.?[\d.]*)/i) || match,
 			
 			//浏览器名字
-			browser = match[0] ? match[1] : !document.all && !nv.taintEnabled ? 'Safari' : match[0],
+			browser = match[1],
 	
 			//详细信息
-			fullBrowser = browser + match[3];
+			fullBrowser = browser + version[3];
 		
 		
 		nv["is" + browser] = nv["is" + fullBrowser] = true;
@@ -2012,7 +2020,7 @@ var Py = {
 			 * @type String
 			 * 输出的格式比如 6.0
 			 */
-			version: match[2],
+			version: version[2],
 			
 			/// #ifdef SupportIE6
 			
@@ -2021,7 +2029,7 @@ var Py = {
 			 * @type Boolean
 			 * 此处认为 IE6,7 是怪癖的。
 			 */
-			isQuirks: typeof w.Element !== 'function' && String(w.Element) !== "[object Element]",
+			isQuirks: typeof Element !== 'function' && String(w.Element).indexOf("object Element") === -1,
 			
 			/// #endif
 			
@@ -2042,8 +2050,6 @@ var Py = {
 			fullBrowser: fullBrowser
 			
 		};
-
-		//LOG : 添加更多的侦查。比如isWindows  isAir
 	
 	})(nv.userAgent));
 
@@ -2684,26 +2690,6 @@ var Py = {
 	 * 空函数。
 	 */
 	function emptyFn(){
-		
-	}
-	
-	/**
-	 * 获取父类的同名方法。
-	 * @param {Object} obj 对象。
-	 * @param {String} type 类型。
-	 * @return {Object} 对象。
-	 */
-	function getMgr(me, type) {
-		var cb = me.constructor, eMgr;
-							
-		while(cb && (cb = cb.base)) {
-			
-			eMgr = eventMgr[cb.prototype.xType];
-			
-			if(eMgr && (type in eMgr))
-				return eMgr[type];
-		
-		}
 		
 	}
 

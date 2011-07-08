@@ -18,9 +18,11 @@ Object.extendIf(RegExp,{
 		
 		// 返回。
 		return flag === false ? str: new RegExp(str, flag);
-	} 
+	} ,
 	
+	// 常用正则
 	
+	email: /c/
 	
 	
 });
