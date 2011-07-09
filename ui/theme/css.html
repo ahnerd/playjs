@@ -1,0 +1,1089 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>全部控件一页</title>
+
+		<!-- css -->
+		<link href="../../py/resources/share/control/core.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/core.css" rel="stylesheet" type="text/css" />
+
+		<link href="../../py/resources/default/control/icons.css" rel="stylesheet" type="text/css" />
+
+		<link href="../../py/resources/share/control/shadow.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/shadow.css" rel="stylesheet" type="text/css" />
+
+		<link href="../../py/resources/share/control/resizing.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/resizing.css" rel="stylesheet" type="text/css" />
+
+		<link href="../../py/resources/share/control/splitter.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/splitter.css" rel="stylesheet" type="text/css" />
+
+		<link href="../../py/resources/share/form/menubuttons.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/form/menubuttons.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/share/container/window.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/container/window.css" rel="stylesheet" type="text/css" />
+
+		<!--  Button -->
+
+		<link href="../../py/resources/share/button/button.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/button/button.css" rel="stylesheet" type="text/css" />
+
+		<link href="../../py/resources/share/button/contextmenu.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/button/contextmenu.css" rel="stylesheet" type="text/css" />
+
+		<link href="../../py/resources/share/button/linkbutton.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/button/linkbutton.css" rel="stylesheet" type="text/css" />
+
+		<link href="../../py/resources/share/button/toolbar.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/default/button/toolbar.css" rel="stylesheet" type="text/css" />
+		
+		
+
+		<!--  Container    -->
+		
+		<link href="../../py/resources/share/container/accordion.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/default/container/accordion.css" rel="stylesheet" type="text/css" />
+       
+        <link href="../../py/resources/share/container/balloontip.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/default/container/balloontip.css" rel="stylesheet" type="text/css" />
+        
+        <link href="../../py/resources/share/container/groupbox.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/default/container/groupbox.css" rel="stylesheet" type="text/css" />
+       
+		<link href="../../py/resources/share/container/panel.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/container/panel.css" rel="stylesheet" type="text/css" />
+
+		<link href="../../py/resources/share/container/tabcontrols.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/container/tabcontrols.css" rel="stylesheet" type="text/css" />
+	
+		<!--  Control    -->
+			
+		<link href="../../py/resources/share/control/mask.css" rel="stylesheet" type="text/css" />
+
+ 		<link href="../../py/resources/share/control/resizing.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/default/control/resizing.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/share/control/shadow.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/default/control/shadow.css" rel="stylesheet" type="text/css" />
+		
+		 <link href="../../py/resources/share/control/splitter.css" rel="stylesheet" type="text/css" />
+       
+		<!--  DataView    -->
+		
+       <link href="../../py/resources/share/dataview/listview.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/dataview/listview.css" rel="stylesheet" type="text/css" />
+		
+		
+		<link href="../../py/resources/share/dataview/table.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/dataview/table.css" rel="stylesheet" type="text/css" />
+		
+		
+		<link href="../../py/resources/share/dataview/treeview.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/dataview/treeview.css" rel="stylesheet" type="text/css" />
+		
+
+		<!--  -->
+
+		<script src="../../common/project/project.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/default.js" type="text/javascript"></script>
+
+		<style type="text/css">
+			.block {
+				float: left;
+				margin: 8px;
+			}
+
+			.blue {
+				background: blue;
+			}
+
+			.yellow {
+				background: yellow;
+			}
+
+			.red {
+				background: red;
+			}
+
+			.top {
+				height: 144px;
+				margin-bottom: 6px;
+			}
+
+			.bottom {
+				height: 144px;
+				margin-top: 6px;
+			}
+
+			.relative {
+				position: relative;
+			}
+
+			h2 {
+				clear: left;
+				border-bottom: 1px solid black;
+				padding-top: 20px;
+				padding-left: 7px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div style="width: 1200px; margin: 0 auto;">
+
+			<h2>Button</h2>
+
+			<script>
+				function changeState(value) {
+					this.parentNode.parentNode.className = value ? this.parentNode.parentNode.className + ' x-active' : this.parentNode.parentNode.className.replace(/ x\-active/g, "") ;
+				}
+			
+				function changeStateVal(value, val){
+					this.parentNode.parentNode.className = val ? this.parentNode.parentNode.className + ' ' + value : this.parentNode.parentNode.className.replace(' ' + value, "") ;
+				}
+			
+			</script>
+
+			<div>
+
+				<div class="block">
+					Button
+
+					<br>
+
+					<input type="button" value="按钮" />
+
+					<br>
+
+					<a class="x-button">
+					<span class="x-button-container">
+						<button  onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML">
+							<span class="x-button-label">按钮</span>
+						</button>
+					</span>
+					</a>
+
+					<br>
+
+					<a class="x-button">
+					<span class="x-button-container">
+						<button onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML">
+							<span class="x-icon x-icon-win"></span>
+							<span class="x-button-label">按钮</span>
+						</button>
+					</span>
+					</a>
+
+					<br>
+
+					<a class="x-button x-checked">
+					<span class="x-button-container">
+						<button onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML">
+							<span class="x-button-label">按钮</span>
+						</button>
+					</span>
+					</a>
+
+					<br>
+
+					<a class="x-button x-default">
+					<span class="x-button-container">
+						<button onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML">
+							<span class="x-button-label">按钮</span>
+						</button>
+					</span>
+					</a>
+
+					<br>
+
+					<a class="x-button x-disabled">
+					<span class="x-button-container">
+						<button disabled="disabled" onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML">
+							<span class="x-button-label">按钮</span>
+						</button>
+					</span>
+					</a>
+				</div>
+
+				<div class="block">
+					Commandbutton
+				</div>
+
+				<div class="block">
+					ContextMenu
+					<div class="x-contextmenustrip relative">
+						<a class="x-contextmenustrip-handle-top"></a>
+						<ul class="x-list-container x-contextmenustrip-container">
+							<li class="x-list-content x-contextmenustrip-content">
+								<a class="x-contextmenustrip-item">
+								<span class="x-icon x-icon-selected"></span>内容内容试试试试试试
+								</a>
+							</li>
+							<li class="x-list-content x-contextmenustrip-content x-active">
+								<a class="x-contextmenustrip-item x-contextmenustrip-item-arrow">
+								<span class="x-icon"></span>内容
+								</a>
+							</li>
+							<li class="x-list-content x-contextmenustrip-content">
+								<a class="x-contextmenustrip-item  x-disabled">
+								<span class="x-icon"></span>内容
+								</a>
+							</li>
+							<li class="x-list-content x-contextmenustrip-content">
+								<a class="x-split"></a>
+							</li>
+							<li class="x-list-content x-contextmenustrip-content">
+								344
+							</li>
+						</ul>
+						<a class="x-contextmenustrip-handle-bottom"></a>
+					</div>
+				</div>
+
+				<div class="block">
+					LinkButton
+					<br>
+					<a class="x-linkbutton" href="#"> 内容 </a>
+				</div>
+
+				<div class="block">
+					MenuButton
+
+					<br>
+
+					<button>
+						<span class="x-button-label">按钮</span>
+						<span class="x-button-menu">&nbsp;</span>
+					</button>
+
+					<br>
+
+					<a class="x-button x-menubutton">
+						<span class="x-button-container">
+							<button onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML">
+								<span class="x-button-label">按钮</span>
+								<span class="x-button-menu">&nbsp;</span>
+							</button>
+						</span>
+					</a>
+
+					<br>
+
+					<a class="x-button x-menubutton x-checked">
+						<span class="x-button-container">
+							<button onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML">
+								<span class="x-button-label">按钮</span>
+								<span class="x-button-menu">&nbsp;</span>
+							</button>
+						</span>
+					</a>
+					
+					<br>
+
+					<a class="x-button x-menubutton x-default">
+					<span class="x-button-container">
+						<button onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML">
+							<span class="x-button-label">按钮</span>
+							<span class="x-button-menu">&nbsp;</span>
+						</button>
+					</span>
+					</a>
+					
+					<br>
+					
+					<a class="x-button x-menubutton x-disabled">
+					<span class="x-button-container">
+						<button onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" disabled="disabled" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML">
+							<span class="x-button-label">按钮</span>
+							<span class="x-button-menu">&nbsp;</span>
+						</button>
+					</span>
+					</a>
+					
+					<br>
+					
+				</div>
+
+				<div class="block">
+					Ribbon
+				</div>
+
+				<div class="block">
+					SplitButton
+
+					<br>
+
+					<a class="x-button x-splitbutton">
+				<span class="x-button-container">
+					<button onmousedown="changeState.call(this, 'x-active'); " onmouseup="changeState.call(this, ''); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span></button><span class="x-split">&nbsp;</span><span onmousedown="changeState.call(this, 'x-active-sub'); " onmouseup="changeState.call(this, ''); " class="x-button-menu" onclick="alert('sub');">&nbsp;</span>
+				</span>
+			</a>
+			
+
+					<br>
+
+			<a class="x-button x-splitbutton x-checked">
+				<span class="x-button-container">
+					<button onmousedown="changeState.call(this, 'x-active'); " onmouseup="changeState.call(this, ''); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span></button><span class="x-split">&nbsp;</span><span onmousedown="changeState.call(this, 'x-active-sub'); " onmouseup="changeState.call(this, ''); " class="x-button-menu" onclick="alert('sub');">&nbsp;</span>
+				</span>
+			</a>
+
+					<br>
+
+			<a class="x-button x-splitbutton x-default">
+				<span class="x-button-container">
+					<button onmousedown="changeState.call(this, 'x-active'); " onmouseup="changeState.call(this, ''); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span></button><span class="x-split">&nbsp;</span><span onmousedown="changeState.call(this, 'x-active-sub'); " onmouseup="changeState.call(this, ''); " class="x-button-menu" onclick="alert('sub');">&nbsp;</span>
+				</span>
+			</a>
+
+					<br>
+
+			<a class="x-button x-splitbutton x-disabled">
+				<span class="x-button-container">
+					<button disabled="disabled" onmousedown="changeState.call(this, 'x-active'); " onmouseup="changeState.call(this, ''); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span></button><span class="x-split">&nbsp;</span><span onmousedown="changeState.call(this, 'x-active-sub'); " onmouseup="changeState.call(this, ''); " class="x-button-menu" onclick="alert('sub');">&nbsp;</span>
+				</span>
+			</a>
+
+					<br>
+
+				</div>
+
+				<div class="block">
+					ToolBar
+					
+					<div class="x-toolstrip">
+		<ul class="x-list-container x-toolstrip-container">
+			<li class="x-list-content x-toolstrip-content">
+				<span class="x-label">菜单</span>
+			</li>
+			<li class="x-list-content x-toolstrip-content">
+				<span class="x-split">&nbsp;</span>
+			</li>
+			<li class="x-list-content x-toolstrip-content" style="*width:60px">
+				<a class="x-button x-plain">
+					<span class="x-button-container">
+						<button  style="*width: 100%;" onmousedown="changeStateVal.call(this, 'x-active', 1); " style="*width: 60px;" onmouseover="changeStateVal.call(this, 'x-plain', false);" onmouseout="changeStateVal.call(this, 'x-plain', 1);" onmouseup="changeStateVal.call(this, 'x-active', false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span></button>
+					</span>
+				</a>
+			</li>
+			<li class="x-list-content x-toolstrip-content">
+				<a class="x-button x-menubutton x-plain">
+					<span class="x-button-container">
+						<button onmouseover="changeStateVal.call(this, 'x-plain', false);" onmouseout="changeStateVal.call(this, 'x-plain', 1);" onmousedown="changeStateVal.call(this, 'x-active', true); " onmouseup="changeStateVal.call(this, 'x-active', false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span><span class="x-button-menu">&nbsp;</span></button>
+					</span>
+				</a>
+			</li>
+			<li class="x-list-content x-toolstrip-content">
+				<a class="x-button x-splitbutton x-plain">
+					<span class="x-button-container">
+						<button onmouseover="changeStateVal.call(this, 'x-plain', false);" onmouseout="changeStateVal.call(this, 'x-plain', 1);" onmousedown="changeStateVal.call(this, 'x-active', 1); " onmouseup="changeStateVal.call(this, 'x-active', false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span></button><span class="x-split">&nbsp;</span><span onmousedown="changeState.call(this, 'x-active-sub', true); " onmouseup="changeState.call(this, 'x-active-sub', false); " class="x-button-menu" onclick="alert('sub');">&nbsp;</span>
+					</span>
+				</a>
+			</li>
+			
+			<li class="x-list-content x-toolstrip-content" style="float:right">
+				<a class="x-button x-splitbutton x-plain">
+					<span class="x-button-container">
+						<button onmouseover="changeStateVal.call(this, 'x-plain', false);" onmouseout="changeStateVal.call(this, 'x-plain', 1);" onmousedown="changeStateVal.call(this, 'x-active', 1); " onmouseup="changeStateVal.call(this, 'x-active', false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span></button><span class="x-split">&nbsp;</span><span onmousedown="changeState.call(this, 'x-active-sub', true); " onmouseup="changeState.call(this, 'x-active-sub', false); " class="x-button-menu" onclick="alert('sub');">&nbsp;</span>
+					</span>
+				</a>
+			</li>
+			
+			<li class="x-list-content x-toolstrip-content" style="float:right">
+				<a class="x-button x-splitbutton x-plain">
+					<span class="x-button-container">
+						<button onmouseover="changeStateVal.call(this, 'x-plain', false);" onmouseout="changeStateVal.call(this, 'x-plain', 1);" onmousedown="changeStateVal.call(this, 'x-active', 1); " onmouseup="changeState.call(this, 'x-active', false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span></button><span class="x-split">&nbsp;</span><span onmousedown="changeState.call(this, 'x-active-sub', true); " onmouseup="changeState.call(this, 'x-active-sub', false); " class="x-button-menu" onclick="alert('sub');">&nbsp;</span>
+					</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+				</div>
+
+			</div>
+
+			<h2>Container</h2>
+
+			<div>
+
+				<div class="block">
+					Accordion
+					<div style="width: 300px;" class="x-accordion" id="accordion">
+			<div class="x-header x-accordion-header">
+				<h3 class="">面板1</h3>
+			</div>
+			<div style="height: 201px; display: none;" class="x-container x-accordion-container">
+				内容1
+			</div>
+			<div class="x-header x-accordion-header">
+				<h3 class="x-collapsable"><span class="x-icon">icon</span>面板2</h3>
+			</div>
+			<div class="x-container x-accordion-container" style="height: 201px; display: block;">
+				<div class="x-content x-accordion-content">
+				内容2
+				</div>
+			</div>
+			<div class="x-header x-accordion-header">
+				<h3>面板3</h3>
+			</div>
+			<div class="x-container x-accordion-container" style="height: 201px; display: none;">
+				内容3
+			</div>
+		</div>
+				</div>
+
+				<div class="block">
+					BalloonTip
+					
+						<div class="x-balloontip relative">
+			    <div class="x-header x-balloontip-header">
+			        <div class="x-header-container">
+			            <div class="x-header-content">
+			            	<a class="x-icon x-icon-balloontip-close" href="javascript:;"></a>
+			                <h3><span class="x-icon x-icon-balloontip-close"></span>标题标题题标题标题标题</h3>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="x-container x-balloontip-container">
+			        <div class="x-content x-balloontip-content">
+			        	内容
+					</div>
+			    </div>
+			    <div class="x-footer x-balloontip-footer">
+			        <div class="x-footer-container">
+			            <div class="x-footer-content">
+			            </div>
+			        </div>
+			    </div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-tl"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-tr"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-bl"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-br"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-lt"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-lb"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-rt"></div>
+				<div class="x-balloontip-anchor x-balloontip-anchor-rb"></div>
+			</div>  	
+			
+				
+		
+				</div>
+
+				<div class="block">
+					ContainerControl
+				</div>
+
+				<div class="block">
+					ContentControl
+				</div>
+
+				<div class="block">
+					GroupBox
+					
+						<fieldset style="width: 544px;" class="x-groupbox">
+			<legend class="x-groupbox-header">
+				<span class="x-icon x-icon-groupbox"></span>
+				<span>面板</span>
+			</legend>
+			
+			<div class="x-groupbox-container">
+				
+				
+			</div>
+		</fieldset>
+		
+		
+		<fieldset style="width: 544px;" class="x-groupbox x-collapsed">
+			<legend class="x-groupbox-header">
+				<span class="x-icon x-icon-groupbox"></span>
+				<span>面板</span>
+			</legend>
+			
+			<div class="x-groupbox-container">
+				
+				
+			</div>
+		</fieldset>
+		
+				</div>
+
+				<div class="block">
+					ListControl
+				</div>
+
+				<div class="block">
+					Panel
+					
+					
+					
+					 <div style="width:200px; *height:183px;" class="x-panel">
+                <div class="x-header x-panel-header">
+                    <div class="x-header-container">
+                    	<div class="x-header-content">
+                    		<a class="x-icon x-icon-win"></a>
+                    		<h3>
+                    			<span class="x-icon x-icon-win"></span>
+								标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
+							</div>
+                    </div>
+                </div>
+                <div class="x-container x-panel-container"  style="height: 150px; ">
+                    <div class="x-content x-panel-content">
+					<p>
+                        内容 qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+                    </p>
+                    <p>
+                        内容
+                    </p>
+                    <p>
+                        内容
+                    </p>
+                    <p>
+                        内容
+                    </p>
+                    <p>
+                        内容
+                    </p>
+                    <p>
+                        内容
+                    </p>
+                    <p>
+                        内容
+                    </p>
+                    <p>
+                        内容
+                    </p>
+                    <p>
+                        内容
+                    </p>
+                    <p>
+                        内容
+                    </p>
+                    <p>
+                        内容
+                    </p>
+                    <p>
+                        内容
+                    </p>
+					</div>
+                </div>
+                <div class="x-footer x-panel-footer">
+                    <div class="x-footer-container">
+                        <div class="x-footer-content"></div>
+                    </div>
+                </div>
+            </div>
+				</div>
+
+				<div class="block">
+					TabControls
+					
+					
+							<div class="x-tabcontrols" style="width:200px; height: 150px; ">
+                <div class="x-header x-tabcontrols-header">
+                    <div class="x-header-container">
+                        <ul class="x-list-container x-tabcontrols-header-container">
+                            <li class="x-list-content x-tabcontrols-header-content" style="*width:100px;  *height:23px;">
+                                <div>
+                                	<h3><span class="x-icon x-icon-win"></span>标题1
+                                	<a class="x-icon x-icon-win"></a></h3>
+								</div>
+                            </li>
+                            <li class="x-list-content x-tabcontrols-header-content">
+                                <div><h3>标题2</h3></div>
+                            </li>
+                            <li class="x-list-content x-tabcontrols-header-content x-selected">
+                                <div><h3>标题3</h3></div>
+                            </li>
+                        </ul>
+						<input type="button" class="x-menu-button x-menu-left">
+						<input type="button" class="x-menu-button x-menu-right">
+						<input type="button" class="x-menu-button x-menu-all">
+                    </div>
+                </div>
+                <div class="x-container x-tabcontrols-container">
+                    <div class="x-content x-tabcontrols-content" style="display: none;">
+                        1
+                    </div>
+                    <div class="x-content x-tabcontrols-content" style="display: none;">
+                        2
+                    </div>
+                    <div class="x-content x-tabcontrols-content" style="display: block;">
+                        3
+                    </div>
+                </div>
+                <div class="x-footer x-tabcontrols-footer">
+                    <div class="x-footer-container">
+                        <div class="x-footer-content"></div>
+                    </div>
+                </div>
+            </div>
+			
+			
+			
+	         <div class="x-tabcontrols  x-plain" style="width:200px; height: 150px; ">
+                <div class="x-header x-tabcontrols-header">
+                    <div class="x-header-container">
+                        <ul class="x-list-container x-tabcontrols-header-container">
+                            <li class="x-list-content x-tabcontrols-header-content" style="*width:100px;  *height:23px;">
+                                <div>
+                                	<h3><span class="x-icon x-icon-win"></span>标题1
+                                	<a class="x-icon x-icon-win"></a></h3>
+								</div>
+                            </li>
+                            <li class="x-list-content x-tabcontrols-header-content">
+                                <div><h3>标题2</h3></div>
+                            </li>
+                            <li class="x-list-content x-tabcontrols-header-content x-selected">
+                                <div><h3>标题3</h3></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="x-container x-tabcontrols-container">
+                    <div class="x-content x-tabcontrols-content" style="display: none;">
+                        1
+                    </div>
+                    <div class="x-content x-tabcontrols-content" style="display: none;">
+                        2
+                    </div>
+                    <div class="x-content x-tabcontrols-content" style="display: block;">
+                        3
+                    </div>
+                </div>
+                <div class="x-footer x-tabcontrols-footer">
+                    <div class="x-footer-container">
+                        <div class="x-footer-content"></div>
+                    </div>
+                </div>
+            </div>
+				</div>
+
+			</div>
+
+			<h2>Control</h2>
+
+			<div>
+
+				<div class="block">
+					Control
+				</div>
+
+				<div class="block">
+					ITargetedControl
+				</div>
+
+				<div class="block">
+					Mask
+					
+					<div style="width:300px; height:400px" class=  "x-box" id="tg">
+					   遮罩。
+					</div>
+					
+				</div>
+
+				<div class="block">
+					Resizing
+					
+					<div class="x-resizable" style="height:300px; width:200px; background: #768567;position:absolute;">
+			<div style="height:100%;width:100%;background:#234343;">
+			内容
+			</div>
+	    	<div class="x-resizable-lt"></div>
+			<div class="x-resizable-t"></div>
+			<div class="x-resizable-rt"></div>
+			<div class="x-resizable-l"></div>
+			<div class="x-resizable-r"></div>
+			<div class="x-resizable-lb"></div>
+			<div class="x-resizable-b"></div>
+			<div class="x-resizable-rb"></div>
+		</div>
+				</div>
+
+				<div class="block">
+					Shadow
+					
+					<div class="x-shadow" id="a" style=" position:relative;  width:200px; left:500px; top:40px; height:300px;    border:1px solid  #000; ">
+			<div style=""> </div>
+			
+			<input type="button"  onclick="document.getElementById('a').style.height = '200px';" />HTML
+			
+			
+			<div  class="x-shadow-lt"></div>
+			<div class="x-shadow-t"  ></div>
+			<div class="x-shadow-rt"></div>
+			<div class="x-shadow-l"></div>
+			<div  class="x-shadow-lb"></div>
+			
+			<div class="x-shadow-r"></div>
+			<div class="x-shadow-b"></div>
+			<div class="x-shadow-rb"></div>
+		</div>
+				</div>
+
+				<div class="block">
+					Splitter
+					
+					<div id="ct" style="position: absolute; top: 100px;  left:400px;  width: 198px; height: 251px;" class="x-box">
+	        
+	        <div id="p1" style="background: yellow; height: 100%; position: absolute;  width: 100px" class="x-box"></div>
+	        <div id="p2" style="background: green; height: 100%; left:106px; position: absolute;  width: 100px" class="x-box"></div>
+	    </div>
+				</div>
+
+			</div>
+
+			<h2>DataView</h2>
+
+			<div>
+
+				<div class="block">
+					DataNavigator
+				</div>
+
+				<div class="block">
+					ListView
+					
+					<fieldset>
+				<legend>
+					<span class="x-icon x-icon-groupbox"></span>
+					<span>面板</span>
+				</legend>
+				
+				<ul class="x-list-container x-listview-container">
+					<li class="x-list-content x-listview-content">
+						sss
+					</li>
+					<li class="x-list-content x-listview-content">aaa</li>
+				</ul>
+			</fieldset>
+				</div>
+
+				<div class="block">
+					Table
+					
+					<table class="x-table">
+			<thead>
+				<tr>
+					<th>列1</th>
+
+					<th colspan="2">列2</th>
+				</tr>
+				<tr>
+					<th width="100">列</th>
+					<th width="100">列</th>
+					<th>列</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>内容</td>
+					<td>内容</td>
+					<td>内容</td>
+				</tr>
+				
+				<tr>
+					<td>内容</td>
+					<td>内容</td>
+					<td>内容</td>
+				</tr>
+			</tbody>
+		</table>
+				</div>
+
+				<div class="block">
+					DataGridView
+				</div>
+
+				<div class="block">
+					TreeView
+					
+						<div class="x-treeview">
+        <ul class="x-list-container">
+            <li class="x-list-content">
+                <div class="x-treenode">
+                    <span class="x-treenode-space x-treenode-plus">
+                    </span>
+                    <a>菜单</a>
+                </div>
+                <ul class="x-list-container">
+                    <li class="x-list-content">
+                        <div class="x-treenode">
+                            <span class="x-treenode-space x-treenode-line">
+                            </span>
+                            <span class="x-treenode-space x-treenode-normal">
+                            </span>
+                            <a>菜单</a>
+                        </div>
+                    </li>
+                    <li class="x-list-content">
+                        <div class="x-treenode x-selected x-treenode-last">
+                            <span class="x-treenode-space x-treenode-line">
+                            </span>
+                            <span class="x-treenode-space x-treenode-line">
+                            </span>
+                            <a>菜单</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="x-list-content">
+                <div class="x-treenode">
+                    <span class="x-treenode-space x-treenode-normal">
+                    </span>
+                    <a>菜单</a>
+                </div>
+            </li>
+            <li class="x-list-content">
+                <div class="x-treenode">
+                    <span class="x-treenode-space x-treenode-plus">
+                    </span>
+                    <a>菜单</a>
+                </div>
+                <ul class="x-list-container">
+                    <li class="x-list-content">
+                        <div class="x-treenode">
+                            <span class="x-treenode-space x-treenode-space">
+                            </span>
+                            <span class="x-treenode-space x-treenode-minus">
+                            </span>
+                            <a>菜单</a>
+                        </div>
+                    </li>
+                    <li class="x-list-content">
+                        <div class="x-treenode x-treenode-last">
+                            <span class="x-treenode-space x-treenode-space">
+                            </span>
+                            <span class="x-treenode-space x-treenode-normal">
+                            </span>
+                            <a>菜单</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="x-list-content">
+                <div class="x-treenode">
+                    <span class="x-treenode-space x-treenode-normal">
+                    </span>
+                    <a>菜单</a>
+                </div>
+            </li>
+            <li class="x-list-content">
+                <div class="x-treenode x-treenode-last">
+                    <span class="x-treenode-space x-treenode-plus">
+                    </span>
+                    <a>菜单</a>
+                </div>
+            </li>
+        </ul>
+		</div>
+				</div>
+
+			</div>
+
+			<h2>Dialog</h2>
+
+			<div>
+
+				<div class="block">
+					Dialog
+				</div>
+
+				<div class="block">
+					MessageBox
+				</div>
+
+				<div class="block">
+					BalloonBox
+				</div>
+
+				<div class="block">
+					InputBox
+				</div>
+
+				<div class="block">
+					FolderBroswerDialog
+				</div>
+
+				<div class="block">
+					FileDialog
+				</div>
+
+			</div>
+
+			<h2>Form</h2>
+
+			<div>
+
+				<div class="block">
+					CheckBox
+				</div>
+
+				<div class="block">
+					RadioButton
+				</div>
+
+				<div class="block">
+					TextBox
+				</div>
+
+				<div class="block">
+					UpDown
+				</div>
+
+				<div class="block">
+					ListBox
+				</div>
+
+				<div class="block">
+					MonthCalender
+				</div>
+
+				<div class="block">
+					Slider
+				</div>
+
+				<div class="block">
+					Textbox
+				</div>
+
+				<div class="block">
+					Fileupload
+				</div>
+
+				<div class="block">
+					CheckListBox
+				</div>
+
+				<div class="block">
+					Combobox
+				</div>
+
+				<div class="block">
+					DatePicker
+				</div>
+
+				<div class="block">
+					TimePicker
+				</div>
+
+				<div class="block">
+					MarkedTextBox
+				</div>
+
+				<div class="block">
+					NumericUpDown
+				</div>
+
+				<div class="block">
+					TimeUpDown
+				</div>
+
+				<div class="block">
+					DateUpDown
+				</div>
+
+				<div class="block">
+					RichTextBox
+				</div>
+
+				<div class="block">
+					HtmlEditor
+				</div>
+
+			</div>
+
+			<h2>Layout</h2>
+
+			<div>
+
+				<div class="block">
+					LayoutEngine
+				</div>
+
+				<div class="block">
+					FlowLayout
+				</div>
+
+				<div class="block">
+					AbsoluteLayour
+				</div>
+
+				<div class="block">
+					AlignedLayout
+				</div>
+
+				<div class="block">
+					AnchorLayout
+				</div>
+
+				<div class="block">
+					BorderLayout
+				</div>
+
+				<div class="block">
+					BoxLayout
+				</div>
+
+				<div class="block">
+					FitLayout
+				</div>
+
+				<div class="block">
+					DefaultLayout
+				</div>
+
+				<div class="block">
+					RelativeLayout
+				</div>
+
+				<div class="block">
+					LineLayout
+				</div>
+
+				<div class="block">
+					ColumnLayout
+				</div>
+
+				<div class="block">
+					LineLayout
+				</div>
+
+			</div>
+
+			<h2>Viewer</h2>
+
+			<div>
+
+				<div class="block">
+					Label
+				</div>
+
+				<div class="block">
+					PictureBox
+				</div>
+
+				<div class="block">
+					WebBroswer
+				</div>
+
+				<div class="block">
+					ProcessBar
+				</div>
+
+				<div class="block">
+					Scrollbar
+				</div>
+
+				<div class="block">
+					ToolTip
+				</div>
+
+			</div>
+
+		</div>
+	</body>
+</html>
