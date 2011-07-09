@@ -106,6 +106,13 @@ function writeNavigator(){
 		'javascript: doTestOneClick(this); void(0);': '测试所有'
 	};
 	
+	var stylesplit = {
+		'@': 'color: gray',
+		'~': 'color: gray; text-decoration: line-through',
+		'$': '',
+		'!': 'color: red'
+	}
+	
 	document.write('<div id="_common_nav">' );
 	
 	for(var i in ns)
@@ -118,18 +125,24 @@ function writeNavigator(){
 	document.write('<hr>');
 	
 	function writeWindow(id, nst, b){
+		
 		document.write('<div id="' + id + '" onmouseup="this.style.display = \'none\'" style="position:fixed;left:0; background: white; top: 20px; display: none; width:876px; border: green 1px solid;margin-bottom:30px; _position: absolute; z-index:10000000000">');
 
 		for(var i in nst){
+			
+			var key = i.replace(/\s*$/g, '').toLowerCase(),
+				val = nst[i].split(/\s+/);
+			
 			document.write('<b>' + i.replace(/\s/g, '&nbsp;') + '</b>  | ');
 			
 			
 			var style = '';
-			for(var j = 0; j < nst[i].length; j++){
-				if(nst[i][j].length == 1)
-					(style = ' style = "color: gray;"' ) && document.write(nst[i][j] + "   ")  | (nst[i][j] == '~') && (style = ' style = "color: gray; text-decoration: line-through "');
-				else
-					document.write('<a' + style + ' href="' + '../../' + b + '/' + i.replace(/\s*$/g, '') + '/' + nst[i][j] + '.html">' + nst[i][j] + '</a>  ');
+			for(var j = 0; j < val.length; j++){
+				if(val[j] in stylesplit) {
+					style = 'style="' + stylesplit[val[j]] + '" ';
+					document.write( val[j] + "   " );
+				} else
+					document.write('<a ' + style + 'href="' + '../../' + b.toLowerCase() + '/' + key + '/' + val[j].toLowerCase() + '.html">' + val[j] + '</a>  ');
 			}
 			
 			document.write('<br>');
