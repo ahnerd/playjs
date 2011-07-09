@@ -28,48 +28,59 @@
 		
 	</head>
 	<body> 
-		<div style="position:absolute; height: 200px; width: 293px;  border: 1px solid purple" id="v"></div>
+		<div style="position:absolute; border-top: 1px solid purple; border-bottom: 1px solid purple" id="v"></div>
 		
-		<div style="height: 200px; "></div>
-		<div style=" border: 1px solid purple ; height: 20px; position: absolute;"><div style="position: absolute; width: 20px ; left: -19px; top: 0px; height: 20px;  background: black;"  id="f"></div></div>
+		<div id="b"></div>
+		<div style=" border: 1px solid purple ; position: relative; height:20px;" id="t">
+			<div style="position: absolute; width: 20px ; left: 0px; top: 0px; height: 20px;  background: black;"  id="f"></div>
+		</div>
 			<hr>
 			
 		
 		<script>
 			
-			var height = 200;
+			var width = 300,
+				duration = 3500,
+				fps = 100;
+				
+			$('v').setHeight(width);
+			$('b').setHeight(width);
+			$('t').setWidth(width + 20);
 			
 			var Trans = Py.Fx.Base.extend({
 				
-				link:  'wait' ,
+				link:  'ignore' ,
 				
-				fps: 100,
+				fps: fps,
 				
-				duration: 3000,
+				duration: duration,
 				
 				set: function(delta){
 					this.x++;
-					this.y = height - Py.Fx.compute(this.from, this.to, delta);
+					var y = Py.Fx.compute(this.from, this.to, delta);
+					this.y = width - y;
 					
 					document.createDiv('p').renderTo('v').setOffset(this);
 					
-					$('f').style.left = - 20 + this.x +  'px' ;
+					$('f').style.left = y +  'px' ;
 				},
 				
-				onStart: function(){
+				onStart: function(){ 
 					$('v') .empty();
 					this.x = 0;
 				}
 				
 			});
-			
+		
 			
 			var fx =  new  Trans();
 			
 			for(var i in Py.Fx.Transitions) {
-				document.write('<input type="button" onclick="fx.transition = Transitions.' + i + ';   fx.start(0, 200);" value="' + i + '">');
-				document.write('<input type="button" onclick="fx.transition = Transitions.easeOut(Transitions.' + i + ');   fx.start(0, 200);" value="easeOut( ' + i + ' )">');
-				document.write('<input type="button" onclick="fx.transition = Transitions.easeInOut(Transitions.' + i + ');   fx.start(0, 200);" value="easeInOut( ' + i + ' )">');
+				if(/^ease/.test(i))
+					break;
+				document.write('<input type="button" onclick="fx.transition = Transitions.' + i + ';  fx.start(0, ' + width + ');" value="' + i + '">');
+				document.write('<input type="button" onclick="fx.transition = Transitions.easeOut(Transitions.' + i + ');   fx.start(0, ' + width + ');" value="easeOut( ' + i + ' )">');
+				document.write('<input type="button" onclick="fx.transition = Transitions.easeInOut(Transitions.' + i + ');   fx.start(0, ' + width + ');" value="easeInOut( ' + i + ' )">');
 				document.write('<p />');
 			}
 			
