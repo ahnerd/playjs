@@ -1,6 +1,8 @@
+//===========================================
+//  集合的扩展   collection.js         A
+//===========================================
 
-
-Py.Data.CollectionBase.implement({
+Py.CollectionBase.implement({
 	
 	/**
 	 * 返回当前集合的副本。

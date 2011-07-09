@@ -134,7 +134,7 @@ Py.using("System.Fx.Base");
 		 */
 		specialAttr = {
 			size: function(current, elem, key, from, to){
-				return delegateAttr(current, elem, 'width', 'height', from || elem.getSize(), to, e.getBorders(elem, 'width', 'pb'), e.getBorders(elem, 'height', 'pb'));
+				return delegateAttr(current, elem, 'width', 'height', from || elem.getSize(), to, e.getSizes(elem, 'width', 'pb'), e.getSizes(elem, 'height', 'pb'));
 			},
 			position: offsetAttrSetter,
 			offsets: offsetAttrSetter,

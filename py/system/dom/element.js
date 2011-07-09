@@ -1021,9 +1021,9 @@
 			if(name in attributes) {
 				switch(name) {
 					case 'height':
-						return elem.offsetHeight - e.getBorders(elem, name, 'pb') + 'px';
+						return elem.offsetHeight - e.getSizes(elem, name, 'pb') + 'px';
 					case 'width':
-						return elem.offsetWidth - e.getBorders(elem, name, 'pb') + 'px';
+						return elem.offsetWidth - e.getSizes(elem, name, 'pb') + 'px';
 					case 'opacity':
 						return elem.getOpacity().toString();
 	
@@ -1131,11 +1131,11 @@
 		 * @return {Number} 转换后的大小。
 		 * @static
 		 */
-		getBorders: defaultView ? function (elem, type, names) {
+		getSizes: defaultView ? function (elem, type, names) {
 
-			assert.isElement(elem, "Element.getBorders(elem, type, names): 参数 {elem} ~。");
-			assert(type in styleMaps, "Element.getBorders(elem, type, names): 参数 {type} 必须是 \"width\" 或 \"height\"。", type);
-			assert.isString(names, "Element.getBorders(elem, type, names): 参数 {names} ~。");
+			assert.isElement(elem, "Element.getSizes(elem, type, names): 参数 {elem} ~。");
+			assert(type in styleMaps, "Element.getSizes(elem, type, names): 参数 {type} 必须是 \"width\" 或 \"height\"。", type);
+			assert.isString(names, "Element.getSizes(elem, type, names): 参数 {names} ~。");
 
 
 			var value = 0, map = styleMaps[type], i = names.length, val, currentStyle = elem.ownerDocument.defaultView.getComputedStyle(elem, null);
@@ -1148,9 +1148,9 @@
 		} : function (elem, type, names) {
 
 
-			assert.isElement(elem, "Element.getBorders(elem, type, names): 参数 {elem} ~。");
-			assert(type in styleMaps, "Element.getBorders(elem, type, names): 参数 {type} 必须是 \"width\" 或 \"height\"。", type);
-			assert.isString(names, "Element.getBorders(elem, type, names): 参数 {names} ~。");
+			assert.isElement(elem, "Element.getSizes(elem, type, names): 参数 {elem} ~。");
+			assert(type in styleMaps, "Element.getSizes(elem, type, names): 参数 {type} 必须是 \"width\" 或 \"height\"。", type);
+			assert.isString(names, "Element.getSizes(elem, type, names): 参数 {names} ~。");
 
 			var value = 0, map = styleMaps[type], i = names.length, val;
 			while(i--) {
@@ -1810,10 +1810,10 @@
 		var p = getXY(x,y);
 
 		if(p.x != null)
-			elem.setWidth(p.x - e.getBorders(elem.getDom(), 'width', fix));
+			elem.setWidth(p.x - e.getSizes(elem.getDom(), 'width', fix));
 
 		if (p.y != null)
-			elem.setHeight(p.y - e.getBorders(elem.getDom(), 'height', fix));
+			elem.setHeight(p.y - e.getSizes(elem.getDom(), 'height', fix));
 
 		return elem;
 	}
@@ -1975,7 +1975,7 @@
 		getOuterSize: function() {
 			var me = this.getDom();
 
-			return this.getSize().add(e.getBorders(me, 'width', 'm'), e.getBorders(me, 'height', 'm'));
+			return this.getSize().add(e.getSizes(me, 'width', 'm'), e.getSizes(me, 'height', 'm'));
 		},
 
 		/**

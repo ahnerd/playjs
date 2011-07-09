@@ -2,25 +2,25 @@
 //  变化函数  transitions.js      A
 //===========================================
 
-Py.namespace(".Fx.Transitions", {
+Py.namespace(".Fx.Transitions.", {
 	
-	linear: function(zero){
-		return zero;
+	linear: function(p){
+		return p;
 	},
 	
-	pow: function(p, x){
-		return Math.pow(p, x || 6);
+	power: function(p, x){
+		return Math.pow(p, x || 3);
 	},
 
-	expo: function(p){
+	exponential: function(p){
 		return Math.pow(2, 8 * (p - 1));
 	},
 
-	circ: function(p){
+	circular: function(p){
 		return 1 - Math.sin(Math.acos(p));
 	},
 
-	sine: function(p){
+	sinusoidal: function(p){
 		return 1 - Math.sin((1 - p) * Math.PI / 2);
 	},
 
