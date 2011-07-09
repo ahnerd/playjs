@@ -1,3 +1,5 @@
+/*
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML><HEAD>
 
@@ -8,7 +10,7 @@
 
 document.write("<TITLE>" + sTitle + "</TITLE>");
 //====================================================
-//  ÑÕÉ«Ñ¡ÔñÆ÷   xuld
+//  ï¿½ï¿½É«Ñ¡ï¿½ï¿½ï¿½ï¿½   xuld
 //====================================================
 
 var tc=window.location.href.toString();
@@ -17,7 +19,7 @@ getcolor = tc || getcolor;
 var oSelection;
 var oControl;
 var sRangeType;
-// ÊÇ·ñÓÐÐ§ÑÕÉ«Öµ
+// ï¿½Ç·ï¿½ï¿½ï¿½Ð§ï¿½ï¿½É«Öµ
 function IsColor(color){
 	var temp=color;
 	if (temp=="") return true;
@@ -25,12 +27,12 @@ function IsColor(color){
 	return (temp.search(/\#[a-fA-F0-9]{6}/) != -1);
 }
 
-// Ö»ÔÊÐíÊäÈëÊý×Ö
+// Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 function IsDigit(){
   return ((event.keyCode >= 48) && (event.keyCode <= 57));
 }
 
-// Ñ¡ÑÕÉ«
+// Ñ¡ï¿½ï¿½É«
 function SelectColor(what){
 	var dEL = document.all("d_"+what);
 	var sEL = document.all("s_"+what);
@@ -44,7 +46,7 @@ function SelectColor(what){
 
 
 
-// ·µ»Ø±êÇ©ÃûµÄÑ¡¶¨¿Ø¼þ
+// ï¿½ï¿½ï¿½Ø±ï¿½Ç©ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ø¼ï¿½
 function GetControl(obj, sTag){
 	obj=obj.item(0);
 	if (obj.tagName==sTag){
@@ -53,7 +55,7 @@ function GetControl(obj, sTag){
 	return null;
 }
 
-// ÊýÖµ×ªÎªRGB16½øÖÆÑÕÉ«¸ñÊ½
+// ï¿½ï¿½Öµ×ªÎªRGB16ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½Ê½
 function N2Color(s_Color){
 	s_Color = s_Color.toString(16);
 	switch (s_Color.length) {
@@ -81,7 +83,7 @@ function N2Color(s_Color){
 	return '#' + s_Color;
 }
 
-// ³õÊ¼Öµ
+// ï¿½ï¿½Ê¼Öµ
 function InitDocument(){
 	ShowColor.bgColor = color;
 	RGB.innerHTML = color;
@@ -172,7 +174,7 @@ function EndColor(){
 <SCRIPT language=JavaScript event=onclick for=Ok>
 	color = SelColor.value;
 	if (!IsColor(color)){
-		alert('ÎÞÐ§µÄÑÕÉ«Öµ£¡');
+		alert('ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½É«Öµï¿½ï¿½');
 		return;
 	}
 	if(window.opener != null && window.opener != 'undefined'){
@@ -237,15 +239,41 @@ document.write('<TR BGCOLOR=#' + ToHex(i) + ToHex(i) + ToHex(i) + '><TD TITLE=' 
 <TABLE cellSpacing=10 cellPadding=0 border=0>
   <TBODY>
   <TR>
-    <TD align=middle rowSpan=2>Ñ¡ÖÐÉ«²Ê 
+    <TD align=middle rowSpan=2>Ñ¡ï¿½ï¿½É«ï¿½ï¿½ 
       <TABLE id=ShowColor height=30 cellSpacing=0 cellPadding=0 width=40 
       border=0>
         <TBODY>
         <TR>
           <TD></TD></TR></TBODY></TABLE></TD>
-    <TD rowSpan=2>»ùÉ«: <SPAN id=RGB></SPAN><BR>ÁÁ¶È: <SPAN 
-      id=GRAY>120</SPAN><BR>´úÂë: <INPUT id=SelColor maxLength=7 size=7></TD>
-    <TD><BUTTON id=Ok type=submit>È·¶¨</BUTTON></TD></TR>
+    <TD rowSpan=2>ï¿½ï¿½É«: <SPAN id=RGB></SPAN><BR>ï¿½ï¿½ï¿½ï¿½: <SPAN 
+      id=GRAY>120</SPAN><BR>ï¿½ï¿½ï¿½ï¿½: <INPUT id=SelColor maxLength=7 size=7></TD>
+    <TD><BUTTON id=Ok type=submit>È·ï¿½ï¿½</BUTTON></TD></TR>
   <TR>
     <TD><BUTTON 
-onclick=window.close();>È¡Ïû</BUTTON></TD></TR></TBODY></TABLE></CENTER></DIV></BODY></HTML>
+onclick=window.close();>È¡ï¿½ï¿½</BUTTON></TD></TR></TBODY></TABLE></CENTER></DIV></BODY></HTML>
+
+
+BODY {
+	BORDER-RIGHT: #ffffff 0pt solid; BORDER-TOP: #ffffff 0pt solid; SCROLLBAR-FACE-COLOR: #f0f0f0; FONT-SIZE: 9pt; BACKGROUND: url(bg.gif) #e5eef5 repeat-y center 50%; MARGIN: 0px; SCROLLBAR-HIGHLIGHT-COLOR: #003366; BORDER-LEFT: #ffffff 0pt solid; SCROLLBAR-SHADOW-COLOR: #003366; COLOR: #666666; SCROLLBAR-3DLIGHT-COLOR: #f0f0f0; LINE-HEIGHT: 160%; SCROLLBAR-ARROW-COLOR: #000000; SCROLLBAR-TRACK-COLOR: #f0f0f0; BORDER-BOTTOM: #ffffff 0pt solid; FONT-STYLE: normal; FONT-FAMILY: "ï¿½ï¿½ï¿½ï¿½"; SCROLLBAR-DARKSHADOW-COLOR: #f0f0f0; SCROLLBAR-BASE-COLOR: #f0f0f0
+}
+DIV {
+	COLOR: #006699; LINE-HEIGHT: 15pt
+}
+FORM {
+	COLOR: #006699; LINE-HEIGHT: 15pt
+}
+TABLE {
+	COLOR: #006699; LINE-HEIGHT: 15pt
+}
+
+TABLE TD {
+	
+}
+TABLE TD IMG {
+	BORDER-RIGHT: #999999 1px solid; BORDER-TOP: #999999 1px solid; BORDER-LEFT: #999999 1px solid; BORDER-BOTTOM: #999999 1px solid
+}
+
+
+
+
+*/

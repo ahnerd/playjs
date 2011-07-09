@@ -1,14 +1,15 @@
+//===========================================
+//  集合   collection.js         A
+//===========================================
 
 
-
-(function(){
-	
+(function(){	
 
 /**
  * 控件集合。
- * @class CollectionBase
+ * @class Collection
  */
-Py.namespace("Py.Data", "CollectionBase", Py.Class({
+Py.namespace(".Collection", Py.Class({
 		
 	length: 0,
 	

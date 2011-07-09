@@ -21,7 +21,7 @@
 /// #ifndef Compact
 
  
-// 配置。可省略。
+// 配置。编译后会删除以下代码。
 
 /**
  * @type Object
@@ -1569,15 +1569,15 @@ var Py = {
 			 */
 			imports: function (resource, theme){
 				
-				assert(name && name.indexOf, "imports(resource, theme): 参数 {namespace} 不是合法的名字空间。", name);
-				assert.isArray(theme, "imports(resource, theme): 参数 {theme} ~。");
+				assert(resource && resource.indexOf, "imports(resource, theme): 参数 {resource} 不是合法的名字空间。", resource);
+				assert(!theme || o.isArray(theme), "imports(resource, theme): 参数 {theme} 必须是数组或省略。");
 		
-				if(name.indexOf('*') > -1){
+				if(resource.indexOf('*') > -1){
 				 	(theme || [p.resource, p.theme]).forEach(function(value){
-						include(name.replace('*', value), isStyle);
+						include(resource.replace('*', value), isStyle);
 					});
 				} else {
-					include(resource, true);
+					include(resource.replace('~', p.resource), true);
 				}
 			},
 			
