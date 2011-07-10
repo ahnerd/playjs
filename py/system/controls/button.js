@@ -1,4 +1,6 @@
-
+//===========================================
+//  按钮   button.js         A
+//===========================================
 
 
 
@@ -71,11 +73,7 @@ Py.namespace(".Button", Py.ContentControl.extend({
 		this.setState('disabled', value);
 	},
 	
-	setWidth: function(value){
-		this.button.setWidth(value);
-		this.onResizeX();
-		return this;
-	},
+	/// #ifdef SupportIE6
 	
 	doAutoSize: function(){
 		var me = this;
@@ -83,6 +81,14 @@ Py.namespace(".Button", Py.ContentControl.extend({
 			me.button.runtimeStyle.width = me.content.offsetWidth + (me.icon ? 31 : 8);
 		else
 			me.button.runtimeStyle.width = '';
+	},
+	
+	/// #endif
+	
+	setWidth: function(value){
+		this.button.setWidth(value);
+		this.onResizeX();
+		return this;
 	}
 	
 }));

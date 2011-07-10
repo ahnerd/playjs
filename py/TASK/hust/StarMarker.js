@@ -13,7 +13,7 @@ var StarMarker = Control.extend({
 		// target:document.body   // 这个也不需要， 因为有  renderTo
 	   },
 	   create: function(options){
-		    var div=document.createDiv('star');//创建一个放置组件的div,className='star'
+		    var div=document.create('div', 'star');//创建一个放置组件的div,className='star'
 			for(var i=0;i<options.totlaStar;i++){
 			    document.create('a').setAttr("title", (i+1)+"星级").renderTo(div);
 			  };

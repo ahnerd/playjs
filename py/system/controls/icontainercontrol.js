@@ -1,128 +1,96 @@
+//===========================================
+//  可作为容器的控件接口   icontainercontrol.js         A
+//===========================================
+
+
+Py.using("System.Data.Collection");
 
 
 
-Py.using("System.Controls.ContainerControl");
-Py.using("System.Controls.Layout.LayoutEngine");
-Py.using("System.Controls.IParentControl");
-
-
-
-Py.IContainerControl = Object.extend({
-	
-	layout: 'none',
-	
-	_raiseEvents: function(name, ct, item, index){
-		
-		this.trigger(name, {
-			target: item,
-			position: index
-		});
-			
-		// 添加一个项目控件。
-		this.layout[ct](this, item, index);
-		
-		// 重新布局。
-		this.performLayout();
-		
-	},
-	
-	onControlAdded: function(item, index){
-		return this._raiseEvents('controladded', 'onControlAdded', item, index);
-	},
-	
-	onControlRemoved: function(item, index){
-		return this._raiseEvents('controlremoved', 'onControlRemoved', item, index);
-	},
-	
-	/**
-	 * 当被子类重写时，渲染控件。
- 	 * @method init
- 	 * @param {Object} options 配置。
- 	 * @protected
-	 */
-	initContainer: function(options) {
-		this.controls = new Py.ContainerControl.ControlCollection(this);
-		
-		this.initChildren(options);	
-	
-		Py.Layout[this.layout].initLayout(this);
-	},
-
-	suspendLayout: function(){
-		if(this.layouting) this.layouting++;
-		else this.layouting = 1;
-		return this;
-	},
-	
-	resumeLayout: function(performLayout){
-		if(this.layouting && --this.layouting === 0 && performLayout !== false) {
-			this.performLayout(true);
-		}
-		return this;
-	},
-	
-	setLayout: function(name){
-		
-		if(typeof name == 'string'){
-			assert(name in Py.Layout, "不存在名为 {0} 的 layout 方式(缺少 using(\"System.Controls.Layout.{0}\"))", name);
-			name = Py.Layout[name];
-		}
-			
-		// 如果新布局和原布局一样，直接返回即可。
-		if(this.layout.xType == name.xType)
-			return this;
-			
-		// 原布局取消绑定。
-		this.layout.uninitLayout(this);
-		
-		// 初始化新布局。
-		name.initLayout(this);
-		
-		return this.performLayout();
-	},
-	
-	performLayout: function(){
-		
-		if(!this.layouting){
-
-			this.layouting = 1;
-				
-			try {
-	
-				this.layout.layout(this);
-				
-			} finally{
-				
-				this.layouting = 0;
-				
-			}
-		}
-		
-		return this;
-	}
-	
-}, Py.IParentControl);
-
-
-
+///  #region ControlCollection
 
 
 /**
- * 表示一个可作为容器控件。
+ * 控件集合。
+ * @class ControlCollection
  */
-
-
-Py.ContainerControl.implement(Py.IContainerControl);
-
-
-Py.ContainerControl.ControlCollection = Py.Control.ControlCollection.extend({
+Py.Control.ControlCollection = Py.Collection.extend({
 		
-	onBeforeSet: function(){
-		this.owner.suspendLayout();
+	constructor: function(owner){
+		this.owner = owner;
 	},
+	
+	initItem: function(childControl){
 		
-	onAfterSet: function(){
-		this.owner.resumeLayout();
+		// 如原来控件已经有父节点，先删除。
+		if(childControl.parent){
+			childControl.parent.controls.remove(childControl);
+		}
+		
+		return childControl;
+	},
+	
+	onInsert: function(item, index){
+		item.parent = this.owner;
+		this.owner.onControlAdded(item, index);
+	},
+	
+	onRemove: function(item, index){
+		this.owner.onControlRemoved(item, index);
+		item.parent = null;
+	}
+});
+
+/// #endregion
+
+/**
+ * 可作为容器的控件接口。
+ * @interface
+ * 实现这个接口的函数必须实现 2 个函数:
+ * onControlAdded(elem, index) 和  onControlRemoved(elem, index)
+ */
+Py.IContainerControl = {
+	
+	/**
+	 * 获取目前所有子控件。
+	 * @type {Py.Control.ControlCollection}
+	 * @name controls
+	 */
+	
+	initChildren: function () {
+		this.controls = new Py.Control.ControlCollection(this);
+	},
+	
+	/**
+	 * 使用指定函数或 ID 获取指定的子控件。
+	 * @param {String/Function} fn 查找的控件的ID/查找过滤的函数。
+	 * @param {Boolean} child=true 是否深度查找。
+	 * @return {Control} 控件。
+	 */
+	findControl: function(fn, child){
+		if (typeof fn == 'string') {
+			var id = fn;
+			fn = function(ctrl) {
+				return (ctrl.dom || ctrl).id === id;
+			};
+		}
+			
+		for(var controls = this.controls, i = 0; i < controls.length; i++){
+			var ct = controls[i], r;
+			if(fn(ct))
+				return ct;
+			
+			if (child !== false && ct.findControl) {
+				r = ct.findControl(fn, child);
+				if(r)
+					return r;
+			}
+		}
+		
+		
+		return null;
+		
 	}
 	
-});
+	
+};

@@ -20,7 +20,7 @@ Py.Surround = {
 		
 		// 全部方向。
 		direction.forEach(function(direct){
-			oncreate(target.getDom().appendChild(document.createDiv(className + '-' + direct)), direct);
+			oncreate(target.getDom().appendChild(document.create('div', className + '-' + direct)), direct);
 		});
 		
 		// 目标添加 x-shadow 。

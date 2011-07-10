@@ -143,7 +143,7 @@ Py.Layout.register(Py.Layout.BorderLayout = Py.Layout.AdvanceLayout.extend({
 		
 		setTitle: function(value){
 			if(!this.title){
-				this.title = this.append(document.createDiv('x-region-title'));
+				this.title = this.append(document.create('div', 'x-region-title'));
 				this.headerSize = 30;
 			}
 			

@@ -1,4 +1,6 @@
-
+//===========================================
+//  内容   contentcontrol.js         A
+//===========================================
 
 
 Py.using("System.Controls.Control");
@@ -76,6 +78,7 @@ Py.ContentControl = Py.Control.extend({
 
 
 
+/// #ifdef SupportIE7
 
 if(navigator.isQuirks){
 	
@@ -100,5 +103,8 @@ if(navigator.isQuirks){
 		
 	});
 }
+
+
+/// #endif
 
 Py.Control.delegate(Py.ContentControl, 'content', 'appendChild insertBefore removeChild replaceChild contains append empty', 3, 'getHtml getText getWidth getHeight', 1);

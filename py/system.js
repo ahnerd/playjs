@@ -1026,16 +1026,17 @@ var Py = {
 			 * @static
 			 * @param {Object} src 来源的对象。
 			 * @param {Object} dest 目标的对象。
+			 * @return this
 			 * @example
 			 * <code>
 			 * var obj = {}, obj2 = {};
-			 * Py.cloneData(obj, obj2);    //     5
+			 * Py.cloneData(obj2, obj);
 			 * </code>
 			 */
-			cloneData: function(src, dest){
+			cloneData: function(dest, src){
 				
-				assert.isObject(src, "Py.cloneData(src, dest): 参数 {src} ~。");
-				assert.isObject(dest, "Py.cloneData(src, dest): 参数 {dest} ~。");
+				assert.isObject(src, "Py.cloneData(dest, src): 参数 {src} ~。");
+				assert.isObject(dest, "Py.cloneData(dest, src): 参数 {dest} ~。");
 				
 				var data = src.data;
 				
@@ -1052,6 +1053,8 @@ var Py = {
 						}
 					}
 				}
+				
+				return dest;
 			}, 
 			
 			/// #ifdef SupportUsing
@@ -1082,6 +1085,19 @@ var Py = {
 			},
 			
 			/**
+			 * 同步载入代码。
+			 * @static
+			 * @param {String} uri 地址。
+			 * @example
+			 * <code>
+			 * Py.loadScript('./v.js');
+			 * </code>
+			 */
+			loadScript: function(url){
+				return p.loadText(url, p.eval);
+			},
+			
+			/**
 			 * 同步载入文本。
 			 * @param {String} uri 地址。
 			 * @param {Function} [callback] 对返回值的处理函数。
@@ -1092,9 +1108,9 @@ var Py = {
 			 * trace(  Py.loadText('./v.html')  );
 			 * </code>
 			 */
-			loadText: function(uri, callback) {
+			loadText: function(url, callback) {
 				
-				assert.notNull(uri, "Py.loadText(uri, callback): 参数 {uri} ~。");
+				assert.notNull(url, "Py.loadText(url, callback): 参数 {url} ~。");
 	
 				//     assert(w.location.protocol != "file:", "Py.loadText(uri, callback):  当前正使用 file 协议，请使用 http 协议。 \r\n请求地址: {0}",  uri);
 				
@@ -1104,7 +1120,7 @@ var Py = {
 				try {
 					
 					// 打开请求。
-					xmlHttp.open("GET", uri, false);
+					xmlHttp.open("GET", url, false);
 	
 					// 发送请求。
 					xmlHttp.send(null);
@@ -1112,13 +1128,13 @@ var Py = {
 					// 检查当前的 XMLHttp 是否正常回复。
 					if (!XMLHttpRequest.isOk(xmlHttp)) {
 						//载入失败的处理。
-						throw String.format("请求失败:  \r\n   地址: {0} \r\n   状态: {1}   {2}  {3}", uri, xmlHttp.status, xmlHttp.statusText, w.location.protocol == "file:" ? '\r\n原因: 当前正使用 file 协议打开文件，请使用 http 协议。' : '');
+						throw String.format("请求失败:  \r\n   地址: {0} \r\n   状态: {1}   {2}  {3}", url, xmlHttp.status, xmlHttp.statusText, w.location.protocol == "file:" ? '\r\n原因: 当前正使用 file 协议打开文件，请使用 http 协议。' : '');
 					}
 					
-					uri = xmlHttp.responseText;
+					url = xmlHttp.responseText;
 					
 					// 运行处理函数。
-					return callback ? callback(uri) : uri;
+					return callback ? callback(url) : uri;
 	
 				} catch(e) {
 					
@@ -1213,12 +1229,14 @@ var Py = {
 					// 如果未绑定
 					if (!evt) {
 					
-						eMgr = evt = me;
+						eMgr = me;
+						
+						evt = me.constructor;
 						
 						// 遍历父类， 找到适合的 eMgr	
 						while(!(eMgr = eventMgr[eMgr.xType]) || !(eMgr = eMgr[type])){
 							
-							if((evt = evt.constructor) && (evt = evt.base)){
+							if(evt && (evt = evt.base)){
 								eMgr = evt.prototype;
 							} else {
 								eMgr = eventMgr.$default;
@@ -1574,7 +1592,7 @@ var Py = {
 		
 				if(resource.indexOf('*') > -1){
 				 	(theme || [p.resource, p.theme]).forEach(function(value){
-						include(resource.replace('*', value), isStyle);
+						include(resource.replace('*', value), true);
 					});
 				} else {
 					include(resource.replace('~', p.resource), true);
@@ -2297,7 +2315,7 @@ var Py = {
 		 * </code>
 		 */
 		invoke: function(fn, args){
-			assert(args && typeof args.length === 'number', "Array.prototype.invoke(fn, args): 参数 {args} 必须是数组, 无法省略。")
+			assert(o.isFunction(fn) || (args && typeof args.length === 'number'), "Array.prototype.invoke(fn, args): 参数 {args} 必须是数组, 无法省略。", args)
 			var r = [];
 			forEach.call(this, o.isFunction(fn) ? function(value, index){
 				r.push(fn.call(args, value, index));
@@ -2449,7 +2467,7 @@ var Py = {
 		 * @param {Document} doc
 		 * @private
 		 */
-		setupWindow: function(){
+		setupWindow: function(w){
 			
 			/// #region 变量
 			
@@ -2600,7 +2618,7 @@ var Py = {
 		
 	});
 	
-	p.setupWindow();
+	p.setupWindow(w);
 
 	/// #endregion
 	
@@ -2783,31 +2801,18 @@ var Py = {
 		 
 		 if(isStyle){
 		 	callback = p.loadStyle;
-			//  e = function (text){
-				//     Py.addCss(text.replace(/url\s*\(\s*"?([^)]+)"?\s*\)/gi, "url(" + name + "../$1)"));
-			//   };
 		 	doms = document.styleSheets;
 			src = 'href';
 		 } else {
-		 	callback = p.loadText;
+		 	callback = p.loadScript;
 		 	doms = document.getElementsByTagName("SCRIPT");
 			src = 'src';
-
-			/* this does not work in IE7/6
-			e = function(text){
-				var style = document.createElement('script');
-				style.innerHTML = text;
-				(document.getElementsByTagName('head')[0] || document).appendChild(style);
-			};
-			*/
-			
-			
 		 }
 		 
 		 
 		  o.each(doms, function(dom){
-		 	return !dom[src] || dom[src].toLowerCase().indexOf(name) == -1;
-		 }) && callback(p.rootPath + name, p.eval );
+		 	return !dom[src] || dom[src].toLowerCase().indexOf(name) === -1;
+		 }) && callback(p.rootPath + name);
 	}
 			
 	/// #endif

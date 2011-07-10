@@ -54,6 +54,6 @@ Py.namespace('.IDataStore', {
 	},
 	
 	cloneDataTo: function(dest){
-		return Py.cloneData(this, dest);
+		return Py.cloneData(dest, this);
 	}
 });

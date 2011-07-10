@@ -19,7 +19,7 @@ Py.namespace(".TreeNode", Py.ListControl.extend({
 	xType: 'treenode',
 	
 	create: function(){
-		var dom = document.createDiv('x-' + this.xType);
+		var dom = document.create('div', 'x-' + this.xType);
 		dom.appendChild(document.create('a', ''));
 		return dom;
 	},
@@ -255,7 +255,7 @@ Py.namespace(".TreeView", Py.TreeNode.extend({
 	
 	/*
 create: function(){
-		return document.createDiv('x-treeview');
+		return document.create('div', 'x-treeview');
 	},
 	
 	setNodeType: Function.empty,

@@ -98,8 +98,8 @@ Py.namespace(".ScrollableControl", Py.ContentControl.extend({
 			this.content.remove();
 		}
 		
-		this.heightFix = Py.Element.getSizes(this.getDom(), 'height', 'bp') + Py.Element.getSize(content.getDom(), 'height', 'bp');
-		this.widthFix = Py.Element.getSizes(this.getDom(), 'width', 'bp') + Py.Element.getSize(content.getDom(), 'width', 'bp');
+		this.heightFix = Py.Element.getSizes(this.getDom(), 'height', 'bp') + Py.Element.getSizes(content.getDom(), 'height', 'bp');
+		this.widthFix = Py.Element.getSizes(this.getDom(), 'width', 'bp') + Py.Element.getSizes(content.getDom(), 'width', 'bp');
 		
 		this.dom.append(content.getDom());
 		
@@ -125,7 +125,7 @@ Py.namespace(".ScrollableControl", Py.ContentControl.extend({
 	
 	setHeaderVisible: function(value) {
 		var header = this.header.get('parent'),
-			currentState = Py.Element.isHidden(header);
+			currentState = header.isHidden();
 			
 		value = !!value;
 		if(currentState != value){

@@ -18,7 +18,7 @@ Py.ICollapsable = {
 	 * @return {Boolean}
 	 */
 	isCollapsed: function() {
-		return Py.Element.isHidden(this.content);
+		return this.content.isHidden();
 	},
 	
 	duration: -1,

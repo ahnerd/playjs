@@ -66,7 +66,7 @@ Py.imports("Resources.*.Control.Resizing");
 				 * @return {Element} 代理元素。
 				 */
 				start: function(e){
-					return p.Control.getProxy('x-resize-proxy').alignTo(e.target.dom || e.target);
+					return p.Control.getProxy('x-resize-proxy').mask(e.target.dom || e.target);
 				},
 				
 				/**

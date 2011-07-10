@@ -20,7 +20,7 @@ Py.namespace('.Balloontip', Py.ContainerControl.extend({
 	
 	setAuthor: function(direction){
 		if(! this.author )
-			this.author = this.append(document.createDiv());
+			this.author = this.append(document.create('div', ));
 		this.author.className = "x-balloontip-anchor x-balloontip-anchor-" + direction;
 		
 		return this;
