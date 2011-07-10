@@ -176,11 +176,10 @@
 				function changeState(value) {
 					this.parentNode.parentNode.className = value ? this.parentNode.parentNode.className + ' x-active' : this.parentNode.parentNode.className.replace(/ x\-active/g, "") ;
 				}
-			
-				function changeStateVal(value, val){
+
+				function changeStateVal(value, val) {
 					this.parentNode.parentNode.className = val ? this.parentNode.parentNode.className + ' ' + value : this.parentNode.parentNode.className.replace(' ' + value, "") ;
 				}
-			
 			</script>
 
 			<div>
@@ -1349,13 +1348,17 @@
 				<div class="block">
 					Label
 					
+					<br>
+					
 					<span class="x-label">
-			内容
-		</span>
+					内容
+				</span>
 				</div>
 
 				<div class="block">
 					PictureBox
+					
+					<br>
 					
 					<img class="x-picturebox"/>
 		
@@ -1364,6 +1367,8 @@
 
 				<div class="block">
 					WebBroswer
+					
+					<br>
 					
 						<iframe src="about:blank" class="x-webbroswer"></iframe>
 		
