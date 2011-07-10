@@ -10,6 +10,22 @@
 		
 		<script>
 		 
+		 var d = {
+		 	
+		 	dom: 3,
+		 	
+		 	getDom: function () {
+				return this;
+			}
+		 }
+		 
+		 trace.test(function(){
+		 	v = d.getDom();
+		 }, 10000000)
+		 
+		 trace.test(function(){
+		 	  v = d.dom || d;
+		 }, 100000)
 		
 			
 		</script>
