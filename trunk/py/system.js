@@ -3307,7 +3307,7 @@ function assert(bValue, msg) {
 		 * @return {Boolean} 返回 bValue 。
 		 */
 		isRegExp: function(value, msg){
-			return assertInternal2(Object.type(value) == 'regexp' || value instanceof RegExp, msg, value, "必须是正则表达式");
+			return assertInternal(Object.type(value) == 'regexp' || value instanceof RegExp, msg, value, "必须是正则表达式");
 		},
 	
 		/**
