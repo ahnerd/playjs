@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Pyjs 测试</title>
+		<title>Core</title>
 		<script src="../../py/system.js" type="text/javascript"></script>
 		
 	 	<script src="../../common/project/project.js" type="text/javascript"></script>
@@ -49,13 +49,14 @@
 				'Array',
 				["Array.create", function(){ return Array.create(["a","a",null,"a"]); }, function(r){assert(r.length === 4);}],
 				["Array.plain", function(){return Array.plain([3,5], [6]);}, function(r){assert(r.length === 3);}],
+				["Array.copyIf", function(){a = [6, 5, 2]; Array.copyIf([3,5], a);   return a;}, [6, 5, 2, 3]],
 				'Function',
 				["Function.empty", function(){ return Function.empty(); }, undefined],
 				["Function.from", function(){ return Function.from("a")(); }, 'a'],
 				["Function.bind", function(){ return Function.bind(function(args){trace(this, 'args')})('a'); }],
 				'Array.prototype',
 				["Array.prototype.indexOf", function(){ return [5,4].indexOf(4); }, 1],
-				["Array.prototype.contains", function(){ return [].contains(); }, false],
+		    //	["Array.prototype.contains", function(){ return [].contains(); }, false],
 				["Array.prototype.filter", function(){ return [2, 5].filter(function(v){return v > 2;}); }, function(r){assert(r.length === 1 && r[0] === 5)}],
 				["Array.prototype.each", function(){ return [2, 5].each(log); }, true],
 				["Array.prototype.select", function(){ return [2, 5].select(function(v){return v > 2;}); }, function(r){assert(r.length === 1 && r[0] === 5)}],

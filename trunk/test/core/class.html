@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Pyjs 测试</title>
+		<title>Core</title>
 		<script src="../../py/system.js" type="text/javascript"></script>
 		
 		<script src="../../common/project/project.js" type="text/javascript"></script>
@@ -17,6 +17,7 @@
 				xType: "MYCLASS",
 				constructor: function MYCLASSCTR(args){
 					log(args + "    MYCLASS 构造");
+					this.__assert = args;
 				}
 			});
 			
@@ -44,6 +45,8 @@
 				
 				a: function(a,b){
 					log("MYCLASS3->", a, b);
+					this.__assert = a + b;
+					return this;
 				}
 			});
 			
@@ -52,7 +55,7 @@
 				xType: "MYCLASS5",
 				
 				a: function(a,b){
-					this.baseCall('a', a, b);
+					return this.baseCall('a', a, b);
 				}
 				
 			});
@@ -62,16 +65,16 @@
 				xType: "MYCLASS6",
 				
 				a: function(a,b){
-					this.baseCall('a', arguments);
+					return this.baseCall('a', arguments);
 				}
 			});
 			
 			
 			var fns = [
-				["创建类", function(){
-					new MYCLASS6("3");
+				["基本的类的创建", function(){
+					assert(new MYCLASS6("3").__assert == "3");
 				 }],
-				["类之间关系", function(){
+				["成员干扰", function(){
 					var instance1 = new MYCLASS('a'),
 						instance2 = new MYCLASS2('f'),
 						instance5 = new MYCLASS2('s');
@@ -80,11 +83,10 @@
 					log(instance5.types);
 					assert(instance5.types.length == 0);
 				}],
-				["Object", function(){
-					new MYCLASS5().a(4,5);
-					//  new MYCLASS6().a(6,9);
+				["重载", function(){
+					assert(new MYCLASS5().a(4,5).__assert == 9);
 				}],
-				["Class.addEvents", function(){ 
+				["事件", function(){ 
 					var MYCLASS = new Class({
 						constructor: function(){
 							
@@ -106,18 +108,23 @@
 					instance.trigger("click");
 					assert(flag);
 				}],
-				["Class.addEvents - extend", function(){
+				["事件的继承", function(){
 					var MYCLASS = new Class,
-						MYSCLASS = MYCLASS.extend();
+						MYSCLASS = MYCLASS.extend(),
+						flag = false;
 					
 					MYCLASS.addEvents({
 						"click": {
-							add: log,
+							add: function(){
+								flag = true;
+							},
 							remove: log
 						}
 					});
 					
 					new MYSCLASS().on('click', log);
+					
+					assert(flag);
 				}]
 			];
 			

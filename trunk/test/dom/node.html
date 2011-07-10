@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>System.Dom.Element  测试</title>
+		<title>Dom</title>
 		<script src="../../py/system.js" type="text/javascript"></script>
 		<script src="../../py/system/dom/element.js" type="text/javascript"></script>
 		
@@ -19,12 +19,25 @@
 		<script>
 			var a = $('a'), aa = $('aa'), aba = $('aba'), ab = $('ab');
 			var fns = [
+				'create',
+				["Element.parse",function(){   return Element.parse("<div>aaa</div>");}],
+				["document.create", function(){
+					var dom = document.create("div",    "xxx");
+					dom.appendChild(document.create("ul", "xxx"));
+					return dom;
+				}],
+				'gets',
 				["Element.prototype.getElementsByClassName", function(){ return a.getElementsByClassName('d'); }],
 				["Element.prototype.getElementsByAttribute", function(){ return a.getElementsByAttribute('id', 'ab'); }],
+				["Element.prototype.find", function(){ return aa.find('div'); }],
+				["Element.prototype.findAll", function(){ return aa.findAll('div'); }],
+				'node',
 				["Element.prototype.append", function(){ return a.append('asdasdasdasda'); }],
 				["Element.prototype.insert", function(){ return a.insert('asd', 'beforeEnd'); }],
-				["Element.parse",function(){   return Element.parse("<div>aaa</div>");}],
 				["Element.prototype.clone", function(){ return a.clone(); }],
+				["Element.prototype.wrapWith", function(){ return a.wrapWith("<i></i>"); }],
+				["Element.prototype.replaceWith", function(){ return aa.replaceWith(ab); }],
+				'get',
 				["Element.prototype.get('previous')", function(){ return a.get('previous'); }],
 				["Element.prototype.get('next')", function(){ return a.get('next'); }],
 				["Element.prototype.get('first')", function(){ return a.get('first'); }],
@@ -37,9 +50,7 @@
 				["Element.prototype.get('parents')", function(){ return a.get('parents').doms; }],
 				["Element.prototype.get('children')", function(){ return a.get('children').doms; }],
 				["Element.prototype.get('child')", function(){ return aa.get('child').doms; }],
-				["Element.prototype.wrapWith", function(){ return a.wrapWith("<i></i>"); }],
-				["Element.prototype.replaceWith", function(){ return aa.replaceWith(ab); }],
-				["Element.prototype.find", function(){ return aa.find('div'); }],
+				'move',
 				["Element.prototype.renderTo", function(){ return a.renderTo(document.body); }],
 				["Element.prototype.contains", function(){ return a.contains(ab); }],
 				["Element.prototype.remove", function(){ return a.remove(ab); }],

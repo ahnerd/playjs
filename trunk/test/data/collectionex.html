@@ -2,10 +2,9 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Pyjs 测试</title>
+		<title>Core</title>
 		<script src="../../py/system.js" type="text/javascript"></script>
-		<script src="../../py/system/core/ioptions.js" type="text/javascript"></script>
-		<script src="../../py/system/core/idatastore.js" type="text/javascript"></script>
+		<script src="../../py/system/data/collection.js" type="text/javascript"></script>
 		
 		<script src="../../common/project/project.js" type="text/javascript"></script>
 		<script src="../../common/assets/scripts/default.js" type="text/javascript"></script>
@@ -14,22 +13,16 @@
 	<body>
 		<script>
 			
-			
-			var fns = [
-				["IOptions", function(){
-					var CLS = new Class().implement(IOptions);
-					var a = new CLS();
-					a.setOptions('a', 2);
-					return a.a;
-				 }],
-				["IDataStore", function(){
-					var CLS = new Class().implement(IDataStore);
-					var a = new CLS();
-					a.setData('f', 2);
-					return a.getDataIf   ('f');
-				}]
-			];
-			
+			var list = new CollectionBase();
+			list.add(2);
+			list.insert(0, 2);
+			list.remove(2);
+			list.removeAt(0);
+			list.insert(0, 2);
+			list.insert(0, 8);
+			trace(list.length);
+			trace(list);
+		
 		</script>
 	</body>
 </html>

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>System.Dom.Element  测试</title>
+		<title>Dom</title>
 		<script src="../../py/system.js" type="text/javascript"></script>
 		<script src="../../py/system/dom/element.js" type="text/javascript"></script>
 		
@@ -37,8 +37,8 @@
 				["Document.prototype.getOffsetParent", function(){ return document.getOffsetParent(); }],
 				["Document.prototype.getOffsets", function(){ return document.getOffsets(); }],
 				["Document.prototype.getPosition", function(){ return document.getPosition(); }],
-				["Element.getBorders", function(){return Element.getBorders(a, 'width', 'm');}],
-				["全部测试", function(){
+				["Element.getSizes", function(){return Element.getSizes(a, 'width', 'm');}],
+				["Element 全部测试 ", function(){
 					log("Size = ", f.getSize());
 					log("------------------------","");
 					log("Position = ", f.getPosition());
@@ -46,7 +46,7 @@
 					log("Scroll = ", f.getScroll());
 					log("Offsets = ", f.getOffsets());
 				}],
-				["全部测试 2 ", function(){
+				["documen 全部测试 ", function(){
 					log("Size = ", document.getSize());
 					log("------------------------","");
 					log("Position = ", document.getPosition());
