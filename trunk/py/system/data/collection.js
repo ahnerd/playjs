@@ -4,18 +4,18 @@
 
 
 (function(){	
-
-/**
- * 控件集合。
- * @class Collection
- */
-Py.namespace(".Collection", Py.Class({
-		
-	length: 0,
 	
-	onAdd: function(item){
-		return this.onInsert(item, this.length);
-	},
+	/**
+	 * 集合。
+	 * @class Collection
+	 */
+	Py.namespace(".Collection", Py.Class({
+			
+		length: 0,
+		
+		onAdd: function(item){
+			return this.onInsert(item, this.length);
+		},
 	
 		onInsert: Function.empty,
 		
@@ -25,22 +25,27 @@ Py.namespace(".Collection", Py.Class({
 		
 		onAfterSet: Function.empty,
 		
-		check: function(ctrl){
-			return ctrl;
+		/**
+		 * @protected
+		 */
+		initItem: function(value){
+			return value;
 		},
 		
 		add: function(item){
-			item = this.check(item);
+			item = this.initItem(item);
 			Array.prototype.push.call(this, item);
 			this.onAdd(item);
 			return item;
 		},
 		
 		addRange: function(args){
-			args = Object.isArray(args) ? args : arguments;
+			
+			
+			var v = Object.isArray(args) ? args : arguments;
 			this.onBeforeSet(args);
-			Array.prototype.forEach.call(args, this.add, this);
-			this.onAfterSet(args);
+			Array.prototype.forEach.call(v, this.add, this);
+			this.onAfterSet(v);
 		},
 		
 		insert: function(index, item){
@@ -49,7 +54,7 @@ Py.namespace(".Collection", Py.Class({
 				return this.add(item);
 			}
 			
-			item = this.check(item);
+			item = this.initItem(item);
 			
 			Array.prototype.insert.call(this, index, item);
 			
@@ -100,7 +105,7 @@ Py.namespace(".Collection", Py.Class({
 			
 	}));
 	
-	String.map("indexOf contains forEach each invoke lastIndexOf", Array.prototype, Py.Data.CollectionBase.prototype);
+	String.map("indexOf contains forEach each invoke lastIndexOf", Array.prototype, Py.Collection.prototype);
 	
 	function clear(arr){
 		while (arr.length) {

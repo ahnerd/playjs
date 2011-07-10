@@ -1,10 +1,9 @@
 //===========================================
-//  AbsoluteLayout.js
-//  Copyright(c) 2009-2011 xuld
-//============================================
+// 绝对布局       flowlayout.js         A
+//===========================================
 
 Py.using("System.Controls.Layout.LayoutEngine");
-Py.imports("Resources.share.Layout.Absolute");
+Py.imports("Resources.~.Layout.Absolute");
 
 
 

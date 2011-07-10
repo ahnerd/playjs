@@ -43,7 +43,7 @@ Py.namespace(".Splitter", Py.Control.extend({
 	 * @protected
 	 */
 	create: function(direction){
-		return document.createDiv('x-splitter x-splitter-' + direction);
+		return document.create('div', 'x-splitter x-splitter-' + direction);
 	},
 	
 	/**
@@ -97,7 +97,7 @@ Object.extend(Py.Splitter, {
 		 */
 		start: function(e){
 			e.target.onSplitterBeforeResize(e);
-			return Py.Control.getProxy('x-splitter-proxy').alignTo(e.srcElement);
+			return Py.Control.getProxy('x-splitter-proxy').mask(e.srcElement);
 		},
 		
 		/**

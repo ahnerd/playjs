@@ -1,6 +1,14 @@
+//===========================================
+//  层叠选项卡   accordion.js         A
+//===========================================
+
+
 
 Py.imports("Resources.*.Container.Accordion");
 Py.using("System.Controls.Control");
+Py.using("System.Controls.IContainerControl");
+
+
 Py.namespace(".Accordion", Py.Control.extend({
 	/**
 	 * 默认配置。
@@ -26,7 +34,7 @@ Py.namespace(".Accordion", Py.Control.extend({
 	
 	init:function(options){
 		var me=this;
-		this.dom.on('click',function(e){trace(e.target);
+		this.dom.on('click',function(e){
 			   if(e.target.tagName.toLowerCase()=='h3'&&e.target.className!='x-collapsable'){
 			   	  me.action(e.target);
 			   }
@@ -44,7 +52,28 @@ Py.namespace(".Accordion", Py.Control.extend({
 		
 	}
 	
-}));
+}))
+.implement(Py.IContainerControl)
+.Item = Py.Control.extend({
+	
+	tpl: '<div class="x-header x-accordion-header">\
+				<h3></h3>\
+			</div>\
+			<div class="x-container x-accordion-container">\
+				\
+			</div>',
+	
+	init: function (options) {
+		this.header = this.find('.x-accordion-header h3');
+		this.content= this.find('.x-accordion-container');
+	}
+	
+	
+	
+});
+
+
+Py.Control.delegate(Py.Accordion.Item, 'header', 'setText', 2, 'getText', 1);
 
 
 

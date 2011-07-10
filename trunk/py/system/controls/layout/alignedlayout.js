@@ -1,7 +1,6 @@
 //===========================================
-//  AbsoluteLayout.js
-//  Copyright(c) 2009-2011 xuld
-//============================================
+// 对齐布局       alignedlayout.js         A
+//===========================================
 
 Py.using("System.Controls.Layout.AbsoluteLayout");
 

@@ -374,7 +374,7 @@ Py.imports("Resources.*.Form.MonthCalender");
 			
 			if (this._renderContainer(container, 'x-monthcalender-days', 6, 7)) {
 			
-				var weeks = container.insert(document.createDiv('x-monthcalender-week'), 'afterBegin');
+				var weeks = container.insert(document.create('div', 'x-monthcalender-week'), 'afterBegin');
 				
 				Object.each(Py.MonthCalender.weeks, function(name, week) {
 					weeks.appendChild(document.create('span', 'x-monthcalender-' + week)).innerHTML = name;

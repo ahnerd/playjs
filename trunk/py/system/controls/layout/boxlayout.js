@@ -56,7 +56,7 @@ Py.Layout.register(Py.Layout.BoxLayout = Py.Layout.AdvanceLayout.extend({
 		this.baseCall('initLayoutCore', container);
 	
 		// 新建用来存储分区的区。
-		var regions = container.regions = container.content.appendChild(document.createDiv('x-region-container'));
+		var regions = container.regions = container.content.appendChild(document.create('div', 'x-region-container'));
 		
 		var me = this, map;
 		
@@ -200,7 +200,7 @@ Py.Layout.register(Py.Layout.BoxLayout = Py.Layout.AdvanceLayout.extend({
 		onResizeY: Function.empty,
 		
 		create: function(options) {
-			return document.createDiv('x-region-' + options.name);
+			return document.create('div', 'x-region-' + options.name);
 		},
 		
 		init: function(options) {
@@ -223,7 +223,7 @@ Py.Layout.register(Py.Layout.BoxLayout = Py.Layout.AdvanceLayout.extend({
 		
 			var container = options.container;
 			
-			this.header = this.insert(document.createDiv('x-header x-region-header'), 'afterBegin').append(document.create('h3', ''));
+			this.header = this.insert(document.create('div', 'x-header x-region-header'), 'afterBegin').append(document.create('h3', ''));
 			
 			this.hide();
 			
@@ -270,7 +270,7 @@ Py.Layout.register(Py.Layout.BoxLayout = Py.Layout.AdvanceLayout.extend({
 		 this.widthFix = Py.Element.getSize(panel.getDom(), 'width', 'bp');
 		 
 		 
-		 this.header = Py.$(this.insert(document.createDiv('x-header x-region-header'), 'afterBegin').append(document.createElement('h3')));
+		 this.header = Py.$(this.insert(document.create('div', 'x-header x-region-header'), 'afterBegin').append(document.createElement('h3')));
 		 
 		 
 		 

@@ -11,7 +11,7 @@ Py.Mask.implement({
 		var content = this.conetnt;
 		
 		if(!content)
-			this.conetnt = content = this.dom.append(document.createDiv('x-mask-content'));
+			this.conetnt = content = this.dom.append(document.create('div', 'x-mask-content'));
 			
 		content.innerHTML = value;
 		content.setStyle('marginLeft', -content.getSize().x / 2);

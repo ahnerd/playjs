@@ -182,14 +182,6 @@ Py.using("System.Fx.Base");
 			link: "wait",
 			
 			/**
-			 * 获取当前封装的节点。
-			 * @return {Element} 返回节点。
-			 */
-			getDom: function(){
-				return this.dom.getDom();
-			},
-			
-			/**
 			 * 初始化当前特效。
 			 * @param {Object} options 选项。
 			 * @param {Object} key 键。
@@ -201,6 +193,7 @@ Py.using("System.Fx.Base");
 						this.dom = p.$(options);
 					else
 						Object.extend(this, options);
+					this.style = this.dom.style;
 				}
 				 
 				this._competeListeners = [];
@@ -366,16 +359,16 @@ Py.using("System.Fx.Base");
 			var d = Py.dataIf(elem, 'fx');
 			if(!d){
 				d = Py.dataIf(elem, 'fxcfg') || {};
-				d.dom = elem.getDom();
+				d.dom = elem;
 				Py.setData(elem, 'fx', d = new Py.Fx.Animate(d));
 			}
 			return d;
 		},
 		
 		getData = Fx.getData = function(elem, start){
-			var from = p.data(elem, 'fxdata'), i, dom = elem.getDom();
+			var from = p.data(elem, 'fxdata'), i;
 			for(i in start){
-				from[i] = styleNumber(dom, i);
+				from[i] = styleNumber(elem, i);
 			}
 			return from;
 		},
@@ -383,7 +376,6 @@ Py.using("System.Fx.Base");
 		ep = e.prototype,
 		show = ep.show,
 		animate = ep.animate,
-		isHidden = e.isHidden,
 		hide = ep.hide,
 		styleNumber =  e.styleNumber;
 	
@@ -450,12 +442,12 @@ Py.using("System.Fx.Base");
 		 * @return {Element} this
 		 */
 		show: function(duration, callBack, type){
-			var me = this, dom = me.getDom();
-			if (duration && isHidden(dom)) {
+			var me = this;
+			if (duration && me.isHidden()) {
 				var fx = getFx(me), from, to;
 				if (!fx.timer) {
-					dom.style.overflow = 'hidden';
-					dom.style.display = '';
+					me.style.overflow = 'hidden';
+					me.style.display = '';
 					from = getStart(me, type);
 					to = p.dataIf(me, 'fxdata') || getData(me, from);
 					fx.start(from, to, duration, callBack);
@@ -474,8 +466,8 @@ Py.using("System.Fx.Base");
 		 * @return {Element} this
 		 */
 		hide: function(duration, callBack, type){
-			var me = this, dom = me.getDom();
-			if (duration && !isHidden(dom)) {
+			var me = this;
+			if (duration && !me.isHidden()) {
 				var fx = getFx(me), to;
 				me.setStyle('overflow', 'hidden');
 				if (!fx.timer) {

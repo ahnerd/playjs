@@ -221,7 +221,7 @@ Py.using("System.Dom.Element");
 				 * @param {Boolean} in 如果 true， 表示设置当前的样式，否则删除当前样式。
 				 */
 				changeType: function(doc, type) {
-					doc.getDom().setUnselectable(!!type).style.cursor = type;
+					doc.dom.setUnselectable(!!type).style.cursor = type;
 				},
 			
 				/**
@@ -253,7 +253,7 @@ Py.using("System.Dom.Element");
 				set: function(elem, handler, options) {
 					
 					if(handler !== false) {
-						if (handler && handler.getDom) {
+						if (handler && handler.nodeType) {
 							Py.setData(handler, 'dragTarget', elem);
 							Py.setData(elem, 'dragHandler', handler);
 						} else {
@@ -404,7 +404,7 @@ Py.using("System.Dom.Element");
 		 * @return this
 		 */
 		setDraggable: function(handler) {
-			dm.set(this.getDom(), handler);
+			dm.set(this.dom || this, handler);
 			return this;
 		}
 		

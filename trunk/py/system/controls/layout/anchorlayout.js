@@ -1,6 +1,5 @@
 //===========================================
-//  AnchorLayout.js
-//  Copyright(c) 2009-2011 xuld
+//  描点布局       anchorlayout.js         A
 //===========================================
 
 Py.using("System.Controls.Layout.AdvanceLayout");
@@ -21,14 +20,14 @@ Py.Layout.register(Py.Layout.AnchorLayout = Py.Layout.AdvanceLayout.extend({
 	xType: 'anchor',
 	
 	layoutItemX: function(container, item){
-		var getSize = Py.Element.getSize;
+		var getSize = Py.Element.getSizes;
 		item.setSize({
 			x: container.getWidth() + getSize(container.getDom(), 'width', 'p') - getSize(item.getDom(), 'width', 'd')
 		});
 	},
 	
 	layoutItemY: function(container, item){
-		var getSize = Py.Element.getSize;
+		var getSize = Py.Element.getSizes;
 		item.setSize({
 			y: container.getHeight() + getSize(container.getDom(), 'height', 'p') - getSize(item.getDom(), 'height', 'd')
 		});
