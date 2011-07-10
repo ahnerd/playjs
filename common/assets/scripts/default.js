@@ -51,7 +51,7 @@ function main(){
 		return function(r){
 			var b = r === value;
 			
-			if(!b && typeof r.length == 'number' && r.length === value.length){
+			if(!b && r && typeof r.length == 'number' && r.length === value.length){
 				
 				b = true;
 				for(var i = 0; 	i < r.length; i++){
@@ -138,8 +138,9 @@ function writeNavigator(){
 			
 			var style = '';
 			for(var j = 0; j < val.length; j++){
-				if(val[j] in stylesplit) {
-					style = 'style="' + stylesplit[val[j]] + '" ';
+				if(val[j].length == 1) {
+					if(val[j] in stylesplit)
+						style = 'style="' + stylesplit[val[j]] + '" ';
 					document.write( val[j] + "   " );
 				} else
 					document.write('<a ' + style + 'href="' + '../../' + b.toLowerCase() + '/' + key + '/' + val[j].toLowerCase() + '.html">' + val[j] + '</a>  ');
