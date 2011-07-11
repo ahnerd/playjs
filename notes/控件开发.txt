@@ -1,0 +1,280 @@
+
+
+
+在 Js 中， 控件实际上就是对 CSS 和 HTML 的封装。
+
+
+一个控件经常由 CSS 、 JS 2 个文件共同组成， 为了支持多主题， CSS 分 share 部分 和 主题部分。
+
+比如创造一个 控件 TextBox ， 和它相关的文件有: 
+
+	py/system/controls/textbox.js  - 控件需要的 JS 代码
+	py/resources/share/form/textbox.css - 控件共享的  CSS 代码 ( 注意这个 CSS 不能使用任何图片)
+	py/resources/default/form/textbox.css - 控件默认主题的 CSS 代码  ( 使用  url(images/...) 载入图片)
+	py/resources/default/form/images - 控件默认主题CSS需要的图片
+
+	其中  form 表示控件的分类。
+	
+	另外，为了更好测试控件，应该创建:  ui/form/textbox.html  文件， 用来测试和演示。
+
+
+任何控件的使用，都会提前引入这些文件:
+
+	py/system.js  - 常用函数的核心文件
+	py/system/dom/element.js -  DOM 处理的核心文件
+	py/system/controls/control.js  - 所有控件的基类: Control
+	
+	py/resources/share/control/core.css    -  公共的 CSS 和必要的 浏览器兼容修复
+	py/resources/default/control/core.css      -  公共的 CSS 和必要的 浏览器兼容修复
+	
+
+在 textbox.js 中， 开头必须声明对 py/system/controls/control.js 和 它的CSS文件引用
+
+代码如下:
+
+	Py.using("System.COntrols.Control");  // 载入  JS ( 这个 JS 内部会载入其它2个JS 和 CSS)
+	Py.imports("Resources.*.Form.TextBox"); // 载入 2 个 CSS 文件
+
+
+
+
+
+任何  UI 组件都继承于 Control 类。
+
+
+Control 类负责对一个控件的基本周期的管理。
+
+
+
+一个控件从使用到删除， 它经历 4 个过程
+
+1. 创建基本的节点。  ( create)
+2. 初始化节点，比如绑定事件、设置初始值。   ( init)
+3. 渲染节点， 把节点放到 DOM 树。   (renderTo)
+4. 删除和释放节点， 吧节点移除 DOM 树。  (dispose)
+
+当然，有些控件肯能已经用 HTML 显示在 DOM 树了， 那么只需要 3个过程:
+
+1. 获取节点。
+2. 初始化节点，比如绑定事件、设置初始值。   ( init)
+3. 删除和释放节点， 吧节点移除 DOM 树。  (dispose)
+
+
+这几个步骤如何实现呢?
+
+这和 Control 类本身有重要关系。
+
+Control 类的构造函数示例代码如下:
+
+function Control(options){
+
+	// 防止 options 空。
+	options = options || {};
+	
+	// 如果 options 是字符串， 我们把它理解为节点 ID ， 并把 options 改为相应的节点
+	if(typeof options == 'string')
+		options = $(options); 
+	
+	// 如果 options 是一个节点， 说明已经在 HTML 存在这个控件了。
+	if(options.nodeType)
+		this.dom = options;  //  存储和一个控件相关的 DOM 节点。
+	else
+		this.dom = this.create(options);  // 否则。需要调用 create 生成新的节点， 并把返回值放到 this.dom
+		
+	// 把 this.options 的默认属性拷贝到 options
+	Object.extend(options, this.options);
+	
+	this.init(options);   // 调用初始化函数。
+}
+
+
+以上就是 Control构造函数全过程。
+
+也就是说， 和控件有关的是 4 个函数:
+
+create, init, renderTo, dispose
+
+任何控件都可以重写这 4 个函数，实现自己的功能。 ( 一般不需重写构造函数 ， 除非你知道你在做什么   )
+
+对于 Control 类， 默认提供了这 4 个函数， 如果子类不是总需要重写这4个函数。
+
+4个函数的默认函数分别是:
+
+function create(options){
+	return Element.parse(this.tpl);  // 假设 this.tpl 存放了 HTML 字符串， Element.parse 把它转为 节点， 然后返回。
+}
+
+function init(options){
+    // 空函数， 子类一般需要重写这个函数，实现自己的逻辑。
+}
+
+// 下面2个函数都是直接对 DOM 操作。
+// 如果 parent 是一个 Control，而不是 DOM 节点， 也是可以的， 因为 parent.appendChild 也是有默认的。
+
+function renderTo(parent){
+    parent.appendChild(this.dom);
+}
+
+function dispose(parent){
+    parent.removeChild(this.dom);
+}
+
+function appendChild(dom){
+    this.dom.appendChild(dom);
+}
+
+
+现在整理下思路，  并做一个完整的 TextBox 控件。
+
+TextBox = Py.Control.extend({
+
+	tpl: '<input type="text">',
+	
+	init: function(options){
+		
+		// 如果指定了 placeHolder， 则调用，这个代码只是示例，实际是不用写的，具体原因下面解释。
+		if(options.placeHolder){
+			this.setPlaceHolder(options.placeHolder);
+		}
+		
+	},
+	
+	// 设置文本框空的时候的默认值。
+	setPlaceHolder: function(value){
+		this.on('blur', function(e){
+			if(this.getText().length === 0){
+				this.setText(value);
+			}
+		}).on('focus', function(e){
+			if(this.getText() === value){
+				this.setText('');
+			}
+		}
+		
+		return this; // 支持链式。
+	}
+
+
+});
+
+
+控件的用法:
+
+new TextBox('已有的ID');
+
+或
+
+new TextBox().renderTo();  // 动态创建  加入到 document.body
+
+或
+
+new TextBox({
+	dom: '节点ID',
+	placeHolder: '默认'
+})
+
+
+如此一个控件即可完成。
+
+
+在上面代码的构造函数中有这样的 if语句:
+
+if(options.placeHolder){
+	this.setPlaceHolder(options.placeHolder);
+}
+		
+	
+这样格式的代码很多，如果每个选项都这样判断一下，必然导致代码量增加。
+
+因此，使用了类的选项函数: Object.set 。
+
+这个函数由 Control 构造函数调用:
+
+Object.set(this, options);
+
+这个函数会分析 options 的内容，并调用相应的函数处理。
+比如碰到 placeHolder 选项， 会自动调用 setPlaceHolder 。
+
+下面完整地解释 Object.set 如何分析 options 并调用函数。
+
+对于选项 text
+
+1.  查看  this.setText 是不是函数，如果是，则调用  this.setText(text)
+2.  查看 this.text 是不是函数， 如果是， 则调用  this.text(text)
+3.  查看 this.text.set 是不是函数， 如果是， 则调用  this.text.set(text)
+4.  查看 this.set 是不是函数， 如果是， 则调用   this.set(options)
+5.  直接设置  this.text = text
+
+
+对于 Control 来说， 第5步是不会执行的，因为 Control 有个 set 函数， 在 set 函数中处理 上面 3步没有处理的选项。
+
+Control的set 函数继承于 Element ，内部实现为:
+
+对于选项 text
+
+1. 查看 text 是否为特殊属性( 如 size 、 scroll 等都是特殊属性 )， 如果是，则调用   this.setText(text)
+2. 查看 text 是否为 on 开头， 如果是，则调用  this.on('text', text);
+3. 查看 text 是否为 style 里的属性， 如果是， 则调用 this.setStyle('text', text);
+4. 直接设置  this.text = text
+
+
+也就是说， 上面的 代码的  options.placeHolder 可以去自动调用了 setPlaceHolder
+对于属性  options.onclick ， 也可以自动调用 on('click', ...) 绑定
+对于属性  options.height, 可以自动调用 setStyle('height', ...) 处理
+
+
+
+以上为控件创作全说明。
+
+
+补充几个注意实现:
+
+1.
+
+为了实现控件的自匹配，必须在控件本身加入 xType 属性，如:
+
+TextBox = Py.Control.extend({
+
+	xType: 'textbox'  // 一般是控件名的全小写。
+	
+});
+
+
+这样支持使用下面的 HTML 代码创建控件:
+
+<input type="text" xtype="textbox">
+
+同时，调试时候，也可以方便知道这是什么控件。
+
+
+2.
+
+控件自带的 CSS 样式应该有前缀， 默认为 x-
+
+比如 x-textbox
+
+
+
+3.
+
+控件声明应该使用名字空间，正像上面的代码， TextBox 是全局变量， 为避免冲突， 使用 名字空间:
+
+Py.namespace("Py.TextBox", Py.Control.extend({
+
+	 // 成员
+	
+});
+
+这样， 既可以用 TextBox, 也可用 Py.TextBox
+
+因为 Py. 是经常使用的， 所以 "Py.TextBox" 可省略为 ".TextBox" ， 最后代码如下:
+
+Py.namespace(".TextBox", Py.Control.extend({
+
+	 // 成员
+	
+});
+
+
+
+如果还有不明白， 可以参考 textbox.js  的真实实现。

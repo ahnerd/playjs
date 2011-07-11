@@ -1,0 +1,31 @@
+
+
+
+测试 是不可少的一部分，
+
+在了解测试前， 必须先读完 模块.txt
+
+
+根据模块放在不同的文件夹内， 在一个文件夹内 ，按模块的功能放在不同的文件夹内 新建 一个 .html 文件。
+
+
+并在内书写 测试代码， 参考 其它的 测试文件。
+
+
+一个测试代码格式如:
+
+var fns = [
+	["document.queryDom", function(){ return document.queryDom("a"); }],
+	["document.query", function(){ return document.query("a"); }],
+	["document.query.query", function(){ return document.query("a").query("#a"); }]
+];
+
+
+这里说明有 3 个测试，每行 一个。
+
+每个测试都用数组表示。
+
+["测试的名字", 测试真正执行的函数, 测试的函数期待的返回值(可不写), 测试速度时，执行的次数 (默认 1000)]
+
+
+测试函数可用 assert 确保数据。
