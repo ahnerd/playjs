@@ -1,0 +1,108 @@
+
+
+
+
+
+PyJs 的面向对象思想是非常重要的。它也提供了很多为了面向对象实现的函数。
+
+
+
+PyJs 把全部的 JS 对象都看成不可继承的类， 当然用户也可以自定义类。
+
+比如有个类 CC， 要扩展这个类的成员，使用:
+
+
+CC.implement({
+  v: 3
+})
+
+这样 下面的代码会正确:
+
+
+var c = new CC();
+
+alert(c.v); // 输出   3
+
+
+如果不希望 implement 覆盖已有成员， 使用 implementIf。
+
+要继承这个类， 使用
+
+
+DD = CC.extend({
+    b: 4
+});
+
+
+这样 DD 就是继承 CC 的类。
+
+在子类中，调用父类的同名函数， 使用 this.baseCall('函数名', arguments)  或 this.baseCall('函数名', 参数1， 参数2 ...)
+
+如果是 构造函数，  使用 this.base(arguments);   即可。
+
+
+下面为了充分了解， 用 Array 示例， 上面说了， 所有JS内置对象都是不可继承的类， 
+
+所以:
+
+Array.implement({
+      
+      g: function(){
+
+      }
+
+});
+
+扩充 Array 类成员， 下面的代码可正确:
+
+[].g();
+
+
+
+要自定义一个类:
+
+CC = new Class({   // new 可省略
+
+	   // 构造函数
+     constructor: function(){
+
+	 }
+
+});  
+
+
+
+要继承这个类:
+
+
+DD  = CC.extend({
+
+      constructor: function(){
+             this.base(arguments);  //  调用 CC  构造函数
+	 }
+})
+
+
+如果子类没定义构造函数，则使用父类的构造函数。
+注意，如果子类有构造函数，不会自动调用父类构造函数。
+
+
+
+
+
+所有类继承于 Object
+所有自定义类继承于  Py.Object，  Py.Object 也是自定义类，继承于 Object
+
+
+
+
+此外， 所有的类都支持自定义事件。
+
+另外 Class 函数支持第2参数。
+
+
+更多说明见 API 文档。
+
+
+
+
