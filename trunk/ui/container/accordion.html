@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>面板</title>
+        <title>Container</title>
         <link href="../../py/resources/share/control/core.css" rel="stylesheet" type="text/css" />
         <link href="../../py/resources/default/control/core.css" rel="stylesheet" type="text/css" />
 		<link href="../../py/resources/share/container/accordion.css" rel="stylesheet" type="text/css" />
@@ -26,23 +26,23 @@
 		<script>
 			
 			
-			var a = new Accordion.Item();
-			
-			/*
-			
 			document.onReady(function(){
-				new Accordion({
-					id:'accordion'
-				})
+				a = new Accordion({
+					renderTo:  true,
+					width: 300
+				});
+				
+				a.tabPages.add(Element.parse('cccc'));
+				a.tabPages.add(Element.parse('fdgdfg'));
+				a.tabPages.add(Element.parse('fdgdfg'));
 			})
 			
 			
-			*/
 			
 		</script>
     </head>
     <body>
-		<div style="width: 300px; float: left; margin: 5px;" class="x-accordion" id="accordion">
+		<div style="width: 300px; margin: 5px;" class="x-accordion" id="accordion">
 			<div class="x-header x-accordion-header">
 				<h3 class="">面板1</h3>
 			</div>
