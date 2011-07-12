@@ -2,7 +2,7 @@
 var core = {
 	'core       ': 'Core | Class Namespace Navigator Object Py Ready Trace | Delegate ChineseId Enum @ Date DateEx Array String Regexp Number Function Check Object Interface Json TaskRunner DelayedTask',
 	'broswer    ': '@ action clipboard cookies png querystring simulateie',
-	'data       ': 'Collectionbase',
+	'data       ': 'Collection',
 	'dom        ': 'Event Attributions Dimension Position Node Nodes Clone | DragDrop ContextMenu Query | MemLeak @ control image tab iframe keys selection submit borderradius css window',
 	'fx         ': 'Animate Transitions MultiFade ShowHide',
 	'jquery     ': 'Core Event Attributions Dimension Node Position',
@@ -13,14 +13,14 @@ var core = {
 };
 
 var controls = {
-	'control    ': 'Control @ Mask Splitter Resizing Shadow ITargetedControl',
-	'layout     ': '@ LayoutEngine FlowLayout absolutelayout alignedlayout anchorlayout borderlayout boxlayout fitlayout layoutengines defaultlayout relativelayout linelayout tablelayout columnlayout window ~ tablayout',
-	'viewer     ': '@ label picturebox webbroswer processbar scrollbar tooltip',
-	'container  ': 'ListControl ContentControl ContainerControl Panel @ window balloontip groupbox @ accordion tabcontrols ~ splitcontainer tablelayoutpanel flowlayoutpanel toolstripcontainer',
-	'button     ': 'Button LinkButton @ menubutton splitbutton toolstrip contextmenustrip ribbon commandbutton ~ menustrip',
-	'form       ': 'Textbox CombinedTextbox UpDown @ listbox checkbox radiobutton monthcalender @ slider searchtextbox fileupload menubuttons checklistbox combobox datetimepicker markedtextbox numericupdown dateupdown timeupdown ~ richtextbox htmleditor',
-	'dataview   ': '@ treeview @ ~ listview datagridview table datanavigator',
-	'dialog     ': '@ messagebox balloonbox ~ inputbox colordialog folderbroswerdialog filedialog fileopendialog filesavedialog',
+	'control    ': 'Control Resizing Shadow Mask Splitter ITargetedControl',
+	'layout     ': 'LayoutEngine FlowLayout AbsoluteLayout AlignedLayout AnchorLayout BorderLayout BoxLayout FitLayout DefaultLayout Relativelayout LineLayout TableLayout ColumnLayout ~ LayoutEngines window tablayout',
+	'viewer     ': 'Processbar Label PictureBox WebBroswer ToolTip ~ ScrollBar ',
+	'container  ': 'ListControl ContentControl ContainerControl Panel BalloonTip GroupBox @ accordion tabcontrols ~ splitcontainer tablelayoutpanel flowlayoutpanel toolstripcontainer',
+	'button     ': 'Button LinkButton ContextMenu MenuButton SplitButton @ toolstrip ~ commandbutton ribbon menustrip',
+	'form       ': 'Textbox CombinedTextbox UpDown ListBox FileUpload MonthCalender SearchTextBox  NumericUpDown DateUpDown TimeUpDown DatetPicker ComboBox CheckBox RadioButton @ StarMarker Slider CheckListBox ~ markedtextbox richtextbox htmleditor',
+	'dataview   ': 'Treeview @ ~ listview datagridview table datanavigator',
+	'dialog     ': '@ dialog messagebox balloonbox ~ inputbox colordialog folderbroswerdialog filedialog fileopendialog filesavedialog',
 	'theme      ': '@ all css'
 };
 
