@@ -61,8 +61,6 @@ Py.imports("Resources.*.Control.Core");
 			// 赋值。
 			me.dom = dom ? p.$(dom) : me.create(t);
 			
-			me.style = me.dom.style;
-			
 			assert(me.dom && me.dom.nodeType, "Control.prototype.constructor(options): 当前实例的 dom 属性为空，或此属性不是 DOM 对象。(检查 options.dom 是否是合法的节点或ID(options 或 options.dom 指定的ID的节点不存在?) 或当前实例的 create 方法是否正确返回一个节点)\r\n当前控件: {dom} {xType}", me.dom, me.xType);
 			
 			// 初始化控件。
@@ -235,7 +233,7 @@ Py.imports("Resources.*.Control.Core");
 	});
 	
 	Control.delegate
-		(Control, "dom", 'addEventListener removeEventListener scrollIntoView focus blur remove', 2, 'appendChild contains insert replaceWith wrapWith removeChild', 3)
+		(Control, "dom", 'addEventListener removeEventListener scrollIntoView focus blur remove', 2, 'appendChild contains insert replaceWith wrapWith removeChild bringToFront', 3)
   		(Control, "dom", 'insertBefore replaceChild', 5)
 		(Control, 'Move', 'setOffset', 4)
 		(Control, 'ResizeX', 'setWidth', 4)

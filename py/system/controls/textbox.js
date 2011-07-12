@@ -1,4 +1,6 @@
-//  B
+//===========================================
+//  文本框   textbox.js       A
+//===========================================
 
 
 Py.using("System.Controls.Control");
@@ -12,10 +14,6 @@ Py.namespace(".TextBox", Py.Control.extend({
 	
 	setRequested: function(v){
 		this.setState('request', v);
-	},
-	
-	clear: function(){
-		this.setText('');
 	}
 	
 }).implement(Py.IFormControl));

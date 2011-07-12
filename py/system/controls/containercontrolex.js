@@ -1,13 +1,15 @@
-
+//===========================================
+//   支持容器布局     containercontrolex.js      A
+//===========================================
 
 
 Py.using("System.Controls.ContainerControl");
 Py.using("System.Controls.Layout.LayoutEngine");
-Py.using("System.Controls.IParentControl");
+Py.using("System.Controls.IContainerControl");
 
 
 
-Py.IContainerControl = Object.extend({
+Py.ContainerControl.implement(Py.IContainerControl).implement({
 	
 	layout: 'none',
 	
@@ -40,10 +42,8 @@ Py.IContainerControl = Object.extend({
  	 * @param {Object} options 配置。
  	 * @protected
 	 */
-	initContainer: function(options) {
+	initChildren: function() {
 		this.controls = new Py.ContainerControl.ControlCollection(this);
-		
-		this.initChildren(options);	
 	
 		Py.Layout[this.layout].initLayout(this);
 	},
@@ -101,18 +101,7 @@ Py.IContainerControl = Object.extend({
 		return this;
 	}
 	
-}, Py.IParentControl);
-
-
-
-
-
-/**
- * 表示一个可作为容器控件。
- */
-
-
-Py.ContainerControl.implement(Py.IContainerControl);
+});
 
 
 Py.ContainerControl.ControlCollection = Py.Control.ControlCollection.extend({

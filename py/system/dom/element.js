@@ -523,15 +523,13 @@
 		/**
 		 * 获取节点本身。
 		 */
-		dom: p.$(document.documentElement),
+		dom: p.$(document.documentElement)
 
 		/// #else
 
-		/// dom: document.documentElement,
+		/// dom: document.documentElement
 
 		///#endif
-		
-		style: document.documentElement.style
 	});
 
 	
@@ -938,9 +936,9 @@
 			if(name in attributes) {
 				switch(name) {
 					case 'height':
-						return elem.offsetHeight - e.getSizes(elem, name, 'pb') + 'px';
+						return elem.offsetHeight - e.getSizes(elem, 'y', 'pb') + 'px';
 					case 'width':
-						return elem.offsetWidth - e.getSizes(elem, name, 'pb') + 'px';
+						return elem.offsetWidth - e.getSizes(elem, 'x', 'pb') + 'px';
 					case 'opacity':
 						return elem.getOpacity().toString();
 	
@@ -996,7 +994,7 @@
 			innerText: 'innerText' in div ? 'innerText' : 'textContent'
 		};
 	
-	String.map('width height', function(c, i){
+	String.map('x y', function(c, i){
 		c = styleMaps[c] = {};
 		var tx = i ? ['Top', 'Bottom'] : ['Left', 'Right'];
 		c.d = tx.invoke('toLowerCase', []);
@@ -1187,9 +1185,9 @@
 
 			assert.isString(name, "Element.prototype.getStyle(name): 参数 {name} ~。");
 
-			var css = name.toCamelCase();
+			var me = this.dom || this, css = name.toCamelCase();
 
-			return this.style[css] || getStyle(this.dom || this, css);
+			return me.style[css] || getStyle(me, css);
 
 		},
 
@@ -1255,7 +1253,7 @@
 		 */
 		isHidden: function() {
 
-			return this.style.display === 'none';
+			return (this.dom || this).style.display === 'none';
 		},
 
 		/// #ifdef SupportIE8
@@ -1267,11 +1265,11 @@
 		 */
 		getOpacity: !('opacity' in div.style) ? function() {
 
-			return rOpacity.test(styleString(this, 'filter')) ? parseInt(RegExp.$1) / 100 : 1;
+			return rOpacity.test(styleString(this.dom || this, 'filter')) ? parseInt(RegExp.$1) / 100 : 1;
 
 		} : function() {
 
-			return parseFloat(styleString(this, 'opacity')) || 0;
+			return parseFloat(styleString(this.dom || this, 'opacity')) || 0;
 
 		}
 
@@ -1279,7 +1277,7 @@
 		///
 		/// getOpacity: function() {
 		///
-		///    return parseFloat(styleString(this, 'opacity')) || 0;
+		///    return parseFloat(styleString(this.dom || this, 'opacity')) || 0;
 		///
 		/// }
 
@@ -1300,7 +1298,7 @@
 			assert.isString(name, "Element.prototype.setStyle(name, value): 参数 {name} ~。");
 
 			// 获取样式
-			var me = this, style = me.style;
+			var me = this, style = (me.dom || me).style;
 
 			//没有键  返回  cssText
 			if (arguments.length == 1) {
@@ -1379,6 +1377,8 @@
 			var me = this;
 
 			if (typeof name === "string") {
+				
+				var dom = me.dom || me;
 
 				// 特殊属性。
 				if(name in e.specialAttr)
@@ -1389,7 +1389,7 @@
 					me.on(RegExp.$1, value);
 
 				// css 。
-				else if(me.style && (name in me.style || rStyle.test(name)))
+				else if(dom.style && (name in dom.style || rStyle.test(name)))
 					me.setStyle(name, value);
 
 				// attr 。
@@ -1457,11 +1457,12 @@
 		setText: function(value) {
 			var me = this.dom || this;
 
-			assert(!value || typeof value === 'string', "Element.prototype.setText(value): {value} 必须是字符串。", value );
-
 			switch(me.tagName) {
 				case "SELECT":
-					if(me.type === 'select-multiple') {
+					if(me.type === 'select-multiple' && value) {
+						
+						assert.isString(value, "Element.prototype.setText(value): 参数  {value} ~。");
+					
 						value = value.split(',');
 						o.each(me.options, function(e) {
 							e.selected = value.indexOf(e.value) > -1;
@@ -1500,7 +1501,7 @@
 		 */
 		setOpacity: !('opacity' in div.style) ? function(value) {
 
-			var style = this.style;
+			var style = (this.dom || this).style;
 
 			assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): 参数 {value} 必须在 0~1 间。', value);
 
@@ -1518,7 +1519,7 @@
 			assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): 参数 {value} 必须在 0~1 间。', value);
 
 			//  标准浏览器使用   opacity
-			this.style.opacity = value;
+			(this.dom || this).style.opacity = value;
 			return this;
 
 		},
@@ -1528,7 +1529,7 @@
 		/// function(value) {
 
 		///     //  标准浏览器使用   opacity
-		///     this.style.opacity = value;
+		///     (this.dom || this).style.opacity = value;
 		///     return this;
 		///
 		/// },
@@ -1544,7 +1545,7 @@
 		 */
 		show: function(duration, callBack) {
 
-			this.style.display = '';
+			(this.dom || this).style.display = '';
 			if(callBack)
 				setTimeout(callBack, 0);
 			return this;
@@ -1559,7 +1560,7 @@
 		 */
 		hide: function(duration, callBack) {
 
-			this.style.display = 'none';
+			(this.dom || this).style.display = 'none';
 			if(callBack)
 				setTimeout(callBack, 0);
 			return this;
@@ -1580,7 +1581,7 @@
 			return this;
 		} : function(value) {
 
-			this.style.MozUserSelect = value !== false ? 'none' : '';
+			(this.dom || this).style.MozUserSelect = value !== false ? 'none' : '';
 			return this;
 		},
 
@@ -1631,9 +1632,11 @@
 		 */
 		bringToFront: function(elem) {
 			
-			assert(!elem || elem.style, "Element.prototype.bringToFront(elem): 参数 {elem} 必须为 元素或为空。")
+			assert(!elem || elem.style, "Element.prototype.bringToFront(elem): 参数 {elem} 必须为 元素或为空。", elem);
+			
+			var me = this.dom || this;
 
-			this.style.zIndex = Math.max(parseInt(styleString(this, 'zIndex')) || 0, elem && (parseInt(styleString(elem, 'zIndex')) + 1) || e.zIndex++);
+			me.style.zIndex = Math.max(parseInt(styleString(me, 'zIndex')) || 0, elem && (parseInt(styleString(elem, 'zIndex')) + 1) || e.zIndex++);
 			return this;
 		}
 
@@ -1652,7 +1655,7 @@
 	 */
 	function styleString(elem, name) {
 
-		return elem.style[name] || getStyle(elem.dom || elem, name);
+		return elem.style[name] || getStyle(elem, name);
 	}
 
 	/**
@@ -1663,7 +1666,7 @@
 	 * @ignore
 	 */
 	function styleNumber(elem, name) {
-		return parseFloat(getStyle(elem.dom || elem, name)) || 0;
+		return parseFloat(getStyle(elem, name)) || 0;
 	}
 
 	/**
@@ -1690,10 +1693,10 @@
 		var p = getXY(x,y);
 
 		if(p.x != null)
-			elem.setWidth(p.x - e.getSizes(elem.dom || elem, 'width', fix));
+			elem.setWidth(p.x - e.getSizes(elem.dom || elem, 'x', fix));
 
 		if (p.y != null)
-			elem.setHeight(p.y - e.getSizes(elem.dom || elem, 'height', fix));
+			elem.setHeight(p.y - e.getSizes(elem.dom || elem, 'y', fix));
 
 		return elem;
 	}
@@ -1778,7 +1781,7 @@
 		 * @return {Point} 位置。
 		 */
 		getWindowScroll = 'pageXOffset' in w ? function() {
-			var win = getWindow(this);
+			var win = this.defaultView;
 			return new Point(win.pageXOffset, win.pageYOffset);
 		} : getScroll;
 
@@ -1795,6 +1798,7 @@
 		 * @static
 		 */
 		setMovable: function(elem) {
+			elem = elem.dom || elem;
 			assert.isElement(elem, "Element.setMovable(elem): 参数 elem ~。");
 			if(!checkPosition(elem, "absolute"))
 				elem.style.position = "relative";
@@ -1848,7 +1852,7 @@
 		 */
 		getOuterSize: function() {
 			var me = this.dom || this;
-			return this.getSize().add(e.getSizes(me, 'width', 'm'), e.getSizes(me, 'height', 'm'));
+			return this.getSize().add(e.getSizes(me, 'x', 'm'), e.getSizes(me, 'y', 'm'));
 		},
 
 		/**
@@ -1859,8 +1863,8 @@
 
 			// 如果设置过 left top ，这是非常轻松的事。
 			var me = this.dom || this,
-			left = me.style.left,
-			top = me.style.top;
+				left = me.style.left,
+				top = me.style.top;
 
 			// 如果未设置过。
 			if (!left || !top) {
@@ -1884,8 +1888,8 @@
 		 */
 		getWidth: function() {
 
-			var width = parseFloat(this.style.width);
-			return isNaN(width) ? styleNumber(this, 'width') : width;
+			var me = this.dom || this, width = parseFloat(me.style.width);
+			return isNaN(width) ? styleNumber(me, 'width') : width;
 		},
 
 		/**
@@ -1894,8 +1898,8 @@
 		 */
 		getHeight: function() {
 
-			var me = height = parseFloat(this.style.height);
-			return isNaN(height) ? styleNumber(this, 'height') : height;
+			var me = this.dom || this, height = parseFloat(me.style.height);
+			return isNaN(height) ? styleNumber(me, 'height') : height;
 		},
 
 		/**
@@ -1927,13 +1931,13 @@
 		getPosition: div.getBoundingClientRect   ? function() {
 
 			var me = this.dom || this,
-			bound = me.getBoundingClientRect(),
-			doc = getDoc(me),
-			html = doc.dom,
-			htmlScroll = checkPosition(me, 'fixed') ? {
-				x:0,
-				y:0
-			} : doc.getScroll();
+				bound = me.getBoundingClientRect(),
+				doc = getDoc(me),
+				html = doc.dom,
+				htmlScroll = checkPosition(me, 'fixed') ? {
+					x:0,
+					y:0
+				} : doc.getScroll();
 
 			return new Point(
 				bound.left+ htmlScroll.x - html.clientLeft,
@@ -2028,7 +2032,7 @@
 		 */
 		setWidth: function(value) {
 
-			this.style.width = (value > 0 ? value : 0) + 'px';
+			(this.dom || this).style.width = (value > 0 ? value : 0) + 'px';
 			return this;
 		},
 
@@ -2038,7 +2042,7 @@
 		 */
 		setHeight: function(value) {
 
-			this.style.height = (value > 0 ? value : 0) + 'px';
+			(this.dom || this).style.height = (value > 0 ? value : 0) + 'px';
 			return this;
 		},
 
@@ -2068,7 +2072,7 @@
 		setOffset: function(p) {
 
 			assert(p && 'x' in p && 'y' in p, "Element.prototype.setOffset(p): 参数 {p} 必须有 'x' 和 'y' 属性。", p);
-			var s = this.style;
+			var s = (this.dom || this).style;
 			s.top = p.y + 'px';
 			s.left = p.x + 'px';
 			return this;
@@ -2107,9 +2111,8 @@
 		 * @return {Point} 位置。
 		 */
 		getWindowSize: function() {
-			var dom = this.dom,
-			win = getWindow(this);
-			return new Point(win.outerWidth || dom.clientWidth, win.outerHeight || dom.clientHeight);
+			var win = this.defaultView;
+			return new Point(win.outerWidth || this.dom.clientWidth, win.outerHeight || this.dom.clientHeight);
 		},
 
 		/**
@@ -2121,7 +2124,7 @@
 		 */
 		setWindowSize: function(x, y) {
 			var p = adaptXY(x,y, this.dom, 'getWindowSize');
-			getWindow(this).resizeTo(p.x, p.y);
+			this.defaultView.resizeTo(p.x, p.y);
 			return this;
 		},
 
@@ -2157,9 +2160,9 @@
 		 */
 		getScrollSize: function() {
 			var html = this.dom,
-			min = this.getSize(),
-			max = Math.max,
-			body = html.ownerDocument.body;
+				min = this.getSize(),
+				max = Math.max,
+				body = this.body;
 
 
 			return new Point(max(html.scrollWidth, body.scrollWidth, min.x), max(html.scrollHeight, body.scrollHeight, min.y));
@@ -2175,7 +2178,7 @@
 		setScroll: function(x, y) {
 			var p = adaptXY(x,y, this, 'getScroll');
 
-			getWindow(this).scrollTo(p.x, p.y);
+			this.defaultView.scrollTo(p.x, p.y);
 
 			return this;
 		}
@@ -2194,14 +2197,6 @@
 	 */
 	function checkPosition(elem, position) {
 		return styleString(elem, "position") === position;
-	}
-
-	/**
-	 * 获取一个节点的所在的窗口。
-	 * @param {Object} elem
-	 */
-	function getWindow(elem) {
-		return (elem.ownerDocument || elem).defaultView;
 	}
 
 	/**

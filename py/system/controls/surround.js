@@ -1,4 +1,6 @@
-
+//===========================================
+//  实现元素围绕显示                          surround.js          A
+//===========================================
 
 
 
@@ -7,20 +9,18 @@ Py.using("System.Controls.Control");
 
 
 
-Py.Surround = {
+Object.extend(Py.Element, {
 	
 	allDirection: 'lt t rt l r lb b rb'.split(' '),
 	
-	install: function(target, className, direction, oncreate){
+	installSurround: function(target, className, direction, oncreate){
 		
-		direction = direction || this.allDirection;
-		oncreate = oncreate || Function.empty;
-		
+		var dom = target.dom || target;
 		
 		
 		// 全部方向。
 		direction.forEach(function(direct){
-			oncreate(target.getDom().appendChild(document.create('div', className + '-' + direct)), direct);
+			oncreate(dom.appendChild(document.create('div', className + '-' + direct)), direct);
 		});
 		
 		// 目标添加 x-shadow 。
@@ -28,19 +28,23 @@ Py.Surround = {
 		
 		
 		// 允许移动。
-		Py.Element.setMovable(target.dom || target);
+		this.setMovable(dom);
 		
 	},
 	
-	toggle: function(target, className, value, oncreate){
-		var show = value !== false;
+	toggleSurround: function(target, className, directions, oncreate){
+		if(typeof directions === 'string')
+			directions = directions.length === 1 ? [directions] : [directions, directions.charAt(0), directions.charAt(1)];
+		var show = directions !== false;
 		if (target.hasClass(className)) {
 			target.get('child', function(n){return (n.className || "").indexOf(className + '-') != -1;})[show ? 'show' : 'hide'](0);
 		} else if(show){
-			this.install(target, className, value, oncreate);
+			this.installSurround(target, className, directions || this.allDirection, oncreate || Function.empty);
 		}
 		
 		return target;
 	}
 
-}
+});
+
+

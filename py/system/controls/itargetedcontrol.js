@@ -1,3 +1,9 @@
+//===========================================
+//  在一个目标对齐           itargetedcontrol.js          A
+//===========================================
+
+
+
 Py.using("System.Dom.Element");
 
 
@@ -25,19 +31,58 @@ var names = {
 	 * @param {Number} offsetY 偏移的y大小。
 	 */
 	var alignByRight = function(ctrl, offsetX, offsetY){
-		    var ctrlPos=ctrl.getBound(),
-			    ctrlSize=ctrl.getSize(),
-			    thisPos=this.getBound(),
-				thisSize=this.getSize(),
-				x,y;
-			x=ctrlPos.right+offsetX+thisSize.x>=document.getSize().x?ctrlPos.left-offsetX-thisSize.x:ctrlPos.right+offsetX;
-			y=ctrlPos.bottom+offsetY+thisSize.y>=document.getSize().y?ctrlPos.top-offsetY-thisSize.y:ctrlPos.bottom+offsetY;
-			this.setPosition(x,y);
+		    var ctrlRegion = ctrl.getBound(),
+				size = this.getSize(),
+				documentSize = document.getSize(),
+				expectedX = ctrlRegion.right + offsetX,
+				expectedY = ctrlRegion.top + offsetY;
+			
+			// 如果显示之后超出了屏幕右方。
+			if( expectedX + size.x > documentSize.x ) {
+				
+				// 移到左边。
+				expectedX = Math.max(0, ctrlRegion.left - size.x - offsetX);
+			}
+			
+			// 如果垂直部分超出了。进行上移。
+			if( expectedY + size.y > documentSize.y) {
+				//  expectedY = Math.max(0, documentSize.y - size.y);
+				expectedY = ctrlRegion.bottom - size.y - offsetY;
+				
+				if(expectedY < 0){
+					expectedY = 0;
+					this.onOverflowY(documentSize.y);
+				}
+			}
+				
+			this.setPosition(expectedX, expectedY);
 	}, alignByBottom =  function(ctrl, offsetX, offsetY){
-		
+		var ctrlRegion = ctrl.getBound(),
+				size = this.getSize(),
+				documentSize = document.getSize(),
+				expectedY = ctrlRegion.bottom + offsetY,
+				expectedX = ctrlRegion.left + offsetX;
+			
+			// 如果显示之后超出了屏幕右方。
+			if( expectedY + size.y > documentSize.y ) {
+				
+				// 移到左边。
+				expectedY = ctrlRegion.top - size.y - offsetX;
+				
+				if(expectedY < 0){
+					expectedY = 0;
+					this.onOverflowY(documentSize.y);
+				}
+			}
+			
+			// 如果垂直部分超出了。进行上移。
+			if( expectedX + size.x > documentSize.x) {
+				//  expectedY = Math.max(0, documentSize.y - size.y);
+				expectedX = Math.max(0, ctrlRegion.right - size.x - offsetX);
+			}
+				
+			this.setPosition(expectedX, expectedY);
 	};
-	
-	// NOTE: 如果 计算超过屏幕位置， 应该显示于相反位置， 并分别调用 this.onOverflowY 
 	
 		/*
 		// 依靠某个控件或节点定位显示。
@@ -97,8 +142,6 @@ return;
 		
 		animateType: 'opacity',
 		
-		onHide: Function.empty,
-		
 		hide: function(){
 			
 			// 先关闭子菜单。
@@ -109,8 +152,6 @@ return;
 			
 			return this;
 		},
-		
-		onShow: Function.empty,
 		
 		show: function(x, y){
 			var p = Py.Element.getXY(x, y);
@@ -133,7 +174,7 @@ return;
 		
 		offsetY: 0,
 		
-		showBy: function(ctrl,offsetX, offsetY){
+		showBy: function(ctrl,  offsetX, offsetY){
 			this.dom.show(this.duration.open);
 			(this.position == 'rt' ? alignByRight : alignByRight).call(this,ctrl, offsetX, offsetY);
 		},

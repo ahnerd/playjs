@@ -11,6 +11,7 @@
 	cursor: default;
 	line-height: 18px;
 	position: relative;
+	overflow: hidden;
 }
 
 

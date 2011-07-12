@@ -123,7 +123,7 @@ Py.namespace(".Menu", Py.ListControl.extend({
 	
 	options: {
 		renderTo: null,
-		shadow: true 
+		shadow: 'rb' 
 	},
 	
 	init: function(options){
@@ -135,11 +135,10 @@ Py.namespace(".Menu", Py.ListControl.extend({
 			delete    options.menuItems;
 		}
 		
-		me.baseCall('init', options);
+		this.initChildren('items');
 		
 		Py.setData(this.dom, 'control', this);
 		
-		this.menuItems = this.controls;
 		
 		// 绑定节点和控件，方便发生事件后，根据事件源得到控件。
 	},

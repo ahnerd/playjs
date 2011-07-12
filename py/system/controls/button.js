@@ -64,13 +64,11 @@ Py.namespace(".Button", Py.ContentControl.extend({
 	},
 	
 	getDisabled: function(){
-		return this.content.disabled ;
+		return this.button.disabled ;
 	},
 	
 	setDisabled: function(value){ 
-	
-		this.button.disabled = value !== false ? 'disbaled' : '';
-		this.setState('disabled', value);
+		this.toggleClass('x-disabled', this.button.disabled = value !== false);
 	},
 	
 	/// #ifdef SupportIE6

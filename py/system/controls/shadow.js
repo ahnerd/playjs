@@ -1,4 +1,6 @@
-
+//===========================================
+//  实现阴影                         surround.js          A
+//===========================================
 
 
 
@@ -13,7 +15,7 @@ Py.Element.implement({
 	 * @param {String/Boolean} shadow 是否打开阴影。
 	 */
 	setShadow: function(shadow){
-		return Py.Surround.toggle(this, "x-shadow", shadow === true ? ['r', 'b', 'rb'] : shadow);
+		return Py.Element.toggleSurround(this, "x-shadow", shadow);
 	}
 	
 }, 2);

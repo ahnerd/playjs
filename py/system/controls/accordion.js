@@ -9,14 +9,7 @@ Py.using("System.Controls.Control");
 Py.using("System.Controls.IContainerControl");
 
 
-Py.namespace(".Accordion", Py.Control.extend({
-	/**
-	 * 默认配置。
-	 * @type Object
-	 */
-	options: {
-		
-	},
+Py.namespace(".Accordion", Py.Control.extend(Object.extendIf({
 	
 	/**
 	 * xType
@@ -25,56 +18,74 @@ Py.namespace(".Accordion", Py.Control.extend({
 	xType: 'accordion',
 	
 	create:function(options){
-		var me=this;
-		this.container=$(options.id);
-		this.handles = this.container.findAll('h3');
-		this.content=this.container.findAll(options.contentClass||('.x-' +this.xType+'-container'));
-		return this.container;
+		return document.create('div', 'x-accordion');
 	},
 	
 	init:function(options){
-		var me=this;
-		this.dom.on('click',function(e){
-			   if(e.target.tagName.toLowerCase()=='h3'&&e.target.className!='x-collapsable'){
-			   	  me.action(e.target);
-			   }
-			});
+		this.initChildren('tabPages');
 	},
 	
-	action:function(currentEle){
-		this.handles.removeClass('x-collapsable');
-		currentEle.addClass('x-collapsable');
-		this.content.setStyle('display','none');
-		currentEle.get('parent').get('next').setStyle('display','block');
-		this.onChange();
+	/**
+	 * 包装元素为 TabPage 。
+	 */
+	initItem: function (item) {
+		return new Py.Accordion.TabPage(item, item.title, this);
 	},
-	onChange:function(){
+	
+	activeTab: null,
+	
+	onControlAdded: function(childControl, index){
+		index = this.controls[index];
+		this.dom.insertBefore(childControl.dom, index ? index.dom : null);
+		this.dom.insertBefore(childControl.header, childControl.dom);
+	},
+	
+	onControlRemoved: function(childControl, index){
+		this.dom.removeChild(childControl.dom);
+		this.dom.removeChild(childControl.header);
+	},
+	
+	onHeaderClick: function(tabPage, e){
+		if(this.activeTab === tabPage){
+			
+		} else {
+			this.activeTab.hide(200);
+			tabPage.show(200);
+			this.activeTab = tabPage;
+		}
 		
 	}
 	
-}))
-.implement(Py.IContainerControl)
-.Item = Py.Control.extend({
+}, Py.IContainerControl))).TabPage = Py.Control.extend({
 	
-	tpl: '<div class="x-header x-accordion-header">\
-				<h3></h3>\
-			</div>\
-			<div class="x-container x-accordion-container">\
-				\
-			</div>',
+	constructor: function(dom, title, accordition){
+		if(dom instanceof Py.Accordion.TabPage)
+			return dom;
+		var me = this,
+			header = this.header = document.create('div', 'x-header x-accordion-header'),
+			container = this.dom = document.create('div', 'x-container x-accordion-container');
+		header.appendChild(document.create('h3', '').setHtml(title));
+		header.onclick = function(e){
+			accordition.onHeaderClick(me, e);
+		};
+		container.appendChild(dom.dom  || dom);
+		 
+		if(accordition.activeTab){
+			container.hide();
+		} else {
+			accordition.activeTab = this;
+		}
+	},
 	
-	init: function (options) {
-		this.header = this.find('.x-accordion-header h3');
-		this.content= this.find('.x-accordion-container');
+	setTitle: function (value) {
+		this.header.find('h3').setText(value);
+		
+		return this;
+	},
+	
+	getTitle: function () {
+		return this.header.find('h3').getText();
 	}
 	
 	
-	
 });
-
-
-Py.Control.delegate(Py.Accordion.Item, 'header', 'setText', 2, 'getText', 1);
-
-
-
-

@@ -10,8 +10,20 @@
 	 * @class Collection
 	 */
 	Py.namespace(".Collection", Py.Class({
-			
+		
+		/**
+		 * 获取当前的项数目。
+		 */
 		length: 0,
+		
+		/**
+		 * 对项初始化。
+		 * @protected
+		 * @virtual
+		 */
+		initItem: function (item) {
+			return item;
+		},
 		
 		onAdd: function(item){
 			return this.onInsert(item, this.length);
@@ -25,16 +37,8 @@
 		
 		onAfterSet: Function.empty,
 		
-		/**
-		 * @protected
-		 */
-		initItem: function(value){
-			return value;
-		},
-		
 		add: function(item){
-			item = this.initItem(item);
-			Array.prototype.push.call(this, item);
+			Array.prototype.push.call(this, item = this.initItem(item));
 			this.onAdd(item);
 			return item;
 		},
@@ -48,15 +52,9 @@
 			this.onAfterSet(v);
 		},
 		
-		insert: function(index, item){
+		insertAt: function(index, item){
 			
-			if(!(index > 0 && index < this.length)){
-				return this.add(item);
-			}
-			
-			item = this.initItem(item);
-			
-			Array.prototype.insert.call(this, index, item);
+			Array.prototype.insert.call(this, index, item = this.initItem(item));
 			
 			this.onInsert(item, index + 1);
 			

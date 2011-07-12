@@ -68,7 +68,7 @@ Py.namespace(".Swiff", Py.Control.extend({
 	},
 
 	remote: function(){
-		return Swiff.remote.apply(Swiff, [this.getDom()].append(arguments));
+		return Swiff.remote.apply(Swiff, [this.dom || this].append(arguments));
 	}
 
 }));

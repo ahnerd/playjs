@@ -134,7 +134,7 @@ Py.using("System.Fx.Base");
 		 */
 		specialAttr = {
 			size: function(current, elem, key, from, to){
-				return delegateAttr(current, elem, 'width', 'height', from || elem.getSize(), to, e.getSizes(elem, 'width', 'pb'), e.getSizes(elem, 'height', 'pb'));
+				return delegateAttr(current, elem, 'width', 'height', from || elem.getSize(), to, e.getSizes(elem, 'x', 'pb'), e.getSizes(elem, 'y', 'pb'));
 			},
 			position: offsetAttrSetter,
 			offsets: offsetAttrSetter,
@@ -193,7 +193,7 @@ Py.using("System.Fx.Base");
 						this.dom = p.$(options);
 					else
 						Object.extend(this, options);
-					this.style = this.dom.style;
+					this.dom = this.dom.dom || this.dom;
 				}
 				 
 				this._competeListeners = [];
@@ -366,9 +366,9 @@ Py.using("System.Fx.Base");
 		},
 		
 		getData = Fx.getData = function(elem, start){
-			var from = p.data(elem, 'fxdata'), i;
+			var from = p.data(elem, 'fxdata'), i, dom = elem.dom || elem;
 			for(i in start){
-				from[i] = styleNumber(elem, i);
+				from[i] = styleNumber(dom, i);
 			}
 			return from;
 		},
@@ -444,10 +444,10 @@ Py.using("System.Fx.Base");
 		show: function(duration, callBack, type){
 			var me = this;
 			if (duration && me.isHidden()) {
-				var fx = getFx(me), from, to;
+				var fx = getFx(me), from, to, style = (me.dom || me).style;
 				if (!fx.timer) {
-					me.style.overflow = 'hidden';
-					me.style.display = '';
+					style.overflow = 'hidden';
+					style.display = '';
 					from = getStart(me, type);
 					to = p.dataIf(me, 'fxdata') || getData(me, from);
 					fx.start(from, to, duration, callBack);
