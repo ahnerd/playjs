@@ -62,7 +62,7 @@ Py.Layout.register(Py.Layout.ColumnLayout = Py.Layout.LayoutEngine.extend({
 		
 		row = row.cells[index];
 		
-		var dom = row.appendChild(item.getDom());
+		var dom = row.appendChild(item.dom || item);
 		
 		if (dom.style.width) {
 			row.style.width = dom.style.width;

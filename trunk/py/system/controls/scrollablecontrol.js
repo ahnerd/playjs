@@ -1,4 +1,6 @@
-
+//===========================================
+//   包含内容的可滚动控件     scrollablecontrol.js      A
+//===========================================
 
 
 Py.using("System.Controls.ContentControl");
@@ -42,13 +44,12 @@ Py.namespace(".ScrollableControl", Py.ContentControl.extend({
 	 * @return {String} 值。
 	 */
 	getTitle: function(){
-		assert(this.header, '目前控件不存在顶部');
+		assert(this.header, 'ScrollableControl.prototype.getTitle(): 目前控件不存在顶部');
 		return this.header.innerHTML;
 	},
 	
 	/**
 	 * 在 Panel 添加一个功能按钮。
-	 * @method addHeaderItem
 	 * @param {String} name 名字[样式]。
 	 * @param {Function} onclick 处理函数。
 	 * @param {String} title 鼠标悬浮的标题。
@@ -56,7 +57,7 @@ Py.namespace(".ScrollableControl", Py.ContentControl.extend({
 	 * @protected
 	 */
 	addHeaderItem: function(name, onclick, title) {
-		assert(this.header, '目前控件不存在顶部');
+		assert(this.header, 'ScrollableControl.prototype.addHeaderItem(name, onclick, title): 目前控件不存在顶部');
 		title = title || "";
 		
 		var node = this.header.insert('<a class="x-icon ' + (name || '') + '" href="javascript://' + title + '" title="' + title + '">&nbsp;</a>', "beforeBegin");
@@ -91,17 +92,19 @@ Py.namespace(".ScrollableControl", Py.ContentControl.extend({
 	
 	setContent: function(content){
 		
-		assert(content && content.getDom, "ScrollableControl.prototype.setContent(content): 参数 {content} 必须是 Element。")
+		var cd = content.dom || content;
+		
+		assert(cd, "ScrollableControl.prototype.setContent(content): 参数 {content} 必须是 Element。")
 		
 		// 删除 content
 		if(this.content != this.dom && this.content){
 			this.content.remove();
 		}
 		
-		this.heightFix = Py.Element.getSizes(this.getDom(), 'height', 'bp') + Py.Element.getSizes(content.getDom(), 'height', 'bp');
-		this.widthFix = Py.Element.getSizes(this.getDom(), 'width', 'bp') + Py.Element.getSizes(content.getDom(), 'width', 'bp');
+		this.heightFix = Py.Element.getSizes(this.dom, 'y', 'bp') + Py.Element.getSizes(cd, 'y', 'bp');
+		this.widthFix = Py.Element.getSizes(this.dom, 'x', 'bp') + Py.Element.getSizes(cd, 'x', 'bp');
 		
-		this.dom.append(content.getDom());
+		this.dom.append(cd);
 		
 		// 设置 content
 		this.content = content;

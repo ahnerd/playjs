@@ -1,16 +1,14 @@
 //===========================================
-//  PanelEx.js
-//  Copyright(c) 2009-2011 xuld
+//   支持折叠     scrollablecontrolex.js      A
 //===========================================
 
 
-Py.using("System.Controls.Panel");
-
+Py.using("System.Controls.ScrollableControl");
 
 /**
- * @class Panel
+ * @class ScrollableControl
  */
-Py.Panel.implement({
+Py.ScrollableControl.implement({
 	
 	/**
 	 * 切换显示 折叠/关闭 按钮。
@@ -27,7 +25,7 @@ Py.Panel.implement({
 	 * @return {Boolean}
 	 */
 	isCollapsed: function() {
-		return Py.Element.isHidden(this.content);
+		return this.content.isHidden();
 	},
 	
 	/**

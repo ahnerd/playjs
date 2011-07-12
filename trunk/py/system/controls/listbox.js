@@ -14,24 +14,18 @@ Py.namespace(".ListBox", Py.ListControl.extend({
 	
 	xType: 'listbox',
 	
-	selectionMode: 'one',  //    none multiSimple   multiExtended
+	//    selectionMode: 'one',  //    none multiSimple   multiExtended
 	
 	init: function(options){
 		
-		this.initChildren('items');
+		this.baseCall('init', options);
 		
 		this.on('click', this.onClick);
 	},
 	
-	initItem: function(item){
-		if(!item.getDom){
-			item = document.createTextNode(item);
-		}
-		return item.setUnselectable();
-	},
-	
 	toggleSelectedItem: function (item, e) {
-		this.selectItem(item);
+		if(this.trigger('changing', item))
+			 this.selectItem(item);
 	},
 	
 	onClick: function (e) {
@@ -63,12 +57,17 @@ Py.namespace(".ListBox", Py.ListControl.extend({
 		return this.selectedItem;
 	},
 	
+	onChange: function () {
+		this.trigger('change');
+	},
+	
 	selectItem: function(item){
 		var sel = this.selectedItem;
 		this.unselectItem(sel);
 		if(sel != item){
 			this.selectedItem = item;
-			item.get('parent').addClass('x-selected');
+			(item.dom || item).parentNode.addClass('x-selected');
+			this.onChange();
 		}
 		
 		return  this;
@@ -77,7 +76,7 @@ Py.namespace(".ListBox", Py.ListControl.extend({
 	unselectItem: function(item){
 		this.selectedItem = null;
 		if (item)
-			item.get('parent').removeClass('x-selected');
+			(item.dom || item).parentNode.removeClass('x-selected');
 			
 		return  this;
 	}

@@ -22,14 +22,14 @@ Py.Layout.register(Py.Layout.AnchorLayout = Py.Layout.AdvanceLayout.extend({
 	layoutItemX: function(container, item){
 		var getSize = Py.Element.getSizes;
 		item.setSize({
-			x: container.getWidth() + getSize(container.getDom(), 'width', 'p') - getSize(item.getDom(), 'width', 'd')
+			x: container.getWidth() + getSize(container.dom || container, 'x', 'p') - getSize(item.dom || item, 'x', 'd')
 		});
 	},
 	
 	layoutItemY: function(container, item){
 		var getSize = Py.Element.getSizes;
 		item.setSize({
-			y: container.getHeight() + getSize(container.getDom(), 'height', 'p') - getSize(item.getDom(), 'height', 'd')
+			y: container.getHeight() + getSize(container.dom || container, 'y', 'p') - getSize(item.getDom(), 'y', 'd')
 		});
 	},
 	
@@ -66,7 +66,7 @@ Py.Layout.register(Py.Layout.AnchorLayout = Py.Layout.AdvanceLayout.extend({
 				itemeg = item.getBound(),
 				
 				// 内容节点。
-				dom = item.getDom(),
+				dom = item.dom || item,
 				
 				// 内容偏移。
 				p = item.getOffset(),
@@ -80,7 +80,7 @@ Py.Layout.register(Py.Layout.AnchorLayout = Py.Layout.AdvanceLayout.extend({
 				// 直接使用  getStyle 会得到 auto 。
 				// 如果存在 anchor-right ， right 必须存在。
 				if (isNaN(parseFloat(dom.style.right)))
-					item.setStyle('right', ctReg.right - itemeg.right - Py.Element.styleNumber(dom, 'marginRight') - Py.Element.styleNumber(container.getDom(), 'borderRightWidth'));
+					item.setStyle('right', ctReg.right - itemeg.right - Py.Element.styleNumber(dom, 'marginRight') - Py.Element.styleNumber(container.dom || container, 'borderRightWidth'));
 				
 				flag = true;
 			}
@@ -101,7 +101,7 @@ Py.Layout.register(Py.Layout.AnchorLayout = Py.Layout.AdvanceLayout.extend({
 			// 检查 bottom
 			if (anchor.indexOf('bottom') >= 0) {
 				if (isNaN(parseFloat(dom.style.bottom)))
-					item.setStyle('bottom', ctReg.bottom - itemeg.bottom - Py.Element.styleNumber(dom, 'marginBottom') - Py.Element.styleNumber(container.getDom(), 'borderBottomWidth'));
+					item.setStyle('bottom', ctReg.bottom - itemeg.bottom - Py.Element.styleNumber(dom, 'marginBottom') - Py.Element.styleNumber(container.dom || container, 'borderBottomWidth'));
 				flag = true;
 			}
 			

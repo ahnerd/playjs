@@ -1,7 +1,7 @@
 
 
 Py.using("System.Controls.ContextMenu");
-Py.imports("Resources.*.Button.ContextMenuStrip");
+Py.imports("Resources.*.Button.ContextMenu");
 
 
 Py.namespace(".ContextMenu", Py.Menu.extend({
@@ -13,7 +13,7 @@ Py.namespace(".ContextMenu", Py.Menu.extend({
 	options: {
 		renderTo: null,
 		zIndex: 10000,
-		shadow: true,
+		shadow: 'rb',
 		width: 190,
 		display: 'none'
 	},
@@ -31,7 +31,7 @@ Py.namespace(".ContextMenu", Py.Menu.extend({
 	onContextMenu: function(e){ 
 		if(!this.disabled)
 			this.show(e.pageX === undefined ? event.x : e.pageX, e.pageY === undefined ? event.y : e.pageY);
-		return false;
+		e.stop();
 	}
 	
 }));

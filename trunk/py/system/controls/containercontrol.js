@@ -1,5 +1,5 @@
 //===========================================
-//  按钮   button.js         A
+//  容器         containercontrol.js         A
 //===========================================
 
 
@@ -9,6 +9,8 @@ Py.using("System.Controls.ScrollableControl");
  * 内容显示面板。
  * @class ContainerControl
  * @abstract
+ * ContainerControl 控件提供了由 header - container - footer 三部分组成的容器。
+ * 在未实现 HTML5 的浏览器中， ContainerControl 将使用图片实现圆角。
  */
 Py.namespace(".ContainerControl", Py.ScrollableControl.extend({
 	
@@ -52,10 +54,14 @@ Py.namespace(".ContainerControl", Py.ScrollableControl.extend({
 		ctrl.header = ctrl.get(0).addClass(xType + '-header').find('h3');
 		ctrl.content = ctrl.get(1).addClass(xType + '-container');
 		ctrl.get(2).addClass(xType + '-footer');
-		ctrl.initContainer(options);
+		ctrl.initChildren();
 	},
 	
-	initContainer: Function.empty,
+	/**
+	 * 重写以实现子控件管理。
+	 * @protected 
+	 */
+	initChildren: Function.empty,
 	
 	/**
 	 * 关闭当前 Panel， 并释放资源。

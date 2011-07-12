@@ -1,4 +1,6 @@
-
+//===========================================
+//  大小改变                         resizing.js          A
+//===========================================
 
 Py.using("System.Controls.Surround");
 Py.imports("Resources.*.Control.Resizing");
@@ -123,7 +125,7 @@ Py.imports("Resources.*.Control.Resizing");
 			 * @param {String} type 类型。
 			 */
 			changeType: function(doc, type){
-				doc.getDom().setUnselectable(!!type).style.cursor = type;
+				doc.dom.setUnselectable(!!type).style.cursor = type;
 			}
 			
 		},
@@ -370,27 +372,24 @@ Py.imports("Resources.*.Control.Resizing");
 					
 					// 代理。
 					proxy = opt.start(current);
+					
+				// 选项。
+				current.options = opt;
 				
-				with(current){
+				// 代理。
+				current.srcElement = proxy;
+				
+				// 绑定。
+				current.origal = e;
+				
+				// fix 。
+				current.fix = me.data.resize['fix' + X];
+				
+				// 类型。
+				current.type = resizeXY;
 					
-					// 选项。
-					options = opt;
-					
-					// 代理。
-					srcElement = proxy;
-					
-					// 绑定。
-					origal = e;
-					
-					// fix 。
-					fix = me.data.resize['fix' + X];
-					
-					// 类型。
-					type = resizeXY;
-						
-					// 初始化 处理 resize 的对象。
-					handler = onResize;
-				}
+				// 初始化 处理 resize 的对象。
+				current.handler = onResize;
 				
 
 				// 目标触发  beforeresizex
@@ -488,14 +487,14 @@ Py.imports("Resources.*.Control.Resizing");
 			
 			var me = this;
 			
-			Py.Surround.toggle(me, 'x-resizable', direction, function(e, direction){
+			Py.Element.toggleSurround(me, 'x-resizable', direction, function(e, direction){
 				rm.install(me, e, null, direction);
 			});
 			
 			p.setData(me, 'resize', proxy ? rm.optionsWithProxy : rm.optionsWithoutProxy);
 		}
 		
-	}, 2, 3);
+	}, 2);
 	
 })(Py);
 

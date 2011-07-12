@@ -1,20 +1,17 @@
+//===========================================
+//  树视图           treeview.js          A
+//===========================================
 
 
-
-
-
-
-Py.using("System.Dom.Element");
-Py.using("System.Controls.ContentControl");
-Py.using("System.Controls.ListControl");
-Py.using("System.Controls.ICollapsable");
 Py.imports("Resources.*.DataView.TreeView");
+Py.using("System.Controls.IContainerControl");
+Py.using("System.Controls.ICollapsable");
 
 
 (function(){
 	
 
-Py.namespace(".TreeNode", Py.ListControl.extend({
+Py.namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 	
 	xType: 'treenode',
 	
@@ -26,16 +23,16 @@ Py.namespace(".TreeNode", Py.ListControl.extend({
 		   
 	depth: 0,
 	
-	alternativeName: 'nodes',
-	
 	init: function(options){
 		this.label = this.find("a");
-		this.baseCall('init', options);
+		this.initChildren('nodes');
 	},
 	
-	onControlAdded: function(childNode){
-		var me = this;
-		
+	onControlAdded: function(childNode, index){
+		var me = this,
+			list = this.initItem(childNode),
+			re = this.controls[index];
+		this.content.insertBefore(list, re ? (re.dom || re).parentNode : null);
 		// 只有 已经更新过 才去更新。
 		if(this.depth || this instanceof Py.TreeView){
 			childNode.setDepth(this.depth + 1);
@@ -44,7 +41,7 @@ Py.namespace(".TreeNode", Py.ListControl.extend({
 		me.update();
 	},
 	
-	onControlRemoved: function(childNode){
+	onControlRemoved: function(childNode, index){
 		this.update();
 	},
 	
@@ -244,7 +241,7 @@ Py.namespace(".TreeNode", Py.ListControl.extend({
 		return String.format("{0}#{1}", this.getText(), this.depth);
 	}
 
-}).implementIf(Py.ICollapsable));
+}, Py.IContainerControl )).implementIf(Py.ICollapsable));
 
 
 Py.Control.delegate(Py.TreeNode, 'label', 'setHtml setText', 2, 'getHtml getText', 1);

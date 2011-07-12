@@ -59,7 +59,7 @@ Py.namespace(".Layout", {
 			// 获取引用位置。
 			var ref = container.controls[index];
 			
-			container.content.insertBefore(item.getDom(), ref ? ref.getDom() : null);
+			container.content.insertBefore(item.dom || item, ref ? ref.dom || ref : null);
 		},
 		
 		/**
@@ -71,7 +71,7 @@ Py.namespace(".Layout", {
 		 */
 		onControlRemoved: function(container, item, index){
 			
-			container.content.removeChild(item.getDom());
+			container.content.removeChild(item.dom || item);
 			
 			item.removeClass('x-layout-' + this.name);
 		},
@@ -108,7 +108,7 @@ Py.namespace(".Layout", {
 			
 			// 初始化用于布局的容器。
 			if(!container.content)
-				container.content = container.getDom();
+				container.content = container.dom || container;
 				
 			this.initLayoutCore(container);
 			this.doInitLayout(container, this, 'onControlAdded');

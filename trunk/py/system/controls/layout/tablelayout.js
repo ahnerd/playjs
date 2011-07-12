@@ -71,7 +71,7 @@ Py.Layout.register(Py.Layout.TableLayout = Py.Layout.LayoutEngine.extend({
 		
 		column = row.cells[column];
 		
-		column.appendChild(item.getDom());
+		column.appendChild(item.dom || item);
 		
 		if (item.colSpan) {
 			column.colSpan = item.colSpan;

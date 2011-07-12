@@ -1,4 +1,6 @@
-
+//===========================================
+//  组合文本框      combinedtextbox.js       A
+//===========================================
 
 
 Py.using("System.Controls.TextBox");
@@ -7,30 +9,27 @@ Py.imports("Resources.*.Form.Menubuttons");
 
 Py.namespace(".CombinedTextBox", Py.TextBox.extend({
 	
-	tpl: '<div><input type="text" class="x-textbox"><input type="button" value="工具按钮" class="x-menu-button"></div>',
+	tpl: '<label><input type="text" class="x-textbox"><input type="button" value="工具按钮" class="x-menu-button"></label>',
 	
-	setDisabled: function(value){ 
-	
-		this.dom.disabled = value !== false ? 'disbaled' : '';
-		this.find('.x-menu-button').disabled = value !== false ? 'disbaled' : '';
-		this.setState('disabled', value);
+	setDisabled: function(value){
+		this.setState('disabled', this.menuButton.disabled = this.textBox.dom.disabled = value !== false);
 	},
 	
 	init: function(){
 		this.addClass('x-' + this.xType);
-		this.textBox = this.find('.x-textbox');
+		this.textBox = new Py.TextBox(this.find('.x-textbox'));
+		this.menuButton = this.find('.x-menu-button');
 	},
 	
 	bindMenuButton: function(type, fn){
-		this.find('.x-menu-button').on(type, Function.bind(fn), this);
+		this.menuButton.on(type, Function.bind(fn, this));
 	},
 	
 	setMenuButton: function(type){
-		this.find('.x-menu-button').className = 'x-menu-button x-menu-button-' + type;
+		this.menuButton.className = 'x-menu-button x-menu-button-' + type;
 	}
 }));
 
 
 
-
-Py.Control.delegate(Py.CombinedTextBox, 'textBox', 'setRequested setText setState setReadOnly setName', 2, 'getDisabled getReadOnly getName getText', 1);
+Py.Control.delegate(Py.CombinedTextBox, 'textBox', 'setRequested setText setState setReadOnly setName focus blur select', 2, 'getDisabled getReadOnly getName getText getForm', 1);

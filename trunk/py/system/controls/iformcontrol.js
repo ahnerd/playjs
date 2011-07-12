@@ -1,12 +1,6 @@
-
-
-
-
-
-
-Py.using("System.Dom.Element");
-
-
+//===========================================
+//  表单元素   iformcontrol.js         A
+//===========================================
 
 
 Py.IFormControl = {
@@ -21,7 +15,7 @@ Py.IFormControl = {
 	
 	setDisabled: function(value){ 
 	
-		this.dom.disabled = value !== false ? 'disbaled' : '';
+		this.dom.disabled = value !== false;
 		this.setState('disabled', value);
 	},
 	
@@ -41,6 +35,14 @@ Py.IFormControl = {
 	
 	getName: function(){
 		return this.dom.name;
+	},
+	
+	getForm: function () {
+		return this.dom.form;
+	},
+	
+	clear: function(){
+		this.setText('');
 	}
 	
 };

@@ -212,7 +212,7 @@ Py.imports("Resources.Share.Layout.Default");
 			// 添加类。
 			item.addClass('x-layout-default');
 			
-			this.insert(item.getDom(), this.name == 'bottom' ? 'afterBegin' : 'beforeEnd');
+			this.insert(item.item || item, this.name == 'bottom' ? 'afterBegin' : 'beforeEnd');
 			
 			// 理论上，应该由布局器通过 layout 来调用这个函数，而不是在 add 时候调用。
 			// 这里因为 defaultLayout 属于自动布局， 所以放弃重写 layout ，自动去调  update();
@@ -225,7 +225,7 @@ Py.imports("Resources.Share.Layout.Default");
 		 */
 		remove: function(item){
 			
-			this.remove(item.getDom());
+			this.remove(item.dom || item);
 				
 			// 添加类。
 			item.removeClass('x-layout-default');
@@ -258,7 +258,7 @@ Py.imports("Resources.Share.Layout.Default");
 			// 这里为了使以上浏览器正确得到宽，统计所有子节点的宽。
 			// 然后赋予父元素。
 			for(; n; n = n.nextSibling)
-				sum += n.offsetWidth + Py.Element.getSize(n, 'width', 'm');
+				sum += n.offsetWidth + Py.Element.getSizes(n, 'x', 'm');
 			
 			// 设置区域大小。
 			dom.setWidth(sum);

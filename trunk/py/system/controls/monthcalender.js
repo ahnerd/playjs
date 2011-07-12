@@ -440,7 +440,7 @@ Py.imports("Resources.*.Form.MonthCalender");
 		},
 		
 		onSelect: function(value){
-			if (this.trigger('select', value)) {
+			if (this.trigger('changing', value)) {
 				
 				if (this.value - value !== 0) {
 					this.value = value;

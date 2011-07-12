@@ -1,6 +1,5 @@
 //===========================================
-//  Panel.js
-//  Copyright(c) 2009-2011 xuld
+//   面板     panel.js      A
 //===========================================
 
 Py.using("System.Controls.ContainerControl");

@@ -1,4 +1,6 @@
-
+//===========================================
+//  阴影                         mask.js          A
+//===========================================
 
 
 
@@ -14,7 +16,7 @@ Py.namespace('.Mask', Py.Control.extend({
 	
 	renderTo: function(elem){
 		elem = Py.$(elem);
-		Py.Element.setMovable(elem.getDom());
+		Py.Element.setMovable(elem.dom || elem);
 		elem.appendChild(this.dom);
 		this.bringToFront(elem);
 		return this;

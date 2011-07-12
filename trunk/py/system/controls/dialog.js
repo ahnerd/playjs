@@ -1,10 +1,9 @@
 //===========================================
-//  控件   Control.js
-//  Copyright(c) 2009-2010 xuld
+//  对话框                          dialog.js          A
 //===========================================
 
-Py.using("System.Controls.ContainerControl");
 Py.imports("Resources.*.Container.Window");
+Py.using("System.Controls.ContainerControl");
 
 
 

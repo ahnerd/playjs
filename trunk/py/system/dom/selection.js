@@ -16,7 +16,7 @@
 		 * 选中一个文本框从 start 到 end 的内容。
 		 */
 		selectRange: 'selection' in document ? function(start, end) {
-			var me = this.getDom();
+			var me = this.dom || this;
 			me.select();
 			var r =  document.selection.createRange() ; //   getSelection(textBox);
 			r.moveStart("character", start);
@@ -31,7 +31,7 @@
 
 			 */
 		} : function(start, end) {
-			var me = this.getDom();
+			var me = this.dom || this;
 			me.select();
 			me.selectionEnd = end;
 			me.selectionStart = start;
