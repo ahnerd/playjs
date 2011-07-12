@@ -36,16 +36,17 @@
 						
 						dom: $('ct'),
 						
-						onSplitterResize: Function.empty,
+						onSplitterBeforeResize: function(e){  trace(e);  },
 						
-						onSplitterBeforeResize: function(){  trace('before');  },
-						
-						onSplitterAfterResize: Function.empty
+						onSplitterAfterResize: function(e){
+							trace(e);
+						}
 						
 					});
 	                
 	                new Splitter('left', ctrl)
-					.renderTo('ct');
+					.renderTo('ct')
+					.setStyle('left', $('p1').getWidth());
 	            
 			
 		</script>

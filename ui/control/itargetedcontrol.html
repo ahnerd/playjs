@@ -5,6 +5,7 @@
 		<title>控件生成</title>
         <script src="../../py/system.js" type="text/javascript"></script>
 		<script src="../../py/system/dom/element.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/control.js" type="text/javascript"></script>
 		<script src="../../py/system/controls/itargetedcontrol.js" type="text/javascript"></script>
 		<script src="../../py/system/dom/drag.js" type="text/javascript"></script>
 		
@@ -15,11 +16,11 @@
 	<body>
 		
 		
-		<div id="target" style="background: yellow; width: 300px; height: 200px;">
+		<div id="target" style="background: yellow; width: 50px; height: 60px; ">
 			拖动本块。
 		</div>
 		
-		<div id="o" style="background: blue; position: absolute; top: 50px; width: 50px; height: 60px;"></div>
+		<div id="o" style="background: blue; position: absolute; top: 50px;   width: 300px; height: 200px; "></div>
 		
 		
 		<script>
@@ -29,8 +30,8 @@
 			
 			var d = new  TargetedControl('o');
 			
-			$('target').setDraggable().on('dragend', function(){
-				d.showBy(this,-10,-20);
+			$('target').setUnselectable().setDraggable().on('dragend', function(){
+				d.showBy(this, 0, 0);
 			});
 			
 			

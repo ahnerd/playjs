@@ -2,45 +2,58 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>文本编辑</title>
+        <title>Form</title>
         <link href="../../py/resources/share/control/core.css" rel="stylesheet" type="text/css" />
-		<link href="../../py/resources/share/form/textbox.css" rel="stylesheet" type="text/css" />
-        <link href="../../py/resources/share/form/listbox.css" rel="stylesheet" type="text/css" />
-        <link href="../../py/resources/default/control/core.css" rel="stylesheet" type="text/css" />
-		<link href="../../py/resources/default/control/icons.css" rel="stylesheet" type="text/css" />
-		<link href="../../py/resources/default/form/textbox.css" rel="stylesheet" type="text/css" />
-		<link href="../../py/resources/default/form/menubuttons.css" rel="stylesheet" type="text/css" />
-		<link href="../../py/resources/default/form/listbox.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/core.css" rel="stylesheet" type="text/css" />
 		
-		<script src="../assets/scripts/ui.js" type="text/javascript"></script>
-		<script src="../assets/scripts/common.js" type="text/javascript"></script>
+		<link href="../../py/resources/default/control/icons.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/share/form/textbox.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/default/form/textbox.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/share/form/menubuttons.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/form/menubuttons.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/share/form/updown.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/form/updown.css" rel="stylesheet" type="text/css" />
+		
+        <script src="../../py/system.js" type="text/javascript"></script>
+		<script src="../../py/system/dom/element.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/control.js" type="text/javascript"></script>
+		<script src="../../py/system/core/date.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/iformcontrol.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/listbox.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/imenucontainer.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/textbox.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/combinedtextbox.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/combobox.js" type="text/javascript"></script>
+		
+		<script src="../../common/project/project.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/default.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/debug.js" type="text/javascript"></script>
+		
+		
+		<script>
+			
+			document.onReady(function(){
+				
+			
+			new ComboBox({
+				
+				items: [
+					Element.parse('aaa')
+				],
+				
+				renderTo: true
+				
+			})
+			
+			
+			})
+		</script>
 		
     </head>
     <body>
-			<input type="text" style="width:280px;"" value="a" class="x-textbox"><input type="button" value="工具按钮" class="x-menu-button x-menu-button-narrow-down">
-			
-			<ul class="x-listbox" style="width:300px;"">
-                <li>
-                    选择1
-                </li>
-                <li class="x-selected">
-                    选择2
-                </li>
-                <li>
-                    选择3
-                </li>
-                <li>
-                    选择4
-                </li>
-                <li>
-                    选择5
-                </li>
-                <li>
-                    选择6
-                </li>
-                <li>
-                    选择7
-                </li>
-            </ul>
+		
     </body>
 </html>
