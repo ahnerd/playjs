@@ -16,11 +16,11 @@ var controls = {
 	'control    ': 'Control Resizing Shadow Mask Splitter ITargetedControl',
 	'layout     ': 'LayoutEngine FlowLayout AbsoluteLayout AlignedLayout AnchorLayout BorderLayout BoxLayout FitLayout DefaultLayout Relativelayout LineLayout TableLayout ColumnLayout ~ LayoutEngines window tablayout',
 	'viewer     ': 'Processbar Label PictureBox WebBroswer ToolTip ~ ScrollBar ',
-	'container  ': 'ListControl ContentControl ContainerControl Panel BalloonTip GroupBox @ accordion tabcontrols ~ splitcontainer tablelayoutpanel flowlayoutpanel toolstripcontainer',
-	'button     ': 'Button LinkButton ContextMenu MenuButton SplitButton @ toolstrip ~ commandbutton ribbon menustrip',
-	'form       ': 'Textbox CombinedTextbox UpDown ListBox FileUpload MonthCalender SearchTextBox  NumericUpDown DateUpDown TimeUpDown DatetPicker ComboBox CheckBox RadioButton @ StarMarker Slider CheckListBox ~ markedtextbox richtextbox htmleditor',
+	'container  ': 'ListControl ContentControl ContainerControl Panel BalloonTip GroupBox Accordion @ tabcontrols ~ splitcontainer tablelayoutpanel flowlayoutpanel toolstripcontainer',
+	'button     ': 'Button LinkButton ContextMenu MenuButton SplitButton ToolBar ~ commandbutton ribbon menustrip',
+	'form       ': 'Textbox CombinedTextbox UpDown ListBox FileUpload MonthCalender SearchTextBox  NumericUpDown DateUpDown TimeUpDown DatetPicker ComboBox CheckBox RadioButton @ Slider CheckListBox ~ StarMarker MarkedTextBox RichTextBox HtmlEditor',
 	'dataview   ': 'Treeview @ ~ listview datagridview table datanavigator',
-	'dialog     ': '@ dialog messagebox balloonbox ~ inputbox colordialog folderbroswerdialog filedialog fileopendialog filesavedialog',
+	'dialog     ': '@ Dialog MessageBox ~ BalloonBox inputbox colordialog folderbroswerdialog filedialog fileopendialog filesavedialog',
 	'theme      ': '@ all css'
 };
 
