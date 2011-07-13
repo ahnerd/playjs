@@ -10,8 +10,8 @@
 		<link href="../../py/resources/share/button/button.css" rel="stylesheet" type="text/css" />
         <link href="../../py/resources/default/button/button.css" rel="stylesheet" type="text/css" />
 		
-		<link href="../../py/resources/share/form/menubuttons.css" rel="stylesheet" type="text/css" />
-		<link href="../../py/resources/default/form/menubuttons.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/share/button/menubutton.css" rel="stylesheet" type="text/css" />
+        <link href="../../py/resources/default/button/menubutton.css" rel="stylesheet" type="text/css" />
 		
         <script src="../../py/system.js" type="text/javascript"></script>
 		<script src="../../py/system/data/collection.js" type="text/javascript"></script>
@@ -27,12 +27,9 @@
 		<script src="../../common/assets/scripts/debug.js" type="text/javascript"></script>
 		
 		
+		<!--  &#9660;        -->
 		
 		<script>
-			
-			function changeState(value){
-				this.parentNode.parentNode.className = value ? this.parentNode.parentNode.className + ' x-active' : this.parentNode.parentNode.className.replace(/ x\-active/g, "") ;
-			}
 			
 			new MenuButton({
 				dropDownMenu: Element.parse("<div>下拉菜单</div>").renderTo().setStyle('position', 'absolute'),
@@ -44,29 +41,37 @@
     </head>
     <body>
 		<div>
-			<button><span class="x-button-label">按钮</span><span class="x-button-menu">&nbsp;</span></button>
+			<button><span class="x-button-label">按钮</span><span class="x-button-arrow">&nbsp;</span></button>
 			
 			<a class="x-button x-menubutton">
 				<span class="x-button-container">
-					<button onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span><span class="x-button-menu">&nbsp;</span></button>
+					<span class="x-button-content">
+						<button   type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span><span class="x-button-arrow">&nbsp;</span></button>
+					</span>
+				</span>
+			</a>
+			
+			<a class="x-button x-menubutton">
+				<span class="x-button-container">
+					<span class="x-button-content">
+						<button   type="button" onclick="this.lastChild.innerHTML = '#' + this.lastChild.innerHTML"><span class="x-icon x-icon-layout"></span><span class="x-button-label">按钮</span><span class="x-button-arrow">&nbsp;</span></button>
+					</span>
 				</span>
 			</a>
 			
 			<a class="x-button x-menubutton x-checked">
 				<span class="x-button-container">
-					<button onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span><span class="x-button-menu">&nbsp;</span></button>
-				</span>
-			</a>
-			
-			<a class="x-button x-menubutton x-default">
-				<span class="x-button-container">
-					<button onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span><span class="x-button-menu">&nbsp;</span></button>
+					<span class="x-button-content">
+						<button   type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span><span class="x-button-arrow">&nbsp;</span></button>
+					</span>
 				</span>
 			</a>
 			
 			<a class="x-button x-menubutton x-disabled">
 				<span class="x-button-container">
-					<button onmousedown="changeState.call(this, true); " onmouseup="changeState.call(this, false); " type="button" disabled="disabled" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML"><span class="x-button-label">按钮</span><span class="x-button-menu">&nbsp;</span></button>
+					<span class="x-button-content">
+						<button   type="button" onclick="this.firstChild.innerHTML = '#' + this.firstChild.innerHTML" disabled="disabled"><span class="x-button-label">按钮</span><span class="x-button-arrow">&nbsp;</span></button>
+					</span>
 				</span>
 			</a>
 			

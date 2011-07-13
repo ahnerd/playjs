@@ -5,11 +5,11 @@
 		<title>Pyjs 测试</title>
 		<link href="../../py/resources/hust/starmarker.css" rel="stylesheet" type="text/css" />
 		<script src="../../py/system.js" type="text/javascript"></script>
-		<script src="../../py/System/Dom/Element.js" type="text/javascript"></script>
-		<script src="../../py/hust/StarMarker.js" type="text/javascript"></script>
+		<script src="../../py/system/dom/element.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/starMarker.js" type="text/javascript"></script>
 		
         <script>
-        	document.ready(function(){
+        	document.onReady(function(){
 				a = new StarMarker({
 					renderTo:$('star'),  // 直接即可， 如果需要渲染到 document.body ，可以使用 true 或 undefined
 					// 因为脚本执行这句时，没有 document.body
