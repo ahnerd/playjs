@@ -3,14 +3,14 @@
 //===========================================
 
 
-Py.using("System.Controls.Control");
+using("System.Controls.Control");
 
 
 
 /**
  * @namespace Py.Layout
  */
-Py.namespace(".Layout", {
+namespace(".Layout", {
 
 	/**
 	 * 表示布局引擎。

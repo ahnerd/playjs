@@ -1,0 +1,14 @@
+
+/* 菜单 */
+
+.x-button-arrow {
+	width: 12px;
+	background: 2px 50% no-repeat;
+	display: inline-block;
+	*height: auto;
+	*cursor: default;
+}
+
+.x-button-arrow {
+	background-image: url(images/arrow.gif);
+}

@@ -6,7 +6,7 @@
 
 
 
-Py.using("System.Dom.Drag");
+using("System.Dom.Drag");
 
 
 (function(p){

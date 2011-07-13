@@ -1,13 +1,13 @@
 //===========================================
 //  框架               iframe.js       A
 //===========================================
-Py.using("System.Controls.Control");
+using("System.Controls.Control");
 
 /**
  * IFrame
  * @class IFrame
  */
-Py.namespace(".IFrame", Py.Control.extend({
+namespace(".IFrame", Py.Control.extend({
 	
 	xType: 'iframe',
 	

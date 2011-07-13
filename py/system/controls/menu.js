@@ -3,14 +3,14 @@
 
 
 
-Py.using("System.Controls.ITargetedControl");
-Py.using("System.Controls.ContentControl");
-Py.using("System.Controls.ListControl");
+using("System.Controls.ITargetedControl");
+using("System.Controls.ContentControl");
+using("System.Controls.ListControl");
 
 /// #region MenuItem
 
 
-Py.namespace(".MenuItem", Py.ContentControl.extend({
+namespace(".MenuItem", Py.ContentControl.extend({
 	
 	tpl: '<a class="x-contextmenustrip-item"><span></span></a>',
 	
@@ -95,7 +95,7 @@ Py.namespace(".MenuItem", Py.ContentControl.extend({
 }));
 
 
-Py.namespace(".MenuItemSeperator", Py.MenuItem.extend({
+namespace(".MenuItemSeperator", Py.MenuItem.extend({
 	
 	tpl: '<a class="x-menu-seperator"></a>',
 	
@@ -117,7 +117,7 @@ String.map("Selected Checked Disabled", function(key){
 
 
 
-Py.namespace(".Menu", Py.ListControl.extend({
+namespace(".Menu", Py.ListControl.extend({
 	
 	xType: 'contextmenustrip',
 	

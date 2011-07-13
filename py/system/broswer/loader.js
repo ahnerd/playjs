@@ -5,7 +5,7 @@
 /**
  * 允许动态载入一个模块。
  */
-Py.namespace("Loader", {
+namespace("Loader", {
 	
 	javascript: function(source, properties){
 		if (!properties) properties = {};

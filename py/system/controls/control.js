@@ -5,8 +5,8 @@
 
 
 
-Py.using("System.Dom.Element");
-Py.imports("Resources.*.Control.Core");
+using("System.Dom.Element");
+imports("Resources.*.Control.Core");
 
 
 (function(p) {

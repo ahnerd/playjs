@@ -2,7 +2,7 @@
 //  测量   measure.js   A
 //===========================================
 
-Py.Element.implement({
+Element.implement({
 	
 	 beginMeasure : function(){
         var el = this.dom;

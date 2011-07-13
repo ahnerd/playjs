@@ -3,12 +3,12 @@
 //===========================================
 
 
-Py.using("System.Ajax.Ajax");
+using("System.Ajax.Ajax");
 
 /**
  * 通过 Ajax 动态更新一个节点
  */
-Py.Element.implement({
+Element.implement({
 
 	/**
 	 * 从一个地址，载入到本元素， 并使用 setHtml 设置内容。

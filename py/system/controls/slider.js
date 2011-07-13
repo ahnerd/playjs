@@ -4,12 +4,12 @@
 
 
 
-Py.using("System.Dom.Element");
-Py.using("System.Dom.Drag");
-Py.imports("Resources.*.Form.Slider");
+using("System.Dom.Element");
+using("System.Dom.Drag");
+imports("Resources.*.Form.Slider");
 
 
-Py.namespace(".Slider", Py.Control.extend({
+namespace(".Slider", Py.Control.extend({
 	
 	xType: 'slider',
 	

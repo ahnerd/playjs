@@ -4,8 +4,8 @@
 
 
 
-Py.using("System.Dom.Element");
-Py.using("System.Fx.Base");
+using("System.Dom.Element");
+using("System.Fx.Base");
 
 
 (function(p){

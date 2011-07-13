@@ -4,10 +4,10 @@
 
 
 
-Py.using("System.Dom.Element");
+using("System.Dom.Element");
 
 
-Py.namespace(".", Py.Control.extend({
+namespace(".", Py.Control.extend({
 	
 	tpl: ''
 	

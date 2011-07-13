@@ -10,7 +10,7 @@
  * 委托。
  * @class Delegate
  */
-Py.namespace(".Delegate", Py.Class({
+namespace(".Delegate", Py.Class({
 	
 	/**
 	 * 初始化一个委托。

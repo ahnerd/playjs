@@ -6,11 +6,11 @@
 
 
 
-Py.using("System.Controls.Control");
-Py.imports("Resources.Share.Viewer.Label");
+using("System.Controls.Control");
+imports("Resources.Share.Viewer.Label");
 
 
-Py.namespace(".Label", Py.Control.extend({
+namespace(".Label", Py.Control.extend({
 	
 	tpl: '<span class="x-label"></span>'
 	

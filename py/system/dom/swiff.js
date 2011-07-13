@@ -2,11 +2,11 @@
 //  Swf      swiff.js  A
 //===========================================
 
-Py.using("System.Controls.Control");
+using("System.Controls.Control");
 
 
 
-Py.namespace(".Swiff", Py.Control.extend({
+namespace(".Swiff", Py.Control.extend({
 
 	options: {
 		id: null,

@@ -3,7 +3,7 @@
 //===========================================
 
 
-Py.using("System.Algorithm.Encryption.Md5");
+using("System.Algorithm.Encryption.Md5");
 
 /**
  * 计算一个字符串的 MD5值。

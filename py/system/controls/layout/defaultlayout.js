@@ -3,8 +3,8 @@
 //  Copyright(c) 2009-2011 xuld
 //===========================================
 
-Py.using("System.Controls.Layout.LayoutEngine");
-Py.imports("Resources.Share.Layout.Default");
+using("System.Controls.Layout.LayoutEngine");
+imports("Resources.Share.Layout.Default");
 
 
 
@@ -52,7 +52,7 @@ Py.imports("Resources.Share.Layout.Default");
 					content = container.content;
 				
 				// 设置目标可移动。
-				Py.Element.setMovable(content);
+				Element.setMovable(content);
 			    
 				// 生成 left top right bottom fill 区域。
 				container.regions = content.append('<div class="x-layout-top"></div><div class="x-layout-middle"><div class="x-layout-left"></div><div class="x-layout-fill"></div><div class="x-layout-right"></div></div><div class="x-layout-bottom"></div>');
@@ -258,7 +258,7 @@ Py.imports("Resources.Share.Layout.Default");
 			// 这里为了使以上浏览器正确得到宽，统计所有子节点的宽。
 			// 然后赋予父元素。
 			for(; n; n = n.nextSibling)
-				sum += n.offsetWidth + Py.Element.getSizes(n, 'x', 'm');
+				sum += n.offsetWidth + Element.getSizes(n, 'x', 'm');
 			
 			// 设置区域大小。
 			dom.setWidth(sum);

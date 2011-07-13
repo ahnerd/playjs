@@ -6,12 +6,12 @@
 
 
 
-Py.using("System.Controls.UpDown");
-Py.using("System.Dom.Mark");
-Py.using("System.Core.Date");
+using("System.Controls.UpDown");
+using("System.Dom.Mark");
+using("System.Core.Date");
 
 
-Py.namespace('.DateUpDown', Py.UpDown.extend({
+namespace('.DateUpDown', Py.UpDown.extend({
 	
 	value: new Date(),
 	
@@ -20,7 +20,7 @@ Py.namespace('.DateUpDown', Py.UpDown.extend({
 	init: function(options){
 		this.baseCall('init',  options);
 		
-		Py.Element.markDate(this.textBox.dom, Function.bind(this.onInvalid, this));
+		Element.markDate(this.textBox.dom, Function.bind(this.onInvalid, this));
 		
 		this.setText(this.value.toString(this.format));
 	},

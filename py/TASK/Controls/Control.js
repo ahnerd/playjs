@@ -3,15 +3,15 @@
 //  Copyright(c) 2009-2010 xuld
 //===========================================
 
-Py.namespace("System.Controls.Control");
-Py.using("System.Dom.Element");
+namespace("System.Controls.Control");
+using("System.Dom.Element");
 
 
 (function(){
 	
 	var ap = Array.prototype,
 
-	cc = Py.namespace("Py.Controls", "ControlCollection", new Py.Class({
+	cc = namespace("Py.Controls", "ControlCollection", new Py.Class({
 		
 		length: 0,
 		

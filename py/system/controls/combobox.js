@@ -3,12 +3,12 @@
 //===========================================
 
 
-Py.using("System.Controls.IMenuContainer");
-Py.using("System.Controls.CombinedTextBox");
-Py.using("System.Controls.ListBox");
+using("System.Controls.IMenuContainer");
+using("System.Controls.CombinedTextBox");
+using("System.Controls.ListBox");
 
 
-Py.namespace(".ComboBox", Py.CombinedTextBox.extend({
+namespace(".ComboBox", Py.CombinedTextBox.extend({
 	
 	
 
@@ -27,7 +27,7 @@ Py.namespace(".ComboBox", Py.CombinedTextBox.extend({
 	},
 	
 	onSelect: function (value) {
-		this.setText(Py.Element.prototype.getText.call(value));
+		this.setText(Element.prototype.getText.call(value));
 		
 		this.hideDropDownMenu();
 		

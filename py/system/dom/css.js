@@ -4,7 +4,7 @@
 
 
 
-Py.namespace("CSS.",  function(){
+namespace("CSS.",  function(){
 	var rules = null;
    	var doc = document;
 

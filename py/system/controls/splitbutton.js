@@ -4,12 +4,12 @@
 
 
 
-Py.imports("Resources.*.Button.SplitButtons")   ;
-Py.using("System.Controls.MenuButton");
+imports("Resources.*.Button.SplitButtons")   ;
+using("System.Controls.MenuButton");
 
 
 
-Py.namespace(".SplitButton", Py.MenuButton.extend({
+namespace(".SplitButton", Py.MenuButton.extend({
 	
 	// tpl: '<a class="x-button">\
 				// <span class="x-button-container">\

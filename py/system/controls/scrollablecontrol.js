@@ -3,14 +3,14 @@
 //===========================================
 
 
-Py.using("System.Controls.ContentControl");
+using("System.Controls.ContentControl");
 
 /**
  * 内容显示面板。
  * @class ContainerControl
  * @abstract
  */
-Py.namespace(".ScrollableControl", Py.ContentControl.extend({
+namespace(".ScrollableControl", Py.ContentControl.extend({
 	
 	/**
 	 * 外容器左右边框+边距。
@@ -101,8 +101,8 @@ Py.namespace(".ScrollableControl", Py.ContentControl.extend({
 			this.content.remove();
 		}
 		
-		this.heightFix = Py.Element.getSizes(this.dom, 'y', 'bp') + Py.Element.getSizes(cd, 'y', 'bp');
-		this.widthFix = Py.Element.getSizes(this.dom, 'x', 'bp') + Py.Element.getSizes(cd, 'x', 'bp');
+		this.heightFix = Element.getSizes(this.dom, 'y', 'bp') + Element.getSizes(cd, 'y', 'bp');
+		this.widthFix = Element.getSizes(this.dom, 'x', 'bp') + Element.getSizes(cd, 'x', 'bp');
 		
 		this.dom.append(cd);
 		

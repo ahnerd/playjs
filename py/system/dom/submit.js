@@ -11,7 +11,7 @@ Py.defineDomEvents('ctrlenter', 'keypress', undefined, true, true).delegate = fu
 };
 
 
-Py.Element.enableSubmitOnCtrlEnter = function(elem, check){
+Element.enableSubmitOnCtrlEnter = function(elem, check){
 	check = check || Function.returnTrue;
 	Py.$(elem).on('ctrlenter', function(){if(check(this.value) && this.form) this.form.submit();});
 };

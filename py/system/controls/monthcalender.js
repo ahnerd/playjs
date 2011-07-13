@@ -1,9 +1,9 @@
 //  B
 
 
-Py.using("System.Core.Date")  ;
-Py.using("System.Controls.Control");
-Py.imports("Resources.*.Form.MonthCalender");
+using("System.Core.Date")  ;
+using("System.Controls.Control");
+imports("Resources.*.Form.MonthCalender");
 
 
 (function(){
@@ -308,7 +308,7 @@ Py.imports("Resources.*.Form.MonthCalender");
 		
 	};
 	
-	Py.namespace(".MonthCalender", Py.Control.extend({
+	namespace(".MonthCalender", Py.Control.extend({
 	
 		tpl: '<div class="x-monthcalender">\
 		        <div class="x-monthcalender-header">\

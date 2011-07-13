@@ -41,11 +41,11 @@
 }
 
 .x-icon-balloontip-close{
-	background-position: 0 -50px;
+	background-position: -75px -100px;
 }
 
 .x-icon-balloontip-close:hover {
-	background-position: 0 -75px;
+	background-position: -75px -125px;
 }
 
 .x-balloontip-anchor {

@@ -1,0 +1,97 @@
+
+
+
+/* 窗口 */
+.x-dialog {
+	background: #e3eaec;
+}
+
+.x-dialog-header, .x-dialog-header .x-header-container, .x-dialog-header .x-header-content , .x-dialog-footer, .x-dialog-footer .x-footer-container, .x-dialog-footer .x-footer-content { 
+	background-image:url(images/dialog.gif);
+}
+
+.x-dialog-header .x-header-container {
+    background-position: 100% -60px;
+}
+
+.x-dialog-header .x-header-content {
+     background-position: 0 -30px;
+}
+
+.x-dialog-container   {
+	padding-left: 5px;
+	background:url(images/dialog-sides.gif) repeat-y left top ;
+	border: 0;
+	overflow:hidden;
+}
+
+.x-dialog-content {
+	padding-right: 5px;
+	background: url(images/dialog-sides.gif) repeat-y right bottom;
+}
+
+.x-dialog-body {
+    background-color: white;
+    border: 1px solid #99bce8;
+    overflow: auto;
+}
+
+.x-dialog-footer {
+    background-position: 0 -90px;
+}
+
+.x-dialog-footer .x-footer-container {
+    background-position: 100% -110px;
+}
+
+.x-dialog-footer .x-footer-content {
+    background-position: 0 -100px;
+}
+
+
+
+/* 按钮 */
+.x-dialog.x-resizable .x-resizable-rb {
+	background-image:url(../control/images/icons.gif);
+	width: 11px;
+	height: 11px;
+	background-position: -100px -100px;
+}
+
+/* 按钮 */
+
+.x-icon-close {
+    background-position: -50px -50px;
+}
+
+.x-icon-close:hover {
+    background-position: -50px -75px;
+}
+
+.x-icon-maximize {
+    background-position: -25px 0;
+}
+
+.x-icon-maximize:hover {
+    background-position: -25px -25px;
+}
+
+.x-icon-restore {
+    background-position: -25px -50px;
+}
+
+.x-icon-restore:hover {
+    background-position: -25px -75px;
+}
+
+.x-icon-minimize {
+    background-position: -50px 0;
+}
+
+.x-icon-minimize:hover {
+    background-position: -50px -25px;
+}
+
+
+
+

@@ -4,12 +4,12 @@
 
 
 
-Py.using("System.Controls.ContentControl");
-Py.using("System.Controls.IFormControl");
-Py.imports("Resources.*.Viewer.ToolTip");
+using("System.Controls.ContentControl");
+using("System.Controls.IFormControl");
+imports("Resources.*.Viewer.ToolTip");
 
 
-Py.namespace(".ToolTip", Py.ContentControl.extend({
+namespace(".ToolTip", Py.ContentControl.extend({
 	
 	tpl: '<div class="x-tooltip">\
 			<span class="x-container-contetnt"></span>\

@@ -9,7 +9,7 @@
 /**
  * 允许动态载入一个模块。
  */
-Py.namespace(".use", function (namespaces, callBack) {
+namespace(".use", function (namespaces, callBack) {
   
 });
 

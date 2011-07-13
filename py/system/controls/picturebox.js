@@ -4,10 +4,10 @@
 
 
 
-Py.using("System.Controls.Control");
+using("System.Controls.Control");
 
 
-Py.namespace(".PictureBox", Py.Control.extend({
+namespace(".PictureBox", Py.Control.extend({
 	
 	tpl: '<img class="x-picturebox">'
 	

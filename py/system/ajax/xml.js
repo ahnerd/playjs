@@ -2,7 +2,7 @@
 //  请求处理XML数据   xml.js    A
 //===========================================
 
-Py.using("System.Ajax.Ajax");
+using("System.Ajax.Ajax");
 
 
 

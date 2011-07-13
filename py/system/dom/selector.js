@@ -3,8 +3,8 @@
 //  Copyright(c) 2009-2010 xuld
 //===========================================
 
-Py.using("System.Dom.Query");
-Py.using("System.Dom.Element");
+using("System.Dom.Query");
+using("System.Dom.Element");
 
 
 (function(){
@@ -18,13 +18,13 @@ Py.using("System.Dom.Element");
 	 * @alias window.$$
 	 */
 	function query(selector, quick){
-		return new Py.ElementList(document.queryDom(selector, this, false, quick));
+		return new ElementList(document.queryDom(selector, this, false, quick));
 	}
 	
 	/**
 	 * @namespace Element
 	 */
-	Py.Element.implement({
+	Element.implement({
 		query: query
 	}, 4)
 	
@@ -56,7 +56,7 @@ Py.using("System.Dom.Element");
 	}, 3);
 	
 	this.$$ = function $$(selector, quick){
-		return new Py.ElementList(document.queryDom(selector, document, false, quick));
+		return new ElementList(document.queryDom(selector, document, false, quick));
 	};
 	
 })();

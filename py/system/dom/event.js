@@ -2,7 +2,7 @@
 //  事件对象   event.js  A
 //===========================================
 
-Py.namespace(".DomEvent", Py.Class({
+namespace(".DomEvent", Py.Class({
 	
 	constructor: function(event) {
 		var doc = window.document;

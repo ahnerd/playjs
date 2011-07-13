@@ -3,13 +3,13 @@
 //===========================================
 
 
-Py.using("System.Controls.Control");
+using("System.Controls.Control");
 
 /**
  * 表示一个有内置呈现的控件。
  * 这个控件和子类实现大小自适应。修复 IE6/7 父元素不能自己适合子元素大小错误。
  */
-Py.namespace(".ContentControl", Py.Control.extend({
+namespace(".ContentControl", Py.Control.extend({
 	
 	/**
 	 * 当前正文。

@@ -1,10 +1,10 @@
 
 
 
-Py.using("System.Controls.CombinedTextBox");
+using("System.Controls.CombinedTextBox");
 
 
-Py.namespace(".SearchTextBox", Py.CombinedTextBox.extend({
+namespace(".SearchTextBox", Py.CombinedTextBox.extend({
 	
 	xType: 'searchtextbox',
 	

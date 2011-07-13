@@ -2,8 +2,8 @@
 //  对话框                          dialog.js          A
 //===========================================
 
-Py.imports("Resources.*.Container.Window");
-Py.using("System.Controls.ContainerControl");
+imports("Resources.*.Container.Window");
+using("System.Controls.ContainerControl");
 
 
 
@@ -13,7 +13,7 @@ Py.using("System.Controls.ContainerControl");
  * @class Window
  * @extends Panel
  */
-Py.namespace(".Dialog", Py.ContainerControl.extend({
+namespace(".Dialog", Py.ContainerControl.extend({
 	
 	/**
 	 * xType

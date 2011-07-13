@@ -5,7 +5,7 @@
 
 
 
-Py.using("System.Ajax.Ajax");
+using("System.Ajax.Ajax");
 
 
 

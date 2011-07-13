@@ -2,8 +2,8 @@
 //  描点布局       anchorlayout.js         A
 //===========================================
 
-Py.using("System.Controls.Layout.AdvanceLayout");
-Py.imports("Resources.*.Layout.AdvanceLayout");
+using("System.Controls.Layout.AdvanceLayout");
+imports("Resources.*.Layout.AdvanceLayout");
 
 
 
@@ -20,14 +20,14 @@ Py.Layout.register(Py.Layout.AnchorLayout = Py.Layout.AdvanceLayout.extend({
 	xType: 'anchor',
 	
 	layoutItemX: function(container, item){
-		var getSize = Py.Element.getSizes;
+		var getSize = Element.getSizes;
 		item.setSize({
 			x: container.getWidth() + getSize(container.dom || container, 'x', 'p') - getSize(item.dom || item, 'x', 'd')
 		});
 	},
 	
 	layoutItemY: function(container, item){
-		var getSize = Py.Element.getSizes;
+		var getSize = Element.getSizes;
 		item.setSize({
 			y: container.getHeight() + getSize(container.dom || container, 'y', 'p') - getSize(item.getDom(), 'y', 'd')
 		});
@@ -80,7 +80,7 @@ Py.Layout.register(Py.Layout.AnchorLayout = Py.Layout.AdvanceLayout.extend({
 				// 直接使用  getStyle 会得到 auto 。
 				// 如果存在 anchor-right ， right 必须存在。
 				if (isNaN(parseFloat(dom.style.right)))
-					item.setStyle('right', ctReg.right - itemeg.right - Py.Element.styleNumber(dom, 'marginRight') - Py.Element.styleNumber(container.dom || container, 'borderRightWidth'));
+					item.setStyle('right', ctReg.right - itemeg.right - Element.styleNumber(dom, 'marginRight') - Element.styleNumber(container.dom || container, 'borderRightWidth'));
 				
 				flag = true;
 			}
@@ -101,7 +101,7 @@ Py.Layout.register(Py.Layout.AnchorLayout = Py.Layout.AdvanceLayout.extend({
 			// 检查 bottom
 			if (anchor.indexOf('bottom') >= 0) {
 				if (isNaN(parseFloat(dom.style.bottom)))
-					item.setStyle('bottom', ctReg.bottom - itemeg.bottom - Py.Element.styleNumber(dom, 'marginBottom') - Py.Element.styleNumber(container.dom || container, 'borderBottomWidth'));
+					item.setStyle('bottom', ctReg.bottom - itemeg.bottom - Element.styleNumber(dom, 'marginBottom') - Element.styleNumber(container.dom || container, 'borderBottomWidth'));
 				flag = true;
 			}
 			
@@ -128,7 +128,7 @@ Py.Layout.register(Py.Layout.AnchorLayout = Py.Layout.AdvanceLayout.extend({
 if(navigator.isQuirks && navigator.isIE6){
 	(function(){
 		
-		var e = Py.Element,
+		var e = Element,
 			styleNumber  = e.styleNumber,
 			widthPadding = e.widthPadding,
 			heightPadding = e.heightPadding,

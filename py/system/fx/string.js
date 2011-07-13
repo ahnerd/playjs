@@ -4,7 +4,7 @@
 
 
 
-Py.using("System.Fx.Animate");
+using("System.Fx.Animate");
 
 
 

@@ -157,7 +157,7 @@ redistribute.
 
 
 
-Py.namespace("JSON.", (function () {
+namespace("JSON.", (function () {
 
     function f(n) {
         // Format integers to have at least two digits.

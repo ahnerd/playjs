@@ -5,7 +5,7 @@
 
 
 
-Py.using("System.Fx.Animate");
+using("System.Fx.Animate");
 
 
 Object.extend(Py.Fx.Animate.parsers.color, {

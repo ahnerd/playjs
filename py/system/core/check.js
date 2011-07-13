@@ -4,7 +4,7 @@
 
 
 
-Py.namespace(".Check.", {
+namespace(".Check.", {
 	
 	/**
 	 * 测试是否为数字
@@ -62,7 +62,7 @@ Py.namespace(".Check.", {
 	 * @return {Number} 数字越大，复杂度越高。 这个数字在 0 - 5 变化。
 	 */
 	checkPasswordLevel: function(value){
-		
+		return value.replace(/^(?:(?=.{4})(?=.*([a-z])|.)(?=.*([A-Z])|.)(?=.*(\d)|.)(?=.*(\W)|.).*|.*)$/, "$1$2$3$4").length;
 	},
 	
 	isNotEmpty: function(value){

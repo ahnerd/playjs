@@ -1,7 +1,7 @@
 
 
 
-.x-dialog {
+.x-messagebox {
 	width: 260px;
 	height: 139px;
 	left: 50%;
@@ -12,7 +12,7 @@
 
 
 
-.x-dialog .x-window-container{
+.x-messagebox .x-window-container{
 	height: 68px;
 	overflow: hidden;
 	padding-bottom: 38px;
@@ -20,7 +20,7 @@
 
 
 
-.x-dialog   .x-dialog-buttons{
+.x-messagebox   .x-messagebox-buttons{
 	background: #eef4f5;
 	bottom: 0px;
 	position: absolute;
@@ -32,16 +32,16 @@
 }
 
 
-.x-dialog-content {
+.x-messagebox-content {
 	padding: 10px 16px;
 }
 
-.x-dialog-buttons .x-button{
+.x-messagebox-buttons .x-button{
 	margin-right: 20px;
 }
 
 
-.x-dialog-content .x-icon {
+.x-messagebox-content .x-icon {
 	width: 44px;
 	height: 100px;
 	background-repeat:  no-repeat;

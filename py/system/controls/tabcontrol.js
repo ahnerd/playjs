@@ -1,16 +1,16 @@
 
 
 
-Py.using("System.Controls.ScrollableControl");
-Py.using("System.Controls.IParentControl");
-Py.imports("Resources.*.Container.TabControls");
+using("System.Controls.ScrollableControl");
+using("System.Controls.IParentControl");
+imports("Resources.*.Container.TabControls");
 
 /**
  * 内容显示面板。
  * @class ContainerControl
  * @abstract
  */
-Py.namespace(".TabControl", Py.ScrollableControl.extend({
+namespace(".TabControl", Py.ScrollableControl.extend({
 	
 	heightFix: 33,
 	
@@ -118,7 +118,7 @@ Py.TabControl.ControlCollection = Py.Control.ControlCollection.extend({
 	
 });
 
-Py.namespace(".TabPage", Py.Control.extend({
+namespace(".TabPage", Py.Control.extend({
 	
 	header: null,
 	
@@ -151,7 +151,7 @@ Py.namespace(".TabPage", Py.Control.extend({
 		this.name = value;
 		for(var node = this.header.firstChild.firstChild.firstChild; node; node = node.nextSibling){
 			if(node.nodeType === 3){
-				node[Py.Element.attributes.innerText] = value;
+				node[Element.attributes.innerText] = value;
 				return this;
 			}
 		}

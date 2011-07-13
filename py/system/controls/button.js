@@ -6,13 +6,13 @@
 
 
 
-Py.using("System.Controls.ContentControl");
-Py.imports("Resources.*.Button.Button");
+using("System.Controls.ContentControl");
+imports("Resources.*.Button.Button");
 
 
 
 
-Py.namespace(".Button", Py.ContentControl.extend({
+namespace(".Button", Py.ContentControl.extend({
 	
 	options: {
 		type: 'button'
@@ -25,7 +25,7 @@ Py.namespace(".Button", Py.ContentControl.extend({
 			</a>',
 	
 	create: function(options){
-		return Py.Element.parse(this.tpl.replace('{type}', options.type));
+		return Element.parse(this.tpl.replace('{type}', options.type));
 	},
 	
 	addEventListener: function(obj, type, fn){

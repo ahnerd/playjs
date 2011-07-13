@@ -3,9 +3,9 @@
 //===========================================
 
 
-Py.using("System.Core.Check");
+using("System.Core.Check");
 
-Py.namespace("HTMLFormElement.", {
+namespace("HTMLFormElement.", {
 	
 	setValidatable: function (value) {
 		

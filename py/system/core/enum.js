@@ -4,7 +4,7 @@
 
 
 
-Object.extend(Py.namespace(".Enum", function (flag){
+Object.extend(namespace(".Enum", function (flag){
 	
 	var args = arguments, r = [];
 	

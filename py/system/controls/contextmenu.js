@@ -1,10 +1,10 @@
 
 
-Py.using("System.Controls.ContextMenu");
-Py.imports("Resources.*.Button.ContextMenu");
+using("System.Controls.ContextMenu");
+imports("Resources.*.Button.ContextMenu");
 
 
-Py.namespace(".ContextMenu", Py.Menu.extend({
+namespace(".ContextMenu", Py.Menu.extend({
 	
 	floating: true,
 	

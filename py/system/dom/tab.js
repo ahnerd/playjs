@@ -8,7 +8,7 @@
  * 禁止使用 tab 失去焦点，改输入 '\t'
  * @param {Object} id
  */
-Py.Element.disbaleTab = function(id, fn){
+Element.disbaleTab = function(id, fn){
 	id = Py.$(id);
 	
 };

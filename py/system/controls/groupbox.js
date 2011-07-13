@@ -4,10 +4,10 @@
 
 
 
-Py.using("System.Controls.ScrollableControl");
+using("System.Controls.ScrollableControl");
 
 
-Py.namespace(".GroupBox", Py.ScrollableControl.extend({
+namespace(".GroupBox", Py.ScrollableControl.extend({
 	
 	tpl: '<fieldset class="x-groupbox">\
 			<legend class="x-groupbox-header">\

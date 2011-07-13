@@ -3,12 +3,12 @@
 //===========================================
 
 
-Py.using("System.Controls.Control");
-Py.using("System.Controls.IFormControl");
-Py.imports("Resources.*.Form.TextBox");
+using("System.Controls.Control");
+using("System.Controls.IFormControl");
+imports("Resources.*.Form.TextBox");
 
 
-Py.namespace(".TextBox", Py.Control.extend({
+namespace(".TextBox", Py.Control.extend({
 	
 	tpl: '<input type="text" class="x-textbox">',
 	

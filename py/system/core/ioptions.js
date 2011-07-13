@@ -6,7 +6,7 @@
  * 使类具有扩展自身的方法。
  * @interface Py.IOptions
  */
-Py.namespace('.IOptions', {
+namespace('.IOptions', {
 	
 	/**
 	 * 对当前类扩展属性。

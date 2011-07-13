@@ -2,7 +2,7 @@
 //  拖动   drag.js  A
 //===========================================
 
-Py.using("System.Dom.Element");
+using("System.Dom.Element");
 
 
 (function(p) {
@@ -260,7 +260,7 @@ Py.using("System.Dom.Element");
 							handler = elem;
 						}
 						
-						Py.Element.setMovable(elem.dom || elem);
+						Element.setMovable(elem.dom || elem);
 						
 						dm.start(handler, options || dd.options);
 					}else

@@ -3,7 +3,7 @@
 //===========================================
 
 
-Py.namespace(".Check.", {
+namespace(".Check.", {
 
 	isQQ: function(value){
 		

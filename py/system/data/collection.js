@@ -9,7 +9,7 @@
 	 * 集合。
 	 * @class Collection
 	 */
-	Py.namespace(".Collection", Py.Class({
+	namespace(".Collection", Py.Class({
 		
 		/**
 		 * 获取当前的项数目。
