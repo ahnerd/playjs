@@ -2,8 +2,8 @@
 // 绝对布局       flowlayout.js         A
 //===========================================
 
-Py.using("System.Controls.Layout.LayoutEngine");
-Py.imports("Resources.~.Layout.Absolute");
+using("System.Controls.Layout.LayoutEngine");
+imports("Resources.~.Layout.Absolute");
 
 
 
@@ -22,7 +22,7 @@ Py.Layout.register(Py.Layout.AbsoluteLayout = Py.Layout.LayoutEngine.extend({
 	name: 'absolute',
 	
 	initLayoutCore: function(container){
-		Py.Element.setMovable(container.content);
+		Element.setMovable(container.content);
 	}
 	
 }));

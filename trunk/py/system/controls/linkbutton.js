@@ -6,11 +6,11 @@
 
 
 
-Py.using("System.Controls.Control");
-Py.imports("Resources.*.Button.LinkButton");
+using("System.Controls.Control");
+imports("Resources.*.Button.LinkButton");
 
 
-Py.namespace(".LinkButton", Py.Control.extend({
+namespace(".LinkButton", Py.Control.extend({
 	
 	tpl: '<a class="x-linkbutton" href="javascript://" target="_blank"></a>',
 	

@@ -2,7 +2,7 @@
 //  变化函数  transitions.js      A
 //===========================================
 
-Py.namespace(".Fx.Transitions.", {
+namespace(".Fx.Transitions.", {
 	
 	linear: function(p){
 		return p;

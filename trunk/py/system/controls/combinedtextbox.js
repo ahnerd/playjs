@@ -3,11 +3,11 @@
 //===========================================
 
 
-Py.using("System.Controls.TextBox");
-Py.imports("Resources.*.Form.Menubuttons");
+using("System.Controls.TextBox");
+imports("Resources.*.Form.Menubuttons");
 
 
-Py.namespace(".CombinedTextBox", Py.TextBox.extend({
+namespace(".CombinedTextBox", Py.TextBox.extend({
 	
 	tpl: '<label><input type="text" class="x-textbox"><input type="button" value="工具按钮" class="x-menu-button"></label>',
 	

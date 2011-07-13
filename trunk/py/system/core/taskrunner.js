@@ -2,10 +2,10 @@
 //  模拟多线程的任务   taskrunner.js  A
 //===========================================
 
-Py.using("Py.Fx.Base");
+using("Py.Fx.Base");
 
 
-Py.namespace(".TaskRunner", Py.Fx.Base.extend({
+namespace(".TaskRunner", Py.Fx.Base.extend({
 	
 	tasks: null,
 	

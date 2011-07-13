@@ -2,7 +2,7 @@
 // 简单的 JSON      simplejson.js       A
 //===========================================
 	
-Py.namespace("JSON.", {
+namespace("JSON.", {
 	
 	specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
 

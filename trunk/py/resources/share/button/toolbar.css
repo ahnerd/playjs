@@ -1,20 +1,20 @@
 
 
-.x-toolstrip {
-	height: 23px;
+.x-toolbar {
+	height: 22px;
 	padding: 2px;
 }
 
-.x-toolstrip-container {
+.x-toolbar-container {
 	height: 100%;
 }
 
 
-.x-toolstrip-content {
+.x-toolbar-content {
 	float: left;
 }
 
-.x-toolstrip-content .x-label{
+.x-toolbar-content .x-label{
 	line-height: 25px;
 	font-size: 14px;
 	color: #183152;
@@ -25,7 +25,7 @@
 
 
 
-.x-toolstrip-content .x-split{
+.x-toolbar-content .x-split{
 	margin: 2px 0px 0 1px;
 }
 

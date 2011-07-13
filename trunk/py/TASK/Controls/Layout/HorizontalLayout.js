@@ -3,7 +3,7 @@
 //  Copyright(c) 2009-2011 xuld
 //===========================================
 
-Py.using("System.Controls.ContainerControl");
+using("System.Controls.ContainerControl");
 
 
 
@@ -14,7 +14,7 @@ Py.Layout.register(Py.Layout.AbsoluteLayout = Py.Layout.extend({
 	className: 'x-block',
 	
 	setContainer: function(ct){
-		Py.Element.setMovable(ct.dom);
+		Element.setMovable(ct.dom);
 	},
 	
 	doLayout: function(ct){

@@ -6,11 +6,11 @@
 
 
 
-Py.using("System.Controls.CombinedTextBox");
-Py.imports("Resources.*.Form.FileUpload");
+using("System.Controls.CombinedTextBox");
+imports("Resources.*.Form.FileUpload");
 
 
-Py.namespace(".FileUpload", Py.CombinedTextBox.extend({
+namespace(".FileUpload", Py.CombinedTextBox.extend({
 	
 	tpl: '<label class="x-fileupload"><input type="text" class="x-textbox"><span class="x-menubutton-fileupload"><input type="file" size="1"> <a class="x-button"><span class="x-button-container"><button class="x-button-content" type="button"><span class="x-button-label"> 浏览... </span></button></span></a>\</span></label>',
 			

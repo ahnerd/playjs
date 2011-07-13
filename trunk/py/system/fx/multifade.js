@@ -8,9 +8,9 @@
 
 
 
-Py.using("System.Fx.Animate");
+using("System.Fx.Animate");
 
-Py.ElementList.implement({
+ElementList.implement({
 	
 	multiFade: function( opacity ) {
 		opacity = opacity === undefined ? 0.3 : opacity;

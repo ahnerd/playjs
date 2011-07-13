@@ -4,12 +4,12 @@
 
 
 
-Py.imports("Resources.*.Container.Accordion");
-Py.using("System.Controls.Control");
-Py.using("System.Controls.IContainerControl");
+imports("Resources.*.Container.Accordion");
+using("System.Controls.Control");
+using("System.Controls.IContainerControl");
 
 
-Py.namespace(".Accordion", Py.Control.extend(Object.extendIf({
+namespace(".Accordion", Py.Control.extend(Object.extendIf({
 	
 	/**
 	 * xType

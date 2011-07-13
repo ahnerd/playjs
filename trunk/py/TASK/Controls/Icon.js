@@ -3,12 +3,12 @@
 //  Copyright(c) 2009-2010 xuld
 //===========================================
 
-Py.namespace("System.Controls.Icon");
-Py.using("System.Dom.Element");
+namespace("System.Controls.Icon");
+using("System.Dom.Element");
 
 
 
-Py.namespace("Py.Controls", "Panel", Py.Controls.Control.extend({
+namespace("Py.Controls", "Panel", Py.Controls.Control.extend({
 	
 	xType: 'panel',
 	

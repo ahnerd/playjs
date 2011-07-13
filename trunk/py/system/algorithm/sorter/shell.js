@@ -4,9 +4,9 @@
 
 
 
-Py.using("System.Algorithm.Sorter.Sort");
+using("System.Algorithm.Sorter.Sort");
 
-Py.namespace(".Sorter.",  {
+namespace(".Sorter.",  {
 	
 	/**
 	 * 对集合进行希尔排序。

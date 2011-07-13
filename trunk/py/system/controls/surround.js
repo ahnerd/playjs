@@ -5,11 +5,11 @@
 
 
 
-Py.using("System.Controls.Control");
+using("System.Controls.Control");
 
 
 
-Object.extend(Py.Element, {
+Object.extend(Element, {
 	
 	allDirection: 'lt t rt l r lb b rb'.split(' '),
 	

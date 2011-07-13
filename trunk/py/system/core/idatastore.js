@@ -7,7 +7,7 @@
  * 使类具有存储的方法。
  * @interface Py.IDataStore
  */
-Py.namespace('.IDataStore', {
+namespace('.IDataStore', {
 	
 	/**
 	 * 获取属于一个元素的数据。

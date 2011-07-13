@@ -502,7 +502,7 @@
 		 * 根据元素返回节点。
 		 * @param {String/Element} ... 对象的 id 或对象。
 		 */
-		id: function() {
+		getDom: function() {
 			return arguments.length === 1 ? p.$(arguments[0]) : new p.ElementList(o.update(arguments, p.$, []));
 
 			/*

@@ -6,11 +6,11 @@
 
 
 
-Py.using("System.Controls.ListControl");
-Py.imports("Resources.*.Form.ListBox");
+using("System.Controls.ListControl");
+imports("Resources.*.Form.ListBox");
 
 
-Py.namespace(".ListBox", Py.ListControl.extend({
+namespace(".ListBox", Py.ListControl.extend({
 	
 	xType: 'listbox',
 	

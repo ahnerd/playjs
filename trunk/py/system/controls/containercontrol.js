@@ -3,7 +3,7 @@
 //===========================================
 
 
-Py.using("System.Controls.ScrollableControl");
+using("System.Controls.ScrollableControl");
 
 /**
  * 内容显示面板。
@@ -12,7 +12,7 @@ Py.using("System.Controls.ScrollableControl");
  * ContainerControl 控件提供了由 header - container - footer 三部分组成的容器。
  * 在未实现 HTML5 的浏览器中， ContainerControl 将使用图片实现圆角。
  */
-Py.namespace(".ContainerControl", Py.ScrollableControl.extend({
+namespace(".ContainerControl", Py.ScrollableControl.extend({
 	
 	heightFix: 33,
 	

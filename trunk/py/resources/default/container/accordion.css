@@ -8,6 +8,10 @@
 	border-color:#b8d0d6;
 }
 
+.x-accordion-header, .x-accordion-header h3 {
+	 background-image:url(images/accordion.gif);
+}
+
 .x-accordion-header:hover {
     background-position: 0 -25px;
 }
@@ -21,27 +25,14 @@
     background-position: 100% -75px;
 }
 
-.x-accordion-header .collapsable {
+.x-accordion-header h3.x-collapsable {
     background-position: 100% -100px;
 }
 
-.x-accordion-header:hover .collapsable {
+.x-accordion-header:hover h3.x-collapsable {
     background-position: 100% -125px;
 }
 
-
-.x-accordion-header, .x-accordion-header h3 {
-	 background-image:url(images/accordion.gif);
-}
-
-h3.x-collapsable {
-	background-image:url(images/accordion.gif);
-	background-position: 100% -100px;
-}
-h3.x-collapsable:hover{
-	background-image:url(images/accordion.gif);
-	background-position: 100% -125px;
-}
 .x-accordion-container {
     border-width: 0 0 1px 0;
 }

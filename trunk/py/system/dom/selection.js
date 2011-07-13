@@ -10,7 +10,7 @@
 		return textBox.tagName == "TEXTAREA" ? textBox.createTextRange() : document.selection.createRange();
 	}
 	
-	Py.Element.implement({
+	Element.implement({
 		
 		/**
 		 * 选中一个文本框从 start 到 end 的内容。
@@ -141,7 +141,7 @@
 		
 		
 		setCaretPosition: function(textBox, position) {
-			Py.Element.select(textBox, position, position);
+			Element.select(textBox, position, position);
 		},
 		
 		

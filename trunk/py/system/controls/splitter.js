@@ -2,9 +2,9 @@
 //    分隔条     splitter.js         A 
 //===========================================
 
-Py.using("System.Controls.Control");
-Py.using("System.Controls.Resizing");
-Py.imports("Resources.Share.Control.Splitter");
+using("System.Controls.Control");
+using("System.Controls.Resizing");
+imports("Resources.Share.Control.Splitter");
 
 
 
@@ -13,7 +13,7 @@ Py.imports("Resources.Share.Control.Splitter");
  * @class Panel
  * @extends Control
  */
-Py.namespace(".Splitter", Py.Control.extend({
+namespace(".Splitter", Py.Control.extend({
 	
 	/**
 	 * xType

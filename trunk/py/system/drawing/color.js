@@ -6,7 +6,7 @@
 
 
 
-Py.namespace(".Color", Class({
+namespace(".Color", Class({
 	
 	
 	

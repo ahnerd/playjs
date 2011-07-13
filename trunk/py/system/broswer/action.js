@@ -4,7 +4,7 @@
 
 
 
-Py.namespace(".Broswer.", {
+namespace(".Broswer.", {
 
 	/**
 	 * 打开添加收藏夹对话框。

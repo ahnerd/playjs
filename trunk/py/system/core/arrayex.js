@@ -101,9 +101,45 @@ Array.implement({
             this[b] = temp;
         }
 
+,
+
+
 
 });
 
+Array.compare = function (a, b) {
+   if(a.length==b.length) return a.sort().join("")==b.sort().join("");
+    a = a.sort().join("").replace(/(.)\1+/g,"$1");
+    b = b.sort().join("").replace(/(.)\1+/g,"$1");
+    var arr = a.split("");
+    var re = new RegExp(arr.join("|"),"g");
+    return (b.length - b.replace(re,"").length == a.length || b.replace(re,"").length==0)
+
+}
+
+/**
+ * 获取数组内指定个数的 元素的 组合。
+ */
+Array.getCombination =  function (value, n) {
+   if(1>=n){
+        return value;
+    }else{
+        var aRV = [];
+        var fooSetCB = function(x,aList){
+            while(aList.length>0){
+                var y = aList.shift();
+                var z = Array.prototype.concat.call(x,y);
+                (z.length==n)?aRV.push(z):arguments.callee(z,aList.slice(0));
+            }
+        }
+        while(aList.length>=n){
+            var x = aList.shift();
+            fooSetCB(x,aList.slice(0));
+        }
+        return aRV.slice(0);
+    }
+
+}
 
 
 Object.

@@ -3,7 +3,7 @@
 //===========================================
 
 
-Py.using("System.Controls.ScrollableControl");
+using("System.Controls.ScrollableControl");
 
 /**
  * @class ScrollableControl

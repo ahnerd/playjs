@@ -3,7 +3,7 @@
 //  Copyright(c) 2009-2011 xuld
 //===========================================
 
-Py.using("System.Controls.Layout.LayoutEngine");
+using("System.Controls.Layout.LayoutEngine");
 
 
 
@@ -30,7 +30,7 @@ Py.using("System.Controls.Layout.LayoutEngine");
 		initLayout: function(container){
 			
 			this.baseCall('initLayout', container);
-			Py.Element.setMovable(container.dom);
+			Element.setMovable(container.dom);
 			
 			// 生成 left top right bottom fill 区域。
 			container.dom.innerHTML = '<div class="x-layout-top"></div><div class="x-layout-middle"><div class="x-layout-left" style="width:0px;"></div><div class="x-layout-fill"></div><div class="x-layout-right" style="width:0px;"></div></div><div class="x-layout-bottom"></div>';
@@ -79,7 +79,7 @@ Py.using("System.Controls.Layout.LayoutEngine");
 					// 这里为了使以上浏览器正确得到宽，统计所有子节点的宽。
 					// 然后赋予父元素。
 					for(n = regionEl.firstChild; n; n = n.nextSibling)
-						sum += n.offsetWidth + Py.Element.widthMargin(n);
+						sum += n.offsetWidth + Element.widthMargin(n);
 						
 					// 设置区域大小。
 					regionEl.setWidth(sum);
@@ -118,7 +118,7 @@ Py.using("System.Controls.Layout.LayoutEngine");
 		onControlInserted: function(container, index, item){
 	
 			// 简写。
-			var styleNumber = Py.Element.styleNumber,
+			var styleNumber = Element.styleNumber,
 			
 				// 区。
 				region = item.dock;
@@ -251,7 +251,7 @@ Py.using("System.Controls.Layout.LayoutEngine");
 				// 这里为了使以上浏览器正确得到宽，统计所有子节点的宽。
 				// 然后赋予父元素。
 				for(n = n.firstChild; n; n = n.nextSibling)
-					sum += n.offsetWidth + Py.Element.widthMargin(n);
+					sum += n.offsetWidth + Element.widthMargin(n);
 					
 				// 设置区域大小。
 				dom.setWidth(sum);

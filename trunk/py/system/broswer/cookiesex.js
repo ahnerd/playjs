@@ -6,7 +6,7 @@
  * 浏览器 Cookies 处理。
  * @param {Object} name 名字。
  */
-Py.namespace(".Cookies.", {
+namespace(".Cookies.", {
 	
 	getSub: function(name){
 		

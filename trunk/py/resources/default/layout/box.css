@@ -51,19 +51,19 @@
 
 
 .x-icon-left {
-	background-position: -125px -50px;
+	background-position: -100px -50px;
 }
 
 .x-icon-left:hover {
-    background-position: -125px -75px;
+    background-position: -100px -75px;
 }
 
 .x-icon-right {
-	background-position: -125px -0px;
+	background-position: -100px -0px;
 }
 
 .x-icon-right:hover {
-    background-position: -125px -25px;
+    background-position: -100px -25px;
 }
 .x-icon-top {
 	background-position: -75px 0px;

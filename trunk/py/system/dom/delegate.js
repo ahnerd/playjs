@@ -4,7 +4,7 @@
 
 
 
-Py.Element.implement({
+Element.implement({
 	
 	delegate: function (container, event, fn){
 		

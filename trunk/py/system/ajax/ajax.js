@@ -8,7 +8,7 @@
  * 处理异步请求的功能。
  * @class Ajax
  */
-Py.namespace(".Ajax", Py.Class({
+namespace(".Ajax", Py.Class({
 
 	onAbort: function(){
 		this.trigger("abort");

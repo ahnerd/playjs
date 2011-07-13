@@ -34,7 +34,7 @@ input {
 	width: 19px;
 	height: 19px;
 	overflow: hidden;
-    text-indent: -1000px;
+    color: transparent;
 	background-repeat: no-repeat;
 	text-decoration: none;
 }

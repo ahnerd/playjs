@@ -1,16 +1,16 @@
 
- /* 菜单 */
-.x-contextmenustrip{
+ /* 菜单    */
+.x-contextmenu{
 	width:130px;
 	position: absolute;
 }
 
-.x-contextmenustrip-container{
+.x-contextmenu-container{
 	margin: 0px;
     padding: 2.8px;
 }
 
-.x-contextmenustrip-content{
+.x-contextmenu-content{
     outline-color: -moz-use-text-color;
     outline-style: none;
     outline-width: 0;
@@ -21,17 +21,17 @@
 	list-style: none;
 }
 
-.x-contextmenustrip .x-active  {
+.x-contextmenu .x-active  {
 	background-position: center;
 }
 
-.x-contextmenustrip-item{
+.x-contextmenu-item{
     line-height: 16px;
 	overflow: hidden;
 	display: block;
     padding: 3px 21px 3px 2px;
     text-decoration: none;
-	margin: 0 -1px; /* 生成圆角点 */
+	margin: 0 -1px; /* 鐢熸垚鍦嗚鐐?*/
 	border-style: solid;
     border-width: 0 1px;
 	border-color: transparent;
@@ -39,7 +39,7 @@
 	_height: 16px;
 }
 
-.x-contextmenustrip-content .x-icon {
+.x-contextmenu-content .x-icon {
 	display: inline-block;
 	width: 26px;
 	height: 16px;
@@ -48,7 +48,7 @@
 	vertical-align: bottom;
 }
 
-.x-contextmenustrip-content a.x-split {
+.x-contextmenu-content a.x-split {
 	display: block;
 	margin: 0 0 0 22px;
 	
@@ -58,19 +58,19 @@
 	*font-size:expression(this.style.fontSize = this.parentNode.style.lineHeight = this.parentNode.style.fontSize = 1);
 }
 
-.x-contextmenustrip-plain{
+.x-contextmenu-plain{
 	background-image: none!important;
 }
 
-.x-contextmenustrip-plain a.x-contextmenustrip-split{
+.x-contextmenu-plain a.x-contextmenu-split{
 	margin: 0;
 }
 
-.x-contextmenustrip-item-arrow {
+.x-contextmenu-item-arrow {
     background: no-repeat right center;
 }
 
-.x-contextmenustrip-handle-top, .x-contextmenustrip-handle-bottom {
+.x-contextmenu-handle-top, .x-contextmenu-handle-bottom {
 	width: 100%;
 	height: 6px;
     line-height: 6px;
@@ -85,7 +85,7 @@
 	margin-left: -1px;
 }
 
-.x-contextmenustrip-content, .x-contextmenustrip-item, .x-contextmenustrip-handle-top, .x-contextmenustrip-handle-bottom {
+.x-contextmenu-content, .x-contextmenu-item, .x-contextmenu-handle-top, .x-contextmenu-handle-bottom {
 	_border-color:#f0f0f0; 
 	_filter:chroma(color=#f0f0f0);
 }

@@ -3,7 +3,7 @@
 //===========================================
 
 
-Py.namespace(".Template", Py.Class({
+namespace(".Template", Py.Class({
 	
 	parse: function(self){
 	       var temp;

@@ -1,98 +1,34 @@
 
 
-/**  范围  */
+/*  按钮            */
 .x-button{
-	padding-left: 4px;
 	cursor: default;
 	vertical-align: top;
 	overflow: hidden;
-}
-
-.x-button-container, .x-button{
-	display: inline-block;
-	height: 23px;
+	padding-left: 4px;
 }
 
 .x-button-container {
-	vertical-align: baseline;
+	padding-right: 4px;
 }
 
-.x-button-container button {
-	margin: 0 0 0 -4px;
-	padding: 0 4px;
+.x-button-container, .x-button-content, .x-button {
+	height: 23px;
+	display: inline-block;
+}
+
+.x-button button {
+	margin: 0 -4px;
 	height: 22.9px;
 	font-size: 14px;
 	background: none;
+	padding: 0 6px;
+	_padding: 0;
 	color: #183152;
 	border: none;
+	vertical-align: baseline;
 	
-	*padding: 0;
 }
-
-.x-button-container, .x-button{
-	background-image: url(images/buttons.gif);
-}
-
-.x-button-container{
-	background-position: 100% -160px;
-}
-
-/* 状态  */
-
-.x-button:hover{
-	background-position: 0 -27px;
-}
-
-.x-button:hover .x-button-container{
-	background-position: 100% -187px;
-}
-
-.x-button.x-active {
-	background-position: 0 -54px;
-}
-
-.x-button.x-active .x-button-container{
-	background-position: 100% -214px;
-}
-
-.x-button.x-active button{
-	position:relative;
-	top:1px;
-	left:1px;
-	
-	*position: static;
-}
-
-
-
-
-/* 选中 */
-
-.x-button.x-checked {
-    background-position: 0 -81px;
-} 
-
-.x-checked .x-button-container {
-    background-position: 100% -241px;
-}
-
-.x-button.x-checked:hover {
-    background-position: 0 -108px;
-} 
-
-.x-button.x-checked:hover .x-button-container {
-    background-position: 100% -268px;
-}
-
-/* 禁用  */
-.x-button.x-disabled{
-    background-position: 0 -135px!important;
-}
-
-.x-button.x-disabled .x-button-container {
-    background-position: 100% -295px!important;
-}
-
 
 
 /* 内容 */
@@ -102,42 +38,102 @@
 }
 
 
+.x-button-container, .x-button-content, .x-button{
+	background-image: url(images/buttons.gif);
+	background-repeat: no-repeat;
+}
 
+.x-button-container{
+	background-position: 100% -50px;
+}
 
-/* 菜单 */
+.x-button-content {
+	background-position: 0 -25px;
+	background-repeat: repeat-x;
+}
 
-.x-button-menu {
-	width: 12px;
-	background: center right no-repeat;
-	display: inline-block;
-	font-size: 14px;
-	
-	*height: auto;
+/* 状态  */
+
+.x-button:hover{
+	background-position: 0 -75px;
+}
+
+.x-button:hover .x-button-container{
+	background-position: 100% -125px;
+}
+
+.x-button:hover .x-button-content{
+	background-position: 0 -100px;
+}
+
+/* IE6-9 和  Opera   不会处理   .x-button:active  (因为存在  <button>)  但我们忽略它。        */
+
+.x-button:active {
+	background-position: 0 -150px;
+}
+
+.x-button:active .x-button-container{
+	background-position: 100% -200px;
+}
+
+.x-button:active .x-button-content{
+	background-position: 0 -175px;
+}
+
+.x-button:active button{
+	position:relative;
+	top:1px;
+	left:1px;
 }
 
 
-.x-button-menu {
-	background-image: url(images/arrow.gif);
+
+
+/* 选中 */
+
+.x-button.x-checked {
+    background-position: 0 -225px;
+} 
+
+.x-button.x-checked .x-button-container {
+    background-position: 100% -275px;
 }
 
-/* 分隔 */
-.x-split {
-	display: inline-block;
-	width:1px;
-	border-right: 1px solid white;
-	height: 18px;
-	
-	_font-size: 1px;
-}
-
-.x-split {
-	background-color: #9ac6ff;
+.x-button.x-checked .x-button-content {
+    background-position: 0 -250px;
 }
 
 
-.x-button.x-disabled .x-split{
-	background-color: #999999;
+.x-button.x-checked:hover {
+    background-position: 0 -300px;
+} 
+
+.x-button.x-checked:hover .x-button-container {
+    background-position: 100% -350px;
 }
+
+.x-button.x-checked:hover .x-button-content {
+    background-position: 0 -325px;
+} 
+
+/* 禁用  */
+
+.x-button.x-disabled {
+    background-position: 0 -375px!important;
+} 
+
+.x-button.x-disabled .x-button-container {
+    background-position: 100% -425px!important;
+}
+
+.x-button.x-disabled .x-button-content {
+    background-position: 0 -400px!important;
+} 
+
+.x-button.x-disabled:active button{
+	position: static!important;
+}
+
 
 
 
@@ -146,29 +142,16 @@
 button .x-icon {
 	width: 17px;
 	margin-top: 2px;
-	/*
-*float: none;
-	*position: expression((this.parentNode.style.position = 'relative') &&( this.parentNode.style.paddingLeft = '12px') && (this.runtimeStyle.position = 'absolute'));
-	*top: 2px;
-	*left: 2px;
-*/
-
-
-*margin-left: 6px;
-*margin-right:-5px;
-
-_margin-left: 4px;
-
+	*margin-left: 6px;
+	*margin-right:-5px;
+	_margin-left: 4px;
 }
 
 
 
+/* 平板    */
 
-.x-button.x-plain, .x-button.x-plain .x-button-container{
+.x-button.x-plain, .x-button.x-plain .x-button-container, .x-button.x-plain .x-button-content{
 	background: none!important;
 }
 
-
-.x-button.x-plain .x-split{
-	visibility: hidden;
-}

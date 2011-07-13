@@ -2,8 +2,8 @@
 // 自动布局       flowlayout.js         A
 //===========================================
 
-Py.using("System.Controls.Layout.LayoutEngine");
-Py.imports("Resources.~.Layout.Flow");
+using("System.Controls.Layout.LayoutEngine");
+imports("Resources.~.Layout.Flow");
 
 
 
@@ -30,7 +30,7 @@ Py.Layout.register(Py.Layout.FlowLayout = Py.Layout.LayoutEngine.extend({
 		
 		if(navigator.isIE8){
 			
-			container.content.runtimeStyle.letterSpacing = - Py.Element.styleNumber(container.content, 'fontSize') / 2;
+			container.content.runtimeStyle.letterSpacing = - Element.styleNumber(container.content, 'fontSize') / 2;
 		
 			return;  
 		}

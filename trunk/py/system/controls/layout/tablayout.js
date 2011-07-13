@@ -3,7 +3,7 @@
 //  Copyright(c) 2009-2011 xuld
 //============================================
 
-Py.using("System.Controls.Layout.FitLayout");
+using("System.Controls.Layout.FitLayout");
 
 
 
@@ -80,6 +80,6 @@ Py.Layout.register(Py.Layout.TabLayout = Py.Layout.FitLayout.extend({
 
 
 
-Py.namespace(".TabPage", Py.Control.extend({
+namespace(".TabPage", Py.Control.extend({
 	
 }));

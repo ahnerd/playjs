@@ -3,7 +3,7 @@
 //===========================================
 
 
-Py.ElementList.implement({
+ElementList.implement({
 	
 		/**
 		 * 从当前集合选择满足条件的节点，并作为新集合返回。

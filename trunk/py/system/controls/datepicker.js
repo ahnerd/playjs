@@ -3,13 +3,13 @@
 //===========================================
 
 
-Py.using("System.Controls.IMenuContainer");
-Py.using("System.Controls.CombinedTextBox");
-Py.using("System.Core.Date");
-Py.using("System.Controls.MonthCalender");
+using("System.Controls.IMenuContainer");
+using("System.Controls.CombinedTextBox");
+using("System.Core.Date");
+using("System.Controls.MonthCalender");
 
 
-Py.namespace(".DatePicker", Py.CombinedTextBox.extend({
+namespace(".DatePicker", Py.CombinedTextBox.extend({
 	
 	
 

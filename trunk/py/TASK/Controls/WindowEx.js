@@ -5,8 +5,8 @@
 
 
 
-Py.namespace("System.Controls.PanelEx");
-Py.using("System.Controls.Panel");
+namespace("System.Controls.PanelEx");
+using("System.Controls.Panel");
 
 
 /**

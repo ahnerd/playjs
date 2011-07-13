@@ -4,7 +4,7 @@
 
 
 
-Py.namespace(".ClipBoard.", {
+namespace(".ClipBoard.", {
 
 	setData: function (type, value) {
 

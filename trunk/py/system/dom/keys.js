@@ -68,7 +68,7 @@ Cape Lock 	20 	Up Arrow 	38 	,< 	188 	'" 	222
 		
 	};
 	
-	Py.namespace(".Keys", keys);
+	namespace(".Keys", keys);
 })
 
 

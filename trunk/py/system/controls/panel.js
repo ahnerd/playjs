@@ -2,7 +2,7 @@
 //   面板     panel.js      A
 //===========================================
 
-Py.using("System.Controls.ContainerControl");
+using("System.Controls.ContainerControl");
 
 
 
@@ -11,7 +11,7 @@ Py.using("System.Controls.ContainerControl");
  * @class Panel
  * @extends Control
  */
-Py.namespace(".Panel", Py.ContainerControl.extend({
+namespace(".Panel", Py.ContainerControl.extend({
 	
 	/**
 	 * 默认配置。

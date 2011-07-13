@@ -3,7 +3,7 @@
 //  Copyright(c) 2009-2011 xuld
 //===========================================
 
-Py.using("System.Controls.Layout.AdvanceLayout");
+using("System.Controls.Layout.AdvanceLayout");
 
 
 
@@ -27,8 +27,8 @@ Py.Layout.register(Py.Layout.LineLayout = Py.Layout.AdvanceLayout.extend({
 	layout: function(container){
 		
 		var data = {
-			x: Py.Element.styleNumber(container.content, 'paddingLeft'),
-			y: Py.Element.styleNumber(container.content, 'paddingTop'),
+			x: Element.styleNumber(container.content, 'paddingLeft'),
+			y: Element.styleNumber(container.content, 'paddingTop'),
 			direction: container.layoutDirection == 'vertical' ? 'y' : 'x'
 		};
 		

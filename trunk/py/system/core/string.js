@@ -269,9 +269,12 @@ Object.extend(String, {
 	removeHtml : function(str) {
         ///<summary>去除字符串中的 HTML 标签并返回。语法：removeHtml()</summary>
         ///<returns type="string">返回去除了 HTML 标签的字符串。</returns>
-        return str.replace(/<(.|\n)+?>/gi, "");
+        return str.replace(/<(.|\n)+?>/g, "");
     },
 	
+	removeRepeats: function (value) {
+		return value.replace(/(\w)(?=.*\1)/g, "");
+	},
 
     /**
      * Utility function that allows you to easily switch a string between two alternating values.  The passed value
@@ -293,6 +296,22 @@ Object.extend(String, {
     toggle: function(string, value, other) {
         return string === value ? other : value;
     },
+    
+	/**
+	 * 使  HTML 代码更标准，比如添加注释。
+	 */
+	toXHTML: function (value) {
+		return value.replace(/( [^\=]*\=)(\s?[^\"\s\>]*)/ig,function(a,b,c,d,e){return (c)?(new RegExp("<[^>]*"+c.replace(/(\^|\(|\)|\[|\]|\{|\}|\?|\-|\\|\/|\||\$)/g,'\\$1')+"[^>]*>","i").test(e))?b+'"'+c+'"':b+c:b});
+	},
+	
+	compare: function (a, b) {
+ if(a.length==b.length) return a.split("").sort().join("")==b.split("").sort().join("");
+    a = a.split("").sort().join("").replace(/(.)\1+/g,"$1");
+    b = b.split("").sort().join("").replace(/(.)\1+/g,"$1");
+    var arr = a.split("");
+    var re = new RegExp(arr.join("|"),"g");
+    return (b.length - b.replace(re,"").length == a.length || b.replace(re,"").length==0)
+	},
 	
 	stripScripts:  function(exec){
 		var scripts = '';

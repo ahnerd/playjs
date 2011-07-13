@@ -4,9 +4,9 @@
 
 
 
-Py.using("System.Dom.Elememt");
+using("System.Dom.Elememt");
 
-Py.Element.setAutoScroll = function (elem) {
+Element.setAutoScroll = function (elem) {
   e.on('dbclick', function (e) {
   
 });

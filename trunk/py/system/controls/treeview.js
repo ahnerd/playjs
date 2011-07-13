@@ -3,15 +3,15 @@
 //===========================================
 
 
-Py.imports("Resources.*.DataView.TreeView");
-Py.using("System.Controls.IContainerControl");
-Py.using("System.Controls.ICollapsable");
+imports("Resources.*.DataView.TreeView");
+using("System.Controls.IContainerControl");
+using("System.Controls.ICollapsable");
 
 
 (function(){
 	
 
-Py.namespace(".TreeNode", Py.Control.extend(Object.extendIf({
+namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 	
 	xType: 'treenode',
 	
@@ -246,7 +246,7 @@ Py.namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 
 Py.Control.delegate(Py.TreeNode, 'label', 'setHtml setText', 2, 'getHtml getText', 1);
 
-Py.namespace(".TreeView", Py.TreeNode.extend({
+namespace(".TreeView", Py.TreeNode.extend({
 	
 	xType: 'treeview'
 	

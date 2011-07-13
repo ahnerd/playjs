@@ -1,13 +1,13 @@
 //===========================================
 //    选择                 select.js       A
 //===========================================
-Py.using("System.Controls.Control");
+using("System.Controls.Control");
 
 /**
  * IFrame
  * @class IFrame
  */
-Py.namespace(".HtmlSelect", Py.Control.extend({
+namespace(".HtmlSelect", Py.Control.extend({
 	
 	
 	

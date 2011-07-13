@@ -4,13 +4,13 @@
 
 
 
-Py.imports("Resources.*.Form.MenuButtons")   ;
-Py.using("System.Controls.IMenuContainer");
-Py.using("System.Controls.Button");
+imports("Resources.*.Form.MenuButtons")   ;
+using("System.Controls.IMenuContainer");
+using("System.Controls.Button");
 
 
 
-Py.namespace(".MenuButton", Py.Button.extend({
+namespace(".MenuButton", Py.Button.extend({
 	
 	// tpl: '<a class="x-button x-menubutton">\
 				// <span class="x-button-container">\

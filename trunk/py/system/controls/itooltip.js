@@ -1,7 +1,7 @@
 
 
 
-Py.using("System.Controls.ITargetedControl");
+using("System.Controls.ITargetedControl");
 
 
 

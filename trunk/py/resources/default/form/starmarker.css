@@ -1,0 +1,11 @@
+.star a{
+float:left;
+cursor:pointer;
+text-align:center;
+width:16px;
+height:16px;
+background:url(images/star.gif) 0 -32px;}
+.star a.hover{
+background:url(images/star.gif) 0 -48px;}
+.star a.select{
+background:url(images/star.gif);}

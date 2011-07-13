@@ -4,7 +4,7 @@
 
 
 
-Py.namespace("HTMLFormElement.", {
+namespace("HTMLFormElement.", {
 	
 	/**
 	 * 设置当文本框空的时候，显示的文本。

@@ -129,7 +129,7 @@ var Py = {
 	
 	/// #ifndef SupportUsing
 	/// #define using(
-	/// #define Py.using(
+	/// #define using(
 	/// #endif
 
 	/// #region 全局变量
@@ -1502,7 +1502,7 @@ var Py = {
 			 * @method
 			 * @static
 			 * @param {String} name 名字空间。
-			 * 有关名字空间的说明， 见 {@link Py.namespace} 。
+			 * 有关名字空间的说明， 见 {@link namespace} 。
 			 * @example
 			 * <code>
 			 * using("System.Dom.Keys");
@@ -1524,7 +1524,7 @@ var Py = {
 			 * 
 			 * <p>
 			 * 比如  system/dom/keys.js 文件， 名字空间是 System.Dom.Keys
-			 * 名字空间用来快速表示资源。 {@link Py.using} 和  {@link Py.imports} 可以根据制定的名字空间载入相应的内容。
+			 * 名字空间用来快速表示资源。 {@link using} 和  {@link imports} 可以根据制定的名字空间载入相应的内容。
 			 * </p>
 			 * 
 			 * <p>
@@ -1579,7 +1579,7 @@ var Py = {
 			 * 实际上是  imports("Resources.v.Text")  imports("Resources.f.Text") 
 			 * 如果 resource 有 * ，但用户未提供 theme ， 则使用   [Py.resource, Py.theme] 。
 			 * <br>
-			 * 有关名字空间的说明， 见 {@link Py.namespace} 。
+			 * 有关名字空间的说明， 见 {@link namespace} 。
 			 * @example
 			 * <code>
 			 * imports("Resources.*.Text");

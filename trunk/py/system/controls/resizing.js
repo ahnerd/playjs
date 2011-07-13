@@ -2,8 +2,8 @@
 //  大小改变                         resizing.js          A
 //===========================================
 
-Py.using("System.Controls.Surround");
-Py.imports("Resources.*.Control.Resizing");
+using("System.Controls.Surround");
+imports("Resources.*.Control.Resizing");
 
 
 (function(p){
@@ -487,7 +487,7 @@ Py.imports("Resources.*.Control.Resizing");
 			
 			var me = this;
 			
-			Py.Element.toggleSurround(me, 'x-resizable', direction, function(e, direction){
+			Element.toggleSurround(me, 'x-resizable', direction, function(e, direction){
 				rm.install(me, e, null, direction);
 			});
 			

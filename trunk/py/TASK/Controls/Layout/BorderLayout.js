@@ -3,8 +3,8 @@
 //  Copyright(c) 2009-2011 xuld
 //===========================================
 
-Py.using("System.Controls.Layout.DefaultLayout");
-Py.using("System.Controls.Splitter");
+using("System.Controls.Layout.DefaultLayout");
+using("System.Controls.Splitter");
 
 
 

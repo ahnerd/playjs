@@ -3,7 +3,7 @@
 //===========================================
 
 
-Py.using("System.Controls.Mask");
+using("System.Controls.Mask");
 
 
 Py.Mask.implement({

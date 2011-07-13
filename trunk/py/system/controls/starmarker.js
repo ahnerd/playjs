@@ -2,8 +2,8 @@
  * @author Administrator
  * @email hustcoolboy@gmail.com
  */
-using("System.Dom.Element");
-var StarMarker = Control.extend({
+using("System.Controls.Control");
+var StarMarker = Py.Control.extend({
 	   xType:"starmarker",  // html 需要小写
 	   options:{
 	   	 totlaStar:5

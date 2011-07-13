@@ -3,8 +3,8 @@
 //===========================================
 
 
-Py.using("System.Controls.Control");
-Py.using("System.Controls.IContainerControl");
+using("System.Controls.Control");
+using("System.Controls.IContainerControl");
 
 
 
@@ -14,7 +14,7 @@ Py.using("System.Controls.IContainerControl");
  * Py.ListControl 封装了使用  <ul> 创建列表控件一系列方法。
  * 子类可以重写 onControlAdded、onControlRemoved、initItem  3　个函数，实现对
  */
-Py.namespace(".ListControl", Py.Control.extend(Object.extendIf({
+namespace(".ListControl", Py.Control.extend(Object.extendIf({
 	
 	create: function(){
 		var dom = document.create('div', 'x-' + this.xType);

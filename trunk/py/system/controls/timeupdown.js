@@ -6,11 +6,11 @@
 
 
 
-Py.using("System.Controls.UpDown");
-Py.using("System.Dom.Mark");
+using("System.Controls.UpDown");
+using("System.Dom.Mark");
 
 
-Py.namespace('.TimeUpDown', Py.UpDown.extend({
+namespace('.TimeUpDown', Py.UpDown.extend({
 	
 	hour: new Date().getHours(),
 	
@@ -19,7 +19,7 @@ Py.namespace('.TimeUpDown', Py.UpDown.extend({
 	init: function(options){
 		this.baseCall('init',  options);
 		
-      Py.Element.mark(this.textBox.dom, /\d{0, 2}:\d{0, 2}/, Function.bind(this.onInvalid, this));
+      Element.mark(this.textBox.dom, /\d{0, 2}:\d{0, 2}/, Function.bind(this.onInvalid, this));
 		
 		this._update();
 		

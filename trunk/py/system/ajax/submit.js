@@ -4,7 +4,7 @@
 
 
 
-Py.using("System.Ajax.Ajax");
+using("System.Ajax.Ajax");
 
 
 
@@ -27,7 +27,7 @@ Py.Ajax.submit = function(form, onsuccess, onerror, timeouts, ontimeout) {
  * @param {HTMLFormElement} formElem 表单元素。
  * @return {String} 参数形式。
  */
-Py.namespace("HTMLFormElement.", {
+namespace("HTMLFormElement.", {
 
 	"param": function(formElem) {
 		assert(formElem && formElem.tagName == "FORM", "HTMLFormElement.param(formElem): 参数 {formElem} 不是合法的 表单 元素", formElem);

@@ -4,7 +4,7 @@
 
 
 
-Py.Element.implement({
+Element.implement({
 	
 	mask: function (elem) {
 		this.setSize(elem.getSize());

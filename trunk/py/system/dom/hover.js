@@ -5,10 +5,10 @@
 
 
 
-Py.using("System.Dom.Element");
+using("System.Dom.Element");
 
 
-Py.Element.implement({
+Element.implement({
 	
 	
 	setHoverClass: function(){

@@ -6,7 +6,7 @@
 	
 	
 	
-Py.namespace(".DelayedTask", Py.Class({
+namespace(".DelayedTask", Py.Class({
 	
 	constructor: function(fn, scope, args) {
 		var id = null, d, t;

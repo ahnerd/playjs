@@ -3,7 +3,7 @@
 //===========================================
 
 
-Py.Element.implement({
+Element.implement({
 	
 	within: function (bound) {
 		return ((bound.right < box.right && bound.right > box.left) || (bound.left < box.right && bound.left > box.left)) &&

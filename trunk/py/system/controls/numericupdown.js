@@ -6,18 +6,18 @@
 
 
 
-Py.using("System.Controls.UpDown");
-Py.using("System.Dom.Mark");
+using("System.Controls.UpDown");
+using("System.Dom.Mark");
 
 
-Py.namespace('.NumericUpDown', Py.UpDown.extend({
+namespace('.NumericUpDown', Py.UpDown.extend({
 	
 	value: 0,
 	
 	init: function(options){
 		this.baseCall('init',  options);
 		
-		Py.Element.markNumber(this.textBox.dom, Function.bind(this.onInvalid, this));
+		Element.markNumber(this.textBox.dom, Function.bind(this.onInvalid, this));
 		
 		this.setText(this.value);
 		

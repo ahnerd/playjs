@@ -3,7 +3,7 @@
 //  Copyright(c) 2009-2011 xuld
 //===========================================
 
-Py.using("System.Controls.AbsoluteLayout");
+using("System.Controls.AbsoluteLayout");
 
 
 
@@ -14,7 +14,7 @@ Py.Layout.register(Py.Layout.VerticalLayout = Py.AbsoluteLayout.extend({
 	className: 'x-block',
 	
 	setContainer: function(ct){
-		Py.Element.setMovable(ct.dom);
+		Element.setMovable(ct.dom);
 	},
 	
 	doLayout: function(ct){

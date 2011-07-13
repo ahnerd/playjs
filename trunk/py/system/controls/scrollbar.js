@@ -4,12 +4,12 @@
 
 
 
-Py.using("System.Dom.Element");
-Py.using("System.Dom.Drag");
-Py.imports("Resources.*.Viewer.ScrollBar");
+using("System.Dom.Element");
+using("System.Dom.Drag");
+imports("Resources.*.Viewer.ScrollBar");
 
 
-Py.namespace(".ScrollBar", Py.Control.extend({
+namespace(".ScrollBar", Py.Control.extend({
 	
 	tpl: '<div class="x-scrollbar">\
 	    <div style="top: 0px; left: 0px;" class="x-scrollbar-handle">\

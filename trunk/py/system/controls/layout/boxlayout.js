@@ -3,10 +3,10 @@
 //  Copyright(c) 2009-2011 xuld
 //===========================================
 
-Py.using("System.Controls.Layout.AdvanceLayout");
-Py.using("System.Controls.Splitter");
-Py.using("System.Controls.ScrollableControl");
-Py.imports("Resources.*.Layout.Box");
+using("System.Controls.Layout.AdvanceLayout");
+using("System.Controls.Splitter");
+using("System.Controls.ScrollableControl");
+imports("Resources.*.Layout.Box");
 
 
 
@@ -266,8 +266,8 @@ Py.Layout.register(Py.Layout.BoxLayout = Py.Layout.AdvanceLayout.extend({
 		 } else {
 		 
 		 this.content = panel.renderTo(this);
-		 this.heightFix = Py.Element.getSize(panel.getDom(), 'height', 'bp');
-		 this.widthFix = Py.Element.getSize(panel.getDom(), 'width', 'bp');
+		 this.heightFix = Element.getSize(panel.getDom(), 'height', 'bp');
+		 this.widthFix = Element.getSize(panel.getDom(), 'width', 'bp');
 		 
 		 
 		 this.header = Py.$(this.insert(document.create('div', 'x-header x-region-header'), 'afterBegin').append(document.createElement('h3')));
@@ -334,7 +334,7 @@ Py.Layout.register(Py.Layout.BoxLayout = Py.Layout.AdvanceLayout.extend({
 				
 				
 				if (!this.collapseProxy) {
-					this.collapseProxy = Py.Element.parse('<div class="x-region-proxy"><a href="javascript://打开" title="打开" class="x-icon x-icon-' + names[this.name].toLowerCase() + '"></a></div>');
+					this.collapseProxy = Element.parse('<div class="x-region-proxy"><a href="javascript://打开" title="打开" class="x-icon x-icon-' + names[this.name].toLowerCase() + '"></a></div>');
 					this.collapseProxy.addClass('x-region-' + this.name);
 					this.collapseProxy.renderTo(this.get('parent'));
 					this.collapseProxy.on('click', Function.bind(this.onProxyClick, this));

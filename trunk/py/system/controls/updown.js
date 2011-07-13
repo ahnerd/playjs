@@ -6,11 +6,11 @@
 
 
 
-Py.using("System.Controls.CombinedTextBox");
-Py.imports("Resources.*.Form.UpDown");
+using("System.Controls.CombinedTextBox");
+imports("Resources.*.Form.UpDown");
 
 
-Py.namespace(".UpDown", Py.CombinedTextBox.extend({
+namespace(".UpDown", Py.CombinedTextBox.extend({
 	
 	tpl: '<div><input type="text" class="x-textbox"><span class="x-menu-button x-menu-button-updown"><a href="#" class="x-menu-button-updown-up" draggable="false"></a><a href="#" class="x-menu-button-updown-down" draggable="false"></a></span></div>',
 	

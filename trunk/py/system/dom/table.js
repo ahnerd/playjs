@@ -1,13 +1,13 @@
 //===========================================
 //  表格               table.js       A
 //===========================================
-Py.using("System.Controls.Control");
+using("System.Controls.Control");
 
 /**
  * IFrame
  * @class IFrame
  */
-Py.namespace(".HtmlTable", Py.Control.extend({
+namespace(".HtmlTable", Py.Control.extend({
 	
 	
 	build: function(){

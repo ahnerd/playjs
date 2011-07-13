@@ -2,7 +2,7 @@
 //  请求处理JSON数据   json.js    A
 //===========================================
 
-Py.using("System.Ajax.Ajax");
+using("System.Ajax.Ajax");
 
 
 

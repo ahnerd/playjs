@@ -11,7 +11,7 @@
  * @param {String} url 地址。
  * @return {Boolean} 是否成功。
  */
-Py.namespace('.Check.', {
+namespace('.Check.', {
 	
 	_data:  {
 		'11': '北京',

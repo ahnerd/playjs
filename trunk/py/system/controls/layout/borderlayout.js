@@ -3,8 +3,8 @@
 //  Copyright(c) 2009-2011 xuld
 //===========================================
 
-Py.using("System.Controls.Layout.BoxLayout");
-Py.imports("Resources.Share.Layout.Border");
+using("System.Controls.Layout.BoxLayout");
+imports("Resources.Share.Layout.Border");
 
 
 

@@ -6,11 +6,11 @@
 
 
 
-Py.using("System.Controls.ContentControl");
-Py.using("System.Controls.IFormControl");
+using("System.Controls.ContentControl");
+using("System.Controls.IFormControl");
 
 
-Py.namespace(".CheckBox", Py.ContentControl.extend({
+namespace(".CheckBox", Py.ContentControl.extend({
 	
 	tpl: '<label><input type="checkbox" class="x-checkbox"><span></span></label>',
 	

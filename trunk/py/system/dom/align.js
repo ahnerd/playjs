@@ -7,11 +7,11 @@
 /**
  * 获取一个节点对齐到另外节点后实际位置。
  */
-Py.Element.getAlignedPosition = function(target, elem, position, offsets){
+Element.getAlignedPosition = function(target, elem, position, offsets){
 	
 };
 
-Py.Element.implement({
+Element.implement({
 	
 	
 // 	

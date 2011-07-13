@@ -4,7 +4,7 @@
 
 
 
-Py.using("System.Dom.Element");
+using("System.Dom.Element");
 
 
 (function(){
@@ -154,7 +154,7 @@ return;
 		},
 		
 		show: function(x, y){
-			var p = Py.Element.getXY(x, y);
+			var p = Element.getXY(x, y);
 			this.setOffset(p).dom.show(this.duration.open, null, this.animateType);
 			this.onShow();
 			

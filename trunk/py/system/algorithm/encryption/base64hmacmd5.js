@@ -3,8 +3,8 @@
 //===========================================
 
 
-Py.using("System.Algorithm.Encryption.Base64Md5");
-Py.using("System.Algorithm.Encryption.HmacMd5");
+using("System.Algorithm.Encryption.Base64Md5");
+using("System.Algorithm.Encryption.HmacMd5");
 
 /**
  * 计算一个字符串的 MD5值。
