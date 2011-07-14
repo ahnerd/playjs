@@ -1,0 +1,37 @@
+
+
+
+必须先读  模块.txt
+
+整个项目的文件夹结构:
+
+
+	
+	1. py   源码
+	2. test 核心部分的测试代码
+	3. ui   界面部分的测试代码。
+	4. component 组件部分的测试代码。
+
+	5. notes 一些文档
+	6. common 被 test/ui/components 共用的资源代码
+
+
+
+
+TODO列表:
+
+	打开 test、ui、component 内任何一个 .html 文件， 上面都有一个项目导航台。
+	
+	导航条的前3个分别为:  控件(ui) 核心(test) 组件(component)
+
+	点击这三个之一，出来个列表， 这个列表就是 TODO 列表。
+
+
+	TODO 列表内 灰色的表示未完成， 划线的表示 临时被取消。亮色的是完成的。
+
+	TODO 列表内容存在 common/project/project.js
+
+
+项目进度:
+
+	见 项目进度.txt
