@@ -228,7 +228,7 @@ using("System.Dom.Element");
 				};
 			}
 			
-			p.className = className;
+			p.className = 'x-proxy ' + className;
 			return p;
 		}
 
