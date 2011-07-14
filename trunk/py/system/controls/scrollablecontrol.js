@@ -20,7 +20,7 @@ using("System.Controls.ContentControl");
  * &lt;div&gt;
  *  &lt;div class="header"&gt;
  *  &lt;/div&gt;
- * 	&lt;div class="content"&gt;
+ * 	&lt;div class="body"&gt;
  *  &lt;/div&gt;
  *  &lt;div class="footer"&gt;
  *  &lt;/div&gt;
@@ -28,11 +28,11 @@ using("System.Controls.ContentControl");
  * </code>
  * 
  * <p>
- * 其中， content 为存放子元素的地方。
- * 经常地，需要让 content 内的元素实现 width: 100%;
- * 因为，有必要再设置外容器的宽度时，同时设置 content 的宽度。
- * 但 content 的宽度不等于外容器的宽度 (如外容器有边框时)。
- * 因此这个类封装这个行为。 widthFix 表示 外容器的宽度 和 content  宽度差。
+ * 其中， body 为存放子元素的地方。
+ * 经常地，需要让 body 内的元素实现 width: 100%;
+ * 因为，有必要再设置外容器的宽度时，同时设置 body 的宽度。
+ * 但 body 的宽度不等于外容器的宽度 (如外容器有边框时)。
+ * 因此这个类封装这个行为。 widthFix 表示 外容器的宽度 和 body  宽度差。
  * </p>
  */
 namespace(".ScrollableControl", Py.ContentControl.extend({
@@ -98,7 +98,7 @@ namespace(".ScrollableControl", Py.ContentControl.extend({
 	 * @return {Panel} this。
 	 */
 	setHtml: function(value) {
-		this.content.innerHTML = '<div class="x-content x-' + this.xType + '-content">' + value + '</div>';
+		this.content.innerHTML = '<div class="x-body-content x-' + this.xType + '-content">' + value + '</div>';
 		this.onAutoResize();
 		return this;
 	},
@@ -218,6 +218,14 @@ namespace(".ScrollableControl", Py.ContentControl.extend({
 		}
 		
 		return this;
+	},
+	
+	onResizeX: function(){
+		this.trigger('resizex');
+	},
+	
+	onResizeY: function(){
+		this.trigger('resizey');
 	},
 	
 	doAutoSize: function(){

@@ -1,16 +1,16 @@
 
  /* 菜单    */
-.x-contextmenu{
+.x-menu{
 	width:130px;
 	position: absolute;
 }
 
-.x-contextmenu-container{
+.x-menu-container{
 	margin: 0px;
     padding: 2.8px;
 }
 
-.x-contextmenu-content{
+.x-menu-content{
     outline-color: -moz-use-text-color;
     outline-style: none;
     outline-width: 0;
@@ -21,11 +21,11 @@
 	list-style: none;
 }
 
-.x-contextmenu .x-active  {
+.x-menu .x-active  {
 	background-position: center;
 }
 
-.x-contextmenu-item{
+.x-menu-item{
     line-height: 16px;
 	overflow: hidden;
 	display: block;
@@ -39,7 +39,7 @@
 	_height: 16px;
 }
 
-.x-contextmenu-content .x-icon {
+.x-menu-content .x-icon {
 	display: inline-block;
 	width: 26px;
 	height: 16px;
@@ -48,7 +48,7 @@
 	vertical-align: bottom;
 }
 
-.x-contextmenu-content a.x-split {
+.x-menu-content a.x-split {
 	display: block;
 	margin: 0 0 0 22px;
 	
@@ -58,19 +58,19 @@
 	*font-size:expression(this.style.fontSize = this.parentNode.style.lineHeight = this.parentNode.style.fontSize = 1);
 }
 
-.x-contextmenu-plain{
+.x-menu-plain{
 	background-image: none!important;
 }
 
-.x-contextmenu-plain a.x-contextmenu-split{
+.x-menu-plain a.x-menu-split{
 	margin: 0;
 }
 
-.x-contextmenu-item-arrow {
+.x-menu-item-arrow {
     background: no-repeat right center;
 }
 
-.x-contextmenu-handle-top, .x-contextmenu-handle-bottom {
+.x-menu-handle-top, .x-menu-handle-bottom {
 	width: 100%;
 	height: 6px;
     line-height: 6px;
@@ -85,7 +85,7 @@
 	margin-left: -1px;
 }
 
-.x-contextmenu-content, .x-contextmenu-item, .x-contextmenu-handle-top, .x-contextmenu-handle-bottom {
+.x-menu-content, .x-menu-item, .x-menu-handle-top, .x-menu-handle-bottom {
 	_border-color:#f0f0f0; 
 	_filter:chroma(color=#f0f0f0);
 }

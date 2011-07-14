@@ -20,12 +20,16 @@ namespace(".Button", Py.ContentControl.extend({
 	
 	tpl: '<a class="x-button">\
 				<span class="x-button-container">\
-					<button type="{type}"><span class="x-button-label"></span></button>\
+					<span class="x-button-content">\
+						<button type="{type}"><span class="x-button-label"></span></button>\
+					</span>\
 				</span>\
 			</a>',
 	
 	create: function(options){
-		return Element.parse(this.tpl.replace('{type}', options.type));
+		var type = options.type;
+		delete options.type;
+		return Element.parse(this.tpl.replace('{type}', type));
 	},
 	
 	addEventListener: function(obj, type, fn){
@@ -36,19 +40,14 @@ namespace(".Button", Py.ContentControl.extend({
 		this.button.removeEventListener(obj, type, fn);
 	},
 	
-	onActive: function(){
-		this.addClass('x-active');
-		document.one('mouseup', Function.bind(this.onDeactive, this));
-	},
-	
-	onDeactive: function(){
-		this.removeClass('x-active');
-	},
-	
 	init: function(options){
 		this.button = this.find('button');
 		this.content = this.find('.x-button-label');
-		this.button.on('mousedown', Function.bind(this.onActive, this));
+	},
+	
+	setWidth: function(value){
+		this.button.setWidth(value);
+		return this;
 	},
 	
 	setState: function(state, toggle){
@@ -69,24 +68,51 @@ namespace(".Button", Py.ContentControl.extend({
 	
 	setDisabled: function(value){ 
 		this.toggleClass('x-disabled', this.button.disabled = value !== false);
-	},
-	
-	/// #ifdef SupportIE6
-	
-	doAutoSize: function(){
-		var me = this;
-		if(me.isAutoSize(me.button))
-			me.button.runtimeStyle.width = me.content.offsetWidth + (me.icon ? 31 : 8);
-		else
-			me.button.runtimeStyle.width = '';
-	},
-	
-	/// #endif
-	
-	setWidth: function(value){
-		this.button.setWidth(value);
-		this.onResizeX();
-		return this;
 	}
 	
 }));
+	
+
+
+/// #ifdef SupportIE6
+
+if(navigator.isQuirks){
+	
+	// IE 下 <button> 出现多边距。
+	Py.Button.implement({
+		
+		setText: function (value) {
+			this.content.setText(value);
+			this.onAutoSizeForIE();
+			return this;
+		},
+		
+		setHtml: function (value) {
+			this.content.setHtml(value);
+			this.onAutoSizeForIE();
+			return this;
+		},
+		
+		setWidth: function (value) {
+			this.button.runtimeStyle.width = '';
+			this.button.setWidth(value);
+			return this;
+		},
+	
+		doAutoSizeForIE: function(){
+			var me = this, styleWidth = me.button.style.width;
+			if(!styleWidth ||  styleWidth === 'auto')
+				me.button.runtimeStyle.width = me.content.offsetWidth + (me.icon ? 31 : 8);
+		},
+		
+		onAutoSizeForIE: function(){
+			setTimeout(Function.bind(this.doAutoSizeForIE, this), 0);
+		}
+		
+	});
+	
+	
+	
+}
+
+/// #endif

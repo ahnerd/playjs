@@ -81,21 +81,21 @@ namespace(".ContentControl", Py.Control.extend({
 		
 	setText: function(value){
 		this.content.setText(value);
-		this.onAutoResize();
 		return this;
 	},
 	
 	setHtml: function(value){
 		this.content.setHtml(value);
-		this.onAutoResize();
 		return this;
-	},
+	}
+	
+	//,
 	
 	/**
 	 * 如果浏览器不支持自动更新大小，强制更新大小。
 	 * @protected
 	 */
-	onAutoResize: Function.empty
+	// onAutoResize: Function.empty
 	
 	
 	
@@ -104,6 +104,7 @@ namespace(".ContentControl", Py.Control.extend({
 }));
 
 
+/*
 
 /// #ifdef SupportIE7
 
@@ -130,6 +131,9 @@ if(navigator.isQuirks){
 		
 	});
 }
+
+
+*/
 
 
 /// #endif

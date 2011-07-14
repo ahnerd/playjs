@@ -8,8 +8,6 @@ namespace(".ContextMenu", Py.Menu.extend({
 	
 	floating: true,
 	
-	xType: 'contextmenustrip',
-	
 	options: {
 		renderTo: null,
 		zIndex: 10000,
