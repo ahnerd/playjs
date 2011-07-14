@@ -30,7 +30,7 @@ namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 	
 	onControlAdded: function(childNode, index){
 		var me = this,
-			list = this.initItem(childNode),
+			list = this.initContainer(childNode),
 			re = this.controls[index];
 		this.content.insertBefore(list, re ? (re.dom || re).parentNode : null);
 		// 只有 已经更新过 才去更新。
@@ -45,7 +45,7 @@ namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 		this.update();
 	},
 	
-	_initItem: function(childNode){
+	_initContainer: function(childNode){
 		var me = this, li = document.create('li', 'x-list-content');
 		li.appendChild(childNode.dom);
 		
@@ -61,16 +61,16 @@ namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 		return li;
 	},
 	
-	initItem: function(childNode){
+	initContainer: function(childNode){
 		
 		// 第一次执行创建容器。
 		var dom = this.content = document.create('ul', 'x-list-container');
 		
 		this.dom.appendChild(dom);
 		
-		this.initItem = this._initItem;
+		this.initContainer = this._initContainer;
 		
-		return this.initItem (childNode);
+		return this.initContainer (childNode);
 		
 	},
 	

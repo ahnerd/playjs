@@ -6,7 +6,7 @@
 
 Py.IMenuContainer = {
 	
-	
+	duration: 0,
 	
 	resizeDropDownMenu: true,
 
@@ -22,7 +22,7 @@ Py.IMenuContainer = {
 		dropDownMenu.hide();
 		
 		if(!(dropDownMenu.dom || dropDownMenu).parentNode){
-			dropDownMenu.renderTo();
+			dropDownMenu.renderTo(this.get('parent'));
 		}
 		
 	},
@@ -69,13 +69,17 @@ Py.IMenuContainer = {
 		}
 		
 		this.trigger('dropdownmenuopening');
-		this.dropDownMenu.show();
+		this.dropDownMenu.show(this.duration);
 		this.realignDropDownMenu(0, 0);
 		if(this.resizeDropDownMenu)
 			this.dropDownMenu.setSize(this.getSize().x);
 		this.trigger('dropdownmenuopened');
 		
-		document.on('mouseup', this.onMouseUp = Function.bind(this.hideDropDownMenu, this));
+		if(!this.handleMouseUp){
+			this.handleMouseUp = Function.bind(this.hideDropDownMenu, this);
+		}
+		
+		document.on('mouseup', this.handleMouseUp);
 	},
 	
 	hideDropDownMenu: function (e) {
@@ -85,7 +89,7 @@ Py.IMenuContainer = {
 		
 		this.trigger('dropdownmenuclosing');
 		this.dropDownMenu.hide();
-		document.un('mouseup', his.onMouseUp);
+		document.un('mouseup', this.handleMouseUp);
 		
 		this.checkHidding(e.target);
 	},

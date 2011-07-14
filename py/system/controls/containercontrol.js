@@ -30,8 +30,10 @@ namespace(".ContainerControl", Py.ScrollableControl.extend({
 						</div>\
                     </div>\
                 </div>\
-                <div class="x-container">\
-                    \
+                <div class="x-body">\
+                    <div class="x-body-container">\
+	                    \
+	                </div>\
                 </div>\
                 <div class="x-footer">\
                     <div class="x-footer-container">\
@@ -52,7 +54,8 @@ namespace(".ContainerControl", Py.ScrollableControl.extend({
 			xType =  'x-' + ctrl.xType;
 		ctrl.dom.className = xType;
 		ctrl.header = ctrl.get(0).addClass(xType + '-header').find('h3');
-		ctrl.content = ctrl.get(1).addClass(xType + '-container');
+		ctrl.body = ctrl.get(1).addClass(xType + '-body');
+		ctrl.content = ctrl.body.get(0);
 		ctrl.get(2).addClass(xType + '-footer');
 		ctrl.initChildren();
 	},

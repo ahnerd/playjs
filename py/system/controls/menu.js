@@ -12,7 +12,7 @@ using("System.Controls.ListControl");
 
 namespace(".MenuItem", Py.ContentControl.extend({
 	
-	tpl: '<a class="x-contextmenustrip-item"><span></span></a>',
+	tpl: '<a class="x-menu-item"><span></span></a>',
 	
 	subMenu: null,
 	
@@ -34,11 +34,11 @@ namespace(".MenuItem", Py.ContentControl.extend({
 			this.subMenu = menu;
 			this.subMenu.renderTo().hide();
 			menu.floating = false;
-			this.addClass('x-contextmenustrip-item-arrow');
+			this.addClass('x-menu-item-arrow');
 			this.on('mouseup', this._cancelHideMenu);
 		} else {
 			menu.floating = true;
-			this.removeClass('x-contextmenustrip-item-arrow');
+			this.removeClass('x-menu-item-arrow');
 			this.un('mouseup', this._cancelHideMenu);
 		}
 	},
@@ -55,7 +55,7 @@ namespace(".MenuItem", Py.ContentControl.extend({
 	onMouseEnter: function(){
 		
 		// 使父菜单打开本菜单，显示子菜单。
-		this.parent.showSub(this);
+		this.parentControl.showSub(this);
 
 	},
 	
@@ -86,11 +86,11 @@ namespace(".MenuItem", Py.ContentControl.extend({
 	},
 	
 	active: function(){
-		this.get('parent').className = 'x-list-content x-contextmenustrip-content x-active'; 
+		this.get('parent').className = 'x-list-content x-menu-content x-active'; 
 	},
 	
 	deactive: function(){
-		this.get('parent').className = 'x-list-content x-contextmenustrip-content';
+		this.get('parent').className = 'x-list-content x-menu-content';
 	}
 }));
 
@@ -119,7 +119,7 @@ String.map("Selected Checked Disabled", function(key){
 
 namespace(".Menu", Py.ListControl.extend({
 	
-	xType: 'contextmenustrip',
+	xType: 'menu',
 	
 	options: {
 		renderTo: null,
@@ -129,16 +129,11 @@ namespace(".Menu", Py.ListControl.extend({
 	init: function(options){
 		var me = this;
 		
-		if(options.menuItems){
-			options.controls = options.menuItems;
-			
-			delete    options.menuItems;
-		}
+		this.initChildren('menuItems');
 		
-		this.initChildren('items');
+		this.content = this.get('first', 'ul');
 		
 		Py.setData(this.dom, 'control', this);
-		
 		
 		// 绑定节点和控件，方便发生事件后，根据事件源得到控件。
 	},

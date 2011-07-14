@@ -1,44 +1,44 @@
 
-.x-contextmenu {
+.x-menu {
 	background:url(images/menu.gif) #f0f0f0 repeat-y;
 	border:1px solid #999999;
 }
 
-.x-contextmenu-content.x-active {
+.x-menu-content.x-active {
     background-image: url(images/item-over.gif);
 	background-color: #dbecf4;
 }
 
-.x-contextmenu-content.x-active, .x-contextmenu-content.x-active .x-contextmenu-item {
+.x-menu-content.x-active, .x-menu-content.x-active .x-menu-item {
 	border-color:#aaccf6;
 }
 
-.x-contextmenu-icon-selected {
+.x-menu-icon-selected {
 	background-image: url(images/selected.gif);
 }
 
-.x-contextmenu-icon-checked {
+.x-menu-icon-checked {
 	background-image: url(images/checked.gif);
 }
 
-.x-contextmenu-icon-unchecked {
+.x-menu-icon-unchecked {
 	background-image: url(images/unchecked.gif);
 }
 
-.x-contextmenu-item-arrow {
+.x-menu-item-arrow {
     background-image: url(images/menu-parent.gif);
 }
 
 
-.x-contextmenu-handle-top {
+.x-menu-handle-top {
 	background-image: url(../control/images/mini-top.gif);
 }
 
-.x-contextmenu-handle-bottom {
+.x-menu-handle-bottom {
 	background-image: url(../control/images/mini-bottom.gif);
 }
 
-.x-contextmenu-handle-top:hover , .x-contextmenu-handle-bottom:hover {
+.x-menu-handle-top:hover , .x-menu-handle-bottom:hover {
 	background-color: #dbecf4;
 	border-color: #aaccf6;
 }

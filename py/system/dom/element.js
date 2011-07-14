@@ -2456,8 +2456,11 @@
 		 */
 		getElementsByClassName: function(className) {
 			assert.isString(className, "Element.prototype.getElementsByClassName(classname): 参数 {classname} ~。");
+			className = className.split(/\s/); 
 			return find(this.dom || this, function(elem) {
-				return e.hasClass(elem, className);
+				var i = className.length;
+				while(i--) if(!e.hasClass(elem, className[i])) return false;
+                return true;
 			});
 
 		},
@@ -2889,7 +2892,7 @@
 	function findBy(elem, selector) {
 		switch(selector.charAt(0)) {
 			case '.':
-				elem = elem.getElementsByClassName(selector);
+				elem = elem.getElementsByClassName(selector.replace(/\./g, ' '));
 				break;
 			case '[':
 				var s = rAttr.exec(selector);
