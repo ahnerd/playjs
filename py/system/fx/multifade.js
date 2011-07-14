@@ -10,7 +10,7 @@
 
 using("System.Fx.Animate");
 
-ElementList.implement({
+Py.ElementList.implement({
 	
 	multiFade: function( opacity ) {
 		opacity = opacity === undefined ? 0.3 : opacity;

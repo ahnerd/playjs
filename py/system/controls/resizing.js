@@ -8,11 +8,6 @@ imports("Resources.*.Control.Resizing");
 
 (function(p){
 	var
-		/**
-		 * Element 简写。
-		 * @type Element
-		 */
-		Element = p.Element,
 		
 		/**
 		 * 更新位置。

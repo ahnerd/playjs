@@ -33,7 +33,9 @@
     background-position: 100% -125px;
 }
 
-.x-accordion-container {
+.x-accordion-body {
     border-width: 0 0 1px 0;
+    border-color: #b8d0d6;
+    border-style: solid;
 }
 

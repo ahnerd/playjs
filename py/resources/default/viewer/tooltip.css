@@ -1,5 +1,15 @@
 
 
-.x-tooltip, .x-container-contetnt{
+.x-tooltip, .x-tooltip-container, .x-tooltip-contetnt{
 	background-image: url(images/tooltip.gif);
+	background-repeat: no-repeat;
+}
+
+.x-tooltip-container {
+	background-position: 100% -50px;
+}
+
+.x-tooltip-contetnt {
+	background-position: 0 -25px;
+	background-repeat: repeat-x;
 }

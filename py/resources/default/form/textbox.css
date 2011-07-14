@@ -18,13 +18,6 @@
     border-color: #75BBCD #BAC8F4 #BAC8F4 #75BBCD;
 }
 
-/* 需要内容 */
-.x-textbox.x-required {
-    background-position: right 0;
-}
-
-
-
 .x-textbox-clear {
 	background: url(../control/images/icons.gif) no-repeat 0 -50px;
 	

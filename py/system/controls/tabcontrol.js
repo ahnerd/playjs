@@ -2,7 +2,7 @@
 
 
 using("System.Controls.ScrollableControl");
-using("System.Controls.IParentControl");
+using("System.Controls.IContainerControl");
 imports("Resources.*.Container.TabControls");
 
 /**
@@ -95,28 +95,23 @@ namespace(".TabControl", Py.ScrollableControl.extend({
 		tabPage.header.remove();
 		tabPage.remove();
 		
-	}
-
-
-}) );
-
-
-Py.TabControl.ControlCollection = Py.Control.ControlCollection.extend({
+	},
 	
-	check: function(childControl){
+	initItem: function(childControl){
 		
 		if(typeof childControl === 'string')
 			childControl = new Py.TabPage().setText(childControl);
 		
 		// 如原来控件已经有父节点，先删除。
-		if(childControl.parent){
-			childControl.parent.tabPages.remove(childControl);
+		if(childControl.parentControl){
+			childControl.parentControl.controls.remove(childControl);
 		}
 		
 		return childControl;
 	}
-	
-});
+
+
+}) );
 
 namespace(".TabPage", Py.Control.extend({
 	
@@ -163,7 +158,7 @@ namespace(".TabPage", Py.Control.extend({
 	
 	active: function(){
 		var me =  this, 
-			c = me.parent;
+			c = me.parentControl;
 		if(c.selectedTab !== me && c.selectedTab){
 			
 			c.selectedTab.deactive();

@@ -1,7 +1,4 @@
 
-/***********************************************
- *	面板
- ***********************************************/
 
 .x-panel-header,.x-panel-header .x-header-container,.x-panel-header .x-header-content,.x-panel-footer, .x-panel-footer .x-footer-container, .x-panel-footer .x-footer-content {
     background-image: url(images/panel.gif);
@@ -12,27 +9,30 @@
 }
 
 .x-panel-header .x-header-container {
-    background-position: right -35px;
+    background-position: 100% -60px;
 }
 
 .x-panel-header .x-header-content {
-    background-position: 0 -70px;
+    background-position: 0 -30px;
 }
 
-.x-panel-container {
+.x-panel-body {
 	background-color: #eef4f5;
+	border-color: #b8d0d6;
+	border-width: 0 1px;
+	border-style: solid;
 }
 
 .x-panel-footer {
-    background-position: 0 -105px;
+    background-position: 0 -90px;
 }
 
 .x-panel-footer .x-footer-container {
-	background-position: right -140px;
+	background-position: 100% -110px;
 }
 
 .x-panel-footer .x-footer-content{
-	background-position: 0 -175px;
+	background-position: 0 -100px;
 }
 
 

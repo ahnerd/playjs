@@ -7,13 +7,29 @@ using("System.Controls.Control");
 
 /**
  * 表示一个有内置呈现的控件。
- * 这个控件和子类实现大小自适应。修复 IE6/7 父元素不能自己适合子元素大小错误。
+ * @abstract
+ * @class ContentControl
+ * @extends Control
+ * ContentControl 拥有一个属性 content， 表示容器内存储内容的节点。默认 content 和  dom 相同。
+ * 这个控件和子类实现大小自适应。修复 IE6/7 父元素不能自己调整以适应子元素大小的错误。
+ * 这个控件同时允许在子控件上显示一个图标。
+ * 
+ * <p>
+ * ContentControl 的外元素是一个 inline-block 的元素。它自身没有设置大小，全部的大小依赖子元素而自动决定。
+ * 因此，外元素必须满足下列条件的任何一个:
+ *  <ul>
+ * 		<li>外元素的 position 是 absolute<li>
+ * 		<li>外元素的 float 是 left或 right <li>
+ * 		<li>外元素的 display 是  inline-block (在 IE6 下，使用 inline + zoom模拟) <li>
+ *  </ul>
+ * </p>
  */
 namespace(".ContentControl", Py.Control.extend({
 	
 	/**
 	 * 当前正文。
-	 * @param {Object} value
+	 * @type Element/Control
+	 * @proected
 	 */
 	content: null,
 	
@@ -21,13 +37,23 @@ namespace(".ContentControl", Py.Control.extend({
 		this.content = this.dom;
 	},
 	
+	/**
+	 * 当被子类改写时，实现创建添加和返回一个图标节点。
+	 * @protected
+	 * @virtual
+	 */
 	createIcon: function(){
 		return  this.content.insert(document.createElement("span"), 'beforeBegin');
 	},
 	
 	/**
+	 * 获取当前显示的图标。
+	 * @name icon
+	 * @type {Element}
+	 */
+	
+	/**
 	 * 设置图标。
-	 * @method setIcon
 	 * @param {String} icon 图标。
 	 * @return {Panel} this
 	 */
@@ -45,13 +71,11 @@ namespace(".ContentControl", Py.Control.extend({
 	
 	setWidth: function(value){
 		this.content.setWidth(value);
-		this.onResizeX();
 		return this;
 	},
 	
 	setHeight: function(value){
 		this.content.setHeight(value);
-		this.onResizeY();
 		return this;
 	},
 		
@@ -67,6 +91,10 @@ namespace(".ContentControl", Py.Control.extend({
 		return this;
 	},
 	
+	/**
+	 * 如果浏览器不支持自动更新大小，强制更新大小。
+	 * @protected
+	 */
 	onAutoResize: Function.empty
 	
 	
@@ -74,7 +102,6 @@ namespace(".ContentControl", Py.Control.extend({
 	
 	
 }));
-
 
 
 
