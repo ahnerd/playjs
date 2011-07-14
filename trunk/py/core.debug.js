@@ -3596,7 +3596,7 @@ namespace("System.Dom.Element");
 		
 	});
 		
-	///   #region ElementList
+	///   #region Py.ElementList
 	
 	/**
 	 * @class Element
@@ -3605,21 +3605,21 @@ namespace("System.Dom.Element");
 	
     /**
      * 节点集合。
-     * @class ElementList
+     * @class Py.ElementList
      * @extends Element
      */
-    p.namespace(".ElementList", p.Class({
+    p.namespace(".Py.ElementList", p.Class({
 	
-		xType: "elementlist",
+		xType: "Py.ElementList",
 
         /**
-         * 初始化 ElementList  实例。
-         * @param {Array/ElementList} doms 节点集合。
-         * @constructor ElementList
+         * 初始化 Py.ElementList  实例。
+         * @param {Array/Py.ElementList} doms 节点集合。
+         * @constructor Py.ElementList
          */
         constructor: function(doms) {
 			
-			assert(doms && doms.length !== undefined, 'ElementList.prototype.constructor(doms): 参数 {doms} 必须是一个 NodeList 或 Array 类型的变量。', doms);
+			assert(doms && doms.length !== undefined, 'Py.ElementList.prototype.constructor(doms): 参数 {doms} 必须是一个 NodeList 或 Array 类型的变量。', doms);
 			
             this.doms = doms;
 			
@@ -3638,7 +3638,7 @@ namespace("System.Dom.Element");
          */
 		each: function(fn, args) {
 		
-			// 防止 doms 为 ElementList
+			// 防止 doms 为 Py.ElementList
 			return ap.invoke.call(this.doms, fn, args);
 		}
 		
@@ -3755,12 +3755,12 @@ namespace("System.Dom.Element");
 				if (!(key in document))
 					document[key] = value;
 				
-				if(copyIf && p.ElementList.prototype[key])	
+				if(copyIf && Py.ElementList.prototype[key])	
 					return ;
 				
 				var fn;
 						
-				// 复制到  ElementList
+				// 复制到  Py.ElementList
 				switch (listType) {
 					case 2:
 						fn = function() {
@@ -3772,13 +3772,13 @@ namespace("System.Dom.Element");
 						break;
 					case 3:
 						fn = function() {
-							return new p.ElementList(this.each(key, arguments));
+							return new Py.ElementList(this.each(key, arguments));
 						};
 						break;
 					case 4:
 						fn = function() {
 							var args = arguments;
-							return new p.ElementList(Array.plain.apply(Array, this.each(function(elem, index) {
+							return new Py.ElementList(Array.plain.apply(Array, this.each(function(elem, index) {
 								var r = this[index][key].apply(this[index], args);
 								return r && r.doms || r;
 							}, this.doms)));
@@ -3803,7 +3803,7 @@ namespace("System.Dom.Element");
 						break;
 				}
 						
-				p.ElementList.prototype[key] = fn;
+				Py.ElementList.prototype[key] = fn;
 			
 			
 			});
@@ -3812,10 +3812,10 @@ namespace("System.Dom.Element");
 		/**
 		 * 将一个成员附加到 Element 对象和相关类。
 		 * @param {Object} obj 要附加的对象。
-		 * @param {Number} listType = 1 说明如何复制到 ElementList 实例。 
+		 * @param {Number} listType = 1 说明如何复制到 Py.ElementList 实例。 
 		 * @return {Element} this
 	     * @static
-		 * 对 Element 扩展，内部对 Element ElementList document Control 皆扩展。
+		 * 对 Element 扩展，内部对 Element Py.ElementList document Control 皆扩展。
 		 * 这是由于不同的函数需用不同的方法扩展，必须指明扩展类型。
 		 * 所谓的扩展，即一个类含需要的函数。
 		 * 
@@ -3831,11 +3831,11 @@ namespace("System.Dom.Element");
 		 *  对 Element ，
 		 *     如果 copyIf 是 false 或不存在复制。
 		 *
-		 *  对 ElementList ，按 listType，
+		 *  对 Py.ElementList ，按 listType，
 		 *      1, 其它 - 执行结果是数据，返回结果数组。 (默认)
 		 *  	2 - 执行结果返回 this， 返回 this 。
-		 * 		3 - 执行结果是DOM，返回 ElementList 包装。
-		 * 		4 - 执行结果是DOM数组，返回 ElementList 包装。 
+		 * 		3 - 执行结果是DOM，返回 Py.ElementList 包装。
+		 * 		4 - 执行结果是DOM数组，返回 Py.ElementList 包装。 
 		 * 		5 - 如果每个返回值都是 true， 则返回 true， 否则返回 false。
 		 * 
 		 *  对 document ， 
@@ -3867,7 +3867,7 @@ namespace("System.Dom.Element");
 		 * 若不存在，则将一个对象附加到 Element 对象。
 	     * @static
 		 * @param {Object} obj 要附加的对象。
-		 * @param {Number} listType 说明如何复制到 ElementList 实例。
+		 * @param {Number} listType 说明如何复制到 Py.ElementList 实例。
 		 * @param {Number} docType 说明如何复制到 Document 实例。
 		 * @return {Element} this
 		 */
@@ -3927,10 +3927,10 @@ namespace("System.Dom.Element");
 	     * @param {String/Element} ... 对象的 id 或对象。
 	     */
 	    id: function() {
-			return arguments.length === 1 ? p.$(arguments[0]) : new p.ElementList(o.update(arguments, p.$, []));
+			return arguments.length === 1 ? p.$(arguments[0]) : new Py.ElementList(o.update(arguments, p.$, []));
 			
 	        /*
-			return new p.ElementList(o.update(arguments, function(id){
+			return new Py.ElementList(o.update(arguments, function(id){
 				return typeof id == 'string' ? this.getElementById(id) : id;
 			}, [], this));
 */
@@ -5833,7 +5833,7 @@ namespace("System.Dom.Element");
 			
 			// 全部子节点。
 			children: [ function(elem, fn) {
-				return new ElementList(find(elem,  fn));
+				return new Py.ElementList(find(elem,  fn));
 			}],
 			
 			// 兄弟节点。
@@ -5973,7 +5973,7 @@ namespace("System.Dom.Element");
 		
 		/// #endif
 		
-		// 使     ElementList 支持此函数
+		// 使     Py.ElementList 支持此函数
 		getElementsByTagName: function(name) {
 			return this.getElementsByTagName(name);
 		},
@@ -5992,10 +5992,10 @@ namespace("System.Dom.Element");
 		 */
 		findAll: div.querySelectorAll ? function(selecter) {
 			assert.isString(selecter, "Element.prototype.findAll(selecter): 参数 {selecter} ~。");
-			return new p.ElementList(this.getDom().querySelectorAll(selecter));
+			return new Py.ElementList(this.getDom().querySelectorAll(selecter));
 		} : function(selecter){
 			assert.isString(selecter, "Element.prototype.findAll(selecter): 参数 {selecter} ~。");
-			var current = new p.ElementList([this.getDom()]);
+			var current = new Py.ElementList([this.getDom()]);
 			selecter.split(' ').forEach(function(v) {
 				current = findBy(current, v);
 			});
@@ -6327,7 +6327,7 @@ namespace("System.Dom.Element");
      * @param {Number/Function/undefined} fn 过滤函数。
      * @param {String} walk 路径。
      * @param {String} first 第一个节点。
-	 * @return {ElementList} 集合。
+	 * @return {Py.ElementList} 集合。
 	 * @ignore
      */
 	function dir(elem, fn, walk, first) {
@@ -6339,7 +6339,7 @@ namespace("System.Dom.Element");
             }
             elem = elem[walk];
         }
-        return new ElementList(es);
+        return new Py.ElementList(es);
 	}
 	
 	/**
@@ -6383,7 +6383,7 @@ namespace("System.Dom.Element");
 	 * 执行简单的选择器。
 	 * @param {Element} elem 元素。
 	 * @param {String} selector 选择器。
-	 * @return {ElementList} 元素集合。
+	 * @return {Py.ElementList} 元素集合。
 	 * @ignore
 	 */
 	function findBy(elem, selector){
@@ -7246,7 +7246,7 @@ using("System.Fx.Base");
 	 * Element 简写。
 	 * @type Element
 	 */
-	var e = p.Element,
+	var e = Element,
 	
 		Fx = p.Fx,
 		

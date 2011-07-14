@@ -7,8 +7,33 @@ using("System.Controls.ContentControl");
 
 /**
  * 内容显示面板。
- * @class ContainerControl
+ * @class ScrollableControl
+ * @extends ContentControl
  * @abstract
+ * ScrollableControl 封装了一个 content 和 header 。
+ * 
+ * <p>
+ * 一般地，一个控件由一个 DIV， 封装了很多DIV组成。如:
+ * </p>
+ * 
+ * <code type="html">
+ * &lt;div&gt;
+ *  &lt;div class="header"&gt;
+ *  &lt;/div&gt;
+ * 	&lt;div class="content"&gt;
+ *  &lt;/div&gt;
+ *  &lt;div class="footer"&gt;
+ *  &lt;/div&gt;
+ * &lt;/div&gt;
+ * </code>
+ * 
+ * <p>
+ * 其中， content 为存放子元素的地方。
+ * 经常地，需要让 content 内的元素实现 width: 100%;
+ * 因为，有必要再设置外容器的宽度时，同时设置 content 的宽度。
+ * 但 content 的宽度不等于外容器的宽度 (如外容器有边框时)。
+ * 因此这个类封装这个行为。 widthFix 表示 外容器的宽度 和 content  宽度差。
+ * </p>
  */
 namespace(".ScrollableControl", Py.ContentControl.extend({
 	
@@ -35,6 +60,7 @@ namespace(".ScrollableControl", Py.ContentControl.extend({
 	 * @param {String} value 值。
 	 */
 	setTitle: function(value){
+		assert(this.header, 'ScrollableControl.prototype.setTitle(value): 目前控件不存在顶部');
 		this.header.innerHTML = value;
 		return this;
 	},
@@ -87,9 +113,13 @@ namespace(".ScrollableControl", Py.ContentControl.extend({
 	},
 	
 	createIcon: function(){
+		assert(this.header, 'ScrollableControl.prototype.createIcon(): 目前控件不存在顶部');
 		return  this.header.insert(document.createElement("span"), 'beforeBegin');
 	},
 	
+	/**
+	 * 设置当前元素显示的内容。
+	 */
 	setContent: function(content){
 		
 		var cd = content.dom || content;
@@ -126,6 +156,9 @@ namespace(".ScrollableControl", Py.ContentControl.extend({
 		return this;
 	},
 	
+	/**
+	 * 切换头部的可视。
+	 */
 	setHeaderVisible: function(value) {
 		var header = this.header.get('parent'),
 			currentState = header.isHidden();

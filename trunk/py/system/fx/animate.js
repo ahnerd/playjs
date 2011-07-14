@@ -87,7 +87,7 @@ using("System.Fx.Base");
 	 * Element 简写。
 	 * @type Element
 	 */
-	var e = p.Element,
+	var e = Element,
 	
 		Fx = p.Fx,
 		

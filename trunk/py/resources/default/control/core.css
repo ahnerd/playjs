@@ -40,29 +40,3 @@
 .x-hign {
 	background: orange;
 }
-
-
-/** 标准面板 */
-
-/* 顶部 */
-.x-header{
-	color: #183152;
-}
-
-/* 内容 */
-.x-container{
-	border-color: #B8D0D6;
-	border-width: 0 1px;
-}
-
-
-.x-content{
-	_display: inline;
-	_zoom: 1;
-}
-
-
-label .x-icon{
-	float: none;
-	display: inline-block;
-}

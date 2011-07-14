@@ -53,8 +53,9 @@
 		/**
 		 * 元素。
 		 * @type Function
+		 * 如果页面已经存在 Element， 不管是不是用户自定义的，都直接使用。只需保证 Element 是一个函数即可。
 		 */
-		e = p.Element = w.Element || (w.Element = function() {}),
+		e = w.Element || (w.Element = function() {}),
 	
 		/// #else
 	
@@ -105,6 +106,8 @@
 			col: [ 2, "<table><tbody></tbody><colgroup>", "</colgroup></table>" ],
 			area: [ 1, "<map>", "</map>" ]
 		};
+		
+	assert(ep, "当前的  Element 对象被修改。如果必须修改 Element，请保证 Element 是一个函数，拥有 prototype 属性。");
 
 	/// #ifdef SupportIE6
 
@@ -125,11 +128,11 @@
 	 * @param {String/Element} id 对象的 id 或对象。
 	 * @memberOf Py
 	 */
-	p.namespace(".$", navigator.isQuirks ? function(id) {
+	namespace(".$", navigator.isQuirks ? function(id) {
 		var dom = getElementById(id);
 
 		if(dom && dom.domVersion !== ep.domVersion) {
-			o.extendIf(dom, e.prototype);
+			o.extendIf(dom, ep);
 		}
 
 		return dom;
@@ -139,11 +142,11 @@
 
 	/// #else
 
-	/// p.namespace(".$", getElementById);
+	/// namespace(".$", getElementById);
 
 	/// #endif
 
-	///   #region ElementList
+	///   #region p.ElementList
 
 	/**
 	 * @class Element
@@ -152,10 +155,13 @@
 
 	/**
 	 * 节点集合。
-	 * @class ElementList
+	 * @class p.ElementList
 	 * @extends Element
+	 * ElementList 是对元素数组的只读包装。
+	 * ElementList 允许快速操作多个节点。
+	 * ElementList 的实例一旦创建，则不允许修改其成员。
 	 */
-	p.namespace(".ElementList", p.Class({
+	namespace(".ElementList", p.Class({
 
 		/**
 		 * xType
@@ -163,8 +169,8 @@
 		xType: "elementlist",
 
 		/**
-		 * 初始化 ElementList  实例。
-		 * @param {Array/ElementList} doms 节点集合。
+		 * 初始化 p.ElementList  实例。
+		 * @param {Array/p.ElementList} doms 节点集合。
 		 * @constructor
 		 */
 		constructor: function(doms) {
@@ -172,7 +178,8 @@
 			assert(doms && doms.length !== undefined, 'ElementList.prototype.constructor(doms): 参数 {doms} 必须是一个 NodeList 或 Array 类型的变量。', doms);
 
 			this.doms = doms;
-
+			
+			// 检查是否需要为每个成员调用  $ 函数。
 			if(doms[0] && !doms[0].xType) {
 				o.update(doms, p.$);
 			}
@@ -187,7 +194,7 @@
 		 */
 		each: function(fn, args) {
 
-			// 防止 doms 为 ElementList
+			// 防止 doms 为 p.ElementList
 			return ap.invoke.call(this.doms, fn, args);
 		}
 
@@ -291,121 +298,96 @@
 		 * 实现了 Element 实现的处理函数。
 		 * @private
 		 */
-		implementListeners: [  function(obj, listType, copyIf) {
-
-			Object.each(obj, function(value, key) {
-
-				var value = obj[key];
-
-				//  复制到  Element.prototype
-				if(!copyIf || !(key in ep))
-					ep[key] = value;
-
-				//  复制到 Document
-				if (!copyIf || !(key in document))
-					document[key] = value;
-
-				if(copyIf && p.ElementList.prototype[key])
-					return ;
-
-				var fn;
-
-				// 复制到  ElementList
-				switch (listType) {
-					case 2:
-						fn = function() {
-							var doms = this.doms, l = doms.length, i = -1;
-							while (++i < l)
-								doms[i][key].apply(doms[i], arguments);
-							return this;
-						};
-
-						break;
-					case 3:
-						fn = function() {
-							return new p.ElementList(this.each(key, arguments));
-						};
-
-						break;
-					case 4:
-						fn = function() {
-							var args = arguments;
-							return new p.ElementList(Array.plain.apply(Array, this.each( function(elem, index) {
-								var r = this[index][key].apply(this[index], args);
-								return r && r.doms || r;
-							}, this.doms)));
-
-						};
-
-						break;
-					case 5:
-						fn = function() {
-							var result = true, args = arguments;
-							this.each( function(node) {
-								return  result = node[key].apply(node[key], args);
-							});
-
-							return result;
-						};
-
-						break;
-					default:
-						fn = function() {
-							return this.each(key, arguments);
-						};
-
-						break;
-				}
-
-				p.ElementList.prototype[key] = fn;
-
-
-			});
-
-		}],
+		implementTargets: [ ep, document],
 
 		/**
 		 * 将一个成员附加到 Element 对象和相关类。
 		 * @param {Object} obj 要附加的对象。
-		 * @param {Number} listType = 1 说明如何复制到 ElementList 实例。
+		 * @param {Number} listType = 1 说明如何复制到 p.ElementList 实例。
 		 * @return {Element} this
 		 * @static
-		 * 对 Element 扩展，内部对 Element ElementList document Control 皆扩展。
+		 * 对 Element 扩展，内部对 Element ElementList document 皆扩展。
 		 * 这是由于不同的函数需用不同的方法扩展，必须指明扩展类型。
 		 * 所谓的扩展，即一个类含需要的函数。
 		 *
 		 *
 		 * DOM 方法 有 以下种
 		 *
-		 *  1  getText - 返回结果
-		 *  2  setText - 返回 this
-		 *  3  getElementById - 返回 DOM
-		 *  4  getElementsByTagName - 返回  DOM 数组
-		 *  5  appendChild  - 参数 DOM
-		 *
-		 *  对 Element ，
-		 *     如果 copyIf 是 false 或不存在复制。
-		 *
-		 *  对 ElementList ，按 listType，
-		 *      1, 其它 - 执行结果是数据，返回结果数组。 (默认)
-		 *  	2 - 执行结果返回 this， 返回 this 。
-		 * 		3 - 执行结果是DOM，返回 ElementList 包装。
-		 * 		4 - 执行结果是DOM数组，返回 ElementList 包装。
-		 * 		5 - 如果每个返回值都是 true， 则返回 true， 否则返回 false。
-		 *
-		 *  对 document ，
-		 *  	如果不存在则复制。
-		 *
+		 *  1, 其它  getText - 执行结果是数据，返回结果数组。 (默认)
+		 *  2  setText - 执行结果返回 this， 返回 this 。
+		 *  3  getElementById - 执行结果是DOM，返回  ElementList 包装。
+		 *  4  getElementsByTagName - 执行结果是DOM数组，返回  ElementList 包装。
+		 *  5  contains  - 执行结果是判断， 如果每个返回值都是 true， 则返回 true， 否则返回 false。
+		 * 
+		 * 
 		 *
 		 *  参数 copyIf 仅内部使用。
 		 */
 		implement: function (obj, listType, copyIf) {
 
 			assert.notNull(obj, "Element.implement(obj, listType): 参数 {obj} ~。");
-
-			this.implementListeners.forEach( function(fn) {
-				fn(obj, listType, copyIf);
-			});
+				
+			for(var key in obj) {
+				this.implementTargets.forEach( function(m) {
+					if(!copyIf || !(key in m))
+						m[key] = obj[key];
+				});
+				
+				if(!copyIf || !(key in p.ElementList.prototype)) {
+					var fn;
+	
+					// 复制到  p.ElementList
+					switch (listType) {
+						case 2:
+							fn = function() {
+								var doms = this.doms, l = doms.length, i = -1;
+								while (++i < l)
+									doms[i][key].apply(doms[i], arguments);
+								return this;
+							};
+	
+							break;
+						case 3:
+							fn = function() {
+								return new p.ElementList(this.each(key, arguments));
+							};
+	
+							break;
+						case 4:
+							fn = function() {
+								var args = arguments;
+								return new p.ElementList(Array.plain.apply(Array, this.each( function(elem, index) {
+									var r = this[index][key].apply(this[index], args);
+									return r && r.doms || r;
+								}, this.doms)));
+	
+							};
+	
+							break;
+						case 5:
+							fn = function() {
+								var result = true, args = arguments;
+								this.each( function(node) {
+									return  result = node[key].apply(node[key], args);
+								});
+	
+								return result;
+							};
+	
+							break;
+						default:
+							fn = function() {
+								return this.each(key, arguments);
+							};
+	
+							break;
+					}
+				
+					p.ElementList.prototype[key] = fn;
+				}
+				
+				
+			}
 
 			/// #ifdef SupportIE6
 
@@ -422,7 +404,7 @@
 		 * 若不存在，则将一个对象附加到 Element 对象。
 		 * @static
 		 * @param {Object} obj 要附加的对象。
-		 * @param {Number} listType 说明如何复制到 ElementList 实例。
+		 * @param {Number} listType 说明如何复制到 p.ElementList 实例。
 		 * @param {Number} docType 说明如何复制到 Document 实例。
 		 * @return {Element} this
 		 */
@@ -501,9 +483,10 @@
 		/**
 		 * 根据元素返回节点。
 		 * @param {String/Element} ... 对象的 id 或对象。
+		 * @return {Element/ElementList} 如果只有1个参数，返回元素，否则返回元素集合。
 		 */
 		getDom: function() {
-			return arguments.length === 1 ? p.$(arguments[0]) : new p.ElementList(o.update(arguments, p.$, []));
+			return arguments.length === 1 ? p.$(arguments[0]) : new p.ElementList(arguments);
 
 			/*
 			 return new p.ElementList(o.update(arguments, function(id){
@@ -514,6 +497,10 @@
 
 		/// #ifndef SupportIE8
 		
+		/**
+		 * 返回当前文档默认的视图。
+		 * @type {Window}
+		 */
 		defaultView: document.parentWindow,
 	
 		/// #endif
@@ -561,7 +548,7 @@
 	 * 默认事件。
 	 * @type Object
 	 */
-	p.namespace(".Events.element.$default", {
+	namespace(".Events.element.$default", {
 
 		/**
 		 * 创建当前事件可用的参数。
@@ -592,7 +579,7 @@
 
 		/**
 		 * 删除事件。
-		 *@param {Object} obj 对象。
+		 * @param {Object} obj 对象。
 		 * @param {String} type 类型。
 		 * @param {Function} fn 函数。
 		 */
@@ -682,7 +669,7 @@
 	 * @class Py.Event
 	 */
 
-	var pep = p.namespace(".Event", Class({
+	var pep = namespace(".Event", Class({
 		
 		/**
 		 * 表示当前是否取消冒泡。
@@ -1711,7 +1698,7 @@
 		 * 表示一个点。
 		 * @class Point
 		 */
-		Point = p.namespace(".Point", p.Class({
+		Point = namespace(".Point", p.Class({
 	
 			/**
 			 * 初始化 Point 的实例。
@@ -2305,7 +2292,7 @@
 	
 			// 全部子节点。
 			children: [function(elem, fn) {
-				return new ElementList(find(elem,  fn));
+				return new p.ElementList(find(elem,  fn));
 			}],
 	
 			// 上级节点。
@@ -2483,7 +2470,7 @@
 
 		/// #endif
 
-		// 使     ElementList 支持此函数
+		// 使     p.ElementList 支持此函数
 		getElementsByTagName: function(name) {
 			return this.getElementsByTagName(name);
 		},
@@ -2838,7 +2825,7 @@
 	/**
 	 * 返回元素满足条件的节点的列表。
 	 * @param {Element} elem 节点。
-	 * @param {Number/Function/undefined} fn 过滤函数。
+	 * @param {Function} fn 过滤函数。
 	 * @param {String} walk 路径。
 	 * @param {String} first 第一个节点。
 	 * @return {ElementList} 集合。
@@ -2853,7 +2840,7 @@
 			}
 			elem = elem[walk];
 		}
-		return new ElementList(es);
+		return new p.ElementList(es);
 	}
 
 	/**
@@ -2869,8 +2856,8 @@
 
 			destElem.clearAttributes();
 			destElem.mergeAttributes(srcElem);
-			destElem.removeAttribute("data");
 			// 在 IE delete destElem.data  出现异常。
+			destElem.removeAttribute("data");
 			//if(srcElem.data)
 			//	destElem.data = null;   // IE  将复制 node.data
 
@@ -2896,7 +2883,7 @@
 	 * 执行简单的选择器。
 	 * @param {Element} elem 元素。
 	 * @param {String} selector 选择器。
-	 * @return {ElementList} 元素集合。
+	 * @return {Py.ElementList} 元素集合。
 	 * @ignore
 	 */
 	function findBy(elem, selector) {
@@ -2919,32 +2906,30 @@
 
 	/**
 	 * 获取一个选择器。
-	 * @param {Number/Function/undefined} fn
+	 * @param {Number/Function/String} fn
 	 * @return {Funtion} 函数。
 	 * @ignore
 	 */
 	function getFilter(fn) {
-		switch (typeof fn) {
-			case "string":
-				var tagName = fn.toUpperCase();
-				fn = function(elem) {
-					return elem.tagName == tagName;
-				};
 
-				break;
-			case "number":
-				var i = fn;
-				fn = function(elem) {
-					return --i < 0;
-				};
+		var t = fn.constructor;
 
-				break;
+		if(t === Number) {
+			t = fn;
+			fn = function(elem) {
+				return --t < 0;
+			};
+
+		} else if(t === String) {
+			t = fn.toUpperCase();
+			fn = function(elem) {
+				return elem.tagName === t;
+			};
+
 		}
-
-		assert.isFunction(fn, "getFilter(fn): {fn} 必须是一个函数。", fn);
+		assert.isFunction(fn, "Element.prototype.get(type, fn): 参数 {fn} 必须是一个函数、数字或字符串。", fn);
 		return fn;
 	}
-
 	/// #endif
 
 	/// #region 核心

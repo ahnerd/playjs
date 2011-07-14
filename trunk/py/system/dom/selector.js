@@ -13,12 +13,12 @@ using("System.Dom.Element");
 	 * Css 选择器。
 	 * @param {String} selector Css3查询选择器。
 	 * @param {Boolean} quick 是否快速查找。
-	 * @return {ElementList} 元素集合。
+	 * @return {Py.ElementList} 元素集合。
 	 * @memberOf Element
 	 * @alias window.$$
 	 */
 	function query(selector, quick){
-		return new ElementList(document.queryDom(selector, this, false, quick));
+		return new Py.ElementList(document.queryDom(selector, this, false, quick));
 	}
 	
 	/**
@@ -56,7 +56,7 @@ using("System.Dom.Element");
 	}, 3);
 	
 	this.$$ = function $$(selector, quick){
-		return new ElementList(document.queryDom(selector, document, false, quick));
+		return new Py.ElementList(document.queryDom(selector, document, false, quick));
 	};
 	
 })();

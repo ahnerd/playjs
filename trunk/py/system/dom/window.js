@@ -13,7 +13,7 @@
 
         constructor: function(w) {
 		
-			var e =  p.Element;
+			var e =  Element;
 		
 			/**
              * 本地化 Element 。

@@ -2,9 +2,7 @@
 
 
 /* 窗口 */
-.x-dialog {
-	background: #e3eaec;
-}
+
 
 .x-dialog-header, .x-dialog-header .x-header-container, .x-dialog-header .x-header-content , .x-dialog-footer, .x-dialog-footer .x-footer-container, .x-dialog-footer .x-footer-content { 
 	background-image:url(images/dialog.gif);
@@ -18,22 +16,26 @@
      background-position: 0 -30px;
 }
 
-.x-dialog-container   {
-	padding-left: 5px;
-	background:url(images/dialog-sides.gif) repeat-y left top ;
-	border: 0;
-	overflow:hidden;
+.x-dialog-body, .x-dialog-container {
+	background-color: #e3eaec;
+	background-repeat: repeat-y;
+}
+
+.x-dialog-body   {
+	padding-left: 4px;
+	background-position: left top;
+	background-image:url(images/dialog-sides-left.gif);
+}
+
+.x-dialog-container {
+	padding-right: 4px;
+	background-position: right bottom;
+	background-image:url(images/dialog-sides-right.gif);
 }
 
 .x-dialog-content {
-	padding-right: 5px;
-	background: url(images/dialog-sides.gif) repeat-y right bottom;
-}
-
-.x-dialog-body {
     background-color: white;
     border: 1px solid #99bce8;
-    overflow: auto;
 }
 
 .x-dialog-footer {
@@ -46,6 +48,11 @@
 
 .x-dialog-footer .x-footer-content {
     background-position: 0 -100px;
+}
+
+.x-dialog-buttons {
+	text-align: right;
+	padding: 5px;
 }
 
 

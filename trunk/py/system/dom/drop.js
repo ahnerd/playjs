@@ -373,7 +373,7 @@ using("System.Dom.Drag");
 		}
 	}, dd.Zone.prototype);
 	
-	p.Element.defineEvents ('dragenter dragleave dragover drop', !navigator.isStd ? function(e){
+	Element.defineEvents ('dragenter dragleave dragover drop', !navigator.isStd ? function(e){
 		
 		// IE8- 需要检查   e.stopPropagation
 		if(!e.stopPropagation)

@@ -1,5 +1,5 @@
 //===========================================
-//  控件   control.js         A
+//  控件   control.js        
 //===========================================
 
 
@@ -214,7 +214,7 @@ using("System.Dom.Element");
 			if(!p){
 			
 				p = Control._proxy = document.create('div', 'x-proxy')
-					.hide()
+					.setStyle('display: none; position: absolute; overflow: hidden;')
 					.renderTo();
 					
 				/**
@@ -236,7 +236,10 @@ using("System.Dom.Element");
 	
 	Control.delegate
 		(Control, "dom", 'addEventListener removeEventListener scrollIntoView focus blur remove', 2, 'appendChild contains insert replaceWith wrapWith removeChild bringToFront', 3)
-  		(Control, "dom", 'insertBefore replaceChild', 5);
+  		(Control, "dom", 'insertBefore replaceChild', 5)
+		(Control, 'Move', 'setOffset', 4)
+		(Control, 'ResizeX', 'setWidth', 4)
+		(Control, 'ResizeY', 'setHeight', 4);
 
 	// 让 Element 扩展的时候， 自动扩展 Control 。
 	Element.implementTargets.push(Control.prototype);
