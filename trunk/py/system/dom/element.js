@@ -25,12 +25,6 @@
 		o = Object,
 	
 		/**
-		 * 空函数。
-		 * @type Function
-		 */
-		emptyFn = Function.empty,
-	
-		/**
 		 * Object.extend
 		 * @type Function
 		 */
@@ -155,7 +149,7 @@
 
 	/**
 	 * 节点集合。
-	 * @class p.ElementList
+	 * @class ElementList
 	 * @extends Element
 	 * ElementList 是对元素数组的只读包装。
 	 * ElementList 允许快速操作多个节点。
@@ -297,6 +291,7 @@
 		/**
 		 * 实现了 Element 实现的处理函数。
 		 * @private
+		 * @static
 		 */
 		implementTargets: [ ep, document],
 
@@ -327,7 +322,8 @@
 
 			assert.notNull(obj, "Element.implement(obj, listType): 参数 {obj} ~。");
 				
-			for(var key in obj) {
+			Object.each(obj, function (value, key) {
+	
 				this.implementTargets.forEach( function(m) {
 					if(!copyIf || !(key in m))
 						m[key] = obj[key];
@@ -387,7 +383,7 @@
 				}
 				
 				
-			}
+			}, this);
 
 			/// #ifdef SupportIE6
 
@@ -449,7 +445,7 @@
 
 	}, 2);
 
-	assert.isNode(document.documentElement, "在 Element.js 执行时，必须存在 document.documentElement 属性。请确认浏览器为标准浏览器。");
+	assert.isNode(document.documentElement, "在 element.js 执行时，必须存在 document.documentElement 属性。请确认浏览器为标准浏览器。");
 
 	/**
 	 * @namespace document
@@ -518,9 +514,10 @@
 
 		///#endif
 	});
-
 	
-
+	/**
+	 * @class
+	 */
 
 	/**
 	 * 获取元素的文档。
@@ -547,6 +544,7 @@
 	/**
 	 * 默认事件。
 	 * @type Object
+	 * @hide
 	 */
 	namespace(".Events.element.$default", {
 
@@ -565,7 +563,7 @@
 		 * 事件触发后对参数进行处理。
 		 * @param {Event} e 事件参数。
 		 */
-		initEvent: emptyFn,
+		initEvent: Function.empty,
 
 		/**
 		 * 添加绑定事件。
@@ -594,7 +592,8 @@
 	 * @param {String} 事件名。
 	 * @param {Function} trigger 触发器。
 	 * @return {Function} 函数本身
-	 * @method Element.defineEvents
+	 * @static
+	 * @memberOf Element
 	 * 原则 Element.addEvents 可以解决问题。 但由于 DOM 的特殊性，额外提供 defineEvents 方便定义适合 DOM 的事件。
 	 * defineEvents 主要解决 3 个问题:
 	 * <ol>
@@ -877,17 +876,6 @@
 		 */
 		styleMaps = {},
 	
-		/// #ifdef SupportIE6
-	
-		/**
-		 * 特殊属性的正则表达式。
-		 * @type RegExp
-		 * @private
-		 */
-		rSpecilAttr = /^(?:href|src|usemap)$/i,
-	
-		/// #endif
-	
 	
 		/// #ifdef SupportIE8
 	
@@ -920,7 +908,7 @@
 	
 			assert.isElement(elem , "Element.getStyle(elem, name): 参数 {elem} ~。");
 	
-			if(name in attributes) {
+			if(name in e.specialAttr) {
 				switch(name) {
 					case 'height':
 						return elem.offsetHeight - e.getSizes(elem, 'y', 'pb') + 'px';
@@ -975,10 +963,10 @@
 		 * @type Object
 		 */
 		attributes = {
+			innerText: 'innerText' in div ? 'innerText' : 'textContent',
 			'float': 'styleFloat' in div ? 'styleFloat' : 'cssFloat',
 			"for": "htmlFor",
-			"class": "className",
-			innerText: 'innerText' in div ? 'innerText' : 'textContent'
+			"class": "className"
 		};
 	
 	String.map('x y', function(c, i){
@@ -1036,7 +1024,7 @@
 		getSizes: defaultView ? function (elem, type, names) {
 
 			assert.isElement(elem, "Element.getSizes(elem, type, names): 参数 {elem} ~。");
-			assert(type in styleMaps, "Element.getSizes(elem, type, names): 参数 {type} 必须是 \"width\" 或 \"height\"。", type);
+			assert(type in styleMaps, "Element.getSizes(elem, type, names): 参数 {type} 必须是 \"x\" 或 \"y\"。", type);
 			assert.isString(names, "Element.getSizes(elem, type, names): 参数 {names} ~。");
 
 
@@ -1106,16 +1094,18 @@
 
 			assert.isNode(elem, "Element.getAttr(elem, name): 参数 {elem} ~。");
 
-			/// #ifdef SupportIE6
-
-			//简写
-			var special = navigator.isQuirks && rSpecilAttr.test(name);
-
-			//属性
-			name = attributes[name] || name;
+			
+			if(name in attributes){
+				/// #ifdef SupportIE6
+				if(navigator.isQuirks && /^(href|src|usemap)$/i.test(name)){
+					return elem.getAttribute(name, 2);
+				}
+				/// #endif
+				name = attributes[name];
+			}
 
 			// 如果是节点具有的属性
-			if (name in elem && !special) {
+			if (name in elem) {
 
 				// 表单上的元素，返回节点属性值
 				if (elem.nodeName === "FORM" && (special = elem.getAttributeNode(name)))
@@ -1124,26 +1114,7 @@
 				return elem[name];
 			}
 
-			return special ? elem.getAttribute(name, 2) : elem.getAttribute(name); // 有些属性在 IE 需要参数获取
-
-			/// #else
-			///
-			/// //属性
-			/// name = attributes[name] || name;
-			///
-			/// // 如果是节点具有的属性
-			/// if (name in elem) {
-			///
-			/// 	// 表单上的元素，返回节点属性值
-			/// 	if (elem.nodeName == "FORM" && e.getAttributeNode(name))
-			/// 		return e.getAttributeNode(name).nodeValue;
-			///
-			/// 	return elem[name];
-			/// }
-			///
-			/// return elem.getAttribute(name);
-
-			/// #endif
+			return elem.getAttribute(name); // 有些属性在 IE 需要参数获取
 
 		},
 
@@ -1380,8 +1351,8 @@
 					me.setStyle(name, value);
 
 				// attr 。
-				else if(me.dom && (name in me.dom))
-					me.dom[name] = value;
+				else if(name in dom)
+					dom[name] = value;
 
 				// Object 。
 				else
@@ -1629,9 +1600,9 @@
 
 	}, 2);
 	
-	updateToObj("opacity height width defaultValue accessKey cellPadding cellSpacing colSpan frameBorder maxLength readOnly rowSpan tabIndex useMap", attributes);
+	updateToObj("href src usemap defaultValue accessKey cellPadding cellSpacing colSpan frameBorder maxLength readOnly rowSpan tabIndex useMap", attributes);
 
-	updateToObj("Size Position Opacity Offset Scroll Offsets Style Text", e.specialAttr);
+	updateToObj("Height Width OutterSize Size Position Opacity Offset Scroll Offsets Style Text", e.specialAttr);
 
 	/**
 	 * 读取样式字符串。
@@ -2019,7 +1990,7 @@
 		 */
 		setWidth: function(value) {
 
-			(this.dom || this).style.width = (value > 0 ? value : 0) + 'px';
+			(this.dom || this).style.width = value > 0 ? value + 'px' : isNaN(value) ? '' : '0px';
 			return this;
 		},
 
@@ -2029,7 +2000,7 @@
 		 */
 		setHeight: function(value) {
 
-			(this.dom || this).style.height = (value > 0 ? value : 0) + 'px';
+			(this.dom || this).style.height = value > 0 ? value + 'px' : isNaN(value) ? '' : '0px';
 			return this;
 		},
 
@@ -2374,8 +2345,16 @@
 	/**
 	 * @class Element
 	 */
+	
 	apply(e, {
-
+	
+		/**
+		 * 判断指定节点之后有无存在子节点。
+		 * @param {Element} elem 节点。
+		 * @param {Element} child 子节点。
+		 * @return {Boolean} 如果确实存在子节点，则返回 true ， 否则返回 false 。
+		 * @static
+		 */
 		hasChild: !div.compareDocumentPosition ? function(elem, child) {
 			while(child = child.parentNode) {
 				if(elem === child)
@@ -2389,7 +2368,7 @@
 		/**
 		 * 删除一个节点的所有子节点。
 		 * @param {Element} elem 节点。
-		 * @private
+		 * @static
 		 */
 		empty: function (elem) {
 			while(elem.lastChild)
@@ -2399,25 +2378,19 @@
 		/**
 		 * 释放节点所有资源。
 		 * @param {Element} elem 节点。
-		 * @private
+		 * @static
 		 */
 		dispose: function (elem) {
-
+	
 			//删除事件
-			if (navigator.isIE) {
-				if (elem.clearAttributes) {
-					elem.clearAttributes();
-				}
-
-				p.IEvent.un.call(elem);
-
-				if (elem.nodeName === "OBJECT") {
-					for (var p in elem) {
-						if (typeof elem[p] === 'function')
-							elem[p] = emptyFn;
-					}
-				}
+			if (elem.clearAttributes) {
+				elem.clearAttributes();
 			}
+
+			p.IEvent.un.call(elem);
+			
+			if(elem.data)
+				elem.data = null;
 
 			e.empty(elem);
 
@@ -2451,7 +2424,7 @@
 
 		/**
 		 * 根据类名返回子节点。
-		 * @param {Strung} classname 类名。
+		 * @param {Strung} className 类名。
 		 * @return {Array} 节点集合。
 		 */
 		getElementsByClassName: function(className) {
@@ -2474,10 +2447,21 @@
 		/// #endif
 
 		// 使     p.ElementList 支持此函数
+		
+		/**
+		 * 根据标签返回子节点。
+		 * @param {Strung} name 类名。
+		 * @return {Array} 节点集合。
+		 */
 		getElementsByTagName: function(name) {
 			return this.getElementsByTagName(name);
 		},
 
+		/**
+		 * 根据名字返回子节点。
+		 * @param {Strung} classname 类名。
+		 * @return {Array} 节点集合。
+		 */
 		getElementsByName: function(name) {
 			return this.getElementsByAttribute('name', name);
 		},
@@ -2781,7 +2765,7 @@
 		 */
 		remove: function(child) {
 			var me = this.dom || this;
-			assert(child && this.hasChild(child), 'Element.prototype.remove(child): 参数 {child} 不是当前节点的子节点', child);
+			assert(!child || this.hasChild(child), 'Element.prototype.remove(child): 参数 {child} 不是当前节点的子节点', child);
 			child ? this.removeChild(child) : ( me.parentNode && me.parentNode.removeChild(me) );
 			return this;
 		},
@@ -2806,13 +2790,16 @@
 	}, 2);
 
 	/**
+	 * @class
+	 */
+
+	/**
 	 * 返回元素指定节点。
 	 * @param {Element} elem 节点。
 	 * @param {Number/Function/undefined/undefined} fn 过滤函数。
 	 * @param {String} walk 路径。
 	 * @param {String} first 第一个节点。
 	 * @return {Element} 节点。
-	 * @ignore
 	 */
 	function walk(elem, fn, walk, first) {
 		elem = elem[first];
@@ -2832,7 +2819,6 @@
 	 * @param {String} walk 路径。
 	 * @param {String} first 第一个节点。
 	 * @return {ElementList} 集合。
-	 * @ignore
 	 */
 	function dir(elem, fn, walk, first) {
 		elem = elem[first || walk];
@@ -2848,6 +2834,11 @@
 
 	/**
 	 * 删除由于拷贝导致的杂项。
+	 * @param {Element} srcElem 源元素。
+	 * @param {Element} destElem 目的元素。
+	 * @param {Boolean} copyDataAndEvent=true 是否复制数据。
+	 * @param {Boolean} keepid=false 是否留下ID。
+	 * @return {Element} 元素。
 	 */
 	function clean(srcElem, destElem, copyDataAndEvent, keepid) {
 		if (!keepid)
@@ -2887,7 +2878,6 @@
 	 * @param {Element} elem 元素。
 	 * @param {String} selector 选择器。
 	 * @return {Py.ElementList} 元素集合。
-	 * @ignore
 	 */
 	function findBy(elem, selector) {
 		switch(selector.charAt(0)) {
@@ -2911,7 +2901,6 @@
 	 * 获取一个选择器。
 	 * @param {Number/Function/String} fn
 	 * @return {Funtion} 函数。
-	 * @ignore
 	 */
 	function getFilter(fn) {
 

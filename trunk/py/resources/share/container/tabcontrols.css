@@ -10,12 +10,6 @@
 	height: 28px;
 }
 
-.x-tabcontrols-header-content a.x-icon {
-	margin-right: -4px;
-	
-	*margin-top: -23px;
-}
-
 .x-tabcontrols-header-content {
 	float: left;
 	display: block;
@@ -40,8 +34,14 @@
 	line-height: 25px;
 	padding: 2px 0;
 	font-size: 14px;
+	margin: 0;
 }
 
-.x-tabcontrols .x-content {
+.x-tabcontrols-container{
+	width: 100%;
+	height: 100%;
+}
+
+.x-tabcontrols-content {
 	padding: 5px 5px 1px 5px;
 }

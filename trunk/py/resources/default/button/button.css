@@ -140,11 +140,9 @@
 /* 图标 */
 
 button .x-icon {
-	width: 17px;
 	margin-top: 2px;
-	*margin-left: 6px;
-	*margin-right:-5px;
-	_margin-left: 4px;
+	_width: 17px;
+	_margin-left: 3px;
 }
 
 

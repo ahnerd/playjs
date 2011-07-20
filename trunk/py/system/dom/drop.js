@@ -348,7 +348,7 @@ using("System.Dom.Drag");
 		onAfterDrag: function(e){
 			
 			return !dm.current.activeZone || dm.options.drop(dm.current.activeZone, e);
-		},
+		}
 		
 		/**
 		 * 在鼠标改变位置时，移动被拖动对象的位置。

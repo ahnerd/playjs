@@ -64,6 +64,10 @@
 
 }
 
+.x-fill {
+	padding: 0;
+}
+
 /* 底部内容 */
 .x-footer-content  {
 	height: 5px;

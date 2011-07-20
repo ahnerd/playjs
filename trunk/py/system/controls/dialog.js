@@ -15,11 +15,13 @@ using("System.Controls.ContainerControl");
  */
 namespace(".Dialog", Py.ContainerControl.extend({
 	
+	widthFix: 22,
+	
 	/**
 	 * xType
 	 * @type String
 	 */
-	xType: 'window',
+	xType: 'dialog',
 	
 	/**
 	 * 默认配置。
@@ -49,7 +51,9 @@ namespace(".Dialog", Py.ContainerControl.extend({
 			this.addHeaderItem('x-icon-close', options.closable ? this.close : this.hide, '关闭窗口');
 		delete options.closable;
 		
-		this.dom.on('click', this.bringToFront)  ;
+		this.on('click', function(){
+			this.dom.style.zIndex = Element.zIndex++;
+		})  ;
 	},
 	
 	showModal: function() {

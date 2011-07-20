@@ -16,7 +16,7 @@
 	padding-left: 8px;
 }
 
-.x-balloontip-container {
+.x-balloontip-body {
 	border-color: #000;
 }
 
@@ -24,7 +24,7 @@
     background-image: url(images/balloontip.gif);
 }
 
-.x-balloontip-container, .x-balloontip-header .x-header-content, .x-balloontip-footer .x-footer-content{
+.x-balloontip-body, .x-balloontip-header .x-header-content, .x-balloontip-footer .x-footer-content{
 	background-color: #fbfbfd;
 }
 

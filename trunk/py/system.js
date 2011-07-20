@@ -95,9 +95,9 @@ var Py = {
 
 /**
  * @author xuld
- * @license MIT license
- * @copyright 2009-2011 xuld
+ * @copyright 2009-2011 Py.Core Team
  * @projectDescription Py.Core for Javascript
+ * @fileOverview 系统核心的核心部分。
  */
 
 (function (w) {
@@ -105,10 +105,8 @@ var Py = {
 	/// #define PyJs
 	
 	/// #ifndef Debug
-	/// #define trace.
-	/// #define assert.
-	/// #define assert(
-	/// #define trace(
+	/// #define assert
+	/// #define trace
 	/// #endif
 	
 	/// #if !defined(SupportIE9) && !defined(SupportIE8) && !defined(SupportIE6) && !defined(HtmlFive)
@@ -128,8 +126,8 @@ var Py = {
 	/// #endif
 	
 	/// #ifndef SupportUsing
-	/// #define using(
-	/// #define using(
+	/// #define using
+	/// #define using
 	/// #endif
 
 	/// #region 全局变量
@@ -1202,7 +1200,7 @@ var Py = {
 			 * 表示一个事件接口。
 			 * @interface Py.IEvent
 			 * @singleton
-			 * Py.IEvent 提供了事件机制的基本接口，凡实行这个接口的类店都有事件的处理能力。
+			 * Py.IEvent 提供了事件机制的基本接口，凡实现这个接口的类店都有事件的处理能力。
 			 * 在调用  {@link Py.Native.prototype.addEvents} 的时候，将自动实现这个接口。
 			 */
 			IEvent: {
@@ -1393,6 +1391,7 @@ var Py = {
 				 * @param {Object} ... 调用的参数数组。
 				 * 这个函数等价  this.baseCall('constructor', arguments);
 				 * @see Py.Object.prototype.baseCall
+				 * @protected
 				 */
 				base: function() {
 					
@@ -1418,6 +1417,7 @@ var Py = {
 				 * @param {Object} ... 调用的参数数组。
 				 * @return {Object} 父类返回。
 				 * 注意只能从子类中调用父类的同名成员。
+				 * @protected
 				 * @example
 				 * <code>
 				 * 
@@ -2311,7 +2311,7 @@ var Py = {
 		 * @return {Array} 结果。
 		 * @example
 		 * <code>
-		 * ["vhd"].invoke('charAt, [0]); //    ['v']
+		 * ["vhd"].invoke('charAt', [0]); //    ['v']
 		 * </code>
 		 */
 		invoke: function(fn, args){
@@ -2822,10 +2822,9 @@ var Py = {
 	 * @param {mixed} v 结果。
 	 * @return {Function} 函数。
 	 */
-	function Object() {
-		var v = arguments[0];
+	function Object(obj) {
 		return function() {
-			return v;
+			return obj;
 		}
 	}
 

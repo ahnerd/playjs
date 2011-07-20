@@ -42,7 +42,7 @@ Py.Control.ControlCollection = Py.Collection.extend({
 
 /**
  * 可作为容器的控件接口。
- * @interface
+ * @interface IContainerControl
  * <p>
  * 实现这个接口的函数必须实现 3个函数:
  * </p>
@@ -88,7 +88,7 @@ Py.Control.ControlCollection = Py.Collection.extend({
  * </p>
  * 
  */
-Py.IContainerControl = {
+namespace(".IContainerControl", {
 	
 	/**
 	 * 获取目前所有子控件。
@@ -172,4 +172,4 @@ Py.IContainerControl = {
 	}
 	
 	
-};
+});

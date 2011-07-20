@@ -14,9 +14,9 @@ using("System.Controls.ScrollableControl");
  */
 namespace(".ContainerControl", Py.ScrollableControl.extend({
 	
-	heightFix: 33,
+	heightFix: 43,
 	
-	widthFix: 2,
+	widthFix: navigator.isIE6 ? 12 : 10,
 	
 	/**
 	 * 模板。
@@ -32,7 +32,9 @@ namespace(".ContainerControl", Py.ScrollableControl.extend({
                 </div>\
                 <div class="x-body">\
                     <div class="x-body-container">\
-	                    \
+	                    <div class="x-body-content">\
+		                    \
+		                </div>\
 	                </div>\
                 </div>\
                 <div class="x-footer">\
@@ -50,14 +52,25 @@ namespace(".ContainerControl", Py.ScrollableControl.extend({
  	 * @protected
 	 */
 	init: function(options) {
-		var ctrl = this,
-			xType =  'x-' + ctrl.xType;
-		ctrl.dom.className = xType;
-		ctrl.header = ctrl.get(0).addClass(xType + '-header').find('h3');
-		ctrl.body = ctrl.get(1).addClass(xType + '-body');
-		ctrl.content = ctrl.body.get(0);
-		ctrl.get(2).addClass(xType + '-footer');
-		ctrl.initChildren();
+		var me = this,
+			xType =  'x-' + me.xType,
+			footer = me.get(2);
+		me.dom.className = xType;
+		me.header = me.get(0).addClass(xType + '-header').find('h3');
+		me.content = me.get(1).addClass(xType + '-body').get(0).addClass(xType + '-container').get(0).addClass(xType + '-content');
+		footer.addClass(xType + '-footer');
+		
+		if(me.content.style.width)
+			me.dom.setWidth(me.getWidth() + this.widthFix);
+// 		
+		// // 如果小于 0， 说明 当前组件的 height/widthFix  未初始化。
+		// if(me.heightFix < 0) {
+			// me.constructor.prototype.heightFix = Element.getSizes(me.header, "y", "mbp") + Element.styleNumber(me.header, "height")
+				// + Element.getSizes(footer, "y", "mbp") + Element.styleNumber(footer, "height");
+// 			
+		// }
+		
+		me.initChildren();
 	},
 	
 	/**

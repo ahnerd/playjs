@@ -4,7 +4,7 @@
 
 
 
-using("System.Dom.Element");
+using("System.Controls.Control");
 
 
 namespace(".", Py.Control.extend({

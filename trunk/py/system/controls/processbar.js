@@ -4,8 +4,8 @@
 
 
 
-using("System.Controls.Control");
 imports("Resources.*.Viewer.ProcessBar");
+using("System.Controls.Control");
 
 
 namespace(".ProcessBar", Py.Control.extend({

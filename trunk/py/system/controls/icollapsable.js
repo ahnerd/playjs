@@ -1,6 +1,5 @@
 //===========================================
-//  PanelEx.js
-//  Copyright(c) 2009-2011 xuld
+//  可折叠的控件                        A
 //===========================================
 
 
@@ -8,14 +7,15 @@ using("System.Dom.Element");
 
 
 /**
- * @class Panel
+ * 表示一个可折叠的控件。
+ * @interface ICollapsable
  */
-Py.ICollapsable = {
+namespace(".ICollapsable", {
 	
 	/**
 	 * 获取目前是否折叠。
-	 * @method isCollapsed
-	 * @return {Boolean}
+	 * @virtual
+	 * @return {Boolean} 获取一个值，该值指示当前面板是否折叠。
 	 */
 	isCollapsed: function() {
 		return this.content.isHidden();
@@ -54,4 +54,4 @@ Py.ICollapsable = {
 		return this.isCollapsed() ? this.expand() : this.collapse();
 	}
 	
-};
+});
