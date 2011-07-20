@@ -7,6 +7,7 @@
 imports("Resources.*.Container.Accordion");
 using("System.Controls.Control");
 using("System.Controls.IContainerControl");
+using("System.Controls.ICollapsable");
 
 
 namespace(".Accordion", Py.Control.extend(Object.extendIf({
@@ -16,6 +17,8 @@ namespace(".Accordion", Py.Control.extend(Object.extendIf({
 	 * @type String
 	 */
 	xType: 'accordion',
+	
+	duration: 200,
 	
 	create:function(options){
 		return document.create('div', 'x-accordion');
@@ -45,15 +48,12 @@ namespace(".Accordion", Py.Control.extend(Object.extendIf({
 		this.dom.removeChild(childControl.header);
 	},
 	
-	onHeaderClick: function(tabPage, e){
-		if(this.activeTab === tabPage){
-			
-		} else {
-			this.activeTab.hide(200);
-			tabPage.show(200);
-			this.activeTab = tabPage;
-		}
-		
+	setActiveTab: function(tabPage){
+		if(this.activeTab === tabPage)
+			return;
+		this.activeTab.collapse();
+		tabPage.expand();
+		this.activeTab = tabPage;
 	}
 	
 }, Py.IContainerControl))).TabPage = Py.Control.extend({
@@ -63,18 +63,22 @@ namespace(".Accordion", Py.Control.extend(Object.extendIf({
 			return dom;
 		var me = this,
 			header = this.header = document.create('div', 'x-header x-accordion-header'),
-			container = this.dom = document.create('div', 'x-container x-accordion-container');
+			container = this.content = this.dom = document.create('div', 'x-body x-accordion-body');
 		header.appendChild(document.create('h3', '').setHtml(title));
 		header.onclick = function(e){
-			accordition.onHeaderClick(me, e);
+			accordition.setActiveTab(me);
 		};
 		container.appendChild(dom.dom  || dom);
 		 
+		me.duration = accordition.duration;
+		
 		if(accordition.activeTab){
 			container.hide();
 		} else {
 			accordition.activeTab = this;
+			this.onToggleCollapse(false);
 		}
+		
 	},
 	
 	setTitle: function (value) {
@@ -85,7 +89,10 @@ namespace(".Accordion", Py.Control.extend(Object.extendIf({
 	
 	getTitle: function () {
 		return this.header.find('h3').getText();
+	},
+	
+	onToggleCollapse: function (value) {
+		this.header.find('h3').toggleClass('x-collapsable', !value);
 	}
 	
-	
-});
+}).implementIf(Py.ICollapsable);

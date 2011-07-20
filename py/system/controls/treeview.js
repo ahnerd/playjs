@@ -8,24 +8,29 @@ using("System.Controls.IContainerControl");
 using("System.Controls.ICollapsable");
 
 
-(function(){
-	
-
 namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 	
 	xType: 'treenode',
+		   
+	depth: 0,
 	
 	create: function(){
 		var dom = document.create('div', 'x-' + this.xType);
 		dom.appendChild(document.create('a', ''));
 		return dom;
 	},
-		   
-	depth: 0,
 	
 	init: function(options){
 		this.label = this.find("a");
 		this.initChildren('nodes');
+	},
+	
+	initItem: function(item){
+		if(typeof item === 'string')
+			return new Py.TreeNode().setText(item);
+		else if(item.parentControl)
+			item.parentControl.controls.remove(item);    //   如果有指定父元素， 删除。
+		return item;
 	},
 	
 	onControlAdded: function(childNode, index){
@@ -80,14 +85,6 @@ namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 			handle.className = 'x-treenode-space x-treenode-' + type;
 	},
 	
-	// 设置当前节点的父节点。
-	setParent: function(parent){
-		
-		// 然后附加到一个节点。
-		parent.appendChild(this);
-		return this;
-	},
-	
 	// 由于子节点的改变刷新本节点和子节点状态。
 	update: function(){
 		
@@ -102,7 +99,7 @@ namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 			}
 		}
 		
-		//this.toggleClass('x-treenode-last', this.parent.nodes.indexOf(this) == this.parent.nodes.length - 1);
+		//this.toggleClass('x-treenode-last', this.parentControl.nodes.indexOf(this) == this.parentControl.nodes.length - 1);
 	},
 	
 	updateAllSpan: function(){ 
@@ -120,7 +117,7 @@ namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 		
 		var span = this.getSpan(0), current = this;
 		// 更新 last node
-		while((current = current.parent) && (span = span.previousSibling)){
+		while((current = current.parentControl) && (span = span.previousSibling)){
 			
 			span.className = current.isLastNode() ? 'x-treenode-space x-treenode-none' : 'x-treenode-space';
 		
@@ -141,7 +138,7 @@ namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 	expandAll: function(){
 		
 		if (this.content) {
-			this.expand();
+			//this.expand();
 			this.nodes.invoke('expandAll', []);
 		}
 	},
@@ -152,12 +149,12 @@ namespace(".TreeNode", Py.Control.extend(Object.extendIf({
 		if (this.content) {
 			this.nodes.invoke('collapseAll', []);
 			
-			this.collapse();
+			//this.collapse();
 		}
 	},
 	
 	isLastNode: function(){
-		return this.parent &&  this.parent.lastNode === this;
+		return this.parentControl &&  this.parentControl.lastNode === this;
 	},
 	
 	markAsLastNode: function(){
@@ -263,5 +260,3 @@ create: function(){
 }));
 
 
-
-})();

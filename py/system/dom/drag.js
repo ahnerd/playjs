@@ -221,7 +221,7 @@ using("System.Dom.Element");
 				 * @param {Boolean} in 如果 true， 表示设置当前的样式，否则删除当前样式。
 				 */
 				changeType: function(doc, type) {
-					doc.dom.setUnselectable(!!type).style.cursor = type;
+					doc.setUnselectable(!!type).setStyle('curosur', type);
 				},
 			
 				/**

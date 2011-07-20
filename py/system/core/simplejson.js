@@ -7,18 +7,18 @@ namespace("JSON.", {
 	specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
 
 	replaceChars: function(chr){
-		return JSON.$specialChars[chr] || '\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16);
+		return JSON.specialChars[chr] || '\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16);
 	},
 
 	encode: function(obj){
-		switch ($type(obj)){
+		switch (Object.type(obj)){
 			case 'string':
 				return '"' + obj.replace(/[\x00-\x1f\\"]/g, JSON.replaceChars) + '"';
 			case 'array':
-				return '[' + String(obj.map(JSON.encode).clean()) + ']';
-			case 'object': case 'hash':
+				return '[' + String(Object.update(obj, JSON.encode, [])) + ']';
+			case 'object':
 				var string = [];
-				Hash.each(obj, function(value, key){
+				Object.each(obj, function(value, key){
 					var json = JSON.encode(value);
 					if (json) string.push(JSON.encode(key) + ':' + json);
 				});
@@ -30,7 +30,7 @@ namespace("JSON.", {
 	},
 
 	decode: function(string, secure){
-		if ($type(string) != 'string' || !string.length) return null;
+		if (typeof string != 'string' || !string.length) return null;
 		if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) return null;
 		return eval('(' + string + ')');
 	}

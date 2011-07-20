@@ -3,6 +3,7 @@
 
 
 
+imports("Resources.*.Button.Menu");
 using("System.Controls.ITargetedControl");
 using("System.Controls.ContentControl");
 using("System.Controls.ListControl");

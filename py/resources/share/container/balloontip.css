@@ -3,6 +3,12 @@
 .x-balloontip {
 	position: absolute;
 	z-index: 100000;
+	max-width: 300px;
+}
+
+.x-balloontip-body{
+	border-width: 0 1px;
+	border-style: solid;
 }
 
 .x-balloontip-content {

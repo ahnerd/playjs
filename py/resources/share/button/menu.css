@@ -1,7 +1,9 @@
 
  /* 菜单    */
 .x-menu{
-	width:130px;
+	min-width:130px;
+	max-width:400px;
+	_width: 130px;
 	position: absolute;
 }
 

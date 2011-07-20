@@ -153,10 +153,10 @@ using("System.Dom.Element");
 		* @param {String} [m2] 成员。
 		* @param {String} [t2] 类型。
 		*/
-		delegate: function(control, delegate, methods, type, m2, t2) {
+		delegate: function(control, delegate, methods, type, m2, t2, m3, t3) {
 			
 			if (m2) 
-				arguments.callee(control, delegate, m2, t2);
+				arguments.callee(control, delegate, m2, t2, m3, t3);
 			
 			assert(control && control.prototype, "Control.delegate(control, delegate, methods, type, m2, t2): 参数 {control} 必须是一个类", control);
 			assert.isNumber(type, "Control.delegate(control, delegate, methods, type, m2, t2): 参数 {type} ~。");
@@ -234,9 +234,7 @@ using("System.Dom.Element");
 
 	});
 	
-	Control.delegate
-		(Control, "dom", 'addEventListener removeEventListener scrollIntoView focus blur remove', 2, 'appendChild contains insert replaceWith wrapWith removeChild bringToFront', 3)
-  		(Control, "dom", 'insertBefore replaceChild', 5);
+	Control.delegate(Control, "dom", 'addEventListener removeEventListener scrollIntoView focus blur remove', 2, 'appendChild contains insert replaceWith wrapWith removeChild bringToFront', 3, 'insertBefore replaceChild', 5);
 
 	// 让 Element 扩展的时候， 自动扩展 Control 。
 	Element.implementTargets.push(Control.prototype);

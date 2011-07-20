@@ -390,12 +390,20 @@ using("System.Fx.Base");
 	String.map('left right top bottom', Function.from(function(elem, type){
 		elem.parentNode.style.overflow = 'hidden';
 		var r = {};
+		//if (/left|right/.test(type))
+		//	r['margin-right'] = r['margin-left'] = elem.offsetWidth;
+		//else
+		//	r['margin-top'] = r['margin-bottom'] = elem.offsetHeight;
+		
+			
+		//type = 'margin-' + type;
+		//r[type] = -r[type];
+		
 		if (/left|right/.test(type))
-			r['margin-right'] = r['margin-left'] = elem.offsetWidth;
+			r['margin-' + type] = -elem.offsetWidth;
 		else
-			r['margin-top'] = r['margin-bottom'] = elem.offsetHeight;
-		type = 'margin-' + type;
-		r[type] = -r[type];
+			r['margin-' + type] = -elem.offsetHeight;
+			
 		return r;
 	}), maps);
 	

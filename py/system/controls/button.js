@@ -79,36 +79,8 @@ namespace(".Button", Py.ContentControl.extend({
 if(navigator.isQuirks){
 	
 	// IE 下 <button> 出现多边距。
-	Py.Button.implement({
-		
-		setText: function (value) {
-			this.content.setText(value);
-			this.onAutoSizeForIE();
-			return this;
-		},
-		
-		setHtml: function (value) {
-			this.content.setHtml(value);
-			this.onAutoSizeForIE();
-			return this;
-		},
-		
-		setWidth: function (value) {
-			this.button.runtimeStyle.width = '';
-			this.button.setWidth(value);
-			return this;
-		},
-	
-		doAutoSizeForIE: function(){
-			var me = this, styleWidth = me.button.style.width;
-			if(!styleWidth ||  styleWidth === 'auto')
-				me.button.runtimeStyle.width = me.content.offsetWidth + (me.icon ? 31 : 8);
-		},
-		
-		onAutoSizeForIE: function(){
-			setTimeout(Function.bind(this.doAutoSizeForIE, this), 0);
-		}
-		
+	Py.ContentControl.registerSizeTriggerForIE(Py.Button, 'button', function () {
+		return this.content.offsetWidth  + (this.icon ? 31 : 12);
 	});
 	
 	

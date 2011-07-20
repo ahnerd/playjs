@@ -65,7 +65,7 @@ Py.ScrollableControl.implement({
 		var me = this;
 		me.content.toggle(this.duration, function(){
 			me.trigger('collapsechanged');
-		}, 'height');
+		}, 'top');
 		return me;
 	}
 	

@@ -10,12 +10,20 @@ using("System.Controls.Control");
  * @abstract
  * @class ContentControl
  * @extends Control
- * ContentControl 拥有一个属性 content， 表示容器内存储内容的节点。默认 content 和  dom 相同。
- * 这个控件和子类实现大小自适应。修复 IE6/7 父元素不能自己调整以适应子元素大小的错误。
- * 这个控件同时允许在子控件上显示一个图标。
+ * <p>
+ * ContentControl 控件把 content 属性作为自己的内容主体。
+ * ContentControl 控件的大小将由 content 决定。
+ * 当执行 appendChild/setWidth/setHtml 等操作时，都转到对 content 的操作。 
+ * 这个类的应用如: dom 是用于显示视觉效果的辅助层， content 是实际内容的控件。
+ * 默认 content 和  dom 相同。子类应该重写 init ，并重新赋值  content 。
+ * </p>
  * 
  * <p>
- * ContentControl 的外元素是一个 inline-block 的元素。它自身没有设置大小，全部的大小依赖子元素而自动决定。
+ * 这个控件同时允许在子控件上显示一个图标。
+ * </p>
+ * 
+ * <p>
+ * ContentControl 的外元素是一个根据内容自动改变大小的元素。它自身没有设置大小，全部的大小依赖子元素而自动决定。
  * 因此，外元素必须满足下列条件的任何一个:
  *  <ul>
  * 		<li>外元素的 position 是 absolute<li>
@@ -67,75 +75,81 @@ namespace(".ContentControl", Py.Control.extend({
 		this.icon.className = "x-icon x-icon-" + icon;
 		
 		return this;
-	},
-	
-	setWidth: function(value){
-		this.content.setWidth(value);
-		return this;
-	},
-	
-	setHeight: function(value){
-		this.content.setHeight(value);
-		return this;
-	},
-		
-	setText: function(value){
-		this.content.setText(value);
-		return this;
-	},
-	
-	setHtml: function(value){
-		this.content.setHtml(value);
-		return this;
 	}
-	
-	//,
-	
-	/**
-	 * 如果浏览器不支持自动更新大小，强制更新大小。
-	 * @protected
-	 */
-	// onAutoResize: Function.empty
-	
-	
-	
-	
 	
 }));
 
 
-/*
+Py.Control.delegate(Py.ContentControl, 'content', 'setWidth setHeight setText setHtml', 2, 'appendChild insertBefore removeChild replaceChild contains append empty', 3, 'getHtml getText getWidth getHeight', 1);
 
-/// #ifdef SupportIE7
+/// #ifdef SupportIE6
+
+
+// IE 6/7 无法处理外容器自动适应内容器的大小。
+// 所以为 IE 6/7 手动设置 width 。
+
+
+/* 最新消息: IE6 即将退出历史舞台。退出的还有这一堆的代码,一 */
 
 if(navigator.isQuirks){
 	
-	// IE 下 不会自动根据子元素的大小调整父元素。
-	Py.ContentControl.implement({
+	/**
+	 * @internal
+	 * @param {Class} control 控件类。
+	 * @param {String} containerName 用于包装 content 的属性，这个属性将会自动调整大小为子元素的大小。
+	 * @param {Function} getWidthForResize 需要自动调整大小时，调用此函数计算新的大小，并设置containerName 指定的 元素大小为该大小。
+	 */
+	Py.ContentControl.registerSizeTriggerForIE = function (control,  containerName, getWidthForResizing) {
 		
-		onResizeX: function(){
-			this.trigger('resizex');
-			this.onAutoResize();
-		},
+		var p = control.prototype;
 		
-		isAutoSize: function(elem){
-			var styleWidth = elem.style.width;  
-			return !styleWidth ||  styleWidth === 'auto';
-		},
+		Object.extend(p, {
+			
+			setWidthWithoutResizing: p.setWidth,
+			
+			getWidthForResizing: getWidthForResizing,
+			
+			setWidth: function (value) {
+				var me = this;
+				me[containerName].runtimeStyle.width = '';
+				if(isNaN(value)){
+					// 如果 是 NaN， 说明重新设置为自定义的大小。
+					me[containerName].runtimeStyle.width = getWidthForResizingAndTestMinMaxWidth(me,  me[containerName]);
+				}
+				return me.setWidthWithoutResizing(value);
+			}
+			
+		}) ;
 		
-		doAutoSize: Function.empty,
+		// 当执行 setText/setHtml 后 ， 重新更新容器 (containerName) 宽度。
+		String.map('setText setHtml', function (method) {
+			p[method] = function (value) {
+				var me = this, styleWidth;
+				me.content[method](value);
+				styleWidth = me[containerName].style.width;
+				if(!styleWidth ||  styleWidth === 'auto') {
+					setTimeout(function(){
+						var style = me[containerName].runtimeStyle;
+						style.width = '';
+						style.width = getWidthForResizingAndTestMinMaxWidth(me, me[containerName]);
+					}, 0);
+				}
+				return me;
+			};
+		});
 		
-		onAutoResize: function(){
-			setTimeout(Function.bind(this.doAutoSize, this), 0);
+		function getWidthForResizingAndTestMinMaxWidth(target, elem){
+			return Math.max(Math.min(target.getWidthForResizing(), Element.styleNumber(elem, 'maxWidth') || Infinity), Element.styleNumber(elem, 'minWidth'));
 		}
-		
+	};
+	
+	Py.ContentControl.registerSizeTriggerForIE(Py.ContentControl, 'dom', function () {
+		return this.content.offsetWidth;
 	});
 }
 
 
-*/
 
 
 /// #endif
 
-Py.Control.delegate(Py.ContentControl, 'content', 'appendChild insertBefore removeChild replaceChild contains append empty', 3, 'getHtml getText getWidth getHeight', 1);

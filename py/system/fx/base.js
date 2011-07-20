@@ -22,13 +22,13 @@
 	/// #endregion
 		
 	/**
-	 * @namespace Py.Fx
+	 * @namespace Fx
 	 */
 	p.namespace(".Fx.", {
 		
 		/**
 		 * 实现特效。
-		 * @class Py.Fx.Base
+		 * @class Fx.Base
 	 	 * @abstract
 		 */
 		Base: p.Class({

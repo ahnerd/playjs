@@ -12,6 +12,8 @@ using("System.Controls.ContentControl");
  * @abstract
  * ScrollableControl 封装了一个 content 和 header 。
  * 
+ * content 表示可滚动的一个区域。
+ * 
  * <p>
  * 一般地，一个控件由一个 DIV， 封装了很多DIV组成。如:
  * </p>
@@ -47,7 +49,7 @@ namespace(".ScrollableControl", Py.ContentControl.extend({
 	 * 外容器上下边框+边距。
 	 * @param {Object} value
 	 */
-	heightFix: 2,
+	heightFix: 0,
 	
 	/**
 	 * 当前正文。
@@ -92,29 +94,16 @@ namespace(".ScrollableControl", Py.ContentControl.extend({
 	},
 	
 	/**
-	 * 设置显示内容的 HTML 字符串。
-	 * @method setHtml
-	 * @param {String} value 内容。
-	 * @return {Panel} this。
+	 * @protected
+	 * @override
 	 */
-	setHtml: function(value) {
-		this.content.innerHTML = '<div class="x-body-content x-' + this.xType + '-content">' + value + '</div>';
-		this.onAutoResize();
-		return this;
-	},
-	
-	/**
-	 * 获取显示内容的 HTML 字符串。
-	 * @method getHtml
-	 * @return {String} 内容。
-	 */
-	getHtml: function() {
-		return this.content.firstChild ? this.content.firstChild.innerHTML : this.content.innerHTML;
-	},
-	
 	createIcon: function(){
 		assert(this.header, 'ScrollableControl.prototype.createIcon(): 目前控件不存在顶部');
 		return  this.header.insert(document.createElement("span"), 'beforeBegin');
+	},
+	
+	_getBorders: function (content, xOrY) {
+		return Element.getSizes(content, xOrY, 'bp');
 	},
 	
 	/**
@@ -122,36 +111,48 @@ namespace(".ScrollableControl", Py.ContentControl.extend({
 	 */
 	setContent: function(content){
 		
-		var cd = content.dom || content;
+		var cd = content.dom || content, cdd = this.content;
 		
-		assert(cd, "ScrollableControl.prototype.setContent(content): 参数 {content} 必须是 Element。")
+		if(cdd) {
+				
+			cdd = cdd.dom || cdd, p = cdd.parentNode;
+			
+			assert(cd, "ScrollableControl.prototype.setContent(content): 参数 {content} 必须是 Element。")
+			
+			this.widthFix -= this._getBorders(cdd, 'x');
+			this.heightFix -= this._getBorders(cdd, 'y');
 		
-		// 删除 content
-		if(this.content != this.dom && this.content){
-			this.content.remove();
+			// 删除 content
+			p.replaceChild(cd, cdd);
+		} else {
+			
+			//  this.container.appendChild(cd);
+			
+			
 		}
 		
-		this.heightFix = Element.getSizes(this.dom, 'y', 'bp') + Element.getSizes(cd, 'y', 'bp');
-		this.widthFix = Element.getSizes(this.dom, 'x', 'bp') + Element.getSizes(cd, 'x', 'bp');
 		
-		this.dom.append(cd);
+		// 更新 widthFix / heightFix
+		this.widthFix += this._getBorders(cd, 'x');
+		this.heightFix += this._getBorders(cd, 'y');
+		
 		
 		// 设置 content
 		this.content = content;
 		
 		// 初始化 width 。
-		this.dom.setWidth(this.content.getWidth() + this.widthFix);
+		this.dom.setWidth(content.getWidth() + this.widthFix);
 		
-		if (this.header) {
-			var h = this.header.get('parent');
-		
-			if ('name' in content) 
-				this.setTitle(content.name);
-			else if (!this.header.innerHTML.length) h.hide();
-			
-			this.heightFix += h.getSize().y;
-			
-		}
+				// if (this.header) {
+			// var h = this.header.get('parent');
+// 		
+			// if ('name' in content) 
+				// this.setTitle(content.name);
+			// else if (!this.header.innerHTML.length) h.hide();
+// 			
+			// this.heightFix += h.getSize().y;
+// 			
+		// }
 		
 		return this;
 	},
@@ -175,13 +176,26 @@ namespace(".ScrollableControl", Py.ContentControl.extend({
 			}
 		}
 	},
+	
+	///**
+	// * 在滚动区域的附近增加一个存放内容的节点。
+	// */
+	//addContent: function (elem, position) {
+	//	this.content.insert(elem.dom || elem, position || "beforeBegin");
+	//	this.heightFix += elem.getSize().y;
+	//},
+	
+	//removeContent: function (elem) {
+	//	this.heightFix -=  elem.getSize().y;
+	//	this.content.get('parent').remove(elem.dom || elem);
+	//},
 		
 	setWidth: function(value){
 		this.dom.setWidth(value);
 		if (this.content) {
 			this.content.setWidth(value - this.widthFix);
-			this.onResizeX();
 		}
+		this.onResizeX(value);
 		return this;
 	},
 	
@@ -192,8 +206,8 @@ namespace(".ScrollableControl", Py.ContentControl.extend({
 	setHeight: function(value){
 		if (this.content) {
 			this.content.setHeight(value - this.heightFix);
-			this.onResizeY();
 		}
+		this.onResizeY(value);
 		return this;
 	},
 	
@@ -220,24 +234,36 @@ namespace(".ScrollableControl", Py.ContentControl.extend({
 		return this;
 	},
 	
-	onResizeX: function(){
-		this.trigger('resizex');
+	onResizeX: function(value){
+		this.trigger('resizex', value);
 	},
 	
-	onResizeY: function(){
-		this.trigger('resizey');
-	},
-	
-	doAutoSize: function(){
-		var me = this;
-		
-		me.dom.runtimeStyle.width = '';
-		if (me.isAutoSize(me.dom)) {
-			me.dom.runtimeStyle.width = Math.max(80, me.content.firstChild.offsetWidth + 2);
-		}
+	onResizeY: function(value){
+		this.trigger('resizey', value);
 	}
 	
 
 }) );
 
-Py.Control.delegate(Py.ScrollableControl, 'header', 'getText', 1, 'setText', 2);
+
+/// #ifdef SupportIE6
+
+
+
+if(navigator.isQuirks){
+	
+	Py.ScrollableControl.implement({
+		
+		getWidthForResizing: function (args) {
+			return Math.max(this.header.getSize().x, this.content.offsetWidth + this.widthFix);
+		},
+		
+		setWidth: Py.ContentControl.prototype.setWidth, 
+		
+		setWidthWithoutResizing: Py.ScrollableControl.prototype.setWidth
+		
+	});
+	
+}
+
+/// #endif

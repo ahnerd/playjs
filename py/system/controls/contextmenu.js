@@ -1,7 +1,6 @@
 
 
-using("System.Controls.ContextMenu");
-imports("Resources.*.Button.ContextMenu");
+using("System.Controls.Menu");
 
 
 namespace(".ContextMenu", Py.Menu.extend({
