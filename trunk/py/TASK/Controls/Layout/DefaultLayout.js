@@ -29,7 +29,7 @@ using("System.Controls.Layout.LayoutEngine");
 		 */
 		initLayout: function(container){
 			
-			this.baseCall('initLayout', container);
+			this.base('initLayout', container);
 			Element.setMovable(container.dom);
 			
 			// 生成 left top right bottom fill 区域。
@@ -58,7 +58,7 @@ using("System.Controls.Layout.LayoutEngine");
 		 */
 		uninitLayout: function(container){
 			container.dom.innerHTML = '';
-			this.baseCall('uninitLayout', container);
+			this.base('uninitLayout', container);
 			delete container.regions;
 		},
 		
@@ -127,7 +127,7 @@ using("System.Controls.Layout.LayoutEngine");
 			
 			// 非法 dock。
 			if(!(region in Py.Layout.DefaultLayout._dock)){
-				return this.baseCall('onControlInserted', container, index, item);
+				return this.base('onControlInserted', container, index, item);
 			
 			}
 			
@@ -145,7 +145,7 @@ using("System.Controls.Layout.LayoutEngine");
 		 * @param {Control} container 容器的控件。
 		 */
 		onRemove: function(item, container){
-			this.baseCall('onRemove', item, container);
+			this.base('onRemove', item, container);
 			
 			this.updateRegion(container, item.dock);
 		}

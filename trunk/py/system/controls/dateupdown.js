@@ -18,7 +18,7 @@ namespace('.DateUpDown', Py.UpDown.extend({
 	format: 'yyyy/M/d',
 	
 	init: function(options){
-		this.baseCall('init',  options);
+		this.base('init',  options);
 		
 		Element.markDate(this.textBox.dom, Function.bind(this.onInvalid, this));
 		

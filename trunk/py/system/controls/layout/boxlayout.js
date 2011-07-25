@@ -53,7 +53,7 @@ Py.Layout.register(Py.Layout.BoxLayout = Py.Layout.AdvanceLayout.extend({
 	
 	initLayoutCore: function(container) {
 		
-		this.baseCall('initLayoutCore', container);
+		this.base('initLayoutCore', container);
 	
 		// 新建用来存储分区的区。
 		var regions = container.regions = container.content.appendChild(document.create('div', 'x-region-container'));
@@ -77,7 +77,7 @@ Py.Layout.register(Py.Layout.BoxLayout = Py.Layout.AdvanceLayout.extend({
 	
 	uninitLayoutCore: function(){
 		
-		this.baseCall('uninitLayoutCore', container);
+		this.base('uninitLayoutCore', container);
 		container.content.find('.x-region-container').remove();
 	},
 	
@@ -233,7 +233,7 @@ Py.Layout.register(Py.Layout.BoxLayout = Py.Layout.AdvanceLayout.extend({
 		setContent: function(content) {  
 			
 			content.addClass('x-box');
-			this.baseCall('setContent', content);
+			this.base('setContent', content);
 			
 			if (content.split > -1) {
 				this.setSplit(content.split);

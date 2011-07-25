@@ -73,7 +73,7 @@ Py.IToolTip = {
 	},
 	
 	unsetToolTip: function(ctrl){
-		ctrl.un('mouseover', Py.dataIf(ctrl, 'tooltip');
+		ctrl.un('mouseover', Py.getData(ctrl, 'tooltip');
 	},
 	
 	onShow: function(x, y){

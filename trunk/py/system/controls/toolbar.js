@@ -18,7 +18,7 @@ namespace(".ToolBar", Py.ListControl.extend({
 		 if(value === '-')
 		 	return new Py.ToolBar.Seperator();
 		 
-		 return this.baseCall('initItem', value);
+		 return this.base('initItem', value);
 	}
 
 

@@ -1,5 +1,5 @@
 ﻿//===========================================
-//  元素   element.js       C
+//  元素             G
 //===========================================
 
 (function(w) {
@@ -100,23 +100,14 @@
 			col: [ 2, "<table><tbody></tbody><colgroup>", "</colgroup></table>" ],
 			area: [ 1, "<map>", "</map>" ]
 		};
-		
-	assert(ep, "当前的  Element 对象被修改。如果必须修改 Element，请保证 Element 是一个函数，拥有 prototype 属性。");
 
 	/// #ifdef SupportIE6
 
 	if (navigator.isQuirks) {
-
-
-		// 避免 getElementById 函数返回错误的函数。
 		ep.domVersion = 1;
 
 	}
 
-	/// #endif
-
-	/// #ifdef SupportIE6
-	
 	/**
 	 * 根据一个 id 或 对象获取节点。
 	 * @param {String/Element} id 对象的 id 或对象。
@@ -140,12 +131,7 @@
 
 	/// #endif
 
-	///   #region p.ElementList
-
-	/**
-	 * @class Element
-	 * @implements Py.IEvent
-	 */
+	///   #region ElementList
 
 	/**
 	 * 节点集合。
@@ -182,7 +168,7 @@
 
 		/**
 		 * 对集合每个元素执行一次函数。
-		 * @param {Function} fn 参数。
+		 * @param {Function/String} fn 参数。
 		 * @param {Array} args/... 参数。
 		 * @return {Array} 结果集。
 		 */
@@ -330,27 +316,26 @@
 				});
 				
 				if(!copyIf || !(key in p.ElementList.prototype)) {
-					var fn;
 	
 					// 复制到  p.ElementList
 					switch (listType) {
 						case 2:
-							fn = function() {
+							value = function() {
 								var doms = this.doms, l = doms.length, i = -1;
 								while (++i < l)
 									doms[i][key].apply(doms[i], arguments);
 								return this;
 							};
-	
+							
 							break;
 						case 3:
-							fn = function() {
+							value = function() {
 								return new p.ElementList(this.each(key, arguments));
 							};
-	
 							break;
+							
 						case 4:
-							fn = function() {
+							value = function() {
 								var args = arguments;
 								return new p.ElementList(Array.plain.apply(Array, this.each( function(elem, index) {
 									var r = this[index][key].apply(this[index], args);
@@ -358,28 +343,25 @@
 								}, this.doms)));
 	
 							};
-	
 							break;
+							
 						case 5:
-							fn = function() {
-								var result = true, args = arguments;
-								this.each( function(node) {
-									return  result = node[key].apply(node[key], args);
+							value = function() {
+								var args = arguments;
+								return !ap.each.call(this.doms, function(node) {
+									return  !node[key].apply(node[key], args);
 								});
-	
-								return result;
 							};
-	
 							break;
+							
 						default:
-							fn = function() {
+							value = function() {
 								return this.each(key, arguments);
 							};
-	
-							break;
+							
 					}
 				
-					p.ElementList.prototype[key] = fn;
+					p.ElementList.prototype[key] = value;
 				}
 				
 				
@@ -501,18 +483,11 @@
 	
 		/// #endif
 
-		/// #ifdef SupportIE6
-
 		/**
 		 * 获取节点本身。
 		 */
-		dom: p.$(document.documentElement)
-
-		/// #else
-
-		/// dom: document.documentElement
-
-		///#endif
+		dom: document.documentElement
+		
 	});
 	
 	/**
@@ -525,6 +500,7 @@
 	 * @return {Document} 文档。
 	 */
 	function getDoc(elem) {
+		assert.isNode(elem, 'Element.getDocument(elem): 参数 {elem} ~。');
 		return elem.ownerDocument || elem.document || elem;
 	}
 
@@ -539,7 +515,7 @@
 
 	/// #endregion
 
-	/// #region IEvent
+	/// #region 事件
 
 	/**
 	 * 默认事件。
@@ -632,7 +608,7 @@
 	 * </code>
 	 */
 	e.defineEvents = function(events, baseEvent, initEvent) {
-
+		
 		var ee = p.Events.element;
 
 		// 删除已经创建的事件。
@@ -669,16 +645,6 @@
 	 */
 
 	var pep = namespace(".Event", Class({
-		
-		/**
-		 * 表示当前是否取消冒泡。
-		 */
-		cancelBubble: false,
-		
-		/**
-		 * 表示当前是否阻止默认事件。
-		 */
-		returnValue: true,
 
 		/**
 		 * 构造函数。
@@ -743,7 +709,7 @@
 	if (navigator.isStd) {
 
 	/// #endif
-		Event.prototype.stop = pep.stop;
+		w.Event.prototype.stop = pep.stop;
 
 		initMouseEvent = initKeyboardEvent = initUIEvent = function(e) {
 
@@ -801,10 +767,10 @@
 			this.un(e.type);
 		});
 
-	if(navigator.isFirefox)
+	if (navigator.isFirefox)
 		e.defineEvents('mousewheel', 'DOMMouseScroll');
 	if (!navigator.isIE) {
-		var checkMouseEnter = function(e) {
+		function checkMouseEnter(e) {
 
 			var parent = e.relatedTarget;
 			while (parent && parent != this) {
@@ -823,39 +789,35 @@
 
 	/// #endregion
 
-	/// #region Attributons
+	/// #region 属性
 
 	/**
 	 * 透明度的正则表达式。
 	 * @type RegExp
-	 * @private
 	 */
 	var rOpacity = /opacity=([^)]*)/,
 	
 		/**
 		 * 是否为像素的正则表达式。
 		 * @type RegExp
-		 * @private
 		 */
-		rNumPx = /^-?\document+(?:px)?$/i,
+		rNumPx = /^-?\d+(?:px)?$/i,
 	
 		/**
 		 * 是否为数字的正则表达式。
 		 * @type RegExp
-		 * @private
 		 */
-		rNum = /^-?\document/,
+		rNum = /^-?\d/,
 	
 		/**
 		 * 事件名。
 		 * @type RegExp
 		 */
-		rEventName = /^on([a-z0-9$_]+)/,
+		rEventName = /^on(\w+)/,
 	
 		/**
 		 * 是否属性的正则表达式。
 		 * @type RegExp
-		 * @private
 		 */
 		rStyle = /\-|float/,
 	
@@ -870,11 +832,6 @@
 		 * @type String
 		 */
 		borderLeftWidth = 'borderLeftWidth',
-		
-		/**
-		 * 特殊边框。
-		 */
-		styleMaps = {},
 	
 	
 		/// #ifdef SupportIE8
@@ -882,7 +839,6 @@
 		/**
 		 * 是否使用方法 getComputedStyle。
 		 * @type Boolean
-		 * @private
 		 */
 		defaultView = document.defaultView.getComputedStyle,
 	
@@ -896,7 +852,7 @@
 		getStyle = defaultView ? function(elem, name) {
 	
 			assert.isElement(elem , "Element.getStyle(elem, name): 参数 {elem} ~。");
-	
+			
 			// 获取样式
 			var computedStyle = elem.ownerDocument.defaultView.getComputedStyle(elem, null);
 	
@@ -907,19 +863,19 @@
 		} : function(elem, name) {
 	
 			assert.isElement(elem , "Element.getStyle(elem, name): 参数 {elem} ~。");
-	
-			if(name in e.specialAttr) {
+			
+			if(name in styles){
 				switch(name) {
 					case 'height':
-						return elem.offsetHeight - e.getSizes(elem, 'y', 'pb') + 'px';
+						return elem.offsetHeight === 0 ? 'auto' : elem.offsetHeight - e.getSizes(elem, 'y', 'pb') + 'px';
 					case 'width':
-						return elem.offsetWidth - e.getSizes(elem, 'x', 'pb') + 'px';
+						return elem.offsetWidth === 0 ? 'auto' : elem.offsetWidth - e.getSizes(elem, 'x', 'pb') + 'px';
 					case 'opacity':
-						return elem.getOpacity().toString();
-	
+						return ep.getOpacity.call(elem).toString();
+		
 				}
 			}
-	
+			
 			var r = elem.currentStyle[ name ];
 	
 			// 来自 jQuery
@@ -957,48 +913,45 @@
 		/// },
 	
 		/// #endif
-	
+		
+		/**
+		 * 特殊的样式。
+		 * @type Object
+		 */
+		styles = {
+			'float': 'cssFloat' in div.style ? 'cssFloat' : 'styleFloat',
+			height: 'setHeight',
+			width: 'setWidth'
+		},
+		
 		/**
 		 * 特殊属性集合。
 		 * @type Object
 		 */
 		attributes = {
 			innerText: 'innerText' in div ? 'innerText' : 'textContent',
-			'float': 'styleFloat' in div ? 'styleFloat' : 'cssFloat',
 			"for": "htmlFor",
 			"class": "className"
 		};
-	
-	String.map('x y', function(c, i){
-		c = styleMaps[c] = {};
-		var tx = i ? ['Top', 'Bottom'] : ['Left', 'Right'];
-		c.d = tx.invoke('toLowerCase', []);
-		String.map('padding~ margin~ border~Width', function(v){
-			c[v.charAt(0)] = [v.replace('~', tx[0]), v.replace('~', tx[1])];
-		});
-	});
-	
 		
 	/**
 	 * @class Element
 	 */
 	apply(e, {
-
+		
 		/**
 		 * 获取元素的计算样式。
-		 * @method getStyle
 		 * @param {Element} dom 节点。
 		 * @param {String} name 名字。
 		 * @return {String} 样式。
 		 * @static
-		 * @private
 		 */
 		getStyle: getStyle,
 
 		/**
 		 * 读取样式字符串。
 		 * @param {Element} elem 元素。
-		 * @param {String} name 属性名。
+		 * @param {String} name 属性名。必须使用骆驼规则的名字。
 		 * @return {String} 字符串。
 		 * @static
 		 */
@@ -1007,7 +960,7 @@
 		/**
 		 * 读取样式数字。
 		 * @param {Element} elem 元素。
-		 * @param {String} name 属性名。
+		 * @param {String} name 属性名。必须使用骆驼规则的名字。
 		 * @return {String} 字符串。
 		 * @static
 		 */
@@ -1024,11 +977,11 @@
 		getSizes: defaultView ? function (elem, type, names) {
 
 			assert.isElement(elem, "Element.getSizes(elem, type, names): 参数 {elem} ~。");
-			assert(type in styleMaps, "Element.getSizes(elem, type, names): 参数 {type} 必须是 \"x\" 或 \"y\"。", type);
+			assert(type in e.styleMaps, "Element.getSizes(elem, type, names): 参数 {type} 必须是 \"x\" 或 \"y\"。", type);
 			assert.isString(names, "Element.getSizes(elem, type, names): 参数 {names} ~。");
 
 
-			var value = 0, map = styleMaps[type], i = names.length, val, currentStyle = elem.ownerDocument.defaultView.getComputedStyle(elem, null);
+			var value = 0, map = e.styleMaps[type], i = names.length, val, currentStyle = elem.ownerDocument.defaultView.getComputedStyle(elem, null);
 			while(i--) {
 				val = map[names.charAt(i)];
 				value += (parseFloat(currentStyle[val[0]]) || 0) + (parseFloat(currentStyle[val[1]]) || 0);
@@ -1039,10 +992,10 @@
 
 
 			assert.isElement(elem, "Element.getSizes(elem, type, names): 参数 {elem} ~。");
-			assert(type in styleMaps, "Element.getSizes(elem, type, names): 参数 {type} 必须是 \"width\" 或 \"height\"。", type);
+			assert(type in e.styleMaps, "Element.getSizes(elem, type, names): 参数 {type} 必须是 \"x\" 或 \"y\"。", type);
 			assert.isString(names, "Element.getSizes(elem, type, names): 参数 {names} ~。");
 
-			var value = 0, map = styleMaps[type], i = names.length, val;
+			var value = 0, map = e.styleMaps[type], i = names.length, val;
 			while(i--) {
 				val = map[names.charAt(i)];
 				value += (parseFloat(getStyle(elem, val[0])) || 0) + (parseFloat(getStyle(elem, val[1])) || 0);
@@ -1050,6 +1003,15 @@
 
 			return value;
 		},
+		
+		/**
+		 * 特殊的样式集合。
+		 * @property
+		 * @type Object
+		 * @static
+		 * @private
+		 */
+		styles: styles,
 
 		/**
 		 * 特殊属性集合。
@@ -1063,18 +1025,24 @@
 		/**
 		 * 样式表。
 		 * @static
+		 * @type Object
 		 */
-		styleMaps: styleMaps,
+		styleMaps: {},
+		
+		/**
+		 * 显示元素的样式。
+		 * @static
+		 * @type Object
+		 */
+		display: { position: "absolute", visibility: "visible", display: "block" },
 
 		/**
-		 * 特殊属性。
-		 * @property
-		 * @type Object
-		 * @private
+		 * 不需要单位的 css 属性。
 		 * @static
+		 * @type Object
 		 */
-		specialAttr: {},
-
+		styleNumbers: String.map('fillOpacity fontWeight lineHeight opacity orphans widows zIndex zoom', Function.returnTrue, {}),
+	
 		/**
 		 * 默认最大的 z-index 。
 		 * @property
@@ -1083,10 +1051,37 @@
 		 * @static
 		 */
 		zIndex: 10000,
+		
+		/**
+		 * 清空元素的 display 属性。
+		 * @param {Element} elem 元素。
+		 */
+		show: function(elem){
+			
+			// 普通元素 设置为 空， 因为我们不知道这个元素本来的 display 是 inline 还是 block
+			elem.style.display = '';
+			
+			// 如果元素的 display 仍然为 none , 说明通过 CSS 实现的隐藏。这里默认将元素恢复为 block。
+			if(getStyle(elem, 'display') === 'none')
+				elem.style.display = p.getData(elem, 'display') || 'block';
+		},
+		
+		/**
+		 * 赋予元素的 display 属性 none。
+		 * @param {Element} elem 元素。
+		 */
+		hide: function(elem){
+			var currentDisplay = styleString(elem, 'display');
+			if(currentDisplay !== 'none') {
+				p.setData(elem, 'display', currentDisplay);
+				elem.style.display = 'none';
+			}
+		},
 
 		/**
 		 * 获取一个节点属性。
 		 * @static
+		 * @param {Element} elem 元素。
 		 * @param {String} name 名字。
 		 * @return {String} 属性。
 		 */
@@ -1096,11 +1091,15 @@
 
 			
 			if(name in attributes){
+				
 				/// #ifdef SupportIE6
-				if(navigator.isQuirks && /^(href|src|usemap)$/i.test(name)){
+				if(navigator.isQuirks && /^(href|src)$/.test(name)) {
 					return elem.getAttribute(name, 2);
 				}
 				/// #endif
+				
+				// if(navigator.isSafari && name === 'selected' && elem.parentNode){ elem.parentNode.selectIndex; if(elem.parentNode.parentNode) elem.parentNode.parentNode.selectIndex; }
+				
 				name = attributes[name];
 			}
 
@@ -1108,8 +1107,10 @@
 			if (name in elem) {
 
 				// 表单上的元素，返回节点属性值
-				if (elem.nodeName === "FORM" && (special = elem.getAttributeNode(name)))
-					return special.nodeValue;
+				if (elem.nodeName === "FORM") {
+					var node = elem.getAttributeNode(name);
+					return node && node.nodeValue;
+				}
 
 				return elem[name];
 			}
@@ -1121,12 +1122,40 @@
 		/**
 		 * 检查是否含指定类名。
 		 * @static
-		 * @param {String} className
+		 * @param {Element} elem 元素。
+		 * @param {String} className 类名。
 		 * @return {Boolean} 如果存在返回 true。
 		 */
 		hasClass: function(elem, className) {
 			assert.isNode(elem, "Element.hasClass(elem, className): 参数 {elem} ~。");
 			return (" " + elem.className + " ").indexOf(" " + className + " ") >= 0;
+		},
+		
+		/**
+		 * 获取指定css属性的当前值。
+		 * @param {Element} elem 元素。
+		 * @param {Object} styles 需要收集的属性。
+		 * @return {Object} 收集的属性。
+		 */
+		getStyles: function(elem, styles){
+			assert.isElement(elem, "Element.getStyles(elem, styles): 参数 {elem} ~。");
+
+			var r = {};
+			for(var style in styles){
+				r[style] = elem.style[style];
+			}
+			return r;
+		},
+		
+		/**
+		 * 设置指定css属性的当前值。
+		 * @param {Element} elem 元素。
+		 * @param {Object} styles 需要收集的属性。
+		 */
+		setStyles: function(elem, styles){
+			assert.isElement(elem, "Element.getStyles(elem, styles): 参数 {elem} ~。");
+
+			o.extend(elem.style, styles);
 		}
 
 	})
@@ -1141,13 +1170,40 @@
 		 */
 		getStyle: function(name) {
 
-			assert.isString(name, "Element.prototype.getStyle(name): 参数 {name} ~。");
+			assert.isString(name, "Element.prototypgetStyle(name): 参数 {name} ~。");
 
-			var me = this.dom || this, css = name.toCamelCase();
+			var me = this.dom || this;
 
-			return me.style[css] || getStyle(me, css);
+			return me.style[name = name.toCamelCase()] || getStyle(me, name);
 
 		},
+
+		/// #ifdef SupportIE8
+
+		/**
+		 * 获取透明度。
+		 * @method
+		 * @return {Number} 透明度。 0 - 1 范围。
+		 */
+		getOpacity: !('opacity' in div.style) ? function() {
+
+			return rOpacity.test(styleString(this.dom || this, 'filter')) ? parseInt(RegExp.$1) / 100 : 1;
+
+		} : function() {
+
+			return styleNumber(this.dom || this, 'opacity');
+
+		},
+
+		/// #else
+		///
+		/// getOpacity: function() {
+		///
+		///    return parseFloat(styleString(this.dom || this, 'opacity')) || 0;
+		///
+		/// },
+
+		/// #endif
 
 		/**
 		 * 获取一个节点属性。
@@ -1210,36 +1266,10 @@
 		 * @return {Boolean} 隐藏返回 true 。
 		 */
 		isHidden: function() {
+			var me = this.dom || this;
 
-			return (this.dom || this).style.display === 'none';
-		},
-
-		/// #ifdef SupportIE8
-
-		/**
-		 * 获取透明度。
-		 * @method getOpacity
-		 * @return {Number} 透明度。 0 - 1 范围。
-		 */
-		getOpacity: !('opacity' in div.style) ? function() {
-
-			return rOpacity.test(styleString(this.dom || this, 'filter')) ? parseInt(RegExp.$1) / 100 : 1;
-
-		} : function() {
-
-			return parseFloat(styleString(this.dom || this, 'opacity')) || 0;
-
+			return (me.style.display || getStyle(me, 'display')) === 'none';
 		}
-
-		/// #else
-		///
-		/// getOpacity: function() {
-		///
-		///    return parseFloat(styleString(this.dom || this, 'opacity')) || 0;
-		///
-		/// }
-
-		/// #endif
 
 	})
 
@@ -1263,22 +1293,22 @@
 				style.cssText = name;
 			} else {
 
-				if(name in attributes) {
-					name = attributes[name];
+				if(name in styles) {
 
-					/// #ifdef SupportIE8
-
-					if(name == 'opacity') {
-						return me.setOpacity( value);
+					name = styles[name];
+					
+					if(me[name]){
+						return me[name](value);
 					}
 
-					/// #endif
-				} else
+				} else {
 					name = name.toCamelCase();
-
-				//如果值是函数，运行。
-				if (typeof value === "number")
-					value += "px";
+	
+					//如果值是函数，运行。
+					if (typeof value === "number" && !(name in e.styleNumbers))
+						value += "px";
+					
+				}
 
 				// 指定值
 				style[name] = value;
@@ -1287,6 +1317,52 @@
 			return me;
 		},
 
+		/// #ifdef SupportIE8
+
+		/**
+		 * 设置连接的透明度。
+		 * @param {Number} value 透明度， 0 - 1 。
+		 * @return {Element} this
+		 */
+		setOpacity: !('opacity' in div.style) ? function(value) {
+
+			var style = (this.dom || this).style;
+
+			assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): 参数 {value} 必须在 0~1 间。', value);
+
+			// 当元素未布局，IE会设置失败，强制使生效
+			style.zoom = 1;
+
+			// 设置值
+			style.filter = (style.filter || 'alpha(opacity=?)').replace(rOpacity, "opacity=" + value * 100);
+
+			//返回值， 保证是字符串  值为  0 - 100
+			return this;
+
+		} : function(value) {
+
+			assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): 参数 {value} 必须在 0~1 间。', value);
+
+			//  标准浏览器使用   opacity
+			(this.dom || this).style.opacity = value;
+			return this;
+
+		},
+
+		/// #else
+
+		/// setOpacity: function(value) {
+		///	
+		/// 	assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): 参数 {value} 必须在 0~1 间。', value);
+		///
+		///     //  标准浏览器使用   opacity
+		///     (this.dom || this).style.opacity = value;
+		///     return this;
+		///
+		/// },
+
+		/// #endif
+		
 		/**
 		 * 设置节点属性。
 		 * @param {String} name 名字。
@@ -1338,12 +1414,8 @@
 				
 				var dom = me.dom || me;
 
-				// 特殊属性。
-				if(name in e.specialAttr)
-					me['set' + e.specialAttr[name]](value);
-
 				// event 。
-				else if(name.match(rEventName))
+				if(name.match(rEventName))
 					me.on(RegExp.$1, value);
 
 				// css 。
@@ -1450,49 +1522,34 @@
 			return this;
 		},
 
-		/// #ifdef SupportIE8
-
 		/**
-		 * 设置连接的透明度。
-		 * @param {Number} value 透明度， 0 - 1 。
-		 * @return {Element} this
+		 * 变化到某值。
+		 * @param {String} value 变化的值。可以为 height opacity width all size position left top
+		 * right bottom。
+		 * @param {Function} [callBack] 回调。
+		 * @param {Number} duration=500 时间。
+		 * @param {String} [type] 类型。
+		 * @return this
 		 */
-		setOpacity: !('opacity' in div.style) ? function(value) {
+		animate: function () {
+			var args = arguments, value = args[1];
+			if(typeof args[0] === 'string') {
+				(args[1] = {})[args[0]] = value;
+				args[0] = null;
+			} else if(typeof value !== 'object') {
+				ap.unshift.call(args, null);
+			}
 
-			var style = (this.dom || this).style;
+			this.set(args[1]);
+			
+			if(args[4])
+				args[4].call(this);
+				
+			if(args[3])
+				setTimeout(args[3], 0);
 
-			assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): 参数 {value} 必须在 0~1 间。', value);
-
-			// 当元素未布局，IE会设置失败，强制使生效
-			style.zoom = 1;
-
-			// 设置值
-			style.filter = (style.filter || 'alpha(opacity=?)').replace(rOpacity, "opacity=" + value * 100);
-
-			//返回值， 保证是字符串  值为  0 - 100
-			return this;
-
-		} : function(value) {
-
-			assert(value <= 1 && value >= 0, 'Element.prototype.setOpacity(value): 参数 {value} 必须在 0~1 间。', value);
-
-			//  标准浏览器使用   opacity
-			(this.dom || this).style.opacity = value;
-			return this;
-
+			return  this;
 		},
-
-		/// #else
-
-		/// function(value) {
-
-		///     //  标准浏览器使用   opacity
-		///     (this.dom || this).style.opacity = value;
-		///     return this;
-		///
-		/// },
-
-		/// #endif
 
 		/**
 		 * 显示当前元素。
@@ -1502,8 +1559,8 @@
 		 * @return {Element} this
 		 */
 		show: function(duration, callBack) {
-
-			(this.dom || this).style.display = '';
+			
+			e.show(this.dom || this);
 			if(callBack)
 				setTimeout(callBack, 0);
 			return this;
@@ -1518,10 +1575,21 @@
 		 */
 		hide: function(duration, callBack) {
 
-			(this.dom || this).style.display = 'none';
+			e.hide(this.dom || this);
 			if(callBack)
 				setTimeout(callBack, 0);
 			return this;
+		},
+
+		/**
+		 * 切换显示当前元素。
+		 * @param {Number} duration=500 时间。
+		 * @param {Function} [callBack] 回调。
+		 * @param {String} [type] 方式。
+		 * @return {Element} this
+		 */
+		toggle: function(duration, callBack, type, flag) {
+			return this[(flag === undefined ? this.isHidden() : flag) ? 'show' : 'hide']  (duration, callBack, type);
 		},
 
 		/**
@@ -1544,75 +1612,46 @@
 		},
 
 		/**
-		 * 切换显示当前元素。
-		 * @param {Number} duration=500 时间。
-		 * @param {Function} [callBack] 回调。
-		 * @param {String} [type] 方式。
-		 * @return {Element} this
-		 */
-		toggle: function(duration, callBack, type, flag) {
-			return this[(flag === undefined ? this.isHidden() : flag) ? 'show' : 'hide']  (duration, callBack, type);
-		},
-
-		/// #ifdef Compact
-
-		/**
-		 * 变化到某值。
-		 * @param {String} value 变化的值。可以为 height opacity width all size position left top
-		 * right bottom。
-		 * @param {Function} [callBack] 回调。
-		 * @param {Number} duration=500 时间。
-		 * @param {String} [type] 类型。
-		 * @return this
-		 */
-		animate: function () {
-			var args = arguments, name = args[0], value = args[1];
-			if(typeof name === 'string') {
-				(args[1] = {})[name] = value;
-				args[0] = null;
-			} else if(typeof value !== 'object') {
-				Array.prototype.unshift.call(args, null);
-			}
-
-			this.set(args[1]);
-			if(args[3])
-				setTimeout(args[3], 0);
-
-			return  this;
-		},
-
-		/// #endif
-
-		/**
 		 * 将元素引到最前。
 		 * @param {Element} [elem] 参考元素。
 		 * @return this
 		 */
 		bringToFront: function(elem) {
 			
-			assert(!elem || elem.style, "Element.prototype.bringToFront(elem): 参数 {elem} 必须为 元素或为空。", elem);
+			assert(!elem || (elem.dom  && elem.dom.style) || elem.style, "Element.prototype.bringToFront(elem): 参数 {elem} 必须为 元素或为空。", elem);
 			
 			var me = this.dom || this;
 
-			me.style.zIndex = Math.max(parseInt(styleString(me, 'zIndex')) || 0, elem && (parseInt(styleString(elem, 'zIndex')) + 1) || e.zIndex++);
+			me.style.zIndex = Math.max(parseInt(styleString(me, 'zIndex')) || 0, elem && (parseInt(styleString(elem.dom || elem, 'zIndex')) + 1) || e.zIndex++);
 			return this;
 		}
 
 	}, 2);
 	
-	updateToObj("href src usemap defaultValue accessKey cellPadding cellSpacing colSpan frameBorder maxLength readOnly rowSpan tabIndex useMap", attributes);
-
-	updateToObj("Height Width OutterSize Size Position Opacity Offset Scroll Offsets Style Text", e.specialAttr);
-
+	String.map('x y', function(c, i){
+		c = e.styleMaps[c] = {};
+		var tx = i ? ['Top', 'Bottom'] : ['Left', 'Right'];
+		c.d = tx.invoke('toLowerCase', []);
+		String.map('padding~ margin~ border~Width', function(v){
+			c[v.charAt(0)] = [v.replace('~', tx[0]), v.replace('~', tx[1])];
+		});
+	});
+	
+	String.map("href src defaultValue accessKey cellPadding cellSpacing rowSpan colSpan frameBorder maxLength readOnly tabIndex useMap contentEditable", function(value) {
+		attributes[value.toLowerCase()] = value;
+	});
+	
+	if(!('opacity' in div.style)){
+		styles.opacity = 'setOpacity';
+	}
+	
 	/**
 	 * 读取样式字符串。
 	 * @param {Element} elem 元素。
 	 * @param {String} name 属性名。
 	 * @return {String} 字符串。
-	 * @ignore
 	 */
 	function styleString(elem, name) {
-
 		return elem.style[name] || getStyle(elem, name);
 	}
 
@@ -1621,45 +1660,28 @@
 	 * @param {Object} elem 元素。
 	 * @param {Object} name 属性名。
 	 * @return {Number} 数字。
-	 * @ignore
 	 */
 	function styleNumber(elem, name) {
-		return parseFloat(getStyle(elem, name)) || 0;
+		var value = parseFloat(elem.style[name]);
+		if(!value && value !== 0) {
+			value = parseFloat(getStyle(elem, name));
+		}
+		
+		if(!value && value !== 0) {
+			if(name in styles){
+				var style = e.getStyles(elem, e.display);
+				e.setStyles(elem, e.display);
+				value= parseFloat(getStyle(elem, name)) || 0;
+				e.setStyles(elem, style);
+			} else {
+				value = 0;
+			}
+		}
+		
+		return value;
 	}
 
-	/**
-	 * 将属性拷贝到目标。
-	 * @param {String} props 属性字符串。
-	 * @param {Object} target 目标。
-	 * @ignore
-	 */
-	function updateToObj(props, target) {
-		props.split(' ').forEach( function(value) {
-			target[value.toLowerCase()] = value;
-		});
-
-	}
-	
-	/**
-	 * 设置元素的宽或高。
-	 * @param {Element/Control} me 元素。
-	 * @param {String} fix 修正的边框。
-	 * @param {Number} x 宽。
-	 * @param {Number} y 宽。
-	 */
-	function setSize(elem, fix, x ,y) {
-		var p = getXY(x,y);
-
-		if(p.x != null)
-			elem.setWidth(p.x - e.getSizes(elem.dom || elem, 'x', fix));
-
-		if (p.y != null)
-			elem.setHeight(p.y - e.getSizes(elem.dom || elem, 'y', fix));
-
-		return elem;
-	}
-
-	/// #endif
+	/// #endregion
 
 	/// #region 位置
 
@@ -1678,26 +1700,12 @@
 			 * @constructor Point
 			 */
 			constructor: function(x, y) {
-				this.set(x, y);
-			},
-	
-			/**
-			 * 设置当前点位置。
-			 * @method set
-			 * @param {Number} x X 坐标。
-			 * @param {Number} y Y 坐标。
-			 * @return {Point} this
-			 */
-			set: function(x, y) {
-	
 				this.x = x;
 				this.y = y;
-				return this;
 			},
 	
 			/**
 			 * 将 (x, y) 增值。
-			 * @method add
 			 * @param {Number} value 值。
 			 * @return {Point} this
 			 */
@@ -1710,17 +1718,7 @@
 			},
 	
 			/**
-			 * 复制当前对象。
-			 * @method clone
-			 * @return {Point} 坐标。
-			 */
-			clone: function() {
-				return new Point(this.x, this.y);
-			},
-	
-			/**
 			 * 将一个点坐标减到当前值。
-			 * @method minus
 			 * @param {Point} p 值。
 			 * @return {Point} this
 			 */
@@ -1730,6 +1728,14 @@
 				this.x -= p.x;
 				this.y -= p.y;
 				return this;
+			},
+	
+			/**
+			 * 复制当前对象。
+			 * @return {Point} 坐标。
+			 */
+			clone: function() {
+				return new Point(this.x, this.y);
 			}
 	
 		})),
@@ -1756,7 +1762,6 @@
 		 * @static
 		 */
 		setMovable: function(elem) {
-			elem = elem.dom || elem;
 			assert.isElement(elem, "Element.setMovable(elem): 参数 elem ~。");
 			if(!checkPosition(elem, "absolute"))
 				elem.style.position = "relative";
@@ -1845,9 +1850,7 @@
 		 * @return {Point} 位置。
 		 */
 		getWidth: function() {
-
-			var me = this.dom || this, width = parseFloat(me.style.width);
-			return isNaN(width) ? styleNumber(me, 'width') : width;
+			return styleNumber(this.dom || this, 'width');
 		},
 
 		/**
@@ -1855,9 +1858,7 @@
 		 * @return {Point} 位置。
 		 */
 		getHeight: function() {
-
-			var me = this.dom || this, height = parseFloat(me.style.height);
-			return isNaN(height) ? styleNumber(me, 'height') : height;
+			return styleNumber(this.dom || this, 'height');
 		},
 
 		/**
@@ -1911,20 +1912,24 @@
 				p.add(elem.offsetLeft, elem.offsetTop);
 				if (navigator.isFirefox) {
 					if (nborderBox(elem)) {
-						p.add(styleNumber(elem, borderLeftWidth), styleNumber(elem, borderTopWidth));
+						add(elem);
 					}
 					var parent = elem.parentNode;
 					if (parent && styleString(parent, 'overflow') != 'visible') {
-						p.add( styleNumber(parent, borderLeftWidth), styleNumber(parent, borderTopWidth));
+						add(parent);
 					}
 				} else if (elem != me && navigator.isSafari) {
-					p.add(styleNumber(elem, borderLeftWidth),  styleNumber(elem, borderTopWidth));
+					add(elem);
 				}
 
 				elem = elem.offsetParent;
 			}
 			if (navigator.isFirefox && nborderBox(me)) {
 				p.add(-styleNumber(me, borderLeftWidth), -styleNumber(me, borderTopWidth));
+			}
+			
+			function add(elem){
+				p.add(styleNumber(elem, borderLeftWidth),  styleNumber(elem, borderTopWidth));
 			}
 			return p;
 		},
@@ -1940,10 +1945,12 @@
 				return new Point(0, 0);
 			pos = this.getPosition().minus(getScrolls(me));
 			if(relative) {
+				
+				relative = relative.dom || p.$(relative);
 
 				assert.isElement(relative, "Element.prototype.getOffsets(relative): 参数 {relative} ~。");
 
-				pos.minus(p.$(relative).getOffsets()).add( -styleNumber(me, 'marginLeft') - styleNumber(relative, borderLeftWidth) ,-styleNumber(me, 'marginTop') - styleNumber(relative,  borderTopWidth) );
+				pos.minus(relative.getOffsets()).add( -styleNumber(me, 'marginLeft') - styleNumber(relative, borderLeftWidth) ,-styleNumber(me, 'marginTop') - styleNumber(relative,  borderTopWidth) );
 			}
 			return pos;
 		},
@@ -1990,7 +1997,7 @@
 		 */
 		setWidth: function(value) {
 
-			(this.dom || this).style.width = value > 0 ? value + 'px' : isNaN(value) ? '' : '0px';
+			(this.dom || this).style.width = value > 0 ? value + 'px' : value <= 0 ? '0px' : '';
 			return this;
 		},
 
@@ -2000,7 +2007,7 @@
 		 */
 		setHeight: function(value) {
 
-			(this.dom || this).style.height = value > 0 ? value + 'px' : isNaN(value) ? '' : '0px';
+			(this.dom || this).style.height = value > 0 ? value + 'px' : value <= 0 ? '0px' : '';
 			return this;
 		},
 
@@ -2029,7 +2036,7 @@
 		 */
 		setOffset: function(p) {
 
-			assert(p && 'x' in p && 'y' in p, "Element.prototype.setOffset(p): 参数 {p} 必须有 'x' 和 'y' 属性。", p);
+			assert(o.isObject(p) && 'x' in p && 'y' in p, "Element.prototype.setOffset(p): 参数 {p} 必须有 'x' 和 'y' 属性。", p);
 			var s = (this.dom || this).style;
 			s.top = p.y + 'px';
 			s.left = p.x + 'px';
@@ -2051,7 +2058,7 @@
 			if (p.y)
 				offset.y += p.y;
 
-			e.setMovable(me);
+			e.setMovable(me.dom || me);
 
 			return me.setOffset(offset);
 		}
@@ -2062,29 +2069,6 @@
 	 * @namespace document
 	 */
 	apply(document, {
-
-		/**
-		 * 获取元素可视区域大小。
-		 * @method getWindowSize
-		 * @return {Point} 位置。
-		 */
-		getWindowSize: function() {
-			var win = this.defaultView;
-			return new Point(win.outerWidth || this.dom.clientWidth, win.outerHeight || this.dom.clientHeight);
-		},
-
-		/**
-		 * 设置元素可视区域大小。
-		 * @method setWindowSize
-		 * @param {Number} x 大小。
-		 * @param {Number} y 大小。
-		 * @return {Document} this 。
-		 */
-		setWindowSize: function(x, y) {
-			var p = adaptXY(x,y, this.dom, 'getWindowSize');
-			this.defaultView.resizeTo(p.x, p.y);
-			return this;
-		},
 
 		/**
 		 * 获取元素可视区域大小。包括 margin 和 border 大小。
@@ -2174,6 +2158,25 @@
 	function isBody(elem) {
 		return rBody.test(elem.nodeName);
 	}
+	
+	/**
+	 * 设置元素的宽或高。
+	 * @param {Element/Control} me 元素。
+	 * @param {String} fix 修正的边框。
+	 * @param {Number} x 宽。
+	 * @param {Number} y 宽。
+	 */
+	function setSize(elem, fix, x ,y) {
+		var p = getXY(x,y);
+
+		if(p.x != null)
+			elem.setWidth(p.x - e.getSizes(elem.dom || elem, 'x', fix));
+
+		if (p.y != null)
+			elem.setHeight(p.y - e.getSizes(elem.dom || elem, 'y', fix));
+
+		return elem;
+	}
 
 	/**
 	 * 未使用盒子边框
@@ -2181,7 +2184,7 @@
 	 * @return {Boolean} 是否使用。
 	 */
 	function nborderBox(elem) {
-		return getStyle(elem, 'MozBoxSizing') != 'border-box';
+		return styleString(elem, 'MozBoxSizing') != 'border-box';
 	}
 
 	/**
@@ -2190,7 +2193,7 @@
 	 * @param {Number} y Y
 	 */
 	function getXY(x, y) {
-		return o.isObject(x) ? x : {
+		return x && typeof x === 'object' ? x : {
 			x:x,
 			y:y
 		};
@@ -2228,9 +2231,9 @@
 		return p;
 	}
 
-	/// #endif
+	/// #endregion
 
-	/// #ifdef 节点
+	/// #region 节点
 
 	/**
 	 * 属性。
@@ -2239,76 +2242,11 @@
 	var rAttr = /^\[\s*([^=]+?)(\s*=\s*(['"])([\s\S]*)\3)?\s*\]$/,
 	
 		/**
-		 * 特殊属性集合。
-		 * @type Object
-		 */
-		properties = {
-			INPUT: 'checked',
-			OPTION: 'selected',
-			TEXTAREA: 'value'
-		},
-	
-		/**
 		 * @type Object
 		 */
 		childMap = 'firstElementChild' in div ?
 			[walk, 'nextElementSibling', 'firstElementChild', 'parentNode', 'previousElementSibling', 'lastElementChild'] :
 			[walk, 'nextSibling', 'firstChild', 'parentNode', 'previousSibling', 'lastChild'],
-	
-		/**
-		 * 用于 get 的名词对象。
-		 * @type String
-		 */
-		nodeMaps = e.nodeMaps = {
-	
-			// 全部子节点。
-			children: [function(elem, fn) {
-				return new p.ElementList(find(elem,  fn));
-			}],
-	
-			// 上级节点。
-			parent: [walk, childMap[3], childMap[3]],
-	
-			// 直接的子节点。
-			child: [dir, childMap[1], childMap[2]],
-	
-			// 后面的节点。
-			next: [walk, childMap[1], childMap[1]],
-	
-			// 前面的节点。
-			previous: [walk, childMap[4], childMap[4]],
-	
-			// 第一个节点。
-			first: childMap,
-	
-			// 最后的节点。
-			last: [walk, childMap[4], childMap[5]],
-	
-			// 全部上级节点。
-			parents: [dir, childMap[3]],
-	
-			// 前面的节点。
-			previouses: [dir, childMap[4]],
-	
-			// 后面的节点。
-			nexts: [dir, childMap[1]],
-	
-			// 奇数或偶数个。
-			odd: [function(elem, fn) {
-				return dir(elem, function() {
-					return fn = fn === false;
-				}, childMap[1], childMap[2]);
-			}],
-	
-			// 兄弟节点。
-			siblings: [function(elem, fn) {
-				return dir(elem, function(node) {
-					return node != elem && fn(elem);
-				}, childMap[1], childMap[2]);
-	
-			}]
-	
-		},
 	
 		/**
 		 * 查找一个节点。
@@ -2319,7 +2257,7 @@
 		 */
 		find = 'all' in div ? function(elem, fn) { // 返回数组
 			assert.isFunction(fn, "Element.prototype.find(elem, fn): 参数 {fn} ~。");
-			return  Array.prototype.filter.call(elem.all, fn);
+			return  ap.filter.call(elem.all, fn);
 		} : function(elem, fn) {
 			assert.isFunction(fn, "Element.prototype.find(elem, fn): 参数 {fn} ~。");
 			if(!elem.firstChild) return [];
@@ -2356,12 +2294,16 @@
 		 * @static
 		 */
 		hasChild: !div.compareDocumentPosition ? function(elem, child) {
+			assert.isNode(elem, "Element.hasChild(elem, child): 参数 {elem} ~。");
+			assert.isNode(child, "Element.hasChild(elem, child): 参数 {child} ~。");
 			while(child = child.parentNode) {
 				if(elem === child)
 					return true;
-			};
+			}
 			return false;
 		} : function(elem, child) {
+			assert.isNode(elem, "Element.hasChild(elem, child): 参数 {elem} ~。");
+			assert.isNode(child, "Element.hasChild(elem, child): 参数 {child} ~。");
 			return !!(elem.compareDocumentPosition(child) & 16);
 		},
 
@@ -2371,6 +2313,7 @@
 		 * @static
 		 */
 		empty: function (elem) {
+			assert.isNode(elem, "Element.empty(elem): 参数 {elem} ~。");
 			while(elem.lastChild)
 				e.dispose(elem.lastChild);
 		},
@@ -2381,7 +2324,8 @@
 		 * @static
 		 */
 		dispose: function (elem) {
-	
+			assert.isNode(elem, "Element.dispose(elem): 参数 {elem} ~。");
+			
 			//删除事件
 			if (elem.clearAttributes) {
 				elem.clearAttributes();
@@ -2389,13 +2333,78 @@
 
 			p.IEvent.un.call(elem);
 			
-			if(elem.data)
-				elem.data = null;
+			if(elem.$data)
+				elem.$data = null;
 
 			e.empty(elem);
 
 			elem.parentNode && elem.parentNode.removeChild(elem);
 
+		},
+	
+		/**
+		 * 特殊属性集合。
+		 * @type Object
+		 */
+		properties: {
+			INPUT: 'checked',
+			OPTION: 'selected',
+			TEXTAREA: 'value'
+		},
+		
+		/**
+		 * 用于 get 的名词对象。
+		 * @type String
+		 */
+		nodeMaps: {
+	
+			// 全部子节点。
+			children: [function(elem, fn) {
+				return new p.ElementList(find(elem,  fn));
+			}],
+	
+			// 上级节点。
+			parent: [walk, childMap[3], childMap[3]],
+	
+			// 直接的子节点。
+			child: [dir, childMap[1], childMap[2]],
+	
+			// 后面的节点。
+			next: [walk, childMap[1]],
+	
+			// 前面的节点。
+			previous: [walk, childMap[4], childMap[4]],
+	
+			// 第一个节点。
+			first: childMap,
+	
+			// 最后的节点。
+			last: [walk, childMap[4], childMap[5]],
+	
+			// 全部上级节点。
+			parents: [dir, childMap[3]],
+	
+			// 前面的节点。
+			previouses: [dir, childMap[4]],
+	
+			// 后面的节点。
+			nexts: [dir, childMap[1]],
+	
+			// 奇数或偶数个。
+			odd: [function(elem, fn) {
+				return dir(elem, function() {
+					return fn = fn === false;
+				}, childMap[1], childMap[2]);
+			}],
+	
+			// 兄弟节点。
+			siblings: [function(elem, fn) {
+				return dir(elem, function(node) {
+					return node != elem && fn(elem);
+				}, childMap[1], childMap[2]);
+	
+			}]
+	
 		}
 
 	})
@@ -2495,7 +2504,6 @@
 
 		/**
 		 * 获得相匹配的节点。
-		 * @method
 		 * @param {String} type 类型。
 		 * @param {Function/Number} fn 过滤函数或索引或标签。
 		 * @return {Element} 元素。
@@ -2514,10 +2522,9 @@
 				case 'number':
 					fn = getFilter(type);
 					type = 'first';
-					break;
 			}
 
-			var n = nodeMaps[type];
+			var n = e.nodeMaps[type];
 			assert(n, 'Element.prototype.get(type, fn): 函数不支持 {0}类型 的节点关联。', type);
 			return n[0](this.dom || this, fn, n[1], n[2]);
 		}
@@ -2534,6 +2541,8 @@
 		contains: function(child) {
 			var me = this.dom || this;
 			assert.isNode(me, "Element.prototype.contains(child): this.dom || this 返回的必须是 DOM 节点。");
+			assert.notNull(child, "Element.prototype.contains(child):参数 {child} ~。");
+			child = child.dom || child;
 			return child == me || e.hasChild(me, child);
 		},
 
@@ -2544,7 +2553,7 @@
 		 */
 		hasChild: function(child) {
 			var me = this.dom || this;
-			return arguments.length ? e.hasChild(me, child) : me.firstChild !== null;
+			return child ? e.hasChild(me, child.dom || child) : me.firstChild !== null;
 		}
 
 	}, 5)
@@ -2581,7 +2590,7 @@
 		 * @param {Boolean} copyDataAndEvent=false 是否复制事件。
 		 * @param {Boolean} contents=true 是否复制子元素。
 		 * @param {Boolean} keepid=false 是否复制 id 。
-		 * @return {Element} 元素。copyListener, contents, keepid
+		 * @return {Element} 元素。
 		 */
 		clone: function(copyDataAndEvent, contents, keepid) {
 
@@ -2618,8 +2627,12 @@
 		insert: 'insertAdjacentElement' in div ? function(html, swhere) {
 			var me = this.dom || this;
 			assert.isNode(me, "Element.prototype.insert(html, swhere): this.dom || this 返回的必须是 DOM 节点。");
+			assert.notNull(html, "Element.prototype.insert(html, swhere): 参数  {html} ~。");
 			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd '.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数  {swhere} 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。", swhere);
-			me[typeof html === 'string' ? 'insertAdjacentHTML' : 'insertAdjacentElement'](swhere, html);
+			if(typeof html === 'string')
+				me.insertAdjacentHTML(swhere, html);
+			else
+				me.insertAdjacentElement(swhere, html.dom || html);
 			switch (swhere) {
 				case "afterEnd":
 					html = me.nextSibling;
@@ -2644,7 +2657,7 @@
 			assert.isNode(me, "Element.prototype.insert(html, swhere): this.dom || this 返回的必须是 DOM 节点。");
 			assert(!swhere || 'afterEnd beforeBegin afterBegin beforeEnd '.indexOf(swhere + ' ') != -1, "Element.prototype.insert(html, swhere): 参数 {swhere} 必须是 beforeBegin、beforeEnd、afterBegin 或 afterEnd 。", swhere);
 			if (!html.nodeType) {
-				html = e.parse(html, getDoc(me));
+				html = html.dom || e.parse(html, getDoc(me));
 			}
 
 			switch (swhere) {
@@ -2679,18 +2692,16 @@
 		/**
 		 * 插入一个HTML 。
 		 * @param {String/Element} html 内容。
-		 * @param {Boolean} escape 是否转义 HTML 代码，这样插入的为文本。
 		 * @return {Element} 元素。
 		 */
-		append: function(html, escape) {
+		append: function(html) {
 			var me = this;
 
 
 			assert.notNull(html, "Element.prototype.append(html, escape): 参数 {html} ~。");
 
 			if(!html.nodeType) {
-				var doc = getDoc(me.dom || me);
-				html = escape ? doc.createTextNode(html) : e.parse(html, doc);
+				html = html.dom || e.parse(html, getDoc(me.dom || me));
 			}
 
 			assert.isNode(html, "Element.prototype.append(html, escape): 参数 {html} 不是合法的 节点或 HTML 片段。");
@@ -2720,7 +2731,7 @@
 
 			assert.notNull(html, "Element.prototype.replaceWith(html): 参数 {html} ~。");
 			if (!html.nodeType) {
-				html = e.parse(html, getDoc(me));
+				html = html.dom || e.parse(html, getDoc(me));
 			}
 
 
@@ -2765,8 +2776,8 @@
 		 */
 		remove: function(child) {
 			var me = this.dom || this;
-			assert(!child || this.hasChild(child), 'Element.prototype.remove(child): 参数 {child} 不是当前节点的子节点', child);
-			child ? this.removeChild(child) : ( me.parentNode && me.parentNode.removeChild(me) );
+			assert(!child || this.hasChild(child.dom || child), 'Element.prototype.remove(child): 参数 {child} 不是当前节点的子节点', child);
+			child ? this.removeChild(child.dom || child) : ( me.parentNode && me.parentNode.removeChild(me) );
 			return this;
 		},
 
@@ -2850,10 +2861,10 @@
 
 			destElem.clearAttributes();
 			destElem.mergeAttributes(srcElem);
-			// 在 IE delete destElem.data  出现异常。
-			destElem.removeAttribute("data");
-			//if(srcElem.data)
-			//	destElem.data = null;   // IE  将复制 node.data
+			// 在 IE delete destElem.$data  出现异常。
+			destElem.removeAttribute("$data");
+			//if(srcElem.$data)
+			//	destElem.$data = null;   // IE  将复制 node.$data
 
 
 			if (srcElem.options) {
@@ -2868,7 +2879,7 @@
 		}
 
 
-		var prop = properties[srcElem.tagName];
+		var prop = e.properties[srcElem.tagName];
 		if (prop)
 			destElem[prop] = srcElem[prop];
 	}
@@ -2903,26 +2914,25 @@
 	 * @return {Funtion} 函数。
 	 */
 	function getFilter(fn) {
-
-		var t = fn.constructor;
-
-		if(t === Number) {
-			t = fn;
-			fn = function(elem) {
-				return --t < 0;
-			};
-
-		} else if(t === String) {
-			t = fn.toUpperCase();
-			fn = function(elem) {
-				return elem.tagName === t;
-			};
-
+		var t;
+		switch(typeof fn){
+			case 'number':
+				t = fn;
+				fn = function(elem) {
+					return --t < 0;
+				};
+				break;
+			case 'string':
+				t = fn.toUpperCase();
+				fn = function(elem) {
+					return elem.tagName === t;
+				};
 		}
+		
 		assert.isFunction(fn, "Element.prototype.get(type, fn): 参数 {fn} 必须是一个函数、数字或字符串。", fn);
 		return fn;
 	}
-	/// #endif
+	/// #endregion
 
 	/// #region 核心
 

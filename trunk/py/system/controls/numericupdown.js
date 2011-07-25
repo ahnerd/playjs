@@ -15,7 +15,7 @@ namespace('.NumericUpDown', Py.UpDown.extend({
 	value: 0,
 	
 	init: function(options){
-		this.baseCall('init',  options);
+		this.base('init',  options);
 		
 		Element.markNumber(this.textBox.dom, Function.bind(this.onInvalid, this));
 		

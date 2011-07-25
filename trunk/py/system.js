@@ -84,15 +84,14 @@ var Py = {
 /// #endif
 
 //===========================================
-//  核心   system.js  C
-//  Copyright(c) 2009-2011 xuld
+//  核心:定义必须的系统函数。   G
 //===========================================
 
 /**
- * @author xuld
- * @copyright 2009-2011 Py.Core Team
  * @projectDescription Py.Core for Javascript
+ * @copyright 2009-2011 Py.Core Team
  * @fileOverview 系统核心的核心部分。
+ * @author xuld
  */
 
 (function (w) {
@@ -1537,7 +1536,7 @@ var Py = {
 				
 				
 				// 如果数组，把内部元素压入r。
-				if (d && typeof d.length === 'number') Array.copyIf(d, r);
+				if (o.isArray(d)) Array.copyIf(d, r);
 				
 				// 不是数组，直接压入 r 。
 				else r.include(d);
@@ -2180,6 +2179,7 @@ var Py = {
 		 * @example
 		 * <code>
 		 * ["vhd"].invoke('charAt', [0]); //    ['v']
+		 * ["vhd"].invoke(function(v){ return v.charAt(0)} ); //    ['v']
 		 * </code>
 		 */
 		invoke: function(fn, args) {
@@ -2314,12 +2314,12 @@ var Py = {
 		 * PyJs 安装的根目录, 可以为相对目录。
 		 * @config {String}
 		 */
-		rootPath: p.rootPath || (function(d) {
+		rootPath: p.rootPath || (function() {
 				
 				
 				/// HACK: this function fails in special environment
 				
-				var b = d.getElementsByTagName("script");
+				var b = document.getElementsByTagName("script");
 				
 				// 当前脚本在 <script> 引用。最后一个脚本即当前执行的文件。
 				b = b[b.length - 1];
@@ -2328,7 +2328,7 @@ var Py = {
 				b = navigator.isQuirks ? b.getAttribute('src', 5) : b.src;
 				return (b.match(/[\S\s]*\//) || [""])[0];
 				
-		}) (document),
+		}) (),
 		
 		/**
 		 * 初始化 window 对象。
@@ -2639,7 +2639,9 @@ var Py = {
 			current = current[name[i]] || (current[name[i]] = {});
 			
 		i = name[len];
-			
+		
+		
+		
 		if (!i) {
 			obj = applyIf(current, obj);
 			i = name[--len];
@@ -3000,7 +3002,7 @@ Object.extendIf(trace, {
  * </code>
  */
 function assert(bValue, msg) {
-	if (!bValue && Py.debug) { // LOG : bValue === false 
+	if (!bValue && Py.debug) {
 	
 		 var val = arguments;
 

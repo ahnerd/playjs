@@ -30,7 +30,7 @@ Py.Layout.register(Py.Layout.BorderLayout = Py.Layout.BoxLayout.extend({
 			});
 			
 			
-		return this.baseCall('createRegion', container, dock);
+		return this.base('createRegion', container, dock);
 	
 	}
 	
@@ -42,7 +42,7 @@ Py.Layout.register(Py.Layout.BorderLayout = Py.Layout.BoxLayout.extend({
 	Py.Layout.BorderLayout.Region = Py.Layout.BoxLayout.Region.extend({
 		
 		init: function(options){
-			this.baseCall('init', options);
+			this.base('init', options);
 			
 			this.content = this.dom;
 			

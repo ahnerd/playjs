@@ -470,7 +470,7 @@ imports("Resources.*.Form.MonthCalender");
 			oldContent.style.left = oldLeft + 'px';
 			slider.style.left = sliderLeft + 'px';
 			newContent.style.left = newLeft + 'px';
-			slider.animate({left: tweenLeft}, this.duration, null, 'replace');
+			slider.animate({left: tweenLeft}, this.duration, null, null, 'replace');
 			
 			this.content = newContent;
 			this.contentProxy = oldContent;
@@ -497,12 +497,12 @@ imports("Resources.*.Form.MonthCalender");
 			slider.style.left = oldContent.style.left = newStyle.left = '1px';
 			newStyle.zIndex = 2;
 			oldStyle.zIndex = 1;
-			newContent.animate({opacity: 1}, duration, null, 'restart');
+			newContent.animate({opacity: 1}, duration, null, null, 'restart');
 			oldContent.animate({opacity: 0}, duration, function(){
 				newStyle.left = '1px';
 				oldStyle.left =  me.width + 'px';
 				oldContent.setOpacity(1);
-			}, 'restart');
+			}, null, 'restart');
 			
 			me.content = newContent;
 			me.contentProxy = oldContent;

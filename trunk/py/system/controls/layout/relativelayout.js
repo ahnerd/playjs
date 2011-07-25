@@ -99,7 +99,7 @@ Py.Layout.register(Py.Layout.RelativeLayout = Py.Layout.AdvanceLayout.extend({
 	 * @param {Control} container 容器的控件。
 	 */
 	onControlAdded: function(container, item, index){
-		this.baseCall('onControlAdded', arguments);
+		this.base('onControlAdded', arguments);
 		
 		if (container.layoutDirection !== 'horizonal') {
 			item.removeClass('x-layout-flow');

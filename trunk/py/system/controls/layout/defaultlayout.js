@@ -111,7 +111,7 @@ imports("Resources.Share.Layout.Default");
 				else
 				
 					// 和默认的元素一样使用绝对方式。
-					this.baseCall('onControlAdded', arguments);
+					this.base('onControlAdded', arguments);
 				
 				
 			},
@@ -136,7 +136,7 @@ imports("Resources.Share.Layout.Default");
 				else
 				
 					// 和默认的元素一样使用绝对方式。
-					this.baseCall('onControlRemoved', arguments);
+					this.base('onControlRemoved', arguments);
 			}
 		});
 

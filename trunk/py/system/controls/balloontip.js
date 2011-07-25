@@ -12,7 +12,7 @@ namespace('.Balloontip', Py.ContainerControl.extend({
 	xType: 'balloontip',
 	
 	init: function(options){
-		this.baseCall('init', options);
+		this.base('init', options);
 		if (options.closable != null)
 			this.addHeaderItem('x-icon-balloontip-close', options.closable ? this.close : this.hide);
 		delete options.closable;

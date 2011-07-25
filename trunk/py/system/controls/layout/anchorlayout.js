@@ -54,7 +54,7 @@ Py.Layout.register(Py.Layout.AnchorLayout = Py.Layout.AdvanceLayout.extend({
 	 * @param {Control} container 容器的控件。
 	 */
 	onControlAdded: function(container, item, index){
-		this.baseCall('onControlAdded', arguments);
+		this.base('onControlAdded', arguments);
 		var anchor = item.anchor;
 		
 		if (typeof anchor == 'string') {
