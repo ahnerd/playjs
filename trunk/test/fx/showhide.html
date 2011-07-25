@@ -21,15 +21,16 @@
 		<script>
 			var a = $('a'), aa = $('aa'), aba = $('aba'), ab = $('ab');
 			var fns = [
-				["show", function(){
-					a.show(1000);
-				}, null, 8],
-				["hide", function(){
-					a.hide(1000);
-				}, null, 8],
-				["hide(0)", function(){
-					a.hide(0);
-				}]
+				["toggle()", function(){ a.toggle(1000); }, null, 8],
+				["toggle(height)", function(){ a.toggle(1000, null, 'height'); }, null, 8],
+				["toggle(width)", function(){ a.toggle(1000, null, 'width'); }, null, 8],
+				["toggle(opacity)", function(){ a.toggle(1000, null, 'opacity'); }, null, 8],
+				["toggle(left)", function(){ a.toggle(1000, null, 'left'); }, null, 8],
+				["toggle(top)", function(){ a.toggle(1000, null, 'top'); }, null, 8],
+				["toggle(right)", function(){ a.toggle(1000, null, 'right'); }, null, 8],
+				["toggle(bottom)", function(){ a.toggle(1000, null, 'bottom'); }, null, 8],
+				["toggle(width)", function(){ a.hide(1000); }, null, 8],
+				["hide(0)", function(){ a.hide(0); }]
 			];
 			
 		</script>

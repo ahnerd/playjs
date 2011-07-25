@@ -25,16 +25,16 @@
 				values : [],
 				xType: "MYCLASS2",
 				constructor: function MYCLASS2CTR(args){
-					this.base(args);
+					this.base('constructor', args);
 					log(args + "    MYCLASS2 构造");
 				}
-			}, false);
+			});
 			
 			var MYCLASS3 = MYCLASS2.extend({
 				values : [],
 				xType: "MYCLASS3",
 				constructor: function MYCLASS3CTR(args){
-					this.base(args);
+					this.base('constructor', args);
 					log(args + "    MYCLASS3 构造");
 				}
 			});
@@ -55,7 +55,7 @@
 				xType: "MYCLASS5",
 				
 				a: function(a,b){
-					return this.baseCall('a', a, b);
+					return this.base('a', a, b);
 				}
 				
 			});
@@ -65,7 +65,7 @@
 				xType: "MYCLASS6",
 				
 				a: function(a,b){
-					return this.baseCall('a', arguments);
+					return this.base('a', arguments);
 				}
 			});
 			
@@ -74,15 +74,6 @@
 				["基本的类的创建", function(){
 					assert(new MYCLASS6("3").__assert == "3");
 				 }],
-				["成员干扰", function(){
-					var instance1 = new MYCLASS('a'),
-						instance2 = new MYCLASS2('f'),
-						instance5 = new MYCLASS2('s');
-						instance2.types.push(2);
-					log(instance2.types);
-					log(instance5.types);
-					assert(instance5.types.length == 0);
-				}],
 				["重载", function(){
 					assert(new MYCLASS5().a(4,5).__assert == 9);
 				}],

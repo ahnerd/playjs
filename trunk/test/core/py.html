@@ -12,11 +12,10 @@
 	<body>
 		<script>
 			var fns = [
-				["Py.Native", function(){ return Py.Native(Function); }],
 				["Py.eval", function(){ return Py.eval("alert('a')"); }],
 			  //	["Py.addCss", function(){ return Py.addCss("body{color: red}"); }],
 				["Py.data", function(){ return Py.data({},"s"); }, true],
-				["Py.dataIf", function(){ return Py.dataIf({},"s"); }, undefined],
+				["Py.getData", function(){ return Py.getData({},"s"); }, undefined],
 				["Py.setData", function(){ return Py.setData({},"s", 1); }, 1],
 				["Py.cloneData", function(){ return Py.cloneData({},{}); }],
 				["Py.rootPath", function(){ return Py.rootPath; }],
