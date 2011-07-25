@@ -32,7 +32,7 @@
     </head>
     <body>
 		
-		<div style="width:200px;">
+		<div style="width:200px;" id="c">
             <div class="x-header">
                 <div class="x-header-container">
                 	<div class="x-header-content">
@@ -45,7 +45,7 @@
             </div>
             <div class="x-body">
                 <div class="x-body-container">
-                    <div class="x-body-content"  style="height: 150px; ">
+                    <div class="x-body-content" style="height: 150px; " >
 						<p style="font-size: 50px;">内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
 					</div>
                 </div>
@@ -56,10 +56,12 @@
                 </div>
             </div>
         </div>
+        
+        <div id="f">外部的</div>
 		<script>
 		
 		
-		var container = new ContainerControl();
+		var container = new ContainerControl('c');
 		
 		container.renderTo();
 		container.setTitle("内容");
