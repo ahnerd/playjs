@@ -3,6 +3,64 @@
 //===========================================
 
 
+/// #ifndef SupportUsing
+/// #define imports
+/// #endif
+	
+/// #ifdef SupportUsing
+
+Object.extendIf(Py, {
+		
+	/**
+	 * 如果使用了 UI 库，则 theme 表示默认皮肤。
+	 * @config {String}
+	 * @value 'default'
+	 */
+	theme: 'default',
+	
+	/**
+	 * 如果使用了 UI 库，则  resource 表示公共的主题资源。
+	 * config {String}
+	 * @value 'share'
+	 */
+	resource: 'share',
+	
+	/**
+	 * 导入一个名字空间的资源。
+	 * @static
+	 * @param {String} resource 资源地址。
+	 * @param {Array} [theme] 主题。
+	 * theme 定义了使用的主题， 他会替换 resource 内的 * ， 
+	 * 比如 imports("Resources.*.Text", ["v", "f"]) 
+	 * 实际上是  imports("Resources.v.Text")  imports("Resources.f.Text") 
+	 * 如果 resource 有 * ，但用户未提供 theme ， 则使用   [Py.resource, Py.theme] 。
+	 * <br>
+	 * 有关名字空间的说明， 见 {@link namespace} 。
+	 * @example
+	 * <code>
+	 * imports("Resources.*.Text");
+	 * </code>
+	 */
+	imports: imports
+	
+});
+
+
+function imports(resource, theme){
+
+	assert(resource && resource.indexOf, "imports(resource, theme): 参数 {resource} 不是合法的名字空间。", resource);
+	assert(!theme || Object.isArray(theme), "imports(resource, theme): 参数 {theme} 必须是数组或省略。");
+
+	if(resource.indexOf('*') > -1) {
+	 	(theme || [Py.resource, Py.theme]).forEach(function(value) {
+			using(resource.replace('*', value), true);
+		});
+	} else {
+		using(resource.replace('~', Py.resource), true);
+	}
+}
+	
+/// #endif
 
 
 imports("Resources.*.Control.Core");
@@ -23,7 +81,7 @@ using("System.Dom.Element");
 	 * renderTo - 渲染控件到文档。 不建议重写，如果你希望额外操作渲染事件，则重写。
 	 * dispose - 删除控件。不建议重写，如果一个控件用到多个 dom 内容需重写。
 	 */
-	var Control = p.namespace(".Control", p.Class({
+	var Control = namespace(".Control", p.Class({
 		
 		/**
 		 * 封装的节点。
@@ -243,6 +301,5 @@ using("System.Dom.Element");
 
 
 })(Py);
-
 
 

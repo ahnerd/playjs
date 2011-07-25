@@ -1,19 +1,165 @@
 <?xml version="1.0" encoding="gb2312"?>
-<doc language="Javascript" create="2011/7/18 8:35:58">
+<doc language="Javascript" create="2011/7/24 12:18:07">
   <summary>Py.Core for Javascript</summary>
   <sources default="1">
     <source id="0" path="../../../window/fun/PyDoc/bin/Debug/define.js" />
     <source id="1" path="system.js" author="xuld" copyright="2009-2011 Py.Core Team">
       <summary>系统核心的核心部分。</summary>
     </source>
-    <source id="2" path="system/dom/element.js" />
-    <source id="3" path="system/ajax/ajax.js" />
-    <source id="4" path="system/fx/base.js" />
-    <source id="5" path="system/fx/animate.js" />
   </sources>
   <members>
     <class name="Object" source="-1">
-      <method name="extendIf" attribute="static">
+      <method name="extend" attribute="static" id="0">
+        <summary>复制对象的所有属性到其它对象。</summary>
+        <remarks>&lt;p&gt;
+这个函数是实现继承的核心。
+&lt;/p&gt;
+&lt;p&gt;
+在 Javascript 中，继承是依靠原型链实现的， 这个函数仅仅是对它的包装，而没有做额外的动作。
+&lt;/p&gt;
+&lt;p&gt;
+成员中的  constructor 成员 被认为是构造函数。
+&lt;/p&gt;
+&lt;p&gt;
+这个函数实现的是 单继承。如果子类有定义构造函数，则仅调用子类的构造函数，否则调用父类的构造函数。
+&lt;/p&gt;
+&lt;p&gt;
+要想在子类的构造函数调用父类的构造函数，可以使用  &lt;link&gt;Py.Object.prototype.base&lt;/link&gt; 。
+&lt;/p&gt;
+&lt;p&gt;
+这个函数返回的类实际是一个函数，但它被使用 Py.Object 修饰过。
+&lt;/p&gt;
+&lt;p&gt;
+由于原型链的关系， 肯能存在共享的引用。
+如: 类 A ，  A.prototype.c = [];
+那么，A的实例 b , d 都有 c 成员， 但它们共享一个   A.prototype.c 成员。
+这显然是不正确的。所以你应该把 参数 quick 置为 false ， 这样， A创建实例的时候，会自动解除共享的引用成员。
+当然，这是一个比较费时的操作，因此，默认  quick 是 true 。
+&lt;/p&gt;
+&lt;p&gt;
+你也可以把动态成员的定义放到 构造函数， 如: this.c = [];
+这是最好的解决方案。
+&lt;/p&gt;</remarks>
+        <seealso cref="Object.extendIf" />
+        <example>&lt;code&gt;
+var a = {v: 3}, b = {g: 2};
+Object.extend(a, b);
+trace(a); // {v: 3, g: 2}
+&lt;/code&gt;</example>
+        <returns type="Object">复制后的对象 (dest)。</returns>
+        <param name="dest" type="Function">复制目标。</param>
+        <param name="obj" type="Object">要复制的内容。</param>
+      </method>
+      <method name="implement" attribute="static" id="1">
+        <summary>扩展当前类的动态方法。</summary>
+        <seealso cref="Py.Object.implementIf" />
+        <example>&lt;code&gt;
+Number.implement({
+sin: function() {
+return Math.sin(this);
+}
+});
+(1).sin();  //  Math.sin(1);
+&lt;/code&gt;</example>
+        <returns type="">this</returns>
+        <param name="obj" type="Object">成员。</param>
+      </method>
+      <method name="implementIf" attribute="static" id="2">
+        <summary>如果不存在成员, 扩展当前类的动态方法。</summary>
+        <seealso cref="Py.Object.implement" />
+        <returns type="">this</returns>
+        <param name="obj" type="Object">成员。</param>
+      </method>
+      <method name="addEvents" attribute="static" id="3">
+        <summary>为当前类添加事件。</summary>
+        <remarks>&lt;p&gt;
+由于一个类的事件是按照 xType 属性存放的，拥有相同  xType 的类将有相同的事件，为了避免没有 xType 属性的类出现事件冲突， 这个方法会自动补全  xType 属性。
+&lt;/p&gt;
+&lt;p&gt;
+这个函数是实现自定义事件的关键。
+&lt;/p&gt;
+&lt;p&gt;
+addEvents 函数的参数是一个事件信息，格式如:  {click: { add: ..., remove: ..., initEvent: ..., trigger: ...} 。
+其中 click 表示事件名。一般建议事件名是小写的。
+&lt;/p&gt;
+&lt;p&gt;
+一个事件有多个相应，分别是: 绑定(add), 删除(remove), 触发(trigger), 初始化事件参数(initEvent)
+&lt;/p&gt;
+&lt;/p&gt;
+当用户使用   o.on('事件名', 函数)  时， 系统会判断这个事件是否已经绑定过，
+如果之前未绑定事件，则会创建新的函数 evtTrigger，
+evtTrigger 函数将遍历并执行 evtTrigger.handlers 里的成员, 如果其中一个函数执行后返回 false， 则中止执行，并返回 false， 否则返回 true。
+evtTrigger.handlers 表示 当前这个事件的所有实际调用的函数的数组。 evtTrigger.handlers[0] 是事件的 initEvent 函数。
+然后系统会调用 add(o, '事件名', evtTrigger)
+然后把 evtTrigger 保存在 o.data.event['事件名'] 中。
+如果 之前已经绑定了这个事件，则 evtTrigger 已存在，无需创建。
+这时系统只需把 函数 放到 evtTrigger.handlers 即可。
+&lt;/p&gt;
+&lt;p&gt;
+也就是说，真正的事件触发函数是 evtTrigger， evtTrigger去执行用户定义的一个事件全部函数。
+&lt;/p&gt;
+&lt;p&gt;
+当用户使用  o.un('事件名', 函数)  时， 系统会找到相应 evtTrigger， 并从
+evtTrigger.handlers 删除 函数。
+如果  evtTrigger.handlers 是空数组， 则使用
+remove(o, '事件名', evtTrigger)  移除事件。
+&lt;/p&gt;
+&lt;p&gt;
+当用户使用  o.trigger(参数)  时， 系统会找到相应 evtTrigger， 
+如果事件有trigger， 则使用 trigger(对象, '事件名', evtTrigger, 参数) 触发事件。
+如果没有， 则直接调用 evtTrigger(参数)。
+&lt;/p&gt;
+&lt;p&gt;
+下面分别介绍各函数的具体内容。
+&lt;/p&gt;
+&lt;p&gt;
+add 表示 事件被绑定时的操作。  原型为: 
+&lt;/p&gt;
+&lt;code&gt;
+function add(elem, type, fn) {
+// 对于标准的 DOM 事件， 它会调用 elem.addEventListener(type, fn, false);
+}
+&lt;/code&gt;
+&lt;p&gt;
+elem表示绑定事件的对象，即类实例。 type 是事件类型， 它就是事件名，因为多个事件的 add 函数肯能一样的， 因此 type 是区分事件类型的关键。fn 则是绑定事件的函数。
+&lt;/p&gt;
+&lt;p&gt;
+remove 同理。
+&lt;/p&gt;
+&lt;p&gt;
+initEvent 的参数是一个事件参数，它只能有1个参数。
+&lt;/p&gt;
+&lt;p&gt;
+trigger 是高级的事件。参考上面的说明。 
+&lt;/p&gt;
+&lt;p&gt;
+如果你不知道其中的几个参数功能，特别是  trigger ，请不要自定义。
+&lt;/p&gt;</remarks>
+        <example>下面代码演示了如何给一个类自定义事件，并创建类的实例，然后绑定触发这个事件。
+&lt;code&gt;
+// 创建一个新的类。
+var MyCls = new Class();
+MyCls.addEvents({
+click: {
+add:  function(elem, type, fn) {
+alert("为  elem 绑定 事件 " + type );
+},
+initEvent: function(e) {
+alert("初始化 事件参数  " + e );
+}
+}
+});
+var m = new MyCls;
+m.on('click', function() {
+alert(' 事件 触发 ');
+});
+m.trigger('click', 2);
+&lt;/code&gt;</example>
+        <returns type="">this</returns>
+        <param name="evens" type="Object" defaultvalue="">所有事件。 具体见下。</param>
+        <param name="events" type="" />
+      </method>
+      <method name="extendIf" attribute="static" id="4">
         <summary>如果目标成员不存在就复制对象的所有属性到其它对象。</summary>
         <remarks>&lt;code&gt;
 var a = {v: 3, g: 5}, b = {g: 2};
@@ -25,19 +171,7 @@ trace(a); // {v: 3, g: 5}  b 未覆盖 a 任何成员。
         <param name="dest" type="Object">复制目标。</param>
         <param name="obj" type="Object">要复制的内容。</param>
       </method>
-      <method name="extend" attribute="static">
-        <summary>复制对象的所有属性到其它对象。</summary>
-        <seealso cref="Object.extendIf" />
-        <example>&lt;code&gt;
-var a = {v: 3}, b = {g: 2};
-Object.extend(a, b);
-trace(a); // {v: 3, g: 2}
-&lt;/code&gt;</example>
-        <returns type="Object">复制后的对象 (dest)。</returns>
-        <param name="dest" type="Function">复制目标。</param>
-        <param name="obj" type="Object">要复制的内容。</param>
-      </method>
-      <method name="each" attribute="static">
+      <method name="each" attribute="static" id="5">
         <summary>在一个可迭代对象上遍历。</summary>
         <example>&lt;code&gt; 
 Object.each({a: '1', c: '3'}, function(value, key) {
@@ -46,11 +180,11 @@ trace(key + ' : ' + value);
 // 输出 'a : 1' 'c : 3'
 &lt;/code&gt;</example>
         <returns type="Boolean">如果已经遍历完所传的所有值， 返回 true， 如果遍历被中断过，返回 false。</returns>
-        <param name="iterable" type="Object">对象，不支持函数。</param>
+        <param name="iterable" type="Array/Object">对象，不支持函数。</param>
         <param name="fn" type="Function">对每个变量调用的函数。 &lt;param type="Object" name="value"&gt;当前变量的值&lt;/param&gt; &lt;param type="Number" name="key"&gt;当前变量的索引&lt;/param&gt; &lt;param type="Number" name="index"&gt;当前变量的索引&lt;/param&gt; &lt;param type="Array" name="array"&gt;数组本身&lt;/param&gt; &lt;return type="Boolean"&gt;如果中止循环， 返回 false。&lt;/return&gt;</param>
         <param name="bind" type="Object">函数执行时的作用域。</param>
       </method>
-      <method name="update" attribute="static">
+      <method name="update" attribute="static" id="6">
         <summary>更新一个可迭代对象。</summary>
         <example>该函数支持多个功能。主要功能是将一个对象根据一个关系变成新的对象。
 &lt;code&gt;
@@ -61,11 +195,11 @@ Object.update(["aa","aa23"], function(value, key, array) {return value.charAt(0)
         <returns type="Object">返回的对象。</returns>
         <param name="iterable" type="Object">对象，不支持函数。</param>
         <param name="fn" type="Function">对每个变量调用的函数。 &lt;param type="Object" name="value"&gt;当前变量的值&lt;/param&gt; &lt;param type="Number" name="key"&gt;当前变量的索引&lt;/param&gt; &lt;param type="Array" name="array"&gt;数组本身&lt;/param&gt; &lt;return type="Boolean"&gt;如果中止循环， 返回 false。&lt;/return&gt;</param>
-        <param name="bind" type="Object" defaultvalue="iterable">函数执行时的作用域。</param>
-        <param name="args" type="Boolean" defaultvalue="">参数/是否间接传递。</param>
+        <param name="bind" type="Array" defaultvalue="iterable">函数执行时的作用域。</param>
+        <param name="args" type="Object/Boolean" defaultvalue="">参数/是否间接传递。</param>
         <param name="dest" type="" />
       </method>
-      <method name="isObject" attribute="static">
+      <method name="isObject" attribute="static" id="7">
         <summary>判断一个变量是否是引用变量。</summary>
         <example>&lt;code&gt;
 Object.isObject({}); // true
@@ -75,7 +209,7 @@ Object.isObject(null); // false
         <param name="object" type="Object">变量。</param>
         <param name="obj" type="Object" />
       </method>
-      <method name="isArray" attribute="static">
+      <method name="isArray" attribute="static" id="8">
         <summary>判断一个变量是否是数组。</summary>
         <example>&lt;code&gt; 
 Object.isArray([]); // true
@@ -83,21 +217,21 @@ Object.isArray(document.getElementsByTagName("div")); // false
 Object.isArray(new Array); // true
 &lt;/code&gt;</example>
         <returns type="Boolean">如果是数组，返回 true， 否则返回 false。</returns>
-        <param name="object" type="String">变量。</param>
+        <param name="object" type="String/Array">变量。</param>
         <param name="obj" type="Object" />
       </method>
-      <method name="isFunction" attribute="static">
+      <method name="isFunction" attribute="static" id="9">
         <summary>判断一个变量是否是函数。</summary>
         <example>&lt;code&gt;
-Object.isFunction(function(){}); // true
+Object.isFunction(function() {}); // true
 Object.isFunction(null); // false
 Object.isFunction(new Function); // true
 &lt;/code&gt;</example>
         <returns type="Boolean">如果是函数，返回 true， 否则返回 false。</returns>
-        <param name="object" type="Function">变量。</param>
+        <param name="object" type="Object">变量。</param>
         <param name="obj" type="Object" />
       </method>
-      <method name="type" attribute="static">
+      <method name="type" attribute="static" id="10">
         <summary>返回一个变量的类型的字符串形式。</summary>
         <example>&lt;code&gt; 
 Object.type(null); // "null"
@@ -110,7 +244,7 @@ Object.type([]); // "array"
         <returns type="String">所有可以返回的字符串：  string  number   boolean   undefined	null	array	function   element  class   date   regexp object。</returns>
         <param name="obj" type="Object">变量。</param>
       </method>
-      <method name="clone" attribute="static">
+      <method name="clone" attribute="static" id="11">
         <summary>深拷贝一个对象本身, 不深复制函数。</summary>
         <example>&lt;code&gt;
 var obj1 = {a: 0, b: 1};
@@ -122,7 +256,7 @@ trace(obj2.a);  // trace 0
         <returns type="Object">返回复制后的对象。</returns>
         <param name="obj" type="Object">要拷贝的对象。</param>
       </method>
-      <method name="set" attribute="static">
+      <method name="set" attribute="static" id="12">
         <summary>将一个对象解析成一个类的属性。</summary>
         <remarks>这个函数会分析对象，并试图找到一个 属性设置函数。
 当设置对象 obj 的 属性 key 为 value:
@@ -133,7 +267,7 @@ trace(obj2.a);  // trace 0
 否则，检查，如果存在就调用: obj.set(value)
 否则，执行 obj.key = value;</remarks>
         <example>&lt;code&gt;
-document.setA = function(value){
+document.setA = function(value) {
 this._a = value;
 };
 Object.set(document, 'a', 3); 
@@ -143,7 +277,7 @@ Object.set(document, 'a', 3);
         <param name="obj" type="Object">类实例。</param>
         <param name="config" type="Object">参数。</param>
       </method>
-      <method name="addCallback" attribute="static">
+      <method name="addCallback" attribute="static" id="13">
         <summary>添加一个对象的成员函数调用结束后的回调函数。</summary>
         <example>下面的代码方便地添加 onload 事件。 
 &lt;code&gt;
@@ -153,6 +287,38 @@ Object.addCallback(window, "onload",trace.empty);
         <param name="obj" type="Object">对象。</param>
         <param name="name" type="String">成员函数名。</param>
         <param name="fn" type="Function">对象。</param>
+      </method>
+      <method name="base" access="protected" id="14">
+        <summary>调用父类的成员变量。</summary>
+        <remarks>注意只能从子类中调用父类的同名成员。</remarks>
+        <example>&lt;code&gt;
+var MyBa = new Class({
+a: function(g, b) {
+alert(g + b);
+}
+});
+var MyCls = MyBa.extend({
+a: function(g, b) {
+this.base('a', g, b);   // 或   this.base('a', arguments);
+}
+});
+new MyCls().a();   
+&lt;/code&gt;</example>
+        <returns type="Object">父类返回。</returns>
+        <param name="name" type="String">属性名。</param>
+        <param name="..." type="Object">调用的参数数组。</param>
+        <param name="args" type="" />
+      </method>
+      <method name="memberwiseClone" access="protected" id="15">
+        <summary>创建当前 Object 的浅表副本。</summary>
+        <example>&lt;code&gt;
+var MyBa = new Class({
+clone: function() {
+return this.memberwiseClone();
+}
+});
+&lt;/code&gt;</example>
+        <returns type="Object">当前变量的副本。</returns>
       </method>
     </class>
     <class name="Function" source="-1">
@@ -170,11 +336,11 @@ Object.addCallback(window, "onload",trace.empty);
         <summary>绑定函数作用域。</summary>
         <remarks>注意，未来 Function.prototype.bind 是系统函数， 因此这个函数将在那个时候被 替换掉。</remarks>
         <example>&lt;code&gt;
-Function.bind(function(){return this}, 0)()    ; // 0
+Function.bind(function() {return this}, 0)()    ; // 0
 &lt;/code&gt;</example>
         <returns type="Function" />
         <param name="fn" type="Function">函数。</param>
-        <param name="bind" type="Undefined">位置。</param>
+        <param name="bind" type="Object">位置。</param>
       </method>
       <method name="from" attribute="static">
         <summary>返回自身的函数。</summary>
@@ -216,8 +382,7 @@ Array.copyIf([4,6], [4, 7]); // [4, 7, 6]
 Array.plain([4,6], [[4], 7]); // [4, 7, 6]
 &lt;/code&gt;</example>
         <returns type="Array">新数组。</returns>
-        <param name="..." type="Function">数据成员。</param>
-        <param name="" type="Array" />
+        <param name="..." type="Object">数据成员。</param>
       </method>
       <method name="forEach">
         <summary>对数组内的所有变量执行函数，并可选设置作用域。</summary>
@@ -258,10 +423,10 @@ return false
         <summary>对数组每个元素通过一个函数过滤。返回所有符合要求的元素的数组。</summary>
         <seealso cref="Array.prototype.select" />
         <example>&lt;code&gt; 
-[1, 7, 2].filter(function(key){return key &amp;lt; 5 })   [1, 2]
+[1, 7, 2].filter(function(key) {return key &amp;lt; 5 })   [1, 2]
 &lt;/code&gt;</example>
         <returns type="Array">新的数组。</returns>
-        <param name="fn" type="Object">函数。参数 value, index, this。</param>
+        <param name="fn" type="Function">函数。参数 value, index, this。</param>
         <param name="bind" type="Object">绑定的对象。</param>
       </method>
       <method name="select">
@@ -302,9 +467,8 @@ return v.["q"] == "3";
 ["vhd"].invoke('charAt', [0]); //    ['v']
 &lt;/code&gt;</example>
         <returns type="Array">结果。</returns>
-        <param name="fn" type="String" />
+        <param name="fn" type="String/Function" />
         <param name="args" type="Array" />
-        <param name="" type="Array" />
       </method>
       <method name="unique">
         <summary>删除数组中重复元素。</summary>
@@ -337,11 +501,11 @@ Date.now(); //   相当于 new Date().getTime()
         <summary>xType。</summary>
       </field>
     </class>
-    <dynatic name="document" source="5">
+    <dynatic name="document">
       <field type="Object" name="document" source="-1">
         <summary>表示一个事件接口。</summary>
         <remarks>Py.IEvent 提供了事件机制的基本接口，凡实现这个接口的类店都有事件的处理能力。
-在调用  &lt;link&gt;Py.Native.prototype.addEvents&lt;/link&gt; 的时候，将自动实现这个接口。</remarks>
+在调用  &lt;link&gt;Py.Object.addEvents&lt;/link&gt; 的时候，将自动实现这个接口。</remarks>
       </field>
       <members>
         <method name="onReady">
@@ -354,58 +518,9 @@ Date.now(); //   相当于 new Date().getTime()
           <returns type="void" />
           <param name="fn" type="Functon">执行的函数。</param>
         </method>
-        <method name="create" source="2">
-          <summary>创建一个节点。</summary>
-          <returns type="Element" />
-          <param name="tagName" type="Object" />
-          <param name="className" type="Object" />
-        </method>
-        <method name="getDom" source="2">
-          <summary>根据元素返回节点。</summary>
-          <returns type="Element/ElementList">如果只有1个参数，返回元素，否则返回元素集合。</returns>
-          <param name="..." type="String/Element">对象的 id 或对象。</param>
-        </method>
-        <field type="Window" name="defaultView" source="2">
-          <summary>返回当前文档默认的视图。</summary>
-        </field>
-        <field type="Undefined" name="dom" source="2">
-          <summary>获取节点本身。</summary>
-        </field>
-        <method name="getWindowSize" source="2">
-          <summary>获取元素可视区域大小。</summary>
-          <returns type="Point">位置。</returns>
-        </method>
-        <method name="setWindowSize" source="2">
-          <summary>设置元素可视区域大小。</summary>
-          <returns type="Document">this 。</returns>
-          <param name="x" type="Number">大小。</param>
-          <param name="y" type="Number">大小。</param>
-        </method>
-        <method name="getSize" source="2">
-          <summary>获取元素可视区域大小。包括 margin 和 border 大小。</summary>
-          <returns type="Point">位置。</returns>
-        </method>
-        <method name="getScroll" source="2">
-          <summary>获取滚动条已滚动的大小。</summary>
-          <returns type="Point">位置。</returns>
-        </method>
-        <method name="getOffsets" source="2">
-          <summary>获取距父元素的偏差。</summary>
-          <returns type="Point">位置。</returns>
-        </method>
-        <method name="getScrollSize" source="2">
-          <summary>获取滚动区域大小。</summary>
-          <returns type="Point">位置。</returns>
-        </method>
-        <method name="setScroll" source="2">
-          <summary>滚到。</summary>
-          <returns type="Document">this 。</returns>
-          <param name="x" type="Number">坐标。</param>
-          <param name="y" type="Number">坐标。</param>
-        </method>
       </members>
     </dynatic>
-    <dynatic name="trace" source="5">
+    <dynatic name="trace">
       <method name="trace">
         <summary>调试输出。</summary>
         <returns type="void" />
@@ -416,7 +531,7 @@ Date.now(); //   相当于 new Date().getTime()
         <method name="error">
           <summary>输出一个错误信息。</summary>
           <returns type="void" />
-          <param name="msg" type="Object">内容。</param>
+          <param name="msg" type="String">内容。</param>
         </method>
         <method name="inspect">
           <summary>获取对象的所有成员的字符串形式。</summary>
@@ -495,37 +610,18 @@ Date.now(); //   相当于 new Date().getTime()
         </method>
       </members>
     </dynatic>
-    <dynatic name="assert" source="5">
+    <dynatic name="assert">
       <method name="assert">
         <summary>确认一个值正确。</summary>
         <example>&lt;code&gt;
 assert(true, "{value} 错误。", value
 &lt;/code&gt;</example>
         <returns type="Boolean">返回 bValue 。</returns>
-        <param name="bValue" type="Boolean">值。</param>
-        <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
-        <param name="" type="Function" />
-        <param name="" type="Object" />
+        <param name="bValue" type="Object">值。</param>
+        <param name="msg" type="Undefined" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
         <param name="" type="Object" />
       </method>
       <members>
-        <method name="notNull">
-          <summary>确认一个值非空。</summary>
-          <returns type="Boolean">返回 assert 是否成功 。</returns>
-          <param name="value" type="Object">值。</param>
-          <param name="argsName" type="String">变量的名字字符串。</param>
-          <param name="msg" type="Object" />
-        </method>
-        <method name="isFunction">
-          <summary>确认一个值为函数变量。</summary>
-          <example>&lt;code&gt;
-assert.isFunction(a, "a ~");
-&lt;/code&gt;</example>
-          <returns type="Boolean">返回 bValue 。</returns>
-          <param name="bValue" type="Function">值。</param>
-          <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
-          <param name="" type="Function" />
-        </method>
         <method name="isObject">
           <summary>确认一个值为函数变量。</summary>
           <returns type="Boolean">返回 bValue 。</returns>
@@ -533,10 +629,26 @@ assert.isFunction(a, "a ~");
           <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
           <param name="value" type="" />
         </method>
+        <method name="notNull">
+          <summary>确认一个值非空。</summary>
+          <returns type="Boolean">返回 assert 是否成功 。</returns>
+          <param name="value" type="Object">值。</param>
+          <param name="argsName" type="String">变量的名字字符串。</param>
+          <param name="msg" type="" />
+        </method>
+        <method name="isFunction">
+          <summary>确认一个值为函数变量。</summary>
+          <example>&lt;code&gt;
+assert.isFunction(a, "a ~");
+&lt;/code&gt;</example>
+          <returns type="Boolean">返回 bValue 。</returns>
+          <param name="bValue" type="Object">值。</param>
+          <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
+        </method>
         <method name="isString">
           <summary>确认一个值是字符串。</summary>
           <returns type="Boolean">返回 bValue 。</returns>
-          <param name="bValue" type="Array">值。</param>
+          <param name="bValue" type="Object">值。</param>
           <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
           <param name="value" type="" />
         </method>
@@ -550,20 +662,20 @@ assert.isFunction(a, "a ~");
         <method name="isArray">
           <summary>确认一个值为数组。</summary>
           <returns type="Boolean">返回 bValue 。</returns>
-          <param name="bValue" type="Array">值。</param>
+          <param name="bValue" type="Object">值。</param>
           <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
         </method>
         <method name="isNode">
           <summary>确认一个值为节点。</summary>
           <returns type="Boolean">返回 bValue 。</returns>
-          <param name="bValue" type="String">值。</param>
+          <param name="bValue" type="Object">值。</param>
           <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
           <param name="value" type="" />
         </method>
         <method name="isElement">
           <summary>确认一个值为节点。</summary>
           <returns type="Boolean">返回 bValue 。</returns>
-          <param name="bValue" type="Element/String/Boolean">值。</param>
+          <param name="bValue" type="Object">值。</param>
           <param name="msg" type="String" defaultvalue="&quot;断言失败&quot;">错误后的提示。</param>
           <param name="value" type="" />
         </method>
@@ -607,7 +719,7 @@ assert.isFunction(a, "a ~");
         </method>
       </members>
     </dynatic>
-    <namespace name="Py" source="5">
+    <namespace name="Py">
       <config type="Boolean" name="debug">
         <summary>是否打开调试。</summary>
       </config>
@@ -623,168 +735,16 @@ assert.isFunction(a, "a ~");
         <summary>默认的全局名字空间。</summary>
       </config>
       <config type="String" defaultvalue="'default'" name="theme">
-        <summary>如果使用了 UI 库，则 theme 表示默认皮肤。</summary>
+        <summary>如果使用了 UI 库，则 theme 表示默认主题。</summary>
       </config>
-      <field type="String" defaultvalue="'share'" name="resource">
-        <summary>如果使用了 UI 库，则  resource 表示公共的主题资源。
-config {String}</summary>
-      </field>
+      <config type="String" defaultvalue="'share'" name="resource">
+        <summary>如果使用了 UI 库，则  resource 表示公共的主题资源。</summary>
+      </config>
       <config type="Boolean" name="trace">
         <summary>启用控制台调试。</summary>
         <remarks>如果不存在控制台，将自动调整为 false 。</remarks>
       </config>
-      <class name="Native" access="private" attribute="static">
-        <summary>由存在的类修改创建类。即为类添加一个 implement 和 implementIf 成员。</summary>
-        <remarks>Py.IEvent 提供了事件机制的基本接口，凡实现这个接口的类店都有事件的处理能力。
-在调用  &lt;link&gt;Py.Native.prototype.addEvents&lt;/link&gt; 的时候，将自动实现这个接口。</remarks>
-        <seealso cref="Py.Class" />
-        <method name="implement">
-          <summary>扩展当前类的动态方法。</summary>
-          <seealso cref="Py.Native.prototype.implementIf" />
-          <example>&lt;code&gt;
-Number.implement({
-sin: function(){
-return Math.sin(this);
-}
-});
-(1).sin();  //  Math.sin(1);
-&lt;/code&gt;</example>
-          <returns type="">this</returns>
-          <param name="obj" type="Object">成员。</param>
-        </method>
-        <method name="implementIf">
-          <summary>如果不存在成员, 扩展当前类的动态方法。</summary>
-          <seealso cref="Py.Native.prototype.implement" />
-          <returns type="">this</returns>
-          <param name="obj" type="Object">成员。</param>
-        </method>
-        <method name="addEvents">
-          <summary>为当前类添加事件。</summary>
-          <remarks>&lt;p&gt;
-由于一个类的事件是按照 xType 属性存放的，拥有相同  xType 的类将有相同的事件，为了避免没有 xType 属性的类出现事件冲突， 这个方法会自动补全  xType 属性。
-&lt;/p&gt;
-&lt;p&gt;
-这个函数是实现自定义事件的关键。
-&lt;/p&gt;
-&lt;p&gt;
-addEvents 函数的参数是一个事件信息，格式如:  {click: { add: ..., remove: ..., initEvent: ..., trigger: ...} 。
-其中 click 表示事件名。一般建议事件名是小写的。
-&lt;/p&gt;
-&lt;p&gt;
-一个事件有多个相应，分别是: 绑定(add), 删除(remove), 触发(trigger), 初始化事件参数(initEvent)
-&lt;/p&gt;
-&lt;/p&gt;
-当用户使用   o.on('事件名', 函数)  时， 系统会判断这个事件是否已经绑定过，
-如果之前未绑定事件，则会创建新的函数 evtTrigger，
-evtTrigger 函数将遍历并执行 evtTrigger.handlers 里的成员, 如果其中一个函数执行后返回 false， 则中止执行，并返回 false， 否则返回 true。
-evtTrigger.handlers 表示 当前这个事件的所有实际调用的函数的数组。 evtTrigger.handlers[0] 是事件的 initEvent 函数。
-然后系统会调用 add(o, '事件名', evtTrigger)
-然后把 evtTrigger 保存在 o.data.event['事件名'] 中。
-如果 之前已经绑定了这个事件，则 evtTrigger 已存在，无需创建。
-这时系统只需把 函数 放到 evtTrigger.handlers 即可。
-&lt;/p&gt;
-&lt;p&gt;
-也就是说，真正的事件触发函数是 evtTrigger， evtTrigger去执行用户定义的一个事件全部函数。
-&lt;/p&gt;
-&lt;p&gt;
-当用户使用  o.un('事件名', 函数)  时， 系统会找到相应 evtTrigger， 并从
-evtTrigger.handlers 删除 函数。
-如果  evtTrigger.handlers 是空数组， 则使用
-remove(o, '事件名', evtTrigger)  移除事件。
-&lt;/p&gt;
-&lt;p&gt;
-当用户使用  o.trigger(参数)  时， 系统会找到相应 evtTrigger， 
-如果事件有trigger， 则使用 trigger(对象, '事件名', evtTrigger, 参数) 触发事件。
-如果没有， 则直接调用 evtTrigger(参数)。
-&lt;/p&gt;
-&lt;p&gt;
-下面分别介绍各函数的具体内容。
-&lt;/p&gt;
-&lt;p&gt;
-add 表示 事件被绑定时的操作。  原型为: 
-&lt;/p&gt;
-&lt;code&gt;
-function add(elem, type, fn){
-// 对于标准的 DOM 事件， 它会调用 elem.addEventListener(type, fn, false);
-}
-&lt;/code&gt;
-&lt;p&gt;
-elem表示绑定事件的对象，即类实例。 type 是事件类型， 它就是事件名，因为多个事件的 add 函数肯能一样的， 因此 type 是区分事件类型的关键。fn 则是绑定事件的函数。
-&lt;/p&gt;
-&lt;p&gt;
-remove 同理。
-&lt;/p&gt;
-&lt;p&gt;
-initEvent 的参数是一个事件参数，它只能有1个参数。
-&lt;/p&gt;
-&lt;p&gt;
-trigger 是高级的事件。参考上面的说明。 
-&lt;/p&gt;
-&lt;p&gt;
-如果你不知道其中的几个参数功能，特别是  trigger ，请不要自定义。
-&lt;/p&gt;</remarks>
-          <example>下面代码演示了如何给一个类自定义事件，并创建类的实例，然后绑定触发这个事件。
-&lt;code&gt;
-// 创建一个新的类。
-var MyCls = new Class();
-MyCls.addEvents({
-click: {
-add:  function(elem, type, fn){
-alert("为  elem 绑定 事件 " + type );
-},
-initEvent: function(e){
-alert("初始化 事件参数  " + e );
-}
-}
-});
-var m = new MyCls;
-m.on('click', function(){
-alert(' 事件 触发 ');
-});
-m.trigger('click', 2);
-&lt;/code&gt;</example>
-          <returns type="">this</returns>
-          <param name="evens" type="Object" defaultvalue="">所有事件。 具体见下。</param>
-          <param name="events" type="" />
-        </method>
-        <method name="extend">
-          <summary>继承当前类并返回子类。</summary>
-          <remarks>&lt;p&gt;
-这个函数是实现继承的核心。
-&lt;/p&gt;
-&lt;p&gt;
-在 Javascript 中，继承是依靠原型链实现的， 这个函数仅仅是对它的包装，而没有做额外的动作。
-&lt;/p&gt;
-&lt;p&gt;
-成员中的  constructor 成员 被认为是构造函数。
-&lt;/p&gt;
-&lt;p&gt;
-这个函数实现的是 单继承。如果子类有定义构造函数，则仅调用子类的构造函数，否则调用父类的构造函数。
-&lt;/p&gt;
-&lt;p&gt;
-要想在子类的构造函数调用父类的构造函数，可以使用  &lt;link&gt;Py.Object.prototype.base&lt;/link&gt; 。
-&lt;/p&gt;
-&lt;p&gt;
-这个函数返回的类实际是一个函数，但它被使用 Py.Native 修饰过。
-&lt;/p&gt;
-&lt;p&gt;
-由于原型链的关系， 肯能存在共享的引用。
-如: 类 A ，  A.prototype.c = [];
-那么，A的实例 b , d 都有 c 成员， 但它们共享一个   A.prototype.c 成员。
-这显然是不正确的。所以你应该把 参数 quick 置为 false ， 这样， A创建实例的时候，会自动解除共享的引用成员。
-当然，这是一个比较费时的操作，因此，默认  quick 是 true 。
-&lt;/p&gt;
-&lt;p&gt;
-你也可以把动态成员的定义放到 构造函数， 如: this.c = [];
-这是最好的解决方案。
-&lt;/p&gt;</remarks>
-          <returns type="Class">继承的子类。</returns>
-          <param name="methods" type="Object/Function" defaultvalue="">成员或构造函数。</param>
-          <param name="quick" type="Boolean" defaultvalue="true">如果 true 那么这个类不解除成员对象的引用 。</param>
-          <param name="members" type="" />
-        </method>
-      </class>
-      <dynatic name="Events" access="private" source="5">
+      <dynatic name="Events" access="private">
         <property type="Object" name="Events" access="private" attribute="static">
           <summary>管理所有事件类型的工具。</summary>
           <remarks>所有类的事件信息存储在这个变量。使用 xType -&gt; name的结构。</remarks>
@@ -793,7 +753,7 @@ m.trigger('click', 2);
           <field type="Object" name="$default">
             <summary>管理默认的类事件。</summary>
             <remarks>Py.IEvent 提供了事件机制的基本接口，凡实现这个接口的类店都有事件的处理能力。
-在调用  &lt;link&gt;Py.Native.prototype.addEvents&lt;/link&gt; 的时候，将自动实现这个接口。</remarks>
+在调用  &lt;link&gt;Py.Object.addEvents&lt;/link&gt; 的时候，将自动实现这个接口。</remarks>
           </field>
         </members>
       </dynatic>
@@ -832,7 +792,7 @@ Py.setData(obj, 'a', 5);    //     5
         <returns type="">data</returns>
         <param name="obj" type="Object">元素。</param>
         <param name="type" type="String">类型。</param>
-        <param name="data" type="Py.Fx.Animate">内容。</param>
+        <param name="data" type="Object">内容。</param>
       </method>
       <method name="cloneData" attribute="static">
         <summary>复制一个对象的数据到另一个对象。</summary>
@@ -887,28 +847,27 @@ Py.eval('alert("hello")');
       <method name="Class" attribute="static">
         <summary>创建一个类。</summary>
         <remarks>创建一个类，相当于继承于 Py.Object创建。</remarks>
-        <see cref="Py.Native.prototype.extend" />
+        <see cref="Py.Object.extend" />
         <example>&lt;code&gt;
 var MyCls = Class({
-constructor: function(g, h){
+constructor: function(g, h) {
 alert('构造函数' + g + h)
 }	
 });
 var c = new MyCls(4, ' g');
 &lt;/code&gt;</example>
         <returns type="Class">生成的类。</returns>
-        <param name="methods" type="Object" defaultvalue="">成员或构造函数。</param>
-        <param name="quick" type="Boolean" defaultvalue="true">如果 true 那么这个类不解除成员对象的引用 。</param>
+        <param name="methods" type="Object/Function" defaultvalue="">成员或构造函数。</param>
         <param name="members" type="" />
       </method>
       <interface name="IEvent">
         <summary>表示一个事件接口。</summary>
         <remarks>Py.IEvent 提供了事件机制的基本接口，凡实现这个接口的类店都有事件的处理能力。
-在调用  &lt;link&gt;Py.Native.prototype.addEvents&lt;/link&gt; 的时候，将自动实现这个接口。</remarks>
+在调用  &lt;link&gt;Py.Object.addEvents&lt;/link&gt; 的时候，将自动实现这个接口。</remarks>
         <method name="on" attribute="static">
           <summary>增加一个监听者。</summary>
           <example>&lt;code&gt;
-elem.on('click', function(e){
+elem.on('click', function(e) {
 return true;
 });
 &lt;/code&gt;</example>
@@ -919,7 +878,7 @@ return true;
         <method name="one" attribute="static">
           <summary>增加一个只执行一次的监听者。</summary>
           <example>&lt;code&gt;
-elem.one('click', function(e){
+elem.one('click', function(e) {
 trace('a');  
 });
 elem.trigger('click');   //  输出  a
@@ -931,19 +890,19 @@ elem.trigger('click');   //  没有输出
         </method>
         <method name="un" attribute="static">
           <summary>删除一个监听器。</summary>
-          <remarks>注意: function(){} !== function(){}, 这意味着这个代码有问题:
+          <remarks>注意: function() {} !== function() {}, 这意味着这个代码有问题:
 &lt;code&gt;
-elem.on('click', function(){});
-elem.un('click', function(){});
+elem.on('click', function() {});
+elem.un('click', function() {});
 &lt;/code&gt;
 你应该把函数保存起来。
 &lt;code&gt;
-var c =  function(){};
+var c =  function() {};
 elem.on('click', c);
 elem.un('click', c);
 &lt;/code&gt;</remarks>
           <example>&lt;code&gt;
-elem.un('click', function(e){
+elem.un('click', function(e) {
 return true;
 });
 &lt;/code&gt;</example>
@@ -964,45 +923,22 @@ elem.trigger('click');
       </interface>
       <class name="Object">
         <summary>所有类的基类。</summary>
-        <method name="baseCall" access="protected">
-          <summary>调用父类的成员变量。</summary>
-          <remarks>注意只能从子类中调用父类的同名成员。</remarks>
-          <example>&lt;code&gt;
-var MyBa = new Class({
-a: function(g, b){
-alert(g + b);
-}
-});
-var MyCls = MyBa.extend({
-a: function(g, b){
-this.baseCall('a', g, b);   // 或   this.baseCall('a', arguments);
-}
-});
-new MyCls().a();   
-&lt;/code&gt;</example>
-          <returns type="Object">父类返回。</returns>
-          <param name="name" type="String">属性名。</param>
-          <param name="..." type="Object">调用的参数数组。</param>
-          <param name="args" type="" />
-        </method>
-        <method name="base" access="protected">
-          <summary>调用父类的构造函数。</summary>
-          <remarks>这个函数等价  this.baseCall('constructor', arguments);</remarks>
-          <see cref="Py.Object.prototype.baseCall" />
-          <returns type="void" />
-          <param name="..." type="Object">调用的参数数组。</param>
-        </method>
-        <method name="memberwiseClone" access="protected">
-          <summary>创建当前 Object 的浅表副本。</summary>
-          <example>&lt;code&gt;
-var MyBa = new Class({
-clone: function(){
-return this.memberwiseClone();
-}
-});
-&lt;/code&gt;</example>
-          <returns type="Object">当前变量的副本。</returns>
-        </method>
+        <link name="extend" target="0" />
+        <link name="implement" target="1" />
+        <link name="implementIf" target="2" />
+        <link name="addEvents" target="3" />
+        <link name="extendIf" target="4" />
+        <link name="each" target="5" />
+        <link name="update" target="6" />
+        <link name="isObject" target="7" />
+        <link name="isArray" target="8" />
+        <link name="isFunction" target="9" />
+        <link name="type" target="10" />
+        <link name="clone" target="11" />
+        <link name="set" target="12" />
+        <link name="addCallback" target="13" />
+        <link name="base" target="14" />
+        <link name="memberwiseClone" target="15" />
       </class>
       <method name="using" attribute="static">
         <summary>使用一个名空间。</summary>
@@ -1011,7 +947,8 @@ return this.memberwiseClone();
 using("System.Dom.Keys");
 &lt;/code&gt;</example>
         <returns type="void" />
-        <param name="name" type="String">名字空间。</param>
+        <param name="namespace" type="String">名字空间。</param>
+        <param name="isStyle" type="Boolean">是否为样式表。</param>
       </method>
       <method name="namespace" attribute="static">
         <summary>定义名字空间。</summary>
@@ -1027,7 +964,7 @@ namespace 函数有多个重载， 如果只有1个参数:
 &lt;code&gt;
 namespace("System.Dom.Keys"); 
 &lt;/code&gt;
-表示系统已经载入了这个名字空间的资源， using 和 import 将忽视这个资源的载入。
+表示系统已经载入了这个名字空间的资源， using 和 imports 将忽视这个资源的载入。
 &lt;/p&gt;
 &lt;p&gt;
 namespace 如果有2个参数， 表示在指定的位置创建对象。
@@ -1054,26 +991,11 @@ namespace(".G", 4);    // Py.G = G  = 4
         <param name="name" type="String">名字空间。</param>
         <param name="obj" type="Object" defaultvalue="">值。</param>
       </method>
-      <method name="imports" attribute="static">
-        <summary>导入一个名字空间的资源。</summary>
-        <remarks>theme 定义了使用的主题， 他会替换 resource 内的 * ， 
-比如 imports("Resources.*.Text", ["v", "f"]) 
-实际上是  imports("Resources.v.Text")  imports("Resources.f.Text") 
-如果 resource 有 * ，但用户未提供 theme ， 则使用   [Py.resource, Py.theme] 。
-&lt;br&gt;
-有关名字空间的说明， 见 &lt;link&gt;namespace&lt;/link&gt; 。</remarks>
-        <example>&lt;code&gt;
-imports("Resources.*.Text");
-&lt;/code&gt;</example>
-        <returns type="void" />
-        <param name="resource" type="String">资源地址。</param>
-        <param name="theme" type="Array" defaultvalue="">主题。</param>
-      </method>
       <method name="addEventListener" attribute="static">
         <summary>绑定一个监听器。</summary>
         <seealso cref="Py.removeListener" />
         <example>&lt;code&gt;
-Py.addEventListener.call(document, 'click', function(){
+Py.addEventListener.call(document, 'click', function() {
 });
 &lt;/code&gt;</example>
         <returns type="void" />
@@ -1085,7 +1007,7 @@ Py.addEventListener.call(document, 'click', function(){
         <summary>移除一个监听器。</summary>
         <seealso cref="Py.addListener" />
         <example>&lt;code&gt;
-Py.removeEventListener.call(document, 'click', function(){
+Py.removeEventListener.call(document, 'click', function() {
 });
 &lt;/code&gt;</example>
         <returns type="void" />
@@ -1102,53 +1024,6 @@ Py.removeEventListener.call(document, 'click', function(){
         <param name="doc" type="Document" />
         <param name="w" type="" />
       </method>
-      <class name="Event" source="2">
-        <summary>表示事件的参数。</summary>
-        <field type="Boolean" name="cancelBubble" source="2">
-          <summary>表示当前是否取消冒泡。</summary>
-        </field>
-        <field type="Boolean" name="returnValue" source="2">
-          <summary>表示当前是否阻止默认事件。</summary>
-        </field>
-        <method name="stopPropagation" source="2">
-          <summary>阻止事件的冒泡。</summary>
-          <returns type="void" />
-        </method>
-        <method name="preventDefault" source="2">
-          <summary>取消默认事件发生。</summary>
-          <returns type="void" />
-        </method>
-        <method name="stop" source="2">
-          <summary>停止默认事件和冒泡。</summary>
-          <returns type="void" />
-        </method>
-      </class>
-      <namespace name="Fx" source="5">
-        <class name="Base" source="5" />
-        <class name="Animate" source="5">
-          <extend>Py.Fx.Base</extend>
-          <field type="Element" name="dom" access="protected" source="5">
-            <summary>当前绑定的节点。</summary>
-          </field>
-          <field type="Object" name="current" access="protected" source="5">
-            <summary>当前的状态存储。</summary>
-          </field>
-          <field type="String" name="link" source="5">
-            <summary>链接方式。</summary>
-          </field>
-          <method name="set" attribute="override" source="5">
-            <summary>根据指定变化量设置值。</summary>
-            <returns type="void" />
-            <param name="delta" type="Number">变化量。 0 - 1 。</param>
-          </method>
-          <method name="compile" source="5">
-            <summary>生成当前变化所进行的初始状态。</summary>
-            <returns type="Object" />
-            <param name="from" type="Object">开始。</param>
-            <param name="to" type="Object">结束。</param>
-          </method>
-        </class>
-      </namespace>
     </namespace>
     <namespace name="navigator">
       <summary>浏览器。</summary>
@@ -1190,631 +1065,8 @@ Py.removeEventListener.call(document, 'click', function(){
       <method name="isOk" attribute="static">
         <summary>判断当前请求是否有正常的返回。</summary>
         <returns type="Boolean">正常返回true 。</returns>
-        <param name="xmlHttp" type="Object">请求。</param>
+        <param name="xmlHttp" type="XMLHttpRequest">请求。</param>
       </method>
     </class>
-    <class name="Element" source="2">
-      <implement>Py.IEvent</implement>
-      <method name="parse" attribute="static" source="2">
-        <summary>转换一个HTML字符串到节点。</summary>
-        <returns type="Element/TextNode/DocumentFragment">元素。</returns>
-        <param name="html" type="String/Element">字符。</param>
-        <param name="context" type="Document" defaultvalue="document">内容。</param>
-        <param name="cachable" type="Boolean" defaultvalue="true">是否缓存。</param>
-      </method>
-      <field type="Array" name="implementTargets" access="private" attribute="static" source="2">
-        <summary>实现了 Element 实现的处理函数。</summary>
-      </field>
-      <method name="implement" attribute="static" source="2">
-        <summary>将一个成员附加到 Element 对象和相关类。</summary>
-        <remarks>对 Element 扩展，内部对 Element ElementList document 皆扩展。
-这是由于不同的函数需用不同的方法扩展，必须指明扩展类型。
-所谓的扩展，即一个类含需要的函数。
-DOM 方法 有 以下种
-1, 其它  getText - 执行结果是数据，返回结果数组。 (默认)
-2  setText - 执行结果返回 this， 返回 this 。
-3  getElementById - 执行结果是DOM，返回  ElementList 包装。
-4  getElementsByTagName - 执行结果是DOM数组，返回  ElementList 包装。
-5  contains  - 执行结果是判断， 如果每个返回值都是 true， 则返回 true， 否则返回 false。
-参数 copyIf 仅内部使用。</remarks>
-        <returns type="Element">this</returns>
-        <param name="obj" type="Object">要附加的对象。</param>
-        <param name="listType" type="Number" defaultvalue="1">说明如何复制到 p.ElementList 实例。</param>
-        <param name="copyIf" type="" />
-      </method>
-      <method name="implementIf" attribute="static" source="2">
-        <summary>若不存在，则将一个对象附加到 Element 对象。</summary>
-        <returns type="Element">this</returns>
-        <param name="obj" type="Object">要附加的对象。</param>
-        <param name="listType" type="Number">说明如何复制到 p.ElementList 实例。</param>
-        <param name="docType" type="Number">说明如何复制到 Document 实例。</param>
-      </method>
-      <method name="getDocument" attribute="static" source="2">
-        <summary>获取一个元素的文档。</summary>
-        <returns type="Document">当前节点所在文档。</returns>
-        <param name="elem" type="Element/Document/Window">元素。</param>
-      </method>
-      <method name="defineEvents" attribute="static" source="2">
-        <summary>定义事件。</summary>
-        <remarks>原则 Element.addEvents 可以解决问题。 但由于 DOM 的特殊性，额外提供 defineEvents 方便定义适合 DOM 的事件。
-defineEvents 主要解决 3 个问题:
-&lt;ol&gt;
-&lt;li&gt; 多个事件使用一个事件信息。
-&lt;p&gt;
-所有的 DOM 事件的  add 等 是一样的，因此这个函数提供一键定义: Py.defineEvents('e1 e2 e3')
-&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt; 事件别名。
-&lt;p&gt;
-一个自定义 DOM 事件是另外一个事件的别名。
-这个函数提供一键定义依赖: Py.defineEvents('mousewheel', 'DOMMouseScroll')
-&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt; 事件委托。
-&lt;p&gt;
-一个自定义 DOM 事件经常依赖已有的事件。一个事件由另外一个事件触发， 比如 ctrlenter 是在 keyup 基础上加工的。
-这个函数提供一键定义依赖: Py.defineEvents('ctrlenter', 'keyup', function(e){ (判断事件) })
-&lt;/p&gt;
-&lt;/li&gt;</remarks>
-        <example>&lt;code&gt;
-Element.defineEvents('mousewheel', 'DOMMouseScroll')  //  在 FF 下用   mousewheel
-替换   DOMMouseScroll 。
-Element.defineEvents('mouseenter', 'mouseover', function(e){
-if( !isMouseEnter(e) )   // mouseenter  是基于 mouseover 实现的事件，  因此在 不是
-mouseenter 时候 取消事件。
-e.returnValue = false;
-});
-&lt;/code&gt;</example>
-        <returns type="Function">函数本身</returns>
-        <param name="事件名" type="String">。</param>
-        <param name="trigger" type="String">触发器。</param>
-        <param name="events" type="Function" />
-        <param name="baseEvent" type="" />
-        <param name="initEvent" type="" />
-      </method>
-      <method name="setMovable" attribute="static" source="2">
-        <summary>设置一个元素可拖动。</summary>
-        <returns type="void" />
-        <param name="elem" type="Object">要设置的节点。</param>
-      </method>
-      <method name="checkPosition" attribute="static" source="2">
-        <summary>检查元素的 position 是否和指定的一致。</summary>
-        <returns type="Boolean">一致，返回 true 。</returns>
-        <param name="elem" type="Element">元素。</param>
-        <param name="position" type="String">方式。</param>
-      </method>
-      <method name="getXY" access="private" attribute="static" source="2">
-        <summary>根据 x, y 获取 {x: x y: y} 对象</summary>
-        <returns type="void" />
-        <param name="x" type="Number/Point" />
-        <param name="y" type="Number" />
-      </method>
-      <method name="hasChild" attribute="static" source="2">
-        <summary>判断指定节点之后有无存在子节点。</summary>
-        <returns type="Boolean">如果确实存在子节点，则返回 true ， 否则返回 false 。</returns>
-        <param name="elem" type="Element">节点。</param>
-        <param name="child" type="Element">子节点。</param>
-      </method>
-      <method name="empty" attribute="static" source="2">
-        <summary>删除一个节点的所有子节点。</summary>
-        <returns type="void" />
-        <param name="elem" type="Element">节点。</param>
-      </method>
-      <method name="dispose" attribute="static" source="2">
-        <summary>释放节点所有资源。</summary>
-        <returns type="void" />
-        <param name="elem" type="Element">节点。</param>
-      </method>
-      <method name="addEventListener" source="2">
-        <summary>绑定一个监听器。</summary>
-        <returns type="void" />
-        <param name="type" type="String">类型。</param>
-        <param name="fn" type="Function">函数。</param>
-      </method>
-      <method name="removeEventListener" source="2">
-        <summary>移除一个监听着。</summary>
-        <returns type="void" />
-        <param name="type" type="String">类型。</param>
-        <param name="fn" type="Function">函数。</param>
-      </method>
-      <field type="String" name="xType" source="2">
-        <summary>xType</summary>
-      </field>
-      <method name="setOpacity" source="2">
-        <summary>设置连接的透明度。</summary>
-        <returns type="Element">this</returns>
-        <param name="value" type="Number">透明度， 0 - 1 。</param>
-      </method>
-      <method name="setStyle" source="2">
-        <summary>设置内容样式。</summary>
-        <returns type="Element">this</returns>
-        <param name="name" type="String/Object">键。</param>
-        <param name="value" type="Object">值。</param>
-      </method>
-      <method name="setAttr" source="2">
-        <summary>设置节点属性。</summary>
-        <returns type="Element">this</returns>
-        <param name="name" type="String">名字。</param>
-        <param name="value" type="String">值。</param>
-      </method>
-      <method name="set" source="2">
-        <summary>快速设置节点全部属性和样式。</summary>
-        <returns type="Element">this</returns>
-        <param name="name" type="Object">名字。</param>
-        <param name="value" type="Object" defaultvalue="">值。</param>
-      </method>
-      <method name="addClass" source="2">
-        <summary>增加类名。</summary>
-        <returns type="Element">this</returns>
-        <param name="className" type="String">类名。</param>
-      </method>
-      <method name="removeClass" source="2">
-        <summary>删除类名。</summary>
-        <returns type="Element">this</returns>
-        <param name="className" type="String">类名。</param>
-      </method>
-      <method name="toggleClass" source="2">
-        <summary>切换类名。</summary>
-        <returns type="Element">this</returns>
-        <param name="className" type="String">类名。</param>
-        <param name="toggle" type="" />
-      </method>
-      <method name="setText" source="2">
-        <summary>设置值。</summary>
-        <returns type="Element">this</returns>
-        <param name="值" type="String/Boolean">。</param>
-        <param name="value" type="" />
-      </method>
-      <method name="setHtml" source="2">
-        <summary>设置 HTML 。</summary>
-        <returns type="Element">this</returns>
-        <param name="value" type="String">值。</param>
-      </method>
-      <method name="show" source="2">
-        <summary>显示当前元素。</summary>
-        <returns type="Element">this</returns>
-        <param name="duration" type="Object" defaultvalue="500">时间。</param>
-        <param name="callBack" type="Object" defaultvalue="">回调。</param>
-        <param name="type" type="String" defaultvalue="">方式。</param>
-      </method>
-      <method name="hide" source="2">
-        <summary>隐藏当前元素。</summary>
-        <returns type="Element">this</returns>
-        <param name="duration" type="Object" defaultvalue="500">时间。</param>
-        <param name="callBack" type="Object" defaultvalue="">回调。</param>
-        <param name="type" type="String" defaultvalue="">方式。</param>
-      </method>
-      <method name="setUnselectable" source="2">
-        <summary>设置元素不可选。</summary>
-        <returns type="">this</returns>
-        <param name="value" type="Boolean">是否可选。</param>
-      </method>
-      <method name="toggle" source="2">
-        <summary>切换显示当前元素。</summary>
-        <returns type="Element">this</returns>
-        <param name="duration" type="Number" defaultvalue="500">时间。</param>
-        <param name="callBack" type="Function" defaultvalue="">回调。</param>
-        <param name="type" type="String" defaultvalue="">方式。</param>
-        <param name="flag" type="" />
-      </method>
-      <method name="animate" source="2">
-        <summary>变化到某值。</summary>
-        <remarks>right bottom。</remarks>
-        <returns type="">this</returns>
-        <param name="value" type="Object">变化的值。可以为 height opacity width all size position left top</param>
-        <param name="callBack" type="Object" defaultvalue="">回调。</param>
-        <param name="duration" type="Number" defaultvalue="500">时间。</param>
-        <param name="type" type="String" defaultvalue="">类型。</param>
-      </method>
-      <method name="bringToFront" source="2">
-        <summary>将元素引到最前。</summary>
-        <returns type="">this</returns>
-        <param name="elem" type="Element" defaultvalue="">参考元素。</param>
-      </method>
-      <method name="getScrollSize" source="2">
-        <summary>获取滚动区域大小。</summary>
-        <returns type="Point">位置。</returns>
-      </method>
-      <method name="getSize" source="2">
-        <summary>获取元素可视区域大小。包括 border 大小。</summary>
-        <returns type="Point">位置。</returns>
-      </method>
-      <method name="getOuterSize" source="2">
-        <summary>获取元素可视区域大小。包括 margin 大小。</summary>
-        <returns type="Point">位置。</returns>
-      </method>
-      <method name="getOffsets" source="2">
-        <summary>获取包括滚动位置的位置。</summary>
-        <returns type="Point">位置。</returns>
-        <param name="relative" type="Element/String/Boolean">相对的节点。</param>
-      </method>
-      <method name="getOffsetParent" source="2">
-        <summary>获取用于作为父元素的节点。</summary>
-        <returns type="Element">元素。</returns>
-      </method>
-      <method name="getOffset" source="2">
-        <summary>获取元素的相对位置。</summary>
-        <returns type="Point">位置。</returns>
-      </method>
-      <method name="getWidth" source="2">
-        <summary>获取元素自身大小（不带滚动条）。</summary>
-        <returns type="Point">位置。</returns>
-      </method>
-      <method name="getHeight" source="2">
-        <summary>获取元素自身大小（不带滚动条）。</summary>
-        <returns type="Point">位置。</returns>
-      </method>
-      <method name="getScroll" source="2">
-        <summary>获取滚动条已滚动的大小。</summary>
-        <returns type="Point">位置。</returns>
-      </method>
-      <method name="getPosition" source="2">
-        <summary>获取距父元素的偏差。</summary>
-        <returns type="Point">位置。</returns>
-      </method>
-      <method name="getBound" source="2">
-        <summary>获取元素的上下左右大小。</summary>
-        <returns type="Rectange">大小。</returns>
-      </method>
-      <method name="setSize" source="2">
-        <summary>改变大小。</summary>
-        <returns type="Element">this</returns>
-        <param name="x" type="Number">坐标。</param>
-        <param name="y" type="Number">坐标。</param>
-      </method>
-      <method name="setOuterSize" source="2">
-        <summary>改变大小。</summary>
-        <returns type="Element">this</returns>
-        <param name="x" type="Number">坐标。</param>
-        <param name="y" type="Number">坐标。</param>
-      </method>
-      <method name="setWidth" source="2">
-        <summary>获取元素自身大小（不带滚动条）。</summary>
-        <returns type="Element">this</returns>
-        <param name="value" type="" />
-      </method>
-      <method name="setHeight" source="2">
-        <summary>获取元素自身大小（不带滚动条）。</summary>
-        <returns type="Element">this</returns>
-        <param name="value" type="" />
-      </method>
-      <method name="setScroll" source="2">
-        <summary>滚到。</summary>
-        <returns type="Element">this</returns>
-        <param name="dom" type="Element" />
-        <param name="x" type="Number">坐标。</param>
-        <param name="y" type="Number">坐标。</param>
-      </method>
-      <method name="setOffset" source="2">
-        <summary>设置元素的相对位置。</summary>
-        <returns type="Element">this</returns>
-        <param name="p" type="Object" />
-      </method>
-      <method name="setPosition" source="2">
-        <summary>设置元素的固定位置。</summary>
-        <returns type="Element">this</returns>
-        <param name="x" type="Number">坐标。</param>
-        <param name="y" type="Number">坐标。</param>
-      </method>
-      <method name="getElementsByAttribute" source="2">
-        <summary>根据属性获得元素内容。</summary>
-        <returns type="Array">节点集合。</returns>
-        <param name="name" type="String">属性名。</param>
-        <param name="value" type="Object">属性值。</param>
-      </method>
-      <method name="getElementsByClassName" source="2">
-        <summary>根据类名返回子节点。</summary>
-        <returns type="Array">节点集合。</returns>
-        <param name="className" type="Strung">类名。</param>
-      </method>
-      <method name="getElementsByTagName" source="2">
-        <summary>根据标签返回子节点。</summary>
-        <returns type="Array">节点集合。</returns>
-        <param name="name" type="Strung">类名。</param>
-      </method>
-      <method name="getElementsByName" source="2">
-        <summary>根据名字返回子节点。</summary>
-        <returns type="Array">节点集合。</returns>
-        <param name="classname" type="Strung">类名。</param>
-        <param name="name" type="" />
-      </method>
-      <method name="findAll" source="2">
-        <summary>执行一个简单的选择器。</summary>
-        <returns type="Element/undefined">节点。</returns>
-        <param name="selecter" type="String">选择器。 如 h2 .cls attr=value 。</param>
-      </method>
-      <method name="get" source="2">
-        <summary>获得相匹配的节点。</summary>
-        <returns type="Element">元素。</returns>
-        <param name="type" type="String">类型。</param>
-        <param name="fn" type="Function/Number">过滤函数或索引或标签。</param>
-      </method>
-      <method name="contains" source="2">
-        <summary>判断一个节点是否包含一个节点。 一个节点包含自身。</summary>
-        <returns type="Boolean">有返回true 。</returns>
-        <param name="child" type="Element">子节点。</param>
-      </method>
-      <method name="hasChild" source="2">
-        <summary>判断一个节点是否有子节点。</summary>
-        <returns type="Boolean">有返回true 。</returns>
-        <param name="child" type="Object/undefined">子节点。</param>
-      </method>
-      <method name="find" source="2">
-        <summary>执行一个简单的选择器。</summary>
-        <returns type="Element/undefined">节点。</returns>
-        <param name="selecter" type="String">选择器。 如 h2 .cls attr=value 。</param>
-      </method>
-      <method name="clone" source="2">
-        <summary>复制节点。</summary>
-        <returns type="Element">元素。copyListener, contents, keepid</returns>
-        <param name="copyDataAndEvent" type="Boolean" defaultvalue="false">是否复制事件。</param>
-        <param name="contents" type="Boolean" defaultvalue="true">是否复制子元素。</param>
-        <param name="keepid" type="Boolean" defaultvalue="false">是否复制 id 。</param>
-      </method>
-      <method name="insert" source="2">
-        <summary>在某个位置插入一个HTML 。</summary>
-        <remarks>afterBegin    节点外  afterEnd     节点里</remarks>
-        <returns type="Element">插入的节点。</returns>
-        <param name="html" type="String/Element">内容。</param>
-        <param name="swhere" type="String" defaultvalue="">插入地点。 beforeBegin   节点外    beforeEnd   节点里</param>
-      </method>
-      <method name="append" source="2">
-        <summary>插入一个HTML 。</summary>
-        <returns type="Element">元素。</returns>
-        <param name="html" type="String/Element">内容。</param>
-        <param name="escape" type="Boolean">是否转义 HTML 代码，这样插入的为文本。</param>
-      </method>
-      <method name="replaceWith" source="2">
-        <summary>将一个节点用另一个节点替换。</summary>
-        <returns type="Element">元素。</returns>
-        <param name="html" type="String">内容。</param>
-      </method>
-      <method name="wrapWith" source="2">
-        <summary>将一个节点用html包围。</summary>
-        <returns type="Element">元素。</returns>
-        <param name="html" type="String">内容。</param>
-      </method>
-      <method name="renderTo" source="2">
-        <summary>设置节点的父节点。</summary>
-        <returns type="Element">this</returns>
-        <param name="elem" type="Element">节点。</param>
-      </method>
-      <method name="remove" source="2">
-        <summary>删除元素子节点或本身。</summary>
-        <returns type="Element">this</returns>
-        <param name="child" type="Object/undefined">子节点。</param>
-      </method>
-      <method name="empty" source="2">
-        <summary>删除一个节点的所有子节点。</summary>
-        <returns type="Element">this</returns>
-      </method>
-      <method name="dispose" source="2">
-        <summary>释放节点所有资源。</summary>
-        <returns type="void" />
-      </method>
-    </class>
-    <class name="ElementList" source="2">
-      <summary>节点集合。</summary>
-      <remarks>ElementList 是对元素数组的只读包装。
-ElementList 允许快速操作多个节点。
-ElementList 的实例一旦创建，则不允许修改其成员。</remarks>
-      <extend>Element</extend>
-      <field type="String" name="xType" source="2">
-        <summary>xType</summary>
-      </field>
-      <method name="each" source="2">
-        <summary>对集合每个元素执行一次函数。</summary>
-        <returns type="Array">结果集。</returns>
-        <param name="fn" type="Object">参数。</param>
-        <param name="args" type="Object">/... 参数。</param>
-      </method>
-    </class>
-    <class name="Point" source="2">
-      <summary>表示一个点。</summary>
-      <method name="set" source="2">
-        <summary>设置当前点位置。</summary>
-        <returns type="Point">this</returns>
-        <param name="x" type="Number">X 坐标。</param>
-        <param name="y" type="Number">Y 坐标。</param>
-      </method>
-      <constructor name="constructor" source="2">
-        <summary>初始化 Point 的实例。</summary>
-        <returns type="void" />
-        <param name="x" type="Number">X 坐标。</param>
-        <param name="y" type="Number">Y 坐标。</param>
-        <param name="x" type="Number">X 坐标。</param>
-        <param name="y" type="Number">Y 坐标。</param>
-      </constructor>
-      <method name="add" source="2">
-        <summary>将 (x, y) 增值。</summary>
-        <returns type="Point">this</returns>
-        <param name="value" type="Number">值。</param>
-        <param name="x" type="Number" />
-        <param name="y" type="" />
-      </method>
-      <method name="clone" source="2">
-        <summary>复制当前对象。</summary>
-        <returns type="Point">坐标。</returns>
-      </method>
-      <method name="minus" source="2">
-        <summary>将一个点坐标减到当前值。</summary>
-        <returns type="Point">this</returns>
-        <param name="p" type="Undefined">值。</param>
-      </method>
-    </class>
-    <class name="Ajax" source="3">
-      <summary>处理异步请求的功能。</summary>
-      <constructor name="constructor" source="3">
-        <summary>初始化当前请求。</summary>
-        <returns type="void" />
-        <param name="obj" type="Object">配置对象。</param>
-        <param name="obj" type="Object">配置对象。</param>
-      </constructor>
-      <field type="String" name="type" source="3">
-        <summary>类型。</summary>
-      </field>
-      <field type="Boolean" name="async" source="3">
-        <summary>是否异步请求。</summary>
-      </field>
-      <field type="String" name="link" source="3">
-        <summary>多个请求同时发生后的处理方法。 wait - 等待上个请求。 cancel - 中断上个请求。 ignore - 忽略新请求。</summary>
-      </field>
-      <field type="Object" name="headers" source="3">
-        <summary>获取请求头。</summary>
-      </field>
-      <field type="Boolean" name="disableCache" source="3">
-        <summary>获取或设置是否忽略缓存。</summary>
-      </field>
-      <method name="send" source="3">
-        <summary>发送请求。</summary>
-        <returns type="Object" />
-        <param name="data" type="Object" />
-      </method>
-      <method name="abort" source="3">
-        <summary>停止当前的请求。</summary>
-        <returns type="">this</returns>
-      </method>
-      <method name="check" source="3">
-        <summary>发送请求前检查。</summary>
-        <returns type="Boolean">是否可发。</returns>
-        <param name="data" type="Object">数据。</param>
-      </method>
-      <property type="Number" name="timeouts" source="3">
-        <summary>超时的时间大小。 (单位: 毫秒)</summary>
-      </property>
-      <property type="Boolean" name="enableCache" source="3">
-        <summary>是否允许缓存。</summary>
-      </property>
-      <field type="String" name="url" source="3">
-        <summary>当前请求。</summary>
-      </field>
-      <method name="setHeader" source="3">
-        <summary>设置请求头。</summary>
-        <returns type="">this</returns>
-        <param name="key" type="String">键。</param>
-        <param name="text" type="String">值。</param>
-      </method>
-      <method name="setEncoding" source="3">
-        <summary>设置地址的编码。</summary>
-        <returns type="">this</returns>
-        <param name="value" type="String" defaultvalue="">字符集。</param>
-      </method>
-      <field type="String" name="xType" source="3">
-        <summary>xType。</summary>
-      </field>
-      <method name="get" source="3">
-        <summary>快速请求一个地址。</summary>
-        <returns type="void" />
-        <param name="url" type="String">地址。</param>
-        <param name="data" type="String/Object">数据。</param>
-        <param name="onsuccess" type="Function" defaultvalue="">成功回调函数。</param>
-        <param name="onerror" type="Function" defaultvalue="">错误回调函数。</param>
-        <param name="timeouts" type="Object" defaultvalue="-1">超时时间， -1 表示不限。</param>
-        <param name="ontimeout" type="Function" defaultvalue="">超时回调函数。</param>
-      </method>
-      <method name="post" source="3">
-        <summary>快速请求一个地址。</summary>
-        <returns type="void" />
-        <param name="url" type="String">地址。</param>
-        <param name="data" type="String/Object">数据。</param>
-        <param name="onsuccess" type="Function" defaultvalue="">成功回调函数。</param>
-        <param name="onerror" type="Function" defaultvalue="">错误回调函数。</param>
-        <param name="timeouts" type="Object" defaultvalue="-1">超时时间， -1 表示不限。</param>
-        <param name="ontimeout" type="Function" defaultvalue="">超时回调函数。</param>
-      </method>
-    </class>
-    <namespace name="Fx" source="4">
-      <class name="Base" attribute="abstract" source="4">
-        <summary>实现特效。</summary>
-        <field type="Number" name="fps" source="4">
-          <summary>每秒的运行帧次。</summary>
-        </field>
-        <field type="Number" name="duration" source="4">
-          <summary>总运行时间。 (单位:  毫秒)</summary>
-        </field>
-        <field type="String" name="link" source="4">
-          <summary>在特效运行时，第二个特效的执行方式。 可以为 'ignore' 'cancel' 'wait' 'restart' 'replace'</summary>
-        </field>
-        <field type="String" name="xType" source="4">
-          <summary>xType</summary>
-        </field>
-        <field type="Object" name="onStart" access="protected" source="4">
-          <summary>在效果开始时执行</summary>
-        </field>
-        <field type="Object" name="onComplete" access="protected" source="4">
-          <summary>在效果完成后执行</summary>
-        </field>
-        <field type="Object" name="onStop" access="protected" source="4">
-          <summary>在效果停止后执行</summary>
-        </field>
-        <method name="transition" source="4">
-          <summary>实现变化。</summary>
-          <returns type="Object">p 变化值。</returns>
-          <param name="p" type="Number">值。</param>
-        </method>
-        <method name="compile" source="4">
-          <summary>当被子类重写时，实现生成当前变化所进行的初始状态。</summary>
-          <returns type="Base">this</returns>
-          <param name="from" type="Object">开始位置。</param>
-          <param name="to" type="Object">结束位置。</param>
-        </method>
-        <method name="set" attribute="abstract" source="4">
-          <summary>根据指定变化量设置值。</summary>
-          <returns type="void" />
-          <param name="delta" type="Number">变化量。 0 - 1 。</param>
-        </method>
-        <method name="complete" source="4">
-          <summary>完成当前效果。</summary>
-          <returns type="Object" />
-        </method>
-        <method name="step" source="4">
-          <summary>进入变换的下步。</summary>
-          <returns type="void" />
-        </method>
-        <method name="addOnComplete" source="4">
-          <summary>增加完成后的回调工具。</summary>
-          <returns type="Object" />
-          <param name="fn" type="Function">回调函数。</param>
-        </method>
-        <method name="start" source="4">
-          <summary>开始运行特效。</summary>
-          <returns type="Base">this</returns>
-          <param name="from" type="Object">开始位置。</param>
-          <param name="to" type="Object">结束位置。</param>
-        </method>
-        <method name="pause" source="4">
-          <summary>暂停当前效果。</summary>
-          <returns type="Object" />
-        </method>
-        <method name="stop" source="4">
-          <summary>中断当前效果。</summary>
-          <returns type="Object" />
-        </method>
-        <method name="check" source="4">
-          <summary>检查当前的运行状态。</summary>
-          <returns type="Boolean">是否可发。</returns>
-          <param name="from" type="Object">开始位置。</param>
-          <param name="to" type="Object">结束位置。</param>
-          <param name="callback" type="Function">回调。</param>
-          <param name="link" type="String" defaultvalue="'ignore'">链接方式。 wait, 等待当前队列完成。 restart 柔和转换为目前渐变。 cancel 强制关掉已有渐变。 ignore 忽视当前的效果。</param>
-          <param name="duration" type="" />
-        </method>
-        <method name="resume" source="4">
-          <summary>恢复当前效果。</summary>
-          <returns type="Object" />
-        </method>
-        <config type="String" name="timer">
-          <summary>根目录。(需要末尾追加 /)</summary>
-          <remarks>程序会自动搜索当前脚本的位置为跟目录。</remarks>
-        </config>
-      </class>
-      <method name="compute" source="4">
-        <summary>常用计算。</summary>
-        <returns type="Number" />
-        <param name="from" type="Object">开始。</param>
-        <param name="to" type="Object">结束。</param>
-        <param name="delta" type="Object">变化。</param>
-      </method>
-    </namespace>
   </members>
 </doc>

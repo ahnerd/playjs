@@ -21,12 +21,12 @@ namespace('.IDataStore', {
 	
 	/**
 	 * 如果存在，获取属于一个元素的数据。
-	 * @method dataIf
+	 * @method getData
 	 * @param {String} type 类型。
 	 * @return {Object} 值。
 	 */
-	getDataIf: function(type){
-		return Py.dataIf(this, type);
+	getgetData: function(type){
+		return Py.getData(this, type);
 	},
 	
 	/**

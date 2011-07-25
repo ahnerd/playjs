@@ -92,4 +92,31 @@
 	
 	
 	
+
+		/**
+		 * 获取元素可视区域大小。
+		 * @method getWindowSize
+		 * @return {Point} 位置。
+		 */
+		getWindowSize: function() {
+			var win = this.defaultView;
+			return new Point(win.outerWidth || this.dom.clientWidth, win.outerHeight || this.dom.clientHeight);
+		},
+
+		/**
+		 * 设置元素可视区域大小。
+		 * @method setWindowSize
+		 * @param {Number} x 大小。
+		 * @param {Number} y 大小。
+		 * @return {Document} this 。
+		 */
+		setWindowSize: function(x, y) {
+			var p = Element.getXY(x, y);
+			if(p.x == null)
+				p.x = this.getWindowSize().x;
+			if(p.y == null)
+				p.x = this.getWindowSize().y;
+			this.defaultView.resizeTo(p.x, p.y);
+			return this;
+		},
 	

@@ -20,7 +20,7 @@ Py.Layout.register(Py.Layout.AlignedLayout = Py.Layout.AbsoluteLayout.extend({
 	
 	onControlAdded: function(container, item, index)  {
 			
-		this.baseCall('onControlAdded', arguments);
+		this.base('onControlAdded', arguments);
 		
 		var direction = item.anthor;
 		

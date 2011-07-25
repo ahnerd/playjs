@@ -1,5 +1,5 @@
 //===========================================
-//  拖放         drop.js  A
+//  拖放         A
 //===========================================
 
 
@@ -209,7 +209,7 @@ using("System.Dom.Drag");
 		 * @return {Py.DragDrop.Zone} 获得区。
 		 */
 		getActiveZone: function(){
-			var me = this, bound = me.calcBound(), r;
+			var me = this, bound = me.getBound(), r;
 
 			dm.current.zones.each(function(zone){
 				if (me._isOver(bound, zone.bound)) {
@@ -257,7 +257,7 @@ using("System.Dom.Drag");
 		 * 计算返回当前的 bound 。
 		 * @return {Rectange} 位置。
 		 */
-		calcBound: function(){
+		getBound: function(){
 			var bound = this.bound,
 				dx = this.to.x - this.from.x,
 				dy = this.to.y - this.from.y;
@@ -278,7 +278,7 @@ using("System.Dom.Drag");
 		limit: function(box){
 
 			var me = this,
-				bound = me.calcBound(),
+				bound = me.getBound(),
 				left = box.left - bound.left,
 				top = box.top - bound.top;
 				
@@ -311,7 +311,7 @@ using("System.Dom.Drag");
 		 * @return {Boolean} 在上面返回 true
 		 */
 		isOver: function(box){
-			return this._isOver(this.calcBound(), box);
+			return this._isOver(this.getBound(), box);
 		}
 
 	});
@@ -380,7 +380,7 @@ using("System.Dom.Drag");
 			p.Events.element.focus.initEvent(e);
 	} : Function.empty, function(elem, type, fn){
 		elem.addEventListener(type, fn, false);
-		(p.dataIf(elem, 'zone') || p.setData(elem, 'zone', new dd.Zone(elem, true))).enable();
+		(p.getData(elem, 'zone') || p.setData(elem, 'zone', new dd.Zone(elem, true))).enable();
 	}, function(elem, type, fn){
 		elem.removeListener(type, fn, false);
 		p.data(elem, 'zone').disable();

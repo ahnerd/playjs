@@ -14,7 +14,7 @@ namespace(".DatePicker", Py.CombinedTextBox.extend({
 	
 
 	init: function (options) {
-		this.baseCall('init', options);
+		this.base('init', options);
 
 
 		this.bindMenuButton('click', this.showDropDownMenu);

@@ -18,7 +18,7 @@ namespace(".ListBox", Py.ListControl.extend({
 	
 	init: function(options){
 		
-		this.baseCall('init', options);
+		this.base('init', options);
 		
 		this.on('click', this.onClick);
 	},

@@ -71,7 +71,7 @@ Py.Layout.register(Py.Layout.BorderLayout = Py.Layout.AdvanceLayout.extend({
 			return this.createRegion(container, dock, index); 
 		}, this), container.regions = {});
 		
-		this.baseCall('initLayout', container);
+		this.base('initLayout', container);
 				
 	},
 	
@@ -81,7 +81,7 @@ Py.Layout.register(Py.Layout.BorderLayout = Py.Layout.AdvanceLayout.extend({
 		if(region)
 			region.setPanel(item);
 		else
-			this.baseCall('onControlAdded', arguments);
+			this.base('onControlAdded', arguments);
 		
 	},  
 	
@@ -227,7 +227,7 @@ Object.extend(Py.Layout.BorderLayout, {
 		
 		/*
 setPanel: function(panel){
-			this.baseCall('setPanel', panel);
+			this.base('setPanel', panel);
 			this.setWidth(this.container.getWidth());
 		},
 */

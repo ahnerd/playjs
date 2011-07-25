@@ -23,7 +23,7 @@ using("System.Dom.Element");
 	 * renderTo - 渲染控件到文档。 不建议重写，如果你希望额外操作渲染事件，则重写。
 	 * dispose - 删除控件。不建议重写，如果一个控件用到多个 dom 内容需重写。
 	 */
-	var Control = p.namespace(".Control", p.Class({
+	var Control = namespace(".Control", p.Class({
 		
 		/**
 		 * 封装的节点。

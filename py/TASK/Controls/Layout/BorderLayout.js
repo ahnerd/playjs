@@ -31,13 +31,13 @@ Py.Layout.register(Py.Layout.BorderLayout = Py.Layout.DefaultLayout.extend({
 	 */
 	initLayout: function(container){
 		
-		this.baseCall('initLayout', container);
+		this.base('initLayout', container);
 		
 		
 	},
 	
 	layoutCore: function(container) {
-		this.baseCall('layoutCore', container);
+		this.base('layoutCore', container);
 		this.installSplitter(container, 'left');
 	},
 	

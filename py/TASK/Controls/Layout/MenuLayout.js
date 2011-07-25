@@ -44,7 +44,7 @@ Py.Layout.register(Py.Layout.MenuLayout = Py.Layout.LayoutEngine.extend({
 	 * @property xType
 	 */
 	initLayout: function(container){
-		this.baseCall('initLayout', container);
+		this.base('initLayout', container);
 		container.dom.innerHTML = '<ul class="x-menu-content"></ul>';
 		container.content = container.find(".x-menu-content");
 	},

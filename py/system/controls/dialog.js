@@ -46,7 +46,7 @@ namespace(".Dialog", Py.ContainerControl.extend({
  	 * @protected
 	 */
 	init: function(options) {
-		this.baseCall('init', options);
+		this.base('init', options);
 		if (options.closable != null)
 			this.addHeaderItem('x-icon-close', options.closable ? this.close : this.hide, '关闭窗口');
 		delete options.closable;

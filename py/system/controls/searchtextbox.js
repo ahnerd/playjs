@@ -11,7 +11,7 @@ namespace(".SearchTextBox", Py.CombinedTextBox.extend({
 	tpl: '<label><input type="text" class="x-textbox"><a class="x-textbox-clear" href="#" style="display: none"></a><input type="button" value="工具按钮" class="x-menu-button x-menu-button-search"></label>',
 	
 	init: function(){
-		this.baseCall('init', arguments);
+		this.base('init', arguments);
 		this.clearButton = this.find('.x-textbox-clear');
 		
 		this.textBox.on('change', Function.bind(this.onChange, this));

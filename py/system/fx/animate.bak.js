@@ -99,12 +99,39 @@ using("System.Fx.Base");
 		 * @return {Object} 结果。
 		 */
 		c = Fx.compute,
+		
+		/**
+		 * 特殊属性。
+		 * @type Object
+		 */
+		specialAttr = {
+			size: function(current, elem, key, from, to){
+				return delegateAttr(current, elem, 'width', 'height', from || elem.getSize(), to, e.getSizes(elem, 'x', 'pb'), e.getSizes(elem, 'y', 'pb'));
+			},
+			position: offsetAttrSetter,
+			offsets: offsetAttrSetter,
+			offset: specialAttrSetter,
+			scroll: specialAttrSetter
+			
+		},
+		
+		cache = { 
+			opacity: {
+				set: function(target, name, from, to, delta){
+					target.setOpacity(c(from, to, delta));
+				},
+				parse: self,
+				get: function(target){
+					return target.getOpacity();
+				}
+			}
+		},
 	
 		/**
-		 * @class Animate
-		 * @extends Fx.Base
+		 * @class Py.Fx.Animate
+		 * @extends Py.Fx.Base
 		 */
-		pfe = namespace(".Fx.Animate", p.Fx.Base.extend({
+		pfe = p.namespace(".Fx.Animate", p.Fx.Base.extend({
 			
 			/**
 			 * 当前绑定的节点。
@@ -132,9 +159,15 @@ using("System.Fx.Base");
 			 * @param {Object} key 键。
 			 * @param {Number} duration 变化时间。
 			 */
-			constructor: function(dom){
-				this.dom = dom;
-				
+			constructor: function(options){
+				if (options) {
+					if (options.nodeType)
+						this.dom = p.$(options);
+					else
+						Object.extend(this, options);
+					this.dom = this.dom.dom || this.dom;
+				}
+				 
 				this._competeListeners = [];
 			},
 			
@@ -164,84 +197,17 @@ using("System.Fx.Base");
 				assert.notNull(to, "Fx.Animate.prototype.start(from, to, duration, callback, link): 参数 {to} ~。");
 					
 				// 对每个设置属性
-				var me = this, key, cache = pfe.cachedParsers;
+				var me = this;
 				
-				me.current = {};
-				
-				for (key in to) {
-					
-					var parsed = undefined, fromV = from[key], toV = to[key], parser = cache[key = key.toCamelCase()];
-					
-					// 已经编译过，直接使用
-					if (!parser) {
-							
-						// 尝试使用每个转换器
-						for (parser in pfe.parsers) {
-							
-							// 获取转换器
-							parser = pfe.parsers[parser];
-							parsed = parser.parse(toV, key);
-							
-							// 如果转换后结果合格，证明这个转换器符合此属性。
-							if (parsed || parsed === 0) {
-								me.dom = me.dom.dom || me.dom;
-								// 指明值
-								cache[key] = parser;
-								break;
-							}
-						}
-					}
-					
-					// 找到合适转换器
-					if (parser) {
-						me.current[key] = {
-							from: parser.parse((fromV ? fromV === 'auto' : fromV !== 0) ? parser.get(me.dom, key) : fromV),
-							to: parsed === undefined ? parser.parse(toV, key) : parsed,
-							parser: parser
-						};
-						
-						assert(me.current[key].from !== null && me.current[key].to !== null, "Animate.prototype.complie(from, to): 无法正确获取属性 {key} 的值({from} {to})。", key, me.current[key].from, me.current[key].to);
-					}
-					
-				}
+				// 对于每个键, 转换目前属性。
+				parseStyle(me.current = {}, me.dom, from, to);
 				
 				return me;
 			}
 		
 		}));
 	
-	pfe.cachedParsers = {
-		opacity: {
-			set: function(target, name, from, to, delta){
-				target.setOpacity(c(from, to, delta));
-			},
-			parse: self,
-			get: function(target){
-				return target.getOpacity();
-			}
-		},
-		
-		scrollTop:{
-			set: function (target, name, from, to, delta) {
-				target.setScroll(null, c(from, to, delta));
-			},
-			parse: self,
-			get: function(target){
-				return target.getScroll().y;
-			}
-		},
-		
-		scrollLeft:{
-			set: function (target, name, from, to, delta) {
-				target.setScroll(c(from, to, delta));
-			},
-			parse: self,
-			get: function(target){
-				return target.getScroll().x;
-			}
-		}
-		
-	};
+	pfe.specialAttr = specialAttr;
 	
 	pfe.parsers = {
 		
@@ -286,78 +252,196 @@ using("System.Fx.Base");
 		}
 		
 	};
+
+	function parseStyle(current, elem, from, to){
+		
+		for (var key in to) {
+			
+			var parsed = null, fromV = from[key], toV = to[key];
+			
+			key = key.toCamelCase();
+		
+			// 已经编译过，直接使用
+			if (!(key in cache)) {
+				
+				// 特殊属性
+				if (key in specialAttr) {
+					parsed = specialAttr[key](current, elem, key, fromV, toV);
+					if(parsed)
+						parseStyle(current, elem, parsed[0], parsed[1]);
+					continue;
+					
+				} else {
+					
+					// 尝试使用每个转换器
+					for (var p in pfe.parsers) {
+						
+						// 获取转换器
+						p = pfe.parsers[p];
+						parsed = p.parse(toV, key);
+						
+						// 如果转换后结果合格，证明这个转换器符合此属性。
+						if (parsed || parsed === 0) {
+							// 指明值
+							cache[key] = p;
+							break;
+						}
+					}
+				}
+			}
+			
+			// 找到合适转换器
+			if (parser = cache[key]) {
+				current[key] = {
+					from: parser.parse(fromV === undefined ? parser.get(elem, key) : fromV),
+					to: parsed === null ? parser.parse(toV, key) : parsed,
+					parser: parser
+				};
+				
+				assert(current.from !== null && current.to !== null, "Animate.prototype.complie(from, to): 无法处理属性 {key} 的值。", key);
+			}
+			
+		}
+	}
+	
+	function delegateAttr(current, elem, key1, key2, from, to, deltaX, deltaY){
+		var r = [{}, {}];
+		r[0][key1] = from.x - deltaX;
+		r[1][key1] = to.x - deltaX;
+		r[0][key2] = from.y - deltaY;
+		r[1][key2] = to.y - deltaY;
+		
+		return r;
+	}
+	
+	function specialAttrSetter(current, elem, key, from, to){
+		var cap = key.capitalize(), getter = function(target){
+			return target['get' + cap]();
+		};
+		current[key] = {
+			parser: cache[key] = {
+				set: function(target, name, from, to, delta){
+					target['set' + cap]({
+						x: c(from.x, to.x, delta),
+						y: c(from.y, to.y, delta)
+					});
+				},
+				parse: self,
+				get: getter
+			},
+			
+			from:    from || getter(elem),
+			
+			to: to
+		};
+	}
+	
+	function offsetAttrSetter(current, elem, key, from, to){
+		var p = elem['get' + e.specialAttr[key]](), offset = elem.getOffset();
+		e.setMovable(elem);
+		return delegateAttr(current, elem, 'left', 'top', from || p, to, p.x - offset.x, p.y - offset.y);
+	}
 	
 	function self(v){
 		return v;
 	}
 	
-	/// #region 元素
-	
-	var height = 'height marginTop paddingTop marginBottom paddingBottom',
-		
-		maps = pfe.maps = {
-			all: height + ' opacity width',
+	var maps = Fx.maps = {
+			all: true,  // 加速搜索
 			opacity: 'opacity',
-			height: height,
+			height: 'height marginTop paddingTop marginBottom paddingBottom',
 			width: 'width marginLeft paddingLeft marginRight paddingRight'
+		},
+		
+		getFx = Fx.getFx = function(elem){
+			var d = Py.getData(elem, 'fx');
+			if(!d){
+				d = Py.getData(elem, 'fxcfg') || {};
+				d.dom = elem;
+				Py.setData(elem, 'fx', d = new Py.Fx.Animate(d));
+			}
+			return d;
+		},
+		
+		getData = Fx.getData = function(elem, start){
+			var from = p.data(elem, 'fxdata'), i, dom = elem.dom || elem;
+			for(i in start){
+				from[i] = styleNumber(dom, i);
+			}
+			return from;
 		},
 	
 		ep = e.prototype,
-		animate = ep.animate,
 		show = ep.show,
-		hide = ep.hide;
+		animate = ep.animate,
+		hide = ep.hide,
+		styleNumber =  e.styleNumber;
 	
-	Object.update(maps, function(value){
-		return String.map(value, Function.from(0), {});
+	maps.all = [maps.opacity, maps.height, 'width'].join(' ');
+	maps.size = [ maps.height, maps.width].join(' ');
+	
+	
+	Object.update(maps, function(map){
+		return Function.from(String.map(map, Function.from(0), {}));
 	});
 	
-	String.map('left right top bottom', Function.from({$slide: true}), maps);
+	String.map('left right top bottom', Function.from(function(elem, type){
+		elem.parentNode.style.overflow = 'hidden';
+		var r = {};
+		//if (/left|right/.test(type))
+		//	r['margin-right'] = r['margin-left'] = elem.offsetWidth;
+		//else
+		//	r['margin-top'] = r['margin-bottom'] = elem.offsetHeight;
+		
+			
+		//type = 'margin-' + type;
+		//r[type] = -r[type];
+		
+		if (/left|right/.test(type))
+			r['margin-' + type] = -elem.offsetWidth;
+		else
+			r['margin-' + type] = -elem.offsetHeight;
+			
+		return r;
+	}), maps);
+	
+	function getStart(elem, type){
+		var map = maps[type || 'all'];
+		return typeof map == 'function' ? map(elem, type) : map;
+	}
 	
 	e.implement({
-		
-		/**
-		 * 获取和当前节点有关的 Animate 实例。
-		 * @return {Animate} 一个 Animate 的实例。
-		 */
-		fx: function(){
-			return p.getData(this, 'fx') || p.setData(this, 'fx', new p.Fx.Animate(this));
-		}
-		
-	})	
-	
-	.implement({
 		
 		/**
 		 * 变化到某值。
 		 * @param {String/Object} [name] 变化的名字或变化的末值或变化的初值。
 		 * @param {Object} value 变化的值或变化的末值。
 		 * @param {Number} duration=-1 变化的时间。
-		 * @param {Function} [onStop] 停止回调。
-		 * @param {Function} [onStart] 开始回调。
+		 * @param {Function} [callBack] 回调。
 		 * @param {String} link='wait' 变化串联的方法。 可以为 wait, 等待当前队列完成。 restart 柔和转换为目前渐变。 cancel 强制关掉已有渐变。 ignore 忽视当前的效果。
 		 * @return this
 		 */
 		animate: function(){
-			var args = arguments, value = args[1];
-			if(typeof args[0] === 'string'){
-				(args[1] = {})[args[0]] = value;
+			var args = arguments, name = args[0], value = args[1];
+			if(typeof name === 'string'){
+				(args[1] = {})[name] = value;
 				args[0] = {};
 			} else if(typeof value !== 'object'){
 				Array.prototype.unshift.call(args, {});
 			}
 			
 			if (args[2] !== 0) {
-				value = this.fx();
+				value = getFx(this);
 				value.start.apply(value, args);
-			} else {
+			} else
 				animate.apply(this, args);
-			}
 			
 			return this;
 		},
 		
 		/**
 		 * 显示当前元素。
+		 * @method show
 		 * @param {Number} duration=500 时间。
 		 * @param {Function} [callBack] 回调。
 		 * @param {String} [type] 方式。
@@ -365,39 +449,23 @@ using("System.Fx.Base");
 		 */
 		show: function(duration, callBack, type){
 			var me = this;
-			if (duration) {
-				var dom = me.dom || me, savedStyle = {};
-		       
-				me.fx().start(getAnimate(dom, type),  {}, duration, function(){
-					Element.setStyles(dom, savedStyle);
-					
-					if(callBack)
-						callBack.call(me, true);
-				}, function(from, to){
-					if(!me.isHidden())
-						return false;
+			if (duration && me.isHidden()) {
+				var fx = getFx(me), from, to, dom = me.dom || me;
+				if (!fx.timer) {
+					dom.style.overflow = 'hidden';
 					e.show(dom);
-					
-					if(from.$slide){
-						initSlide(from, dom, type, savedStyle);
-					} else {
-						savedStyle.overflow = dom.style.overflow;
-						dom.style.overflow = 'hidden';
-					}
-					
-					for(var style in from){
-						savedStyle[style] = dom.style[style];
-						to[style] = e.styleNumber(dom, style);
-					}
-				});
-			} else {
+					from = getStart(me, type);
+					to = p.getData(me, 'fxdata') || getData(me, from);
+					fx.start(from, to, duration, callBack);
+				}
+			} else
 				show.apply(me, arguments);
-			}
 			return me;
 		},
 		
 		/**
 		 * 隐藏当前元素。
+		 * @method hide
 		 * @param {Number} duration=500 时间。
 		 * @param {Function} [callBack] 回调。
 		 * @param {String} [type] 方式。
@@ -405,26 +473,13 @@ using("System.Fx.Base");
 		 */
 		hide: function(duration, callBack, type){
 			var me = this;
-			if (duration) {
-				var  dom = me.dom || me, savedStyle = {};
-				me.fx().start({}, getAnimate(dom, type), duration, function(){  
-					e.hide(dom);
-					e.setStyles(dom, savedStyle);
-					if(callBack)
-						callBack.call(me, false);
-				}, function (from, to) {
-					if(me.isHidden())
-						return false;
-					if(to.$slide) {
-						initSlide(to, dom, type, savedStyle);
-					} else {
-						savedStyle.overflow = dom.style.overflow;
-						dom.style.overflow = 'hidden';
-					}
-					for(var style in to){
-						savedStyle[style] = dom.style[style];
-					}
-				});
+			if (duration && !me.isHidden()) {
+				var fx = getFx(me), to;
+				me.setStyle('overflow', 'hidden');
+				if (!fx.timer) {
+					to = getStart(me, type);
+					fx.onReady(hide).start(getData(me, to), to, duration, callBack);
+				}
 			}else{
 				hide.apply(me, arguments);
 			}
@@ -441,46 +496,20 @@ using("System.Fx.Base");
 		highlight: function(color, duration, callBack){
 			assert(!color || Object.isArray(color) || rhex.test(color) || rRgb.test(color), "Element.prototype.highlight(color, duration, callBack): 参数 {color} 不是合法的颜色。", color);
 			assert(!callBack || Object.isFunction(callBack), "Element.prototype.highlight(color, duration, callBack): 参数 {callBack} 不是可执行的函数。", callBack);
-			var from = {},
+			var fx = getFx(this),
+				from = {
+					backgroundColor: e.getStyle(this, 'backgroundColor')
+				},
 				to = {
 					backgroundColor: color || '#ffff88'
 				};
 			
 			duration /= 2;
 			
-			this.fx().start(from, to, duration, null, function (from) {
-				from.backgroundColor = e.getStyle(this.dom.dom || this.dom, 'backgroundColor');
-			}).start(to, from, duration, callBack);
+			if(!fx.timer)
+				fx.start(from, to, duration).start(to, from, duration, callBack);
 			return this;
 		}
 	}, 2);
-	
-	/**
-	 * 获取变换。
-	 */
-	function getAnimate(elem, type){
-		return Object.extend({}, maps[type || 'all']);
-	}
-	
-	/**
-	 * 初始化滑动变换。
-	 */
-	function initSlide(animate, dom, type, savedStyle){
-		delete animate.$slide;
-		dom.parentNode.style.overflow = 'hidden';
-		var margin = 'margin' + type.charAt(0).toUpperCase() + type.substr(1);
-		if(/^(l|r)/.test(type)){
-			animate[margin] = -dom.offsetWidth;
-			var margin2 = type.length === 4 ? 'marginRight' : 'marginLeft';
-			animate[margin2] = dom.offsetWidth;
-			savedStyle[margin2] = dom.style[margin2];
-		} else {
-			animate[margin] = -dom.offsetHeight;
-		}
-		 savedStyle[margin] = dom.style[margin];
-	}
-	
-
-	/// #endregion
 	
 })(Py);

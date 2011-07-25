@@ -1,5 +1,5 @@
 //===========================================
-//  效果   base.js      C
+//  特效的基类     C
 //===========================================
 
 
@@ -24,7 +24,7 @@
 	/**
 	 * @namespace Fx
 	 */
-	p.namespace(".Fx.", {
+	namespace(".Fx.", {
 		
 		/**
 		 * 实现特效。
@@ -58,31 +58,10 @@
 			xType: 'fx',
 			
 			/**
-			 * 在效果开始时执行
-			 * @protected
-			 */
-			onStart: emptyFn,
-			
-			/**
-			 * 在效果完成后执行
-			 * @protected
-			 */
-			onComplete: emptyFn,
-			
-			/**
-			 * 在效果停止后执行
-			 * @protected
-			 */
-			onStop: emptyFn,
-			
-			/**
 			 * 初始化当前特效。
 			 * @param {Object} options 选项。
 			 */
-			constructor: function(options) {
-				if(options)
-					Object.extend(this, options);
-					
+			constructor: function() {
 				this._competeListeners = [];
 			},
 			
@@ -132,8 +111,8 @@
 			 * 增加完成后的回调工具。
 			 * @param {Function} fn 回调函数。
 			 */
-			addOnComplete: function(fn){
-				assert.isFunction(fn, "Fx.Base.prototype.addOnComplete(fn): 参数 {fn} ~。");
+			onReady: function(fn){
+				assert.isFunction(fn, "Fx.Base.prototype.onReady(fn): 参数 {fn} ~。");
 				this._competeListeners.unshift(fn);	
 				return this;
 			},
@@ -142,22 +121,24 @@
 			 * 检查当前的运行状态。
 			 * @param {Object} from 开始位置。
 			 * @param {Object} to 结束位置。
-			 * @param {Function} callback 回调。
-			 * @param {String} link='ignore' 链接方式。 wait, 等待当前队列完成。 restart 柔和转换为目前渐变。 cancel 强制关掉已有渐变。 ignore 忽视当前的效果。
+			 * @param {Number} duration=-1 变化的时间。
+			 * @param {Function} [onStop] 停止回调。
+			 * @param {Function} [onStart] 开始回调。
+			 * @param {String} link='wait' 变化串联的方法。 可以为 wait, 等待当前队列完成。 restart 柔和转换为目前渐变。 cancel 强制关掉已有渐变。 ignore 忽视当前的效果。
 			 * @return {Boolean} 是否可发。
 			 */
-			check: function(from, to, duration, callback, link) {
-				var me = this;
+			check: function() {
+				var me = this, args = arguments;
 				
 				//如正在运行。
 				if(me.timer){
-					switch (link || me.link) {
+					switch (args[5] || me.link) {
 						
 						// 链式。
 						case 'wait':
-							this._competeListeners.push(function() {
+							this._competeListeners.unshift(function() {
 								
-								this.start(from, to, duration, callback, true);
+								this.start.apply(this, args);
 								return false;
 							});
 							
@@ -189,19 +170,8 @@
 							
 						// 忽视新项。
 						default:
-							assert(!link || link == 'ignore', "Fx.Base.prototype.start(from, to, duration, callback, link): 参数 {link} 必须是 wait、restart、cancel、replace、ignore 之一。", link);
 							return false;
 					}
-				}
-				
-				// 如果 duration > 0  更新。
-				if (duration > 0) this.duration = duration;
-				else if(duration < -1) this.duration *= -duration;
-				
-				// 如果有回调， 加入回调。
-				if (callback) {
-					assert.isFunction(callback, "Fx.Base.prototype.start(from, to, duration, callback, link): 参数 {callback} ~。");
-					this._competeListeners.unshift(callback);
 				}
 				
 				return true;
@@ -211,17 +181,34 @@
 			 * 开始运行特效。
 			 * @param {Object} from 开始位置。
 			 * @param {Object} to 结束位置。
+			 * @param {Number} duration=-1 变化的时间。
+			 * @param {Function} [onStop] 停止回调。
+			 * @param {Function} [onStart] 开始回调。
+			 * @param {String} link='wait' 变化串联的方法。 可以为 wait, 等待当前队列完成。 restart 柔和转换为目前渐变。 cancel 强制关掉已有渐变。 ignore 忽视当前的效果。
 			 * @return {Base} this
 			 */
 			start: function() {
 				var me = this, args = arguments;
 				if (me.check.apply(me, args)) {
+					
+					// 如果 duration > 0  更新。
+					if (args[2] > 0) this.duration = args[2];
+					
+					// 如果有回调， 加入回调。
+					if (args[3]) {
+						assert.isFunction(args[3], "Fx.Base.prototype.start(from, to, duration, onStop, onStart, link): 参数 {callback} ~。");
+						me._competeListeners.push(args[3]);
+					}
+					
+					if (args[4] && args[4].apply(me, args) === false) {
+						return me.complete();
+					}
 				
 					// 设置时间
 					me.time = 0;
 					
 					me.compile(args[0], args[1]).set(0);
-					me.resume().onStart(args[4]);
+					me.resume();
 				}
 				return me;
 			},
@@ -238,7 +225,6 @@
 						return me;
 				}
 				
-				me.onComplete();
 				return me;
 			},
 			
@@ -248,7 +234,7 @@
 			stop: function() {
 				var me = this;
 				me.set(1);
-				me.pause().onStop();
+				me.pause();
 				return me;
 			},
 			

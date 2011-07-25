@@ -54,7 +54,7 @@ Py.Layout.register(Py.Layout.FitLayout = Py.Layout.AdvanceLayout.extend({
 	 * @param {Control} container 容器的控件。
 	 */
 	onControlAdded: function(container, item, index){
-		this.baseCall('onControlAdded', arguments);
+		this.base('onControlAdded', arguments);
 		if(item.defaultActive)
 			this.changeActiveControl(container, item);
 		else if(!container.activeControl)
@@ -70,7 +70,7 @@ Py.Layout.register(Py.Layout.FitLayout = Py.Layout.AdvanceLayout.extend({
 	 * @param {Control} container 容器的控件。
 	 */
 	onControlRemoved: function(container, item, index){
-		this.baseCall('onControlRemoved', arguments);
+		this.base('onControlRemoved', arguments);
 		if (container.activeControl === item) {
 			container.activeControl = container.controls[index];
 		}

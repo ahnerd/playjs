@@ -17,7 +17,7 @@ namespace('.TimeUpDown', Py.UpDown.extend({
 	minus: 0,
 	
 	init: function(options){
-		this.baseCall('init',  options);
+		this.base('init',  options);
 		
       Element.mark(this.textBox.dom, /\d{0, 2}:\d{0, 2}/, Function.bind(this.onInvalid, this));
 		

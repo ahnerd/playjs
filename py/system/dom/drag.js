@@ -1,5 +1,5 @@
 //===========================================
-//  拖动   drag.js  A
+//  拖动        A
 //===========================================
 
 using("System.Dom.Element");
@@ -10,7 +10,14 @@ using("System.Dom.Element");
 	/**
 	 * @class Point
 	 */
-	var Point = p.Point,
+	var Point = p.Point.implement({
+				
+			set: function(x, y){
+				this.x = x;
+				this.y = y;
+			}
+			
+		}),
 			
 		/**
 		 * 表示一个拖动元素。
@@ -69,7 +76,7 @@ using("System.Dom.Element");
 		/**
 		 * @namespace Py.DragDrop
 		 */
-		dd = p.namespace('.DragDrop', {
+		dd = namespace('.DragDrop', {
 			
 			/**
 			 * 表示一个拖动元素。
@@ -90,7 +97,7 @@ using("System.Dom.Element");
 				start: function(current, e) {
 					
 					// 事件目标。
-					var c = dm.current, tg = c.target = Py.dataIf(current, 'dragTarget') || current;
+					var c = dm.current, tg = c.target = Py.getData(current, 'dragTarget') || current;
 					
 					e.data = c;
 					
@@ -272,7 +279,7 @@ using("System.Dom.Element");
 				 * @param {Element} handle 拖动句柄。
 				 */
 				stop: function(handle) {
-					(Py.dataIf(handle, 'dragHandler') || handle).un  ('mousedown', startDrag);
+					(Py.getData(handle, 'dragHandler') || handle).un  ('mousedown', startDrag);
 				}
 			
 			}

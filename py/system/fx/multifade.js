@@ -12,7 +12,7 @@ using("System.Fx.Animate");
 
 Py.ElementList.implement({
 	
-	multiFade: function( opacity ) {
+	multiFade: function( opacity, onFade, onShow ) {
 		opacity = opacity === undefined ? 0.3 : opacity;
 		
 		var me = this;
@@ -20,7 +20,7 @@ Py.ElementList.implement({
 		this.on('mouseenter', function(e){
 			me.each( function( elem ) {
 		    	if( elem != e.target ){
-					elem.animate('opacity', opacity, -1, null, 'restart' );
+					elem.animate('opacity', opacity, -1, onFade, null, 'restart' );
 				}
 		    });
 		});
@@ -28,7 +28,7 @@ Py.ElementList.implement({
 		this.on('mouseleave', function(e) {
 		    me.each( function( elem ){
 		      if( elem != e.target )
-					elem.animate('opacity', 1, -1, null, 'restart');
+					elem.animate('opacity', 1, -1, onShow, null, 'restart');
 		    });
 		});
 		

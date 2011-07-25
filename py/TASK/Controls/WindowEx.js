@@ -29,7 +29,7 @@ Py.Window.implement({
 	},
 	
 	restore: function(){
-		var data = Py.dataIf(this, 'state');
+		var data = Py.getData(this, 'state');
 		if(!data) return;
 		this.setSize(data.right - data.left, data.bottom - data.top);
 		this.setPosition(data.left, data.top);
