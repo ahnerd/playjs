@@ -21,15 +21,10 @@
     <body>
 		
 		布局
-		<div id="ct" style="position:relative; background:purple ;display: inline; *zoom: 1;">
-			<div class="title"></div>
-			<div class="inner" style="display: inline-block;  background: blue; *display: inline; *zoom: 1;"></div>
+		<div id="ct" style="position:absolute; background:purple ; top: 200px;">
+			<div class="title">标题标题</div>
+			<div class="inner" style="background: blue;">内容内容</div>
 		</div>
-		
-		
-		
-		
-			<div id="f">gggg</div>
 		<script>
 		
 		
@@ -38,12 +33,14 @@
 		container.header = container.get(0);
 		container.content = container.get(1);
 		
-		container.setHtml("内容");
 		container.renderTo();
-		//  container.
 		
-	//	container.setHtml('内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容');
-		
+		var fns = [
+			["ContentControl.prototype.setHtml(小)", function(){ return container.setHtml('容器');  }],
+			["ContentControl.prototype.setHtml(大)", function(){ return container.setHtml('容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器容器');  }],
+			["ContentControl.prototype.setWidth(数)", function(){ return container.setWidth(300);  }],
+			["ContentControl.prototype.setWidth(自动)", function(){ return container.setWidth(NaN);  }]
+		];
 		
 		
 		</script>
