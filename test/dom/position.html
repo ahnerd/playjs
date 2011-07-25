@@ -11,7 +11,7 @@
 		<script src="../../common/assets/scripts/debug.js" type="text/javascript"></script>
 	</head>
 	<body> 
-		<div style="background: yellow;" id="a">
+		<div style="background: yellow; line-height: inherit" id="a">
 				<div style="background: red; width:200px;" id="aa">id=aa<div style="background: black; color:white" id="aba">id=aba</div></div>
 				<div style="background: green;" id="ab">id=ab<input type="button" name="button" id="button" value="子控件" /></div>
 			</div>
@@ -19,6 +19,7 @@
 			<div style="position:absolute; left:630px; top:40px; margin:20px; height:60px; padding:17px; overflow:scroll; border:4px #f32323 solid; background: blue" id="f">sssss  <table id="t" style='position:absolute;top:5px;left:6px;margin:3px;border:5px solid #000;padding:0;width:1px;height:200px;' cellpadding='0' cellspacing='0'><tr><td></td></tr></table></div>
 			</div>
 			
+			<div id="v" style="display: none">n</div>
 			<hr>
 		<script>
 			var a = $('a'), aa = $('aa'), ab = $('ab'), f = $('f'), t = $('t');
@@ -29,7 +30,6 @@
 				["Element.prototype.getOffsetParent", function(){ return a.getOffsetParent(); }],
 				["Element.prototype.getOffsets", function(){ return a.getOffsets(); }],
 				["Element.prototype.getPosition", function(){ return a.getPosition(); }],
-				["getComputedStyle", function(){ return parseFloat(  (a.ownerDocument.defaultView.getComputedStyle(a, null) || {})['height']) || 0; }],
 				["Element.prototype.getScroll", function(){ return a.getScroll(); }],
 				["Element.prototype.getScrollSize", function(){ return a.getScrollSize(); }],
 				["Document.prototype.setScroll", function(){ return document.setScroll(2,4); }],
@@ -38,6 +38,15 @@
 				["Document.prototype.getOffsets", function(){ return document.getOffsets(); }],
 				["Document.prototype.getPosition", function(){ return document.getPosition(); }],
 				["Element.getSizes", function(){return Element.getSizes(a, 'x', 'm');}],
+				['constrcutor', function (args) {
+					a = 111;
+				  return a.constructor === Number;
+				},null, 100000],
+				['Ex', function (args) {
+				   a = 111;
+				    return typeof a === 'number';
+				},null, 100000],
+				
 				["Element 全部测试 ", function(){
 					log("Size = ", f.getSize());
 					log("------------------------","");

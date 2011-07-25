@@ -41,6 +41,20 @@
 						.start(4,3);
 				}, null, 8],
 				["Fx.Animate", function(){ 
+					new Fx.Animate(a).start({}, {
+						height: 500
+					}).start({}, {
+						height: 100
+					}).start({}, {
+						height: 30
+					})
+					
+				 }],
+				 "Fx",
+				["Animate(height)", function(){
+					a.animate({height: 500}).animate({height: 100}).animate({height: 30});
+				}, null, 8],
+				["Animate()     多次", function(){
 					a.animate({
 						height: 10,
 						'font-size': 70,
@@ -54,26 +68,12 @@
 						'font-size': 30,
 						'opacity': 0.7
 					});
-					
-				 }],
-				 "Fx",
-				["Animate(height)", function(){
-					a.animate({height: 500});
-				}, null, 8],
-				["Animate(size)", function(){
-					a.animate({size: {x: 400, y: 500}});
 				}, null, 8],
 				["Animate(opacity)", function(){
 					a.animate({opacity: 0});
 				}, null, 8],
-				["Animate(offsets)", function(){
-					a.animate({offsets: {x: 400, y: 500}});
-				}, null, 8],
-				["Animate(position)", function(){
-					a.animate({position: {x: 400, y: 500}});
-				}, null, 8],
-				["Animate(scroll)", function(){
-					a.animate({scroll: {x: 400, y: 500}});
+				["Animate(scrollTop)", function(){
+					a.animate({scrollTop: 400});
 				}, null, 8],
 				["Animate(background-color)", function(){
 					a.animate({'background-color': '#efefef'});
