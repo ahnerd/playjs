@@ -8425,6 +8425,7 @@ jQuery.fx.prototype = {
 
 	// Simple 'hide' function
 	hide: function() {
+		
 		// Remember where we started, so that we can go back to it later
 		this.options.orig[this.prop] = jQuery.style( this.elem, this.prop );
 		this.options.hide = true;
