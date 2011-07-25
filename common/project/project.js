@@ -13,12 +13,12 @@ var core = {
 };
 
 var controls = {
-	'control    ': 'Control ContentControl ListControl Resizing Shadow Mask Splitter @ ScrollableControl ContainerControl ITargetedControl',
+	'control    ': 'Control ContentControl ScrollableControl ContainerControl ListControl Resizing Shadow Mask Splitter @ ITargetedControl',
 	'layout     ': 'LayoutEngine FlowLayout AbsoluteLayout AlignedLayout AnchorLayout BorderLayout BoxLayout FitLayout DefaultLayout Relativelayout LineLayout TableLayout ColumnLayout ~ LayoutEngines window tablayout',
 	'viewer     ': 'ToolTip Processbar Label PictureBox WebBroswer ~ ScrollBar ',
-	'container  ': '@ Panel BalloonTip GroupBox Accordion @ tabcontrols ~ splitcontainer tablelayoutpanel flowlayoutpanel toolstripcontainer',
+	'container  ': 'Panel Accordion BalloonTip GroupBox @ tabcontrols ~ splitcontainer tablelayoutpanel flowlayoutpanel toolstripcontainer',
 	'button     ': 'Button MenuButton SplitButton LinkButton ContextMenu ToolBar @ ~ commandbutton ribbon menustrip',
-	'form       ': 'Textbox CombinedTextbox UpDown ListBox FileUpload MonthCalender SearchTextBox  NumericUpDown DateUpDown TimeUpDown DatePicker ComboBox CheckBox RadioButton @ Slider CheckListBox ~ StarMarker MarkedTextBox RichTextBox HtmlEditor',
+	'form       ': 'TextBox CombinedTextBox UpDown ListBox FileUpload MonthCalender SearchTextBox  NumericUpDown DateUpDown TimeUpDown DatePicker ComboBox CheckBox RadioButton @ Slider CheckListBox ~ StarMarker MarkedTextBox RichTextBox HtmlEditor',
 	'dataview   ': 'TreeView @ ~ listview datagridview table datanavigator',
 	'dialog     ': '@ Dialog MessageBox ~ BalloonBox inputbox colordialog folderbroswerdialog filedialog fileopendialog filesavedialog',
 	'theme      ': '@ all css'
