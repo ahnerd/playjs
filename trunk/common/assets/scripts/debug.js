@@ -527,7 +527,7 @@
 			if (arguments.length > 1) {
 				values = format.apply(inspect, arguments);
 				useConsole = false;
-			} else if (!useConsole) values = encode(encodeScript(values));
+			} else if (!useConsole) values = encode(values);
 		} else if (!useConsole) {
 			values = inspect(values);
 		}
