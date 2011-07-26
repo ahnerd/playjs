@@ -2792,27 +2792,34 @@ Object.extendIf(trace, {
 		// 尝试获取一层的元素。
 		if(prefix === undefined) {
 
-			var typeName = Object.type(obj), constructor = obj != null && obj.constructor;
+			var typeName ,constructor = obj != null && obj.constructor;
+			
+			if(obj && obj.nodeType) {
+				prefix = 'Element.prototype';
+				title = 'Element 类的实例成员: ';
+			} else {
 				
-			String.map('Object String Date Array RegExp Number Function Element XMLHttpRequest', function(value) {
-				if(window[value] === obj) {
-					title = value + ' ' + getMember(obj, value) + '的成员: ';
-					prefix = value;
-				} else if(constructor === window[value]) {
-					prefix = value + '.prototype';
-					title = value + ' 类的实例成员: ';
-				}
-			});
-
-			if(!prefix) {
 				if(typeName = getClassInfo(obj)) {
 					var extObj = getMember(obj, typeName) === '类' && getClassInfo(obj.base);
-					title = typeName + ' ' + getMember(obj, typeName) + (extObj ? '(继承于 ' + extObj + ' 类)' : '') + '的成员: ';
+					title = typeName + ' ' + getMember(obj, typeName) + (extObj && extObj != "Object" ? '(继承于 ' + extObj + ' 类)' : '') + '的成员: ';
 					prefix = typeName;
 				} else if(typeName = getClassInfo(constructor)) {
 					prefix = typeName + '.prototype';
 					title = typeName + ' 类的实例成员: ';
 				}
+			}
+
+			if(!prefix) {
+				
+				String.map('Object String Date Array RegExp Number Function Element XMLHttpRequest', function(value) {
+					if(window[value] === obj) {
+						title = value + ' ' + getMember(obj, value) + '的成员: ';
+						prefix = value;
+					} else if(constructor === window[value]) {
+						prefix = value + '.prototype';
+						title = value + ' 类的实例成员: ';
+					}
+				});
 			}
 		}
 
@@ -2906,9 +2913,9 @@ Object.extendIf(trace, {
 	},
 	
 	/**
-	 * 获取对象的所有成员的字符串形式。
+	 * 获取对象的字符串形式。
 	 * @param {Object} obj 要输出的内容。
-	 * @param {Number/undefined} deep 递归的层数。
+	 * @param {Number/undefined} deep=0 递归的层数。
 	 * @return String 成员。
 	 */
 	inspect: function(obj, deep) {
@@ -3107,8 +3114,7 @@ Object.extendIf(trace, {
  * @return {Boolean} 返回 bValue 。
  * @example
  * <code>
- * assert(true, "{value} 错误。", value
- * 
+ * assert(true, "{value} 错误。", value);
  * </code>
  */
 function assert(bValue, msg) {
