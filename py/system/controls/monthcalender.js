@@ -534,59 +534,6 @@ imports("Resources.*.Form.MonthCalender");
 				me.onSelect(me.today);
 			}
 	
-		/*
-		// Build the body of the picker
-			var body = this.body = new Element('div.body').inject(picker);
-	
-			// oldContents and newContents are used to slide from the old content to a new one.
-			var slider = this.slider = new Element('div.slider', {
-				styles: {
-					position: 'absolute',
-					top: 0,
-					left: 0
-				}
-			}).set('tween', {
-				duration: options.animationDuration,
-				transition: Fx.Transitions.Quad.easeInOut
-			}).inject(body);
-	
-			this.oldContents = new Element('div', {
-				styles: {
-					position: 'absolute',
-					top: 0
-				}
-			}).inject(slider);
-	
-			this.newContents = new Element('div', {
-				styles: {
-					position: 'absolute',
-					top: 0,
-					left: 0
-				}
-			}).inject(slider);
-	
-			// IFrameShim for select fields in IE
-			var shim = this.shim = window['IframeShim'] ? new IframeShim(picker) : null;
-	
-			// Dragging
-			if (options.draggable && typeOf(picker.makeDraggable) == 'function'){
-				this.dragger = picker.makeDraggable(shim ? {
-					onDrag: shim.position.bind(shim)
-				} : null);
-				picker.setStyle('cursor', 'move');
-			}
-	
-			this.addEvent('open', function(){
-				picker.setStyle('display', 'block');
-				if (shim) shim.show();
-			}, true);
-	
-			this.addEvent('hide', function(){
-				picker.setStyle('display', 'none');
-				if (shim) shim.hide();
-			}, true);
-	*/
-	
 		},
 		
 		
