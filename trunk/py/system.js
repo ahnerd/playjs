@@ -2732,7 +2732,7 @@ function trace(obj, args) {
 
 
 	if (useConsole) console.log(obj);
-	else trace.alert(obj);
+	else trace.write(obj);
 }
 
 /**
@@ -2744,7 +2744,7 @@ Object.extendIf(trace, {
 	 * 输出方式。
 	 * @param {String} message 信息。
 	 */
-	alert: function(message) {
+	write: function(message) {
 		alert(message);
 	},
 	
@@ -2752,18 +2752,128 @@ Object.extendIf(trace, {
 	 * 输出类的信息。
 	 * @param {Object} 成员。
 	 */
-	api: function(obj) {
-		if(obj && obj.prototype) {
-			for (var i in obj.prototype) {
-				trace.dir(obj.prototype);
-				return;
+	api: function(obj, prefix) {
+		var title = 'API信息: ', msg = [];
+
+		if(arguments.length === 0) {
+			title = '全局对象: ';
+			prefix = '';
+			String.map('Object String Date Array RegExp Function Element document Py navigator XMLHttpRequest', function(propertyName) {
+				addValue(window, propertyName);
+			});
+
+			for(var propertyName in Py) {
+				if(Py.defaultNamespace[propertyName] === Py[propertyName]) {
+					addValue(Py, propertyName);
+				}
 			}
-		} else if(Object.isObject(obj)) {
-			trace.dir(obj);
-			return;
-		} 
+		} else if(obj != null) {
+			if(obj.prototype) {
+				for(var propertyName in obj.prototype) {
+					var extObj = obj;
+					
+					try {
+						while(!Object.prototype.hasOwnProperty.call(extObj.prototype, propertyName) && (extObj = extObj.base) && extObj.prototype);
+						extObj = extObj === obj ? '' : (extObj = getClassInfo(extObj)) ? '(继承于 ' + extObj + ' 类)' : '(继承的)';
+						
+						msg.push('prototype.' + propertyName + ' ' + getMember(obj.prototype[propertyName], propertyName) + extObj);
+					} catch(e) {
+					}
+				}
+			}
+			for(var item in obj) {
+				try {
+					addValue(obj, item);
+				} catch(e) {
+				}
+			}
+		}
+
+		// 尝试获取一层的元素。
+		if(prefix === undefined) {
+
+			var typeName = Object.type(obj), constructor = obj != null && obj.constructor;
+				
+			String.map('Object String Date Array RegExp Number Function Element XMLHttpRequest', function(value) {
+				if(window[value] === obj) {
+					title = value + ' ' + getMember(obj, value) + '的成员: ';
+					prefix = value;
+				} else if(constructor === window[value]) {
+					prefix = value + '.prototype';
+					title = value + ' 类的实例成员: ';
+				}
+			});
+
+			if(!prefix) {
+				if(typeName = getClassInfo(obj)) {
+					var extObj = getMember(obj, typeName) === '类' && getClassInfo(obj.base);
+					title = typeName + ' ' + getMember(obj, typeName) + (extObj ? '(继承于 ' + extObj + ' 类)' : '') + '的成员: ';
+					prefix = typeName;
+				} else if(typeName = getClassInfo(constructor)) {
+					prefix = typeName + '.prototype';
+					title = typeName + ' 类的实例成员: ';
+				}
+			}
+		}
+
+		if(msg.length === 0)
+			msg.push(title + '无');
+		else {
+			msg.sort();
+			msg.unshift(title);
+		}
+
+		trace(msg.join( prefix ? '\r\n' + prefix + "." : '\r\n'));
+
+
+		function isEmptyObject(obj) {
+			for(var i in obj)
+			return false;
+
+			return true;
+		}
+
+		function getMember(val, name) {
+			
+			if(typeof val === 'function' && name === 'constructor')
+				return '构造函数';
+
+			if(val && val.prototype && !isEmptyObject(val.prototype))
+				return '类';
+
+			if(Object.isObject(val))
+				return name.charAt(0) === 'I' && isUpper(name, 1) ? '接口' : '对象';
+
+			if(Object.isFunction(val)) {
+				return isUpper(name, 0) ? '类' : '函数';
+			}
+
+			return '属性';
+		}
+
+		function isUpper(s, i) {
+			s = s.charCodeAt(i);
+			return s <= 90 && s >= 65;
+		}
 		
-		  trace(obj);
+		function getClassInfo(value) {
+			
+			if(value) {
+				for(var item in Py) {
+					if(Py[item] === value) {
+						return item;
+					}
+				}
+				
+			}
+			
+			return null;
+		}
+		
+		function addValue(base, memberName) {
+			msg.push(memberName + ' ' + getMember(base[memberName], memberName));
+		}
+
 	},
 	
 	/**
