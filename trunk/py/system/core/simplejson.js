@@ -1,5 +1,5 @@
 //===========================================
-// 简单的 JSON      simplejson.js       A
+// 简单的 JSON         A
 //===========================================
 	
 namespace("JSON.", {
@@ -18,15 +18,13 @@ namespace("JSON.", {
 				return '[' + String(Object.update(obj, JSON.encode, [])) + ']';
 			case 'object':
 				var string = [];
-				Object.each(obj, function(value, key){
-					var json = JSON.encode(value);
-					if (json) string.push(JSON.encode(key) + ':' + json);
-				});
+				for(var key in obj) {
+					string.push(JSON.encode(key) + ':' + obj[key]);
+				}
 				return '{' + string + '}';
-			case 'number': case 'boolean': return String(obj);
-			case false: return 'null';
+			default:
+				return String(obj);
 		}
-		return null;
 	},
 
 	decode: function(string, secure){

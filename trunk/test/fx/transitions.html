@@ -47,7 +47,7 @@
 			$('b').setHeight(width);
 			$('t').setWidth(width + 20);
 			
-			var Trans = Py.Fx.Base.extend({
+			var Trans =     Fx.Base.extend({
 				
 				link:  'ignore' ,
 				
@@ -57,7 +57,7 @@
 				
 				set: function(delta){
 					this.x++;
-					var y = Py.Fx.compute(this.from, this.to, delta);
+					var y = Fx.compute(this.from, this.to, delta);
 					this.y = width - y;
 					
 					document.create('div',  'p').renderTo('v').setOffset(this);
@@ -65,22 +65,29 @@
 					$('f').style.left = y +  'px' ;
 				},
 				
-				onStart: function(){ 
-					$('v') .empty();
-					this.x = 0;
+				start: function () {
+				 
+				 	arguments.length = 5;
+					arguments[4] = function() {
+						 $('v') .empty();
+						this.x = 0;
+					}
+					
+					
+					this.base('start', arguments);
 				}
 				
 			});
 		
 			
-			var fx =  new  Trans();
+			var f =  new  Trans();
 			
 			for(var i in Py.Fx.Transitions) {
 				if(/^ease/.test(i))
 					break;
-				document.write('<input type="button" onclick="fx.transition = Transitions.' + i + ';  fx.start(0, ' + width + ');" value="' + i + '">');
-				document.write('<input type="button" onclick="fx.transition = Transitions.easeOut(Transitions.' + i + ');   fx.start(0, ' + width + ');" value="easeOut( ' + i + ' )">');
-				document.write('<input type="button" onclick="fx.transition = Transitions.easeInOut(Transitions.' + i + ');   fx.start(0, ' + width + ');" value="easeInOut( ' + i + ' )">');
+				document.write('<input type="button" onclick="f.transition = Transitions.' + i + ';  f.start(0, ' + width + ');" value="' + i + '">');
+				document.write('<input type="button" onclick="f.transition = Transitions.easeOut(Transitions.' + i + ');   f.start(0, ' + width + ');" value="easeOut( ' + i + ' )">');
+				document.write('<input type="button" onclick="f.transition = Transitions.easeInOut(Transitions.' + i + ');   f.start(0, ' + width + ');" value="easeInOut( ' + i + ' )">');
 				document.write('<p />');
 			}
 			

@@ -1,5 +1,5 @@
 //===========================================
-//  委托   delegate.js    A
+//  委托              A
 //===========================================
 
 
@@ -70,7 +70,8 @@ namespace(".Delegate", Py.Class({
 	
 	/**
 	 * 对一个对象调用委托。
-	 * @param {Object} 对象。
+	 * @param {Object} bind 对象。
+	 * @param {Array} args 参数。
 	 * @return {Boolean} 是否成功调用所有委托成员。
 	 */
 	apply: function(bind, args){
@@ -79,6 +80,12 @@ namespace(".Delegate", Py.Class({
 		});
 	},
 	
+	/**
+	 * 对一个对象调用委托。
+	 * @param {Object} bind 对象。
+	 * @param {Object} ... 参数。
+	 * @return {Boolean} 是否成功调用所有委托成员。
+	 */
 	call: function(bind){
 		return this.apply(bind, Array.create(arguments, 1));
 	}
