@@ -189,6 +189,7 @@
 			 */
 			start: function() {
 				var me = this, args = arguments;
+				
 				if (me.check.apply(me, args)) {
 					
 					// 如果 duration > 0  更新。

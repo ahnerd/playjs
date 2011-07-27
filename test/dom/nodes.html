@@ -22,7 +22,7 @@
 			</div>
 			<hr>
 		<script>
-			trace(document.id('a').get('child', 'div').get('parent'));
+			trace(document.getDom('a').get('child', 'div').get('parent'));
 			var fns = [
 				['findAll', function(){
 					return  document.findAll('.a.b');

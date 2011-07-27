@@ -1,15 +1,15 @@
 
 var core = {
-	'core       ': 'Core | Class Namespace Navigator Object Py Ready Trace | Delegate ChineseId Enum @ Date DateEx Array String Regexp Number Function Check Object Interface Json TaskRunner DelayedTask',
+	'core       ': 'Core | Class Namespace Navigator Object Py Ready Trace | Json | Delegate ChineseId Enum @ Date DateEx Array String Regexp Number Function Check Object Interface TaskRunner DelayedTask',
 	'broswer    ': '@ action clipboard cookies png querystring simulateie',
 	'data       ': 'Collection',
-	'dom        ': 'Event Attributions Dimension Position Node Nodes Clone | DragDrop ContextMenu Query | MemLeak @ control image tab iframe keys selection submit borderradius css window',
+	'dom        ': 'Event Attributions Dimension Position Node Nodes Clone ContextMenu Query | @ DragDrop | MemLeak control image tab iframe keys selection submit borderradius css window',
 	'fx         ': 'Animate Transitions MultiFade ShowHide',
 	'jquery     ': 'Core Event Attributions Dimension Node Position',
 	'mootools   ': 'Core Event Attributions Dimension Node Position',
 	'drawing    ': '@ color',
 	'ajax       ': 'Ajax Submit @ json jsonp update ajaxex',
-	'algorithm  ': 'Encryption @ sorter'
+	'algorithm  ': '@ Encryption sorter'
 };
 
 var controls = {
