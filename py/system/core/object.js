@@ -31,7 +31,7 @@ Object.extend(Object, {
 	 */
 	isEmpty: function(object) {
 	
-		assert(!Object.isFunction(object), "Object.isEmpty 不允许函数");
+		assert(!Function.isFunction(object), "Object.isEmpty 不允许函数");
 		
 		//if (object == null) return true;
 		

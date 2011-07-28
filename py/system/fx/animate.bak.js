@@ -494,7 +494,7 @@ using("System.Fx.Base");
 		 * @return this
 		 */
 		highlight: function(color, duration, callBack){
-			assert(!color || Object.isArray(color) || rhex.test(color) || rRgb.test(color), "Element.prototype.highlight(color, duration, callBack): 参数 {color} 不是合法的颜色。", color);
+			assert(!color || Array.isArray(color) || rhex.test(color) || rRgb.test(color), "Element.prototype.highlight(color, duration, callBack): 参数 {color} 不是合法的颜色。", color);
 			assert(!callBack || Object.isFunction(callBack), "Element.prototype.highlight(color, duration, callBack): 参数 {callBack} 不是可执行的函数。", callBack);
 			var fx = getFx(this),
 				from = {

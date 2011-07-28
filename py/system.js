@@ -778,7 +778,7 @@ var Py = {
 				 */
 				un: function (type, fn) {
 					
-					assert(!fn || o.isFunction(fn), 'IEvent.un(type, fn): 参数 {fn} 必须是可执行的函数或空参数。', fn);
+					assert(!fn || Function.isFunction(fn), 'IEvent.un(type, fn): 参数 {fn} 必须是可执行的函数或空参数。', fn);
 					
 					// 获取本对象     本对象的数据内容   本事件值
 					var me = this, d = p.getData(me, 'event'), evt;
@@ -1165,8 +1165,8 @@ var Py = {
 		 */
 		each: function(iterable, fn, bind) {
 
-			assert(!o.isFunction(iterable), "Object.each(iterable, fn, bind): 参数 {iterable} 不能是可执行的函数。 ", iterable);
-			assert(o.isFunction(fn), "Object.each(iterable, fn, bind): 参数 {fn} 必须是可执行的函数。 ", fn);
+			assert(!Function.isFunction(iterable), "Object.each(iterable, fn, bind): 参数 {iterable} 不能是可执行的函数。 ", iterable);
+			assert(Function.isFunction(fn), "Object.each(iterable, fn, bind): 参数 {fn} 必须是可执行的函数。 ", fn);
 			
 			// 如果 iterable 是 null， 无需遍历 。
 			if (iterable != null) {
@@ -1210,7 +1210,7 @@ var Py = {
 			dest = dest || iterable;
 			
 			// 遍历源。
-			o.each(iterable, o.isFunction(fn) ? function(value, key) {
+			o.each(iterable, Function.isFunction(fn) ? function(value, key) {
                 
 				// 执行函数获得返回。
 				value = fn.call(args, value, key);
@@ -1257,42 +1257,6 @@ var Py = {
 			
 			// 只检查 null 。
 			return obj !== null && typeof obj == "object";
-		},
-
-		/**
-		 * 判断一个变量是否是数组。
-		 * @static
-		 * @param {Object} object 变量。
-		 * @return {Boolean} 如果是数组，返回 true， 否则返回 false。
-		 * @example
-		 * <code> 
-		 * Object.isArray([]); // true
-		 * Object.isArray(document.getElementsByTagName("div")); // false
-		 * Object.isArray(new Array); // true
-		 * </code>
-		 */
-		isArray: function(obj) {
-			
-			// 检查原型。
-			return toString.call(obj) === "[object Array]";
-		},
-
-		/**
-		 * 判断一个变量是否是函数。
-		 * @static
-		 * @param {Object} object 变量。
-		 * @return {Boolean} 如果是函数，返回 true， 否则返回 false。
-		 * @example
-		 * <code>
-		 * Object.isFunction(function() {}); // true
-		 * Object.isFunction(null); // false
-		 * Object.isFunction(new Function); // true
-		 * </code>
-		 */
-		isFunction: function(obj) {
-			
-			// 检查原型。
-			return toString.call(obj) === "[object Function]";
 		},
 		
 		/**
@@ -1358,7 +1322,7 @@ var Py = {
 					return obj.clone();
 					
 				//仅当对象才需深拷贝，null除外。
-				obj = o.update(obj, o.clone, o.isArray(obj) ? [] : {}, deep);
+				obj = o.update(obj, o.clone, Array.isArray(obj) ? [] : {}, deep);
 			}
 			
 			return obj;
@@ -1400,12 +1364,12 @@ var Py = {
 						val = config[key];
 			
 			
-					if (o.isFunction(obj[setter])) {
+					if (Function.isFunction(obj[setter])) {
 						obj[setter](val);
 					} 
 					
 					// 是否存在函数。
-					else if(o.isFunction(obj[key])) {
+					else if(Function.isFunction(obj[key])) {
 						obj[key](val);
 					}
 					
@@ -1536,13 +1500,33 @@ var Py = {
 				
 				
 				// 如果数组，把内部元素压入r。
-				if (o.isArray(d)) Array.copyIf(d, r);
+				if (Array.isArray(d)) Array.copyIf(d, r);
 				
 				// 不是数组，直接压入 r 。
 				else r.include(d);
 			});
 
 			return r;
+		},
+		
+		
+
+		/**
+		 * 判断一个变量是否是数组。
+		 * @static
+		 * @param {Object} object 变量。
+		 * @return {Boolean} 如果是数组，返回 true， 否则返回 false。
+		 * @example
+		 * <code> 
+		 * Array.isArray([]); // true
+		 * Array.isArray(document.getElementsByTagName("div")); // false
+		 * Array.isArray(new Array); // true
+		 * </code>
+		 */
+		isArray: function(obj) {
+			
+			// 检查原型。
+			return toString.call(obj) === "[object Array]";
 		}
 
 	});
@@ -1577,6 +1561,24 @@ var Py = {
 		 * @type Function
 		 */
 		returnFalse: from(false),
+
+		/**
+		 * 判断一个变量是否是函数。
+		 * @static
+		 * @param {Object} object 变量。
+		 * @return {Boolean} 如果是函数，返回 true， 否则返回 false。
+		 * @example
+		 * <code>
+		 * Function.isFunction(function() {}); // true
+		 * Function.isFunction(null); // false
+		 * Function.isFunction(new Function); // true
+		 * </code>
+		 */
+		isFunction: function(obj) {
+			
+			// 检查原型。
+			return toString.call(obj) === "[object Function]";
+		},
 		
 		/**
 		 * 绑定函数作用域。
@@ -1674,7 +1676,7 @@ var Py = {
 					
 			assert(typeof str == 'string', 'String.map(str, source, dest, copyIf): 参数 {str} 必须是字符串。', str);
 			
-			var isFn = o.isFunction(source);
+			var isFn = Function.isFunction(source);
 			// 分隔。
 			str.split(' ').forEach(function(v, k, c) {
 				var val = isFn ? source(v, k, c) : source[v];
@@ -2116,7 +2118,7 @@ var Py = {
 		 */
 		select: function(name, value) {
 			var me = this, index = -1, i = -1 , l = me.length, t,
-				fn = o.isFunction(name) ? name : function(t) {
+				fn = Function.isFunction(name) ? name : function(t) {
 					return t[name] === value;
 				};
 			while (++i < l) {
@@ -2183,12 +2185,12 @@ var Py = {
 		 * </code>
 		 */
 		invoke: function(fn, args) {
-			assert(o.isFunction(fn) || (args && typeof args.length === 'number'), "Array.prototype.invoke(fn, args): 参数 {args} 必须是数组, 无法省略。", args)
+			assert(Function.isFunction(fn) || (args && typeof args.length === 'number'), "Array.prototype.invoke(fn, args): 参数 {args} 必须是数组, 无法省略。", args)
 			var r = [];
-			ap.forEach.call(this, o.isFunction(fn) ? function(value, index) {
+			ap.forEach.call(this, Function.isFunction(fn) ? function(value, index) {
 				r.push(fn.call(args, value, index));
 			} : function(value) { 
-				assert(value && o.isFunction(value[fn]), "Array.prototype.invoke(fn, args): {args} 内的 {value} 不包含可执行的函数 {fn}。", args, value, fn);
+				assert(value && Function.isFunction(value[fn]), "Array.prototype.invoke(fn, args): {args} 内的 {value} 不包含可执行的函数 {fn}。", args, value, fn);
 				r.push(value[fn].apply(value, args));
 			});
 			
@@ -2535,7 +2537,7 @@ var Py = {
 	 */
 	function each(fn, bind) {
 		
-		assert(o.isFunction(fn), "Array.prototype.each(fn, bind): 参数 {fn} 必须是一个可执行的函数。", fn);
+		assert(Function.isFunction(fn), "Array.prototype.each(fn, bind): 参数 {fn} 必须是一个可执行的函数。", fn);
 		
 		var i = -1,
 			me = this,
@@ -2851,7 +2853,7 @@ Object.extendIf(trace, {
 			if(Object.isObject(val))
 				return name.charAt(0) === 'I' && isUpper(name, 1) ? '接口' : '对象';
 
-			if(Object.isFunction(val)) {
+			if(Function.isFunction(val)) {
 				return isUpper(name, 0) ? '类' : '函数';
 			}
 
@@ -2941,7 +2943,7 @@ Object.extendIf(trace, {
 				if(deep >= 3)
 					return obj.toString();
 
-				if(Object.isArray(obj)) {
+				if(Array.isArray(obj)) {
 					return "[" + Object.update(obj, trace.inspect, []).join(", ") + "]";
 					
 				}else{
@@ -3180,7 +3182,7 @@ function assert(bValue, msg) {
 		 * </code>
 		 */
 		isFunction: function() {
-			return assertInternal2(Object.isFunction, "必须是可执行的函数", arguments);
+			return assertInternal2(Function.isFunction, "必须是可执行的函数", arguments);
 		},
 		
 		/**
@@ -3190,7 +3192,7 @@ function assert(bValue, msg) {
 		 * @return {Boolean} 返回 bValue 。
 		 */
 		isArray: function() {
-			return assertInternal2(Object.isArray, "必须是数组", arguments);
+			return assertInternal2(Array.isArray, "必须是数组", arguments);
 		},
 		
 		/**
@@ -3200,7 +3202,7 @@ function assert(bValue, msg) {
 		 * @return {Boolean} 返回 bValue 。
 		 */
 		isObject: function(value, msg) {
-			return assertInternal(Object.isObject(value) || Object.isFunction(value), msg, value,  "必须是引用的对象", arguments);
+			return assertInternal(Object.isObject(value) || Function.isFunction(value), msg, value,  "必须是引用的对象", arguments);
 		},
 		
 		/**
@@ -3293,7 +3295,7 @@ function assert(bValue, msg) {
 		 * @return {Boolean} 返回 assert 是否成功 。
 		 */
 		instanceOf: function(v, types, msg) {
-			if (!Object.isArray(types)) types = [types];
+			if (!Array.isArray(types)) types = [types];
 			var ty = typeof v,
 				iy = Object.type(v);
 			return assertInternal(types.filter(function(type) {

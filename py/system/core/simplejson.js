@@ -1,5 +1,5 @@
 //===========================================
-// 简单的 JSON         A
+// 简单的 JSON       A
 //===========================================
 	
 namespace("JSON.", {
@@ -27,11 +27,29 @@ namespace("JSON.", {
 		}
 	},
 
-	decode: function(string, secure){
+	decode: function(string){
 		if (typeof string != 'string' || !string.length) return null;
-		if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) return null;
-		return eval('(' + string + ')');
+		
+		// 摘自 json2.js
+		if (/^[\],:{}\s]*$/
+                    .test(string.replace(/\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g, '@')
+                        .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
+                        .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+
+        	return eval('(' + string + ')');
+        	
+        }
+        
+        throw new SyntaxError('JSON.parse');
 	}
 
 });
 
+
+Object.extendIf(JSON, {
+	
+	parse: JSON.decode,
+	
+	stringify: JSON.encode
+	
+});

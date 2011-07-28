@@ -115,7 +115,7 @@ using("System.Dom.Drag");
 				}
 				
 				// 如果未函数，表示自定义函数。
-				if(Object.isFunction(elem)){
+				if(Function.isFunction(elem)){
 					this.contains = elem;
 					return false;
 				}

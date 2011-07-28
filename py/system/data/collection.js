@@ -46,7 +46,7 @@
 		addRange: function(args){
 			
 			
-			var v = Object.isArray(args) ? args : arguments;
+			var v = Array.isArray(args) ? args : arguments;
 			this.onBeforeSet(args);
 			Array.prototype.forEach.call(v, this.add, this);
 			this.onAfterSet(v);
