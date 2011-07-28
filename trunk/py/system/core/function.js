@@ -103,7 +103,7 @@ Object.extendIf(Function, {
 	 * @return {Timer} 可用于 clearInterval 的计时器。
 	 */
 	create :  function (statement, time, times){
-		var fn = Object.isFunction(statement) ? statement : new Function(statement);
+		var fn = Function.isFunction(statement) ? statement : new Function(statement);
 		return (time ? (function(){ return fn[times==1 ? "delay" : "periodical"].apply(this, arguments);} ) : fn);
 	},
 	

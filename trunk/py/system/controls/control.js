@@ -49,7 +49,7 @@ Object.extendIf(Py, {
 function imports(resource, theme){
 
 	assert(resource && resource.indexOf, "imports(resource, theme): 参数 {resource} 不是合法的名字空间。", resource);
-	assert(!theme || Object.isArray(theme), "imports(resource, theme): 参数 {theme} 必须是数组或省略。");
+	assert(!theme || Array.isArray(theme), "imports(resource, theme): 参数 {theme} 必须是数组或省略。");
 
 	if(resource.indexOf('*') > -1) {
 	 	(theme || [Py.resource, Py.theme]).forEach(function(value) {

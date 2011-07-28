@@ -615,7 +615,7 @@
 		delete ee[events];
 
 		// 对每个事件执行定义。
-		String.map(events, Function.from(!o.isFunction(baseEvent) ? {
+		String.map(events, Function.from(!Function.isFunction(baseEvent) ? {
 
 			initEvent: initEvent ? function(e) {
 				return ee[baseEvent].initEvent.call(this, e) !== false && initEvent.call(this, e);
