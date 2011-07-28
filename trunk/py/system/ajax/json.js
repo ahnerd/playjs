@@ -31,7 +31,7 @@ Py.Ajax.JSON = Py.Ajax.extend({
 
 String.map("get post", function(k) {
 	
-	Py.Ajax[k + 'Json'] = function(url, data, onsuccess, onerror, timeouts, ontimeout){
+	Py.Ajax[k + 'JSON'] = function(url, data, onsuccess, onerror, timeouts, ontimeout){
 		var emptyFn = Function.empty;
 		new Ajax.JSON({
 			url: url,
