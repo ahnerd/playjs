@@ -1,0 +1,168 @@
+
+
+
+
+
+本文告诉你如何快速上手 PyJs。
+本文也适合想深入了解这个库或者提高自己水平的同学。
+
+
+
+
+我想大部分人希望 注释量  > 代码量 > 文本量。
+
+本文就准备用这样的风格来写。
+
+
+如果想知道关于PyJs的废话的话，可以读《 pyjs说明 》。
+
+
+下面的代码如果需要测试的话，可以新建 html， 引入 system.js 。
+
+1. API 风格： 命名完整、对象化。
+
+比如：
+
+var a = {};
+var b = {};
+Object.extend(a, b);   //   Object.extend就是库里的 API， 用来拷贝 b 的成员 到 a 。
+
+比如:
+
+var s = " v ";
+s.trim();              //  trim 就是库里的API，用来删除字符串两边的空格。
+
+比如：
+
+
+document.onReady( function(){
+     // document.onReady 就是库里的API，用来在 DOMReady 时添加执行的函数。
+});
+
+
+上面 3 个例子已经说明了 PyJs 的 API风格，你肯能会说它污染了原型，原型(prototype)是JS的基于对象的思想上的名词，这是面向对象的，你本就不应该从原型的角度看这个问题。
+当然PyJs扩展的原型都是常见的，并且不扩展 Object 和 Function 的原型，这样同时避免了扩展原型带来的问题，至于多库共存...相信其它库都是乖乖的不污染原型的。
+写代码有时候追求的是爽， 像 s.trim() 如果 改  trim(s)  会不爽的。
+
+
+2. 全部 API
+
+
+问人不如问代码：
+
+trace.api()  //  引入库后 执行这一句， 你可以看到全部可用的类和函数。
+比如 你可以知道有一个  String 类， 那 String类有什么用呢?
+
+你可以继续查：
+
+trace.api(String)
+
+
+它会显示 String 类的成员，比如 String.format 函数。这就算API函数了， 这个函数使用方法就是      String.format(参数)
+
+比如显示了 String.prototype.toCamelCase 函数。 说明这是 String 类实例的成员， 使用 "".toCamelCase(参数) 就可以了。
+
+
+上面这几个方法可以帮你找到函数，函数的功能，你可以根据名字去猜。知道功能之后，一般参数也知道了。
+如果猜不到功能，那可以查看文档或源码，或者手动执行下。
+
+
+
+
+
+3. 模块化
+
+
+
+PyJs 不是一个文件，而是多个文件的大型库，当然你可以使用 core.js 单个文件(它是常用核心的部分， 可以单独使用，能完成 DOM, FX, AJAX 等web开发常用的功能   ) 更多见 《Core的使用   》
+对于大型库，让人郁闷的就是不知道以什么顺序引入什么js才能正确。 PyJs告诉你不用担心， 此外如果你使用的是 http:// 开发， 而不是 file:/// ，会更加轻松。
+一般 system.js 是 全系统入口，项目只需引入这个js。
+
+库里把每个文件都叫一个名字空间。 比如 system/dom/element.js 文件的 名字空间是 System.Dom.Element
+如 system/fx/base.js  就是 Systsm.Fx.Base 。  名字空间大小写无所谓，但文件名应该小写。
+
+
+比如需要载入 system/dom/element.js 文件， 可以使用传统的 <script> 引入 (一般都这样做) 也可以使用 js 代码：
+
+using("System.Dom.Element")
+
+
+
+如果需要载入多个js， 只要写多个using 就行。
+每个文件在最顶部都用 using 表示自己 所需要载入的文件。
+
+using 同时支持路径：
+
+using("system/dom/element.js")
+
+
+
+
+库里的任何文件，都可用using 载入， 并马上使用。
+
+
+
+4.  DOM API
+
+
+4.1   获取元素用 $ , 你可以理解 $ = document.getElementById
+4.2   事件有关的函数分别是 on un one trigger  比如  $('id').on('click', function(){});
+4.3   属性有关的函数分别是 getAttr setAttr getStyle setStyle
+4.4   类名有关的函数分别是 addClass removeClass toggleClass
+
+
+
+
+...不多说了, 自己用 2 的方法找把。
+
+
+5.  DOM 选择器
+
+
+PyJs 没有CSS选择器(因为CSS选择器效率低、代码多)。 它提供了 CSS 选择器的替代品。
+
+
+5.1  基本的 ID 选择器，请使用 $
+5.2  基本的CSS类， 属性，标签选择器，使用 find， 比如
+
+document.find('.cls a [type="hidden"]');
+
+
+注意上面这个选择器是 find所支持的最复杂的了。
+
+如果多个类，使用 ".a.b"
+这样的是不对的， 'input[type="hidden"]'  因为它不支持使用多个选择器选择同一个元素。
+
+find 只找到第一个， 而 findAll 可以找到全部。
+
+
+可以连着找：
+
+
+document.find('.cls').find('a').find('[type="hidden"]');
+
+
+
+根据关系获取节点：
+
+document.get('first')  -- 第一个子节点
+document.get('next')   -- 下一个
+document.get(2)        -- 低2个子节点
+
+
+
+根据函数筛选子元素：
+
+
+document.get(function(elem){
+  
+  // 找到类名是 c 的节点。
+
+	return elem.className == 'c';
+})
+
+
+
+6.  更多...  不介绍了，相信你已经 知道了。
+
+文本完
