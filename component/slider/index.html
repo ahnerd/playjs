@@ -1,0 +1,71 @@
+<html>
+	<head>
+		<title></title>
+		
+		<script src="../../py/system.js"></script>
+		<script src="../../py/system/dom/element.js"></script>
+		<script src="../../py/system/fx/base.js"></script>
+		<script src="../../py/system/fx/animate.js"></script>
+	</head>
+	
+	
+	<body>
+		
+		
+		<div id="a" style="width:100px; height: 40px; border: 1px solid black; overflow: hidden">
+			<div id="b" style="position: relative; width:1000px;"></div>
+		</div>
+		
+		<script>
+			
+			var img = ['logo_small.gif', 'logo_small2.gif', 'logo_small3.gif', 'logo_small.gif'];
+			var singleWidth = $('a').getSize().x;
+			
+			var totalWidth = singleWidth * (img.length + 2);
+			var currentIndex = 0;
+			var timer;
+			$('b').setWidth(totalWidth).fx().link =    'replace';
+			img.forEach(addImg);
+			addImg(img[0]);
+			startTimer();
+			
+			function addImg(value){
+				$('b').append(document.create('img', '').setAttr('src', value).setSize($('a').getSize()  ));
+			}
+			
+			function switchTo(index, link) {
+				stopTimer(); 
+				if(index < 0) index = img.length - 1;
+				else if(index >= img.length) index = 0;
+				currentIndex = index;
+				$('b').animate('left', -singleWidth * index);
+				
+				startTimer();
+			}
+			
+			function switchBy(delta){
+				switchTo(currentIndex + delta);
+			}
+			
+			function startTimer(){
+				timer =  setInterval(function(){
+					if(!$('b').fx().timer)
+						switchTo(++currentIndex);
+				}, 300);
+			}
+			
+			function stopTimer(){
+				clearInterval(timer);
+			}
+			
+		</script>
+		
+		<a href="javascript:switchBy(-1)">P</a>
+		<a href="javascript:switchTo(0)">1</a>
+		<a href="javascript:switchTo(1)">2</a>
+		<a href="javascript:switchTo(2)">3</a>
+		<a href="javascript:switchTo(3)">4</a>
+		<a href="javascript:switchBy(1)">N</a>
+	</body>
+	
+</html>
