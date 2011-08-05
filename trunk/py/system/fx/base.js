@@ -112,7 +112,7 @@
 			 * @param {Function} fn 回调函数。
 			 */
 			onReady: function(fn){
-				assert.isFunction(fn, "Fx.Base.prototype.onReady(fn): 参数 {fn} ~。");
+				assert.isFunction(fn, "Fx.Base.prototype.onReady(fn): 参数 {fn} ~。    ");
 				this._competeListeners.unshift(fn);	
 				return this;
 			},
@@ -197,7 +197,7 @@
 					
 					// 如果有回调， 加入回调。
 					if (args[3]) {
-						assert.isFunction(args[3], "Fx.Base.prototype.start(from, to, duration, onStop, onStart, link): 参数 {callback} ~。");
+						assert.isFunction(args[3], "Fx.Base.prototype.start(from, to, duration, onStop, onStart, link): 参数 {callback} ~。      ");
 						me._competeListeners.push(args[3]);
 					}
 					

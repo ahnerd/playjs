@@ -876,7 +876,12 @@
 				}
 			}
 			
-			var r = elem.currentStyle[ name ];
+			var r = elem.currentStyle;
+			
+			if(!r)
+				return "";
+			
+			r = r[name];
 	
 			// 来自 jQuery
 	

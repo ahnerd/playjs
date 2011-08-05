@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Form</title>
+        <link href="../../py/resources/share/control/core.css" rel="stylesheet" type="text/css" />
+		<link href="../../py/resources/default/control/core.css" rel="stylesheet" type="text/css" />
+		
+		<link href="../../py/resources/default/control/icons.css" rel="stylesheet" type="text/css" />
+		
+        <script src="../../py/system.js" type="text/javascript"></script>
+		<script src="../../py/system/dom/element.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/control.js" type="text/javascript"></script>
+		<script src="../../py/system/controls/editor.js" type="text/javascript"></script>
+		
+		<script src="../../common/project/project.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/default.js" type="text/javascript"></script>
+		<script src="../../common/assets/scripts/debug.js" type="text/javascript"></script>
+		
+		
+		<style>
+			
+			.x-htmleditor {
+				border: 1px solid black;
+			}
+			
+			
+		</style>
+    </head>
+    <body>
+		<div>
+			
+			
+	
+			<textarea id="content1" name="content1" cols="100" rows="8" style="width:700px;height:200px;visibility:hidden;">&lt;p&gt;
+	&lt;img alt=&quot;&quot; src=&quot;http://kindsoft.net/images/logo_180_30.gif&quot; border=&quot;0&quot; /&gt; &lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+KindEditor是一套开源的HTML可视化编辑器，主要用于让用户在网站上获得所见即所得编辑效果，兼容IE、Firefox、Chrome、Safari、Opera等主流浏览器。&lt;br /&gt;
+KindEditor使用JavaScript编写，可以无缝的与Java、.NET、PHP、ASP等程序接合。
+KindEditor非常适合在CMS、商城、论坛、博客、Wiki、电子邮件等互联网应用上使用，2006年7月首次发布2.0以来，KindEditor依靠出色的用户体验和领先的技术不断扩大编辑器市场占有率，目前在国内已经成为最受欢迎的编辑器之一。 &lt;p&gt;&lt;/p&gt;
+&lt;table class=&quot;ke-zeroborder&quot; width=&quot;90%&quot;&gt;
+	&lt;tbody&gt;&lt;tr&gt;
+		&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+		&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+		&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+		&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+		&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+	&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</textarea>
+			
+		 </div>
+		 
+		 
+		 <script>
+		 	
+		 	var htmlEditor = new HtmlEditorBase('content1');
+		 	
+		 	var fns = [
+		 		["Bold", function () { htmlEditor.bold(); }],
+		 		["Italic", function () { htmlEditor.italic(); }],
+		 		["StrikeThrough", function () { htmlEditor.strikeThrough(); }],
+		 		["Subscript", function () { htmlEditor.subscript(); }],
+		 		["Superscript", function () { htmlEditor.superscript(); }],
+		 		["JustifyLeft", function () { htmlEditor.justifyLeft(); }],
+		 		["JustifyCenter", function () { htmlEditor.justifyCenter(); }],
+		 		["JustifyRight", function () { htmlEditor.justifyRight(); }],
+		 		["JustifyFull", function () { htmlEditor.justifyFull(); }],
+		 		["Indent", function () { htmlEditor.indent(); }],
+		 		["Outdent", function () { htmlEditor.outdent(); }],
+		 		["Undo", function () { htmlEditor.undo(); }],
+		 		["Redo", function () { htmlEditor.redo(); }],
+		 		["Unlink", function () { htmlEditor.unlink(); }],
+		 		["Paste", function () { htmlEditor.paste(); }],
+		 		["Cut", function () { htmlEditor.cut(); }],
+		 		["Copy", function () { htmlEditor.copy(); }],
+		 		["InsertOrderedList", function () { htmlEditor.insertOrderedList(); }],
+		 		["InsertUnorderedList", function () { htmlEditor.insertUnorderedList(); }],
+		 		["insertHorizontalRule", function () { htmlEditor.insertHorizontalRule(); }],
+		 		["InsertParagraph", function () { htmlEditor.insertParagraph(); }]
+		 	]
+		 	
+		 </script>
+    </body>
+</html>
