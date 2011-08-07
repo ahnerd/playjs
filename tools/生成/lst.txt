@@ -1,0 +1,5 @@
+../../py/system.js
+../../py/system/dom/element.js
+../../py/system/fx/base.js
+../../py/system/fx/animate.js
+../../py/system/ajax/ajax.js

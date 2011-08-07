@@ -1,11 +1,4 @@
-
-
-
-// BY XULD
-
-// INTERNAL
-
-// DO NOT USE THIS CODE WITHOUT PERMISSION
+﻿
 
 
 var url = '';
