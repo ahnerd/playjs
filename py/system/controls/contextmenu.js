@@ -21,8 +21,8 @@ namespace(".ContextMenu", Py.Menu.extend({
 		return this;
 	},
 	
-	setDisbale: function(disbale){
-		this.disabled = disbale;
+	setDisable: function(disable){
+		this.disabled = disable;
 	},
 	
 	onContextMenu: function(e){ 
